@@ -12,9 +12,9 @@ hugoblox:
 
   theme:
     mode: system
-    pack: "default"
+    pack: "mono"
     colors:
-      primary: "indigo"
+      primary: ""
       secondary: ""
       neutral: ""
     colors_light: {}
@@ -30,21 +30,21 @@ hugoblox:
         foreground: ""
 
   typography:
-    pack: "academic"
+    pack: "system"
 
   layout:
-    radius: "md"
+    radius: "none"
     spacing: "comfortable"
     avatar_shape: circle
 
   header:
     enable: true
-    style: navbar
+    style: navbar-simple
     sticky: true
     align: center
     search: true
     theme_toggle: true
-    theme_picker: true
+    theme_picker: false
     language_switcher: false
     cta:
       enable: false

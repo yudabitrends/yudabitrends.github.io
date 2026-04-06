@@ -22,28 +22,12 @@ sections:
     design:
       background:
         gradient_mesh:
-          enable: true
+          enable: false
       name:
-        size: lg
+        size: md
       avatar:
         size: medium
         shape: circle
-  - block: markdown
-    content:
-      title: 'Research'
-      subtitle: ''
-      text: |-
-        My research bridges **theoretical neuroscience**, **statistical physics**, and **deep learning**,
-        with a focus on understanding the structural and functional organization of the brain.
-
-        I develop multimodal vision transformer frameworks for brain imaging analysis, and investigate
-        fundamental principles of information structure, redundancy, and spectral methods across
-        neuroscience, finance, and AI.
-
-        I am the founder of the **Structural Intelligence (SI)** framework — a unifying theoretical
-        foundation for cross-disciplinary research.
-    design:
-      columns: '1'
   - block: collection
     id: papers
     content:
