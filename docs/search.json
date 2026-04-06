@@ -1,5 +1,110 @@
 [
   {
+    "objectID": "publications.html",
+    "href": "publications.html",
+    "title": "Publications",
+    "section": "",
+    "text": "A Multimodal Vision Transformer for Interpretable Fusion of Functional and Structural Neuroimaging Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun Human Brain Mapping, 45(17), e26783, 2024 DOI · PubMed"
+  },
+  {
+    "objectID": "publications.html#journal-articles",
+    "href": "publications.html#journal-articles",
+    "title": "Publications",
+    "section": "",
+    "text": "A Multimodal Vision Transformer for Interpretable Fusion of Functional and Structural Neuroimaging Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun Human Brain Mapping, 45(17), e26783, 2024 DOI · PubMed"
+  },
+  {
+    "objectID": "publications.html#conference-papers",
+    "href": "publications.html#conference-papers",
+    "title": "Publications",
+    "section": "Conference Papers",
+    "text": "Conference Papers\n\nMultiViT2: A Data-augmented Multimodal Neuroimaging Prediction Framework via Latent Diffusion Model Yuda Bi, Sihan Jia, Yutong Gao, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE ISBI, 2025 arXiv:2506.13667\n\n\nGM-LDM: Latent Diffusion Model for Brain Biomarker Identification through Functional Data-Driven Gray Matter Synthesis Xu Hu, Jingling Yang, Sihan Jia, Yuda Bi, Vince D. Calhoun IEEE ISBI, 2025 arXiv:2506.12719"
+  },
+  {
+    "objectID": "publications.html#preprints",
+    "href": "publications.html#preprints",
+    "title": "Publications",
+    "section": "Preprints",
+    "text": "Preprints\n\nGray Matters: An Efficient Vision Transformer GAN Framework for Predicting Functional Network Connectivity Biomarkers from Brain Structure Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun bioRxiv, 2024 bioRxiv:2024.01.11.575307\n\n\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment Yuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun arXiv, 2026 arXiv:2603.25880\n\n\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation Yuda Bi, Vince D. Calhoun arXiv, 2026 arXiv:2603.14072\n\n\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark Yuda Bi, Chenyu Zhang, Vince D. Calhoun arXiv, 2026 arXiv:2603.20917\n\n\nRedundancy as a Structural Information Principle for Learning and Generalization Yuda Bi, Ying Zhu, Vince D. Calhoun arXiv, 2025 arXiv:2510.10938"
+  },
+  {
+    "objectID": "notes/2026-04-quartic-detection-theory/index.html",
+    "href": "notes/2026-04-quartic-detection-theory/index.html",
+    "title": "The Geometry of Invisible Forces: A Quartic Detection Theory",
+    "section": "",
+    "text": "Hidden degrees of freedom are everywhere. The ocean drives climate through modes no single weather station resolves. Latent neural populations shape the signals recorded by any one electrode. Slow institutional forces move markets through channels invisible to any single asset’s price history. The central question is deceptively simple: given noisy observations, can you tell whether a hidden force is present?\nClassical statistics offers a reassuring answer — collect enough data and any nonzero signal emerges. Fisher information scales as \\(N\\) (the sample size), so the detection boundary shrinks as \\(N^{-1/2}\\). For a coupling strength \\(\\lambda\\), you need \\(N \\sim \\lambda^{-2}\\) observations. Reasonable. Manageable.\nThis answer is wrong. Not slightly wrong — wrong by orders of magnitude."
+  },
+  {
+    "objectID": "notes/2026-04-quartic-detection-theory/index.html#the-problem-forces-you-cannot-see",
+    "href": "notes/2026-04-quartic-detection-theory/index.html#the-problem-forces-you-cannot-see",
+    "title": "The Geometry of Invisible Forces: A Quartic Detection Theory",
+    "section": "",
+    "text": "Hidden degrees of freedom are everywhere. The ocean drives climate through modes no single weather station resolves. Latent neural populations shape the signals recorded by any one electrode. Slow institutional forces move markets through channels invisible to any single asset’s price history. The central question is deceptively simple: given noisy observations, can you tell whether a hidden force is present?\nClassical statistics offers a reassuring answer — collect enough data and any nonzero signal emerges. Fisher information scales as \\(N\\) (the sample size), so the detection boundary shrinks as \\(N^{-1/2}\\). For a coupling strength \\(\\lambda\\), you need \\(N \\sim \\lambda^{-2}\\) observations. Reasonable. Manageable.\nThis answer is wrong. Not slightly wrong — wrong by orders of magnitude."
+  },
+  {
+    "objectID": "notes/2026-04-quartic-detection-theory/index.html#the-quartic-law-why-detection-is-exponentially-harder",
+    "href": "notes/2026-04-quartic-detection-theory/index.html#the-quartic-law-why-detection-is-exponentially-harder",
+    "title": "The Geometry of Invisible Forces: A Quartic Detection Theory",
+    "section": "The Quartic Law: Why Detection Is Exponentially Harder",
+    "text": "The Quartic Law: Why Detection Is Exponentially Harder\nConsider the simplest possible hidden-variable problem. An observed time series \\(X_t\\) obeys\n\\[\nX_{t+1} = a\\, X_t + \\lambda\\, F_t + \\varepsilon_t\n\\]\nwhere \\(F_t\\) is a hidden persistent driver (\\(F_{t+1} = b\\, F_t + \\eta_t\\)) and \\(\\varepsilon_t\\) is noise. The coupling \\(\\lambda\\) controls how strongly the hidden world leaks into the visible one.\nThe power spectrum of \\(X_t\\) is indeed perturbed at \\(O(\\lambda^2)\\). So far, so classical. But here is the catch: when you refit a reduced model (one without the hidden variable), the best-fit parameters shift to absorb most of that perturbation. The refitted model “explains away” the hidden signal by reparametrizing itself.\nWhat survives is not the \\(O(\\lambda^2)\\) perturbation, but only its normal component — the part that cannot be absorbed by any reparametrization of the reduced model. And this residual is \\(O(\\lambda^4)\\).\nThe result is the quartic detection law:\n\\[\nD_{\\mathrm{KL}}^{\\min}(\\lambda) = C\\,\\lambda^4 + O(\\lambda^6)\n\\]\nwhere \\(C\\) is a system-specific constant and \\(D_{\\mathrm{KL}}^{\\min}\\) is the minimum Kullback-Leibler divergence between truth and the best-fit reduced model. The detection boundary becomes\n\\[\n\\boxed{\\lambda_c(N) \\;\\propto\\; \\left(\\frac{\\log N}{N}\\right)^{1/4}}\n\\]\nFor a 10% coupling (\\(\\lambda/\\sigma = 0.1\\)), the quartic penalty demands \\(\\sim 10^3\\) times more data than the naive quadratic expectation. This is not a small correction — it is a qualitative change in what is experimentally feasible."
+  },
+  {
+    "objectID": "notes/2026-04-quartic-detection-theory/index.html#the-geometry-tangent-absorption-on-statistical-manifolds",
+    "href": "notes/2026-04-quartic-detection-theory/index.html#the-geometry-tangent-absorption-on-statistical-manifolds",
+    "title": "The Geometry of Invisible Forces: A Quartic Detection Theory",
+    "section": "The Geometry: Tangent Absorption on Statistical Manifolds",
+    "text": "The Geometry: Tangent Absorption on Statistical Manifolds\nThe quartic law is not an accident of the specific model. It is a geometric theorem on statistical manifolds.\nLet \\(\\mathcal{M}_0\\) be the manifold of reduced (null) models, parametrized by \\(\\boldsymbol{\\theta}\\). The true distribution under hidden forcing is\n\\[\np_{\\mathrm{true}}(x \\mid \\lambda) = p_0(x \\mid \\boldsymbol{\\theta}_0)\\,\\bigl(1 + \\lambda^2\\, h(x) + O(\\lambda^4)\\bigr)\n\\]\nThe perturbation \\(h\\) has a unique decomposition into tangent and normal components relative to \\(\\mathcal{M}_0\\):\n\\[\nh = \\underbrace{\\Pi_T\\, h}_{\\text{absorbed by refitting}} + \\underbrace{R}_{\\text{detectable residual}}\n\\]\nwhere \\(\\Pi_T\\) is the \\(L^2(p_0)\\)-projection onto the tangent space \\(T_{\\boldsymbol{\\theta}_0}\\mathcal{M}_0\\). The tangent part is indistinguishable from a parameter shift; only the normal residual \\(R = (I - \\Pi_T)\\,h\\) is genuinely detectable. Since \\(h\\) enters at \\(O(\\lambda^2)\\), the squared residual — hence the KL divergence — is \\(O(\\lambda^4)\\).\nThis is Efron’s statistical curvature repurposed for detection: the “curvature” of the embedding of truth relative to the null manifold controls how much signal survives refitting."
+  },
+  {
+    "objectID": "notes/2026-04-quartic-detection-theory/index.html#the-pairing-principle-one-probe-is-blind",
+    "href": "notes/2026-04-quartic-detection-theory/index.html#the-pairing-principle-one-probe-is-blind",
+    "title": "The Geometry of Invisible Forces: A Quartic Detection Theory",
+    "section": "The Pairing Principle: One Probe Is Blind",
+    "text": "The Pairing Principle: One Probe Is Blind\nThe geometry yields a stark operational consequence. Consider \\(n\\) sensors sharing a common hidden source:\n\\[\nY_{ij} = \\mu + \\lambda\\, u_i + \\varepsilon_{ij}, \\qquad u_i \\sim N(0,1)\n\\]\nThe quartic coefficient is\n\\[\nC = \\frac{n(n-1)}{4\\sigma^4}\n\\]\nThe combinatorial factor \\(n(n-1) = 2\\binom{n}{2}\\) counts sensor pairs sharing the hidden effect. When \\(n = 1\\), \\(C = 0\\) identically — no amount of data can detect the hidden variable from a single probe. This is not a power problem; it is a structural impossibility.\nThe pairing principle states:\n\nDetecting a hidden degree of freedom requires at least two probes sharing the hidden effect. Detection power grows as the number of probe pairs \\(\\binom{n}{2}\\), with diminishing returns: \\(\\lambda_c \\propto n^{-1/2}\\), not \\(n^{-1}\\).\n\nFor Gaussian observations, this is exact. A single electrode in a neural recording, a single climate station, a single asset price — each is provably blind to a latent common driver, regardless of record length."
+  },
+  {
+    "objectID": "notes/2026-04-quartic-detection-theory/index.html#the-dark-regime-when-timescales-coalesce",
+    "href": "notes/2026-04-quartic-detection-theory/index.html#the-dark-regime-when-timescales-coalesce",
+    "title": "The Geometry of Invisible Forces: A Quartic Detection Theory",
+    "section": "The Dark Regime: When Timescales Coalesce",
+    "text": "The Dark Regime: When Timescales Coalesce\nEven with the quartic law in hand, there is a deeper obstruction. In the spectral setting, the quartic coefficient takes the closed form\n\\[\nC(a, b) = \\frac{\\sigma_\\eta^4\\, b^2\\, (a - b)^2}{2\\,\\sigma_\\varepsilon^4\\,(1 - b^2)^3\\,(1 - ab)^2}\n\\]\nThis coefficient vanishes when \\(a = b\\) — when the intrinsic relaxation timescale of the observed system exactly matches that of the hidden driver. At this timescale coalescence, the hidden driver’s spectral signature is perfectly tangent to the null manifold. The hidden forcing becomes spectrally dark: present, dynamically active, yet locally invisible to any single-channel spectral test.\nThe data cost diverges as the dark boundary is approached:\n\\[\n\\lambda_c \\;\\propto\\; |a - b|^{-1/2} \\to \\infty \\quad \\text{as } a \\to b\n\\]\nThis is not merely a detection difficulty — it is a geometric singularity of the inference problem itself."
+  },
+  {
+    "objectID": "notes/2026-04-quartic-detection-theory/index.html#breaking-the-impossibility-the-cross-spectral-escape",
+    "href": "notes/2026-04-quartic-detection-theory/index.html#breaking-the-impossibility-the-cross-spectral-escape",
+    "title": "The Geometry of Invisible Forces: A Quartic Detection Theory",
+    "section": "Breaking the Impossibility: The Cross-Spectral Escape",
+    "text": "Breaking the Impossibility: The Cross-Spectral Escape\nThe single-channel impossibility is not the end of the story. It is the beginning of a deeper one.\nLucente et al. proved that no time-irreversibility measure can detect departure from equilibrium in a scalar Gaussian time series from a linear system. This seems like a fundamental wall. But it has a geometric loophole: it applies only to diagonal (single-channel) observations.\nWhen a second channel shares the same hidden driver, the cross spectrum — the off-diagonal block of the spectral matrix — provides a detection channel that is orthogonal to the entire diagonal null manifold. The cross-spectral contribution obeys its own quartic law:\n\\[\nD_{\\mathrm{cross}}(\\lambda) = C_{\\mathrm{cross}}\\,\\lambda^4 + O(\\lambda^6)\n\\]\nwith a remarkable property: the coefficient \\(C_{\\mathrm{cross}}\\) is exactly independent of the observed-channel dynamics. All dependence on the transfer functions \\(H_1, H_2\\) of the observed channels cancels identically. The cross-spectral detectability is determined solely by the hidden mode’s spectral density:\n\\[\nC_{\\mathrm{cross}} = \\frac{u_1^2\\, u_2^2}{\\sigma_{\\varepsilon_1}^2\\, \\sigma_{\\varepsilon_2}^2} \\cdot I_F, \\qquad I_F = \\frac{1}{4\\pi}\\int_{-\\pi}^{\\pi} S_F(\\omega)^2\\, d\\omega\n\\]\nCrucially, \\(C_{\\mathrm{cross}} &gt; 0\\) at exact timescale coalescence, where all single-channel measures vanish. The cross spectrum breaks the dark regime."
+  },
+  {
+    "objectID": "notes/2026-04-quartic-detection-theory/index.html#the-thermodynamic-bridge-detectability-certifies-irreversibility",
+    "href": "notes/2026-04-quartic-detection-theory/index.html#the-thermodynamic-bridge-detectability-certifies-irreversibility",
+    "title": "The Geometry of Invisible Forces: A Quartic Detection Theory",
+    "section": "The Thermodynamic Bridge: Detectability Certifies Irreversibility",
+    "text": "The Thermodynamic Bridge: Detectability Certifies Irreversibility\nThe connection deepens at the level of thermodynamics. For a one-way coupled Ornstein-Uhlenbeck system, the full-system entropy production rate (EPR) is exactly\n\\[\n\\dot{\\Sigma}_{\\mathrm{total}} = \\alpha_2\\,\\lambda^2\n\\]\nand the EPR-detectability bridge reads\n\\[\n\\dot{\\Sigma}_{\\mathrm{total}}^2 = \\frac{\\alpha_2^2}{C_{\\mathrm{cross}}}\\, D_{\\mathrm{cross}} + O(\\lambda^6)\n\\]\nThis means: if the cross-spectral divergence is positive, the full system is certifiably out of equilibrium. Cross-spectral structure witnesses entropy production even when every single-channel estimator of time-irreversibility returns zero.\nA single probe can sit inside a system with arbitrarily large true entropy production and measure exactly zero irreversibility. Two probes, sharing the same hidden bath, break this thermodynamic blindness."
+  },
+  {
+    "objectID": "notes/2026-04-quartic-detection-theory/index.html#the-unified-picture",
+    "href": "notes/2026-04-quartic-detection-theory/index.html#the-unified-picture",
+    "title": "The Geometry of Invisible Forces: A Quartic Detection Theory",
+    "section": "The Unified Picture",
+    "text": "The Unified Picture\nThe three results assemble into a coherent geometric theory of hidden-variable detectability:\n\n\n\n\n\n\n\n\nLayer\nResult\nKey Object\n\n\n\n\nUniversal law\nQuartic onset \\(D \\sim \\lambda^4\\)\nNormal residual \\(R = (I - \\Pi_T)\\,h\\)\n\n\nStructural impossibility\nSingle probe is blind (\\(C = 0\\) at \\(n=1\\))\nPairing principle: need \\(\\geq 2\\) probes\n\n\nSpectral darkness\n\\(C \\to 0\\) at timescale coalescence\nTangent alignment of hidden spectrum\n\n\nCross-spectral escape\n\\(C_{\\mathrm{cross}} &gt; 0\\) at coalescence\nOff-diagonal orthogonality\n\n\nThermodynamic certification\n\\(D_{\\mathrm{cross}} &gt; 0 \\Rightarrow \\dot{\\Sigma} &gt; 0\\)\nEPR-detectability bridge\n\n\n\nThe hierarchy is:\n\nA single observation channel is exactly dark — hidden forcing is indistinguishable from equilibrium, for all coupling strengths, at all sample sizes.\nTwo channels sharing the hidden driver restore quartic detectability via the cross spectrum, even at the coalescence singularity where auto-spectral methods fail.\nThe cross-spectral witness certifies that the full system is out of equilibrium, linking observable spectral structure to the thermodynamic arrow of time."
+  },
+  {
+    "objectID": "notes/2026-04-quartic-detection-theory/index.html#implications",
+    "href": "notes/2026-04-quartic-detection-theory/index.html#implications",
+    "title": "The Geometry of Invisible Forces: A Quartic Detection Theory",
+    "section": "Implications",
+    "text": "Implications\nFor neuroscience: Detecting latent neural inputs requires multi-channel recording. The pairing principle prescribes exactly how many electrodes are needed given estimates of coupling and noise. A single fMRI voxel or EEG electrode is provably blind to a shared latent source.\nFor climate science: Detecting unresolved ocean forcing in climate records requires spatially distributed stations. A single station, no matter how long the record, cannot distinguish forced variability from intrinsic noise. The dark regime at timescale coalescence explains why slow ocean modes are so difficult to identify.\nFor stochastic thermodynamics: The single-channel impossibility is not a limitation of current methods — it is a geometric fact about the statistical manifold. The cross-spectral escape provides a constructive route to certifying irreversibility from partial observations.\nFor experimental design: The quartic law transforms the question “how much data do I need?” into “how many probes do I need, and where?” The answer: at least two, sharing the hidden effect, with detection power growing as the number of probe pairs.\n\nThis note summarizes the theoretical arc of three papers: “Timescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark” (Bi, Zhang, Calhoun), “Cross Spectra Break the Single-Channel Impossibility” (Bi, Calhoun), and “Why Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law” (Bi, Calhoun)."
+  },
+  {
+    "objectID": "notes.html",
+    "href": "notes.html",
+    "title": "Notes",
+    "section": "",
+    "text": "Spectral Methods in Brain Network Analysis\n\n\n\nspectral methods\n\nbrain networks\n\ngraph theory\n\n\n\nNotes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\nThe Geometry of Invisible Forces: A Quartic Detection Theory\n\n\n\nstatistical physics\n\ninformation geometry\n\nhidden variables\n\nspectral methods\n\n\n\nWhy hidden variables are orders of magnitude harder to detect than classical statistics predicts — and how cross-spectral geometry breaks the impossibility.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "cv.html",
     "href": "cv.html",
     "title": "CV",
@@ -49,48 +154,6 @@
     "text": "Links\n\nGoogle Scholar\nGitHub\nLinkedIn"
   },
   {
-    "objectID": "publications.html",
-    "href": "publications.html",
-    "title": "Publications",
-    "section": "",
-    "text": "A Multimodal Vision Transformer for Interpretable Fusion of Functional and Structural Neuroimaging Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun Human Brain Mapping, 45(17), e26783, 2024 DOI · PubMed"
-  },
-  {
-    "objectID": "publications.html#journal-articles",
-    "href": "publications.html#journal-articles",
-    "title": "Publications",
-    "section": "",
-    "text": "A Multimodal Vision Transformer for Interpretable Fusion of Functional and Structural Neuroimaging Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun Human Brain Mapping, 45(17), e26783, 2024 DOI · PubMed"
-  },
-  {
-    "objectID": "publications.html#conference-papers",
-    "href": "publications.html#conference-papers",
-    "title": "Publications",
-    "section": "Conference Papers",
-    "text": "Conference Papers\n\nMultiViT2: A Data-augmented Multimodal Neuroimaging Prediction Framework via Latent Diffusion Model Yuda Bi, Sihan Jia, Yutong Gao, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE ISBI, 2025 arXiv:2506.13667\n\n\nGM-LDM: Latent Diffusion Model for Brain Biomarker Identification through Functional Data-Driven Gray Matter Synthesis Xu Hu, Jingling Yang, Sihan Jia, Yuda Bi, Vince D. Calhoun IEEE ISBI, 2025 arXiv:2506.12719"
-  },
-  {
-    "objectID": "publications.html#preprints",
-    "href": "publications.html#preprints",
-    "title": "Publications",
-    "section": "Preprints",
-    "text": "Preprints\n\nGray Matters: An Efficient Vision Transformer GAN Framework for Predicting Functional Network Connectivity Biomarkers from Brain Structure Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun bioRxiv, 2024 bioRxiv:2024.01.11.575307\n\n\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment Yuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun arXiv, 2026 arXiv:2603.25880\n\n\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation Yuda Bi, Vince D. Calhoun arXiv, 2026 arXiv:2603.14072\n\n\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark Yuda Bi, Chenyu Zhang, Vince D. Calhoun arXiv, 2026 arXiv:2603.20917\n\n\nRedundancy as a Structural Information Principle for Learning and Generalization Yuda Bi, Ying Zhu, Vince D. Calhoun arXiv, 2025 arXiv:2510.10938"
-  },
-  {
-    "objectID": "projects.html",
-    "href": "projects.html",
-    "title": "Projects",
-    "section": "",
-    "text": "Structural Intelligence (SI) Framework\nA unifying theoretical foundation bridging neuroscience, statistical physics, and AI through structural information principles.\n\nRedundancy as structure: Optimal information redundancy for learning and generalization\nSpectral coherence: Model-free metrics for quality assessment of complex structures\nTimescale physics: How hidden forcing and timescale coalescence shape observable dynamics\nFinancial connectomics: Brain-inspired frameworks for modeling latent market dynamics\n\n\n\n\nSpecRNA-QA\nSpectral graph features for reference-free RNA 3D structure quality assessment. GitHub\n\nModel-free spectral features from RNA contact graphs\nReference-free quality assessment pipeline\nBenchmarked on RNA-Puzzles and CASP-RNA datasets\n\n\n\n\nMultiViT / MultiViT2\nMultimodal vision transformer frameworks for brain imaging analysis.\n\nIntegrates structural MRI and functional connectivity data\nAchieves AUC 0.833 for schizophrenia classification (MultiViT)\nData augmentation via latent diffusion models (MultiViT2)\nPublished in Human Brain Mapping and IEEE ISBI"
-  },
-  {
-    "objectID": "notes.html",
-    "href": "notes.html",
-    "title": "Notes",
-    "section": "",
-    "text": "Spectral Methods in Brain Network Analysis\n\n\n\nspectral methods\n\nbrain networks\n\ngraph theory\n\n\n\nNotes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\nNo matching items"
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Yuda Bi",
@@ -109,7 +172,7 @@
     "href": "index.html#recent-notes",
     "title": "Yuda Bi",
     "section": "Recent Notes",
-    "text": "Recent Notes\n\n\n\n\n\n\n\nSpectral Methods in Brain Network Analysis\n\n\nNotes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\nNo matching items"
+    "text": "Recent Notes\n\n\n\n\n\n\n\nSpectral Methods in Brain Network Analysis\n\n\nNotes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\n\n\n\nThe Geometry of Invisible Forces: A Quartic Detection Theory\n\n\nWhy hidden variables are orders of magnitude harder to detect than classical statistics predicts — and how cross-spectral geometry breaks the impossibility.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "notes/2026-04-spectral-brain-networks/index.html",
@@ -145,5 +208,12 @@
     "title": "Spectral Methods in Brain Network Analysis",
     "section": "Connection to Statistical Physics",
     "text": "Connection to Statistical Physics\nThe graph Laplacian connects to the partition function of a Gaussian field on the network:\n\\[\nZ(\\beta) = \\int \\exp\\left(-\\frac{\\beta}{2} \\mathbf{x}^T \\mathcal{L} \\mathbf{x}\\right) d\\mathbf{x} = \\prod_{k=1}^{n-1} \\sqrt{\\frac{2\\pi}{\\beta \\lambda_k}}\n\\]\nThe free energy \\(F = -\\frac{1}{\\beta}\\ln Z\\) encodes thermodynamic properties of signal propagation on the network."
+  },
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "Structural Intelligence (SI) Framework\nA unifying theoretical foundation bridging neuroscience, statistical physics, and AI through structural information principles.\n\nRedundancy as structure: Optimal information redundancy for learning and generalization\nSpectral coherence: Model-free metrics for quality assessment of complex structures\nTimescale physics: How hidden forcing and timescale coalescence shape observable dynamics\nFinancial connectomics: Brain-inspired frameworks for modeling latent market dynamics\n\n\n\n\nSpecRNA-QA\nSpectral graph features for reference-free RNA 3D structure quality assessment. GitHub\n\nModel-free spectral features from RNA contact graphs\nReference-free quality assessment pipeline\nBenchmarked on RNA-Puzzles and CASP-RNA datasets\n\n\n\n\nMultiViT / MultiViT2\nMultimodal vision transformer frameworks for brain imaging analysis.\n\nIntegrates structural MRI and functional connectivity data\nAchieves AUC 0.833 for schizophrenia classification (MultiViT)\nData augmentation via latent diffusion models (MultiViT2)\nPublished in Human Brain Mapping and IEEE ISBI"
   }
 ]

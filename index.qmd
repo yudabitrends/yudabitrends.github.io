@@ -4,7 +4,7 @@ subtitle: |
   PhD Candidate in Computer Science
   [TReNDS Center](https://trendscenter.org/) (Georgia State University, Georgia Tech, Emory)
   ybi3@gsu.edu
-image: files/profile/avatar.png
+image: files/profile/avatar.jpg
 page-layout: full
 toc: false
 about:
