@@ -59,6 +59,14 @@ toc-depth: 2
 [arXiv:2602.22334](https://arxiv.org/abs/2602.22334)
 :::
 
+## In Preparation
+
+::: {.pub-item}
+[**Gray Matter Morphometry Reveals a Soft Low-Rank Structure-Function Subspace**]{.pub-title}
+[**Yuda Bi**, Vince D. Calhoun]{.pub-authors}
+[In preparation for *NeuroImage*]{.pub-venue}
+:::
+
 ## Journal Articles
 
 ::: {.pub-item}

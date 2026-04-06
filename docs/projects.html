@@ -243,6 +243,25 @@ window.Quarto = {
 </ul>
 <hr>
 </section>
+<section id="structure-function-coupling-anatomy-sets-the-stage" class="level3">
+<h3 class="anchored" data-anchor-id="structure-function-coupling-anatomy-sets-the-stage">Structure-Function Coupling: Anatomy Sets the Stage</h3>
+<p>A spectral analysis framework revealing how gray matter morphometry constrains functional brain organization through a low-rank geometric subspace. <a href="notes/2026-04-sfcoupling/">Read the full note →</a></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="files/sfcoupling-fig5.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>Subspace overlap (0.45) far exceeds variance explained (0.06) — gray matter constrains the <em>directions</em> of functional variation, not the amplitudes.</figcaption>
+</figure>
+</div>
+<p>Gray matter explains only ~6% of functional connectivity variance — yet aligns with <strong>45% of its directional subspace</strong>. This order-of-magnitude gap reveals that anatomy does not determine how strongly each individual’s brain connectivity deviates from the mean, but rather constrains the <em>coordinate system</em> in which functional variation occurs.</p>
+<ul>
+<li><strong>Nuclear norm regularization</strong> on the GM→FNC coefficient matrix recovers a soft low-rank mapping (effective rank ~38)</li>
+<li><strong>Subspace overlap <span class="math inline">\(O = 0.447\)</span></strong> at <span class="math inline">\(k=20\)</span>, with top 3 principal angles reaching cos <span class="math inline">\(\theta = 0.97, 0.95, 0.86\)</span></li>
+<li>The structure-coupled FNC subspace achieves <strong>AUC = 0.795</strong> for schizophrenia classification — <em>outperforming</em> full FNC</li>
+<li>Validated across 3 datasets (<span class="math inline">\(N &gt; 39{,}000\)</span> total) with 7 benchmarked methods</li>
+</ul>
+<p><strong>Planned series</strong>: Paper 0 (GM-FNC, in preparation for <em>NeuroImage</em>) → Paper 1 (GM + WM decomposition, UK Biobank) → Paper 2 (unified probabilistic framework).</p>
+<hr>
+</section>
 <section id="multivit-multivit2" class="level3">
 <h3 class="anchored" data-anchor-id="multivit-multivit2">MultiViT / MultiViT2</h3>
 <p>Multimodal vision transformer frameworks for brain imaging analysis (2022–2024).</p>

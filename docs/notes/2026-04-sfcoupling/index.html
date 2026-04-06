@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-04-07">
+<meta name="description" content="Gray matter explains only ~6% of functional connectivity variance — yet aligns with 45% of its directional subspace. Why amplitudes and geometry tell fundamentally different stories about brain structure-function coupling.">
+
+<title>Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization – Yuda Bi</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-26d9cc88ab9604001aabd73cb1ea1d8f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization – Yuda Bi">
+<meta property="og:description" content="Gray matter explains only ~6% of functional connectivity variance — yet aligns with 45% of its directional subspace. Why amplitudes and geometry tell fundamentally different stories about brain structure-function coupling.">
+<meta property="og:image" content="https://yudabitrends.github.io/notes/2026-04-sfcoupling/featured.png">
+<meta property="og:site_name" content="Yuda Bi">
+<meta property="og:image:height" content="812">
+<meta property="og:image:width" content="2622">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Yuda Bi</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../cv.html"> 
+<span class="menu-text">CV</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:ybi3@gsu.edu"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/yudabitrends" target="_blank"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=yclnpogAAAAJ&amp;hl=en" target="_blank"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-paradox-weak-prediction-strong-geometry" id="toc-the-paradox-weak-prediction-strong-geometry" class="nav-link active" data-scroll-target="#the-paradox-weak-prediction-strong-geometry">The Paradox: Weak Prediction, Strong Geometry</a></li>
+  <li><a href="#the-method-nuclear-norm-regularization-and-svd" id="toc-the-method-nuclear-norm-regularization-and-svd" class="nav-link" data-scroll-target="#the-method-nuclear-norm-regularization-and-svd">The Method: Nuclear Norm Regularization and SVD</a></li>
+  <li><a href="#measuring-directional-alignment-subspace-overlap" id="toc-measuring-directional-alignment-subspace-overlap" class="nav-link" data-scroll-target="#measuring-directional-alignment-subspace-overlap">Measuring Directional Alignment: Subspace Overlap</a></li>
+  <li><a href="#the-core-finding-o-0.45-vs.-r2-0.06" id="toc-the-core-finding-o-0.45-vs.-r2-0.06" class="nav-link" data-scroll-target="#the-core-finding-o-0.45-vs.-r2-0.06">The Core Finding: <span class="math inline">\(O = 0.45\)</span> vs.&nbsp;<span class="math inline">\(R^2 = 0.06\)</span></a></li>
+  <li><a href="#what-the-coupling-modes-look-like" id="toc-what-the-coupling-modes-look-like" class="nav-link" data-scroll-target="#what-the-coupling-modes-look-like">What the Coupling Modes Look Like</a></li>
+  <li><a href="#linearity-the-coupling-really-is-linear" id="toc-linearity-the-coupling-really-is-linear" class="nav-link" data-scroll-target="#linearity-the-coupling-really-is-linear">Linearity: The Coupling Really Is Linear</a></li>
+  <li><a href="#clinical-relevance-the-coupled-subspace-carries-disease-information" id="toc-clinical-relevance-the-coupled-subspace-carries-disease-information" class="nav-link" data-scroll-target="#clinical-relevance-the-coupled-subspace-carries-disease-information">Clinical Relevance: The Coupled Subspace Carries Disease Information</a></li>
+  <li><a href="#physical-and-mathematical-significance" id="toc-physical-and-mathematical-significance" class="nav-link" data-scroll-target="#physical-and-mathematical-significance">Physical and Mathematical Significance</a>
+  <ul class="collapse">
+  <li><a href="#why-nuclear-norm" id="toc-why-nuclear-norm" class="nav-link" data-scroll-target="#why-nuclear-norm">Why Nuclear Norm?</a></li>
+  <li><a href="#the-subspace-overlap-as-an-information-geometric-quantity" id="toc-the-subspace-overlap-as-an-information-geometric-quantity" class="nav-link" data-scroll-target="#the-subspace-overlap-as-an-information-geometric-quantity">The Subspace Overlap as an Information-Geometric Quantity</a></li>
+  </ul></li>
+  <li><a href="#looking-ahead-the-multimodal-decomposition-program" id="toc-looking-ahead-the-multimodal-decomposition-program" class="nav-link" data-scroll-target="#looking-ahead-the-multimodal-decomposition-program">Looking Ahead: The Multimodal Decomposition Program</a></li>
+  <li><a href="#paper" id="toc-paper" class="nav-link" data-scroll-target="#paper">Paper</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">neuroscience</div>
+    <div class="quarto-category">structure-function coupling</div>
+    <div class="quarto-category">spectral methods</div>
+    <div class="quarto-category">linear algebra</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Gray matter explains only ~6% of functional connectivity variance — yet aligns with 45% of its directional subspace. Why amplitudes and geometry tell fundamentally different stories about brain structure-function coupling.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 7, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="featured.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption><strong>Spectral fingerprint of structure-function coupling.</strong> (a) Singular value spectrum of the GM→FNC coefficient matrix showing rapid spectral decay — the coupling is low-rank. (b) Principal angle cosines between GM-selected and FNC-dominant subspaces: near-perfect alignment in ~3 dimensions, then rapid falloff. (c) The signature gap: subspace overlap reaches 0.45 while variance explained (<span class="math inline">\(R^2\)</span>) stays at ~0.06.</figcaption>
+</figure>
+</div>
+<section id="the-paradox-weak-prediction-strong-geometry" class="level2">
+<h2 class="anchored" data-anchor-id="the-paradox-weak-prediction-strong-geometry">The Paradox: Weak Prediction, Strong Geometry</h2>
+<p>A persistent puzzle in systems neuroscience: gray matter morphometry (regional volume, thickness, surface area) predicts functional network connectivity (FNC) poorly — typically explaining only a few percent of variance. This has led many to dismiss the structure-function relationship as negligible for gray matter, focusing attention on white-matter tractography instead.</p>
+<p>But <strong>variance explained is the wrong metric</strong>. It measures whether structure predicts the <em>amplitude</em> of functional variation — how strongly each person’s connectivity deviates from the mean. A more fundamental question is whether structure predicts the <em>directions</em> — the coordinate axes along which functional variation occurs at all.</p>
+<p>These are mathematically distinct quantities. A linear map <span class="math inline">\(\hat{Y} = XB\)</span> from GM features (<span class="math inline">\(X \in \mathbb{R}^{N \times p}\)</span>) to FNC (<span class="math inline">\(Y \in \mathbb{R}^{N \times q}\)</span>) can have low <span class="math inline">\(R^2\)</span> (weak amplitude prediction) while its coefficient matrix <span class="math inline">\(B\)</span> has column space closely aligned with the dominant subspace of <span class="math inline">\(Y\)</span> (strong directional alignment).</p>
+</section>
+<section id="the-method-nuclear-norm-regularization-and-svd" class="level2">
+<h2 class="anchored" data-anchor-id="the-method-nuclear-norm-regularization-and-svd">The Method: Nuclear Norm Regularization and SVD</h2>
+<p>To disentangle amplitude from geometry, we use a spectral regularization framework:</p>
+<p><span class="math display">\[
+\min_B \; \frac{1}{2N}\|Y - XB\|_F^2 + \lambda \|B\|_*
+\]</span></p>
+<p>where <span class="math inline">\(\|B\|_* = \sum_i \sigma_i(B)\)</span> is the <strong>nuclear norm</strong> — the tightest convex relaxation of matrix rank. This encourages the learned mapping to be low-rank, concentrating the structure-function relationship into a small number of principal modes.</p>
+<p>The proximal step has a closed-form solution via soft singular value thresholding:</p>
+<p><span class="math display">\[
+B^{(t+1)} = U\,\mathrm{diag}\bigl((\sigma_i - \lambda/L)_+\bigr)\,V^\top
+\]</span></p>
+<p>The SVD of the resulting coefficient matrix <span class="math inline">\(B = U\Sigma V^\top\)</span> gives us:</p>
+<ul>
+<li><span class="math inline">\(V\)</span>: the <strong>FNC directions</strong> most aligned with GM variation (the “stage geometry”)</li>
+<li><span class="math inline">\(U\)</span>: the <strong>GM features</strong> driving each coupling mode (the “structural scaffolding”)</li>
+<li><span class="math inline">\(\Sigma\)</span>: the <strong>coupling strength</strong> per mode (spectral concentration)</li>
+</ul>
+</section>
+<section id="measuring-directional-alignment-subspace-overlap" class="level2">
+<h2 class="anchored" data-anchor-id="measuring-directional-alignment-subspace-overlap">Measuring Directional Alignment: Subspace Overlap</h2>
+<p>To compare GM-selected functional directions with the dominant directions of FNC variation itself, we compute <strong>principal angles</strong> between two subspaces:</p>
+<p><span class="math display">\[
+\cos\theta_i = \sigma_i(V_1^\top V_2)
+\]</span></p>
+<p>where <span class="math inline">\(V_1\)</span> are the top-<span class="math inline">\(k\)</span> right singular vectors of <span class="math inline">\(B\)</span> (GM-selected directions) and <span class="math inline">\(V_2\)</span> are the top-<span class="math inline">\(k\)</span> PCA directions of FNC. The <strong>subspace overlap</strong> is:</p>
+<p><span class="math display">\[
+O(V_1, V_2) = \frac{1}{k}\sum_{i=1}^{k} \cos^2\theta_i \;\in [0, 1]
+\]</span></p>
+</section>
+<section id="the-core-finding-o-0.45-vs.-r2-0.06" class="level2">
+<h2 class="anchored" data-anchor-id="the-core-finding-o-0.45-vs.-r2-0.06">The Core Finding: <span class="math inline">\(O = 0.45\)</span> vs.&nbsp;<span class="math inline">\(R^2 = 0.06\)</span></h2>
+<p>Across three datasets (schizophrenia cohort <span class="math inline">\(N=1{,}151\)</span>; external validation <span class="math inline">\(N=102\)</span>; UK Biobank <span class="math inline">\(N \approx 37{,}775\)</span>):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 22%">
+<col style="width: 51%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Value</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Variance explained (<span class="math inline">\(R^2\)</span>)</td>
+<td>~0.06</td>
+<td>GM weakly predicts FNC amplitudes</td>
+</tr>
+<tr class="even">
+<td>Subspace overlap (<span class="math inline">\(O\)</span>)</td>
+<td>0.447</td>
+<td>GM strongly constrains FNC directions</td>
+</tr>
+<tr class="odd">
+<td>Top 3 principal angle cosines</td>
+<td>0.97, 0.95, 0.86</td>
+<td>Near-perfect alignment in 3 dimensions</td>
+</tr>
+<tr class="even">
+<td>4th principal angle</td>
+<td>0.28</td>
+<td>Sharp dropoff — concentrated coupling</td>
+</tr>
+<tr class="odd">
+<td>Chance overlap (at <span class="math inline">\(k=20\)</span>)</td>
+<td>~0.015</td>
+<td>Observed overlap is 30× above chance</td>
+</tr>
+</tbody>
+</table>
+<p>The gap is an order of magnitude. Gray matter does not determine <em>how strongly</em> individuals deviate from mean connectivity — but it strongly constrains <em>in which directions</em> that deviation can occur.</p>
+<p><strong>The analogy</strong>: anatomy sets the stage geometry; neural dynamics determine how the actors perform on that stage. The theater constrains the repertoire of possible plays without scripting any particular performance.</p>
+</section>
+<section id="what-the-coupling-modes-look-like" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-coupling-modes-look-like">What the Coupling Modes Look Like</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../files/sfcoupling-fig7.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption><strong>Structure-function coupling modes.</strong> Each row shows one SVD mode: left panel shows GM loadings on a dorsal glass brain (node size = loading magnitude, color = network domain), right panel shows the corresponding FNC loading matrix (domain-sorted). Mode 1 (36.5% of coupled variance) captures a global sensorimotor-cognitive axis; Mode 2 (9.2%) isolates default mode and visual interactions; Mode 3 (7.9%) captures cerebellar-cortical coupling.</figcaption>
+</figure>
+</div>
+<p>The SVD decomposition reveals interpretable structure-function coupling modes:</p>
+<ul>
+<li><strong>Mode 1</strong> (36.5% of coupled variance): A distributed pattern spanning cognitive control, sensorimotor, and visual domains. This is the dominant axis along which GM morphometry shapes functional organization.</li>
+<li><strong>Mode 2</strong> (9.2%): Concentrated in default mode and visual network interactions — reflecting the structural basis of resting-state network architecture.</li>
+<li><strong>Mode 3</strong> (7.9%): Captures cerebellar-cortical coupling patterns, highlighting the structural underpinning of cerebro-cerebellar communication.</li>
+</ul>
+<p>These modes are highly stable across random seeds (correlation <span class="math inline">\(r &gt; 0.9\)</span> for the top 3) and replicate across datasets.</p>
+</section>
+<section id="linearity-the-coupling-really-is-linear" class="level2">
+<h2 class="anchored" data-anchor-id="linearity-the-coupling-really-is-linear">Linearity: The Coupling Really Is Linear</h2>
+<p>A critical finding: <strong>nonlinear models provide no reliable improvement</strong> over the linear nuclear norm solution.</p>
+<ul>
+<li>MLP (multilayer perceptron) gains +0.004 <span class="math inline">\(R^2\)</span> on discovery data but <strong>reverses to −0.009 on external validation</strong></li>
+<li>A nonlinear residual model performs worse than nuclear norm alone on both datasets</li>
+<li>When initialized from the linear solution, the MLP’s mixing parameter converges to <span class="math inline">\(\alpha = 0.60\)</span>, staying close to the linear regime</li>
+</ul>
+<p>This linearity is not an assumption — it is an empirical finding validated across datasets. The structure-function relationship, at the population level, is well-captured by a linear, low-rank map.</p>
+</section>
+<section id="clinical-relevance-the-coupled-subspace-carries-disease-information" class="level2">
+<h2 class="anchored" data-anchor-id="clinical-relevance-the-coupled-subspace-carries-disease-information">Clinical Relevance: The Coupled Subspace Carries Disease Information</h2>
+<p>Decomposing each subject’s FNC into a <strong>structure-coupled</strong> component (<span class="math inline">\(y_\mathrm{coup} = V_r V_r^\top y\)</span>) and a <strong>structure-uncoupled</strong> component (<span class="math inline">\(y_\mathrm{uncoup} = (I - V_r V_r^\top) y\)</span>):</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>SZ classification AUC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Coupled FNC (rank 38)</td>
+<td><strong>0.795</strong> [0.726, 0.857]</td>
+</tr>
+<tr class="even">
+<td>Full FNC</td>
+<td>0.773 [0.712, 0.839]</td>
+</tr>
+<tr class="odd">
+<td>Uncoupled FNC</td>
+<td>0.728</td>
+</tr>
+</tbody>
+</table>
+<p>The structure-coupled component <em>outperforms full FNC</em> for schizophrenia classification. This means that the functional variation constrained by gray matter morphometry preferentially carries clinically relevant information — anatomical structure does not just constrain function; it constrains the <em>clinically informative</em> part of function.</p>
+</section>
+<section id="physical-and-mathematical-significance" class="level2">
+<h2 class="anchored" data-anchor-id="physical-and-mathematical-significance">Physical and Mathematical Significance</h2>
+<section id="why-nuclear-norm" class="level3">
+<h3 class="anchored" data-anchor-id="why-nuclear-norm">Why Nuclear Norm?</h3>
+<p>The nuclear norm <span class="math inline">\(\|B\|_*\)</span> is the <span class="math inline">\(\ell_1\)</span> norm of the singular value vector — it induces sparsity in the spectral domain just as LASSO induces sparsity in the coefficient domain. This is the natural regularizer when the underlying relationship is low-rank: it seeks the simplest (lowest effective rank) linear map consistent with the data.</p>
+<p>In the landscape of regularization:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 57%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>What it regularizes</th>
+<th>Bias</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ridge (<span class="math inline">\(\|B\|_F^2\)</span>)</td>
+<td>Shrinks all singular values equally</td>
+<td>Preserves rank, weakens all directions</td>
+</tr>
+<tr class="even">
+<td>PLS</td>
+<td>Maximizes covariance in few components</td>
+<td>Greedily selects modes, poor generalization</td>
+</tr>
+<tr class="odd">
+<td><strong>Nuclear Norm</strong> (<span class="math inline">\(\|B\|_*\)</span>)</td>
+<td>Soft-thresholds singular values</td>
+<td>Suppresses weak modes, preserves strong ones</td>
+</tr>
+</tbody>
+</table>
+<p>Nuclear Norm achieves the highest external generalization (74% retention) vs.&nbsp;PLS (45%) precisely because it soft-thresholds rather than hard-truncates the spectral structure.</p>
+</section>
+<section id="the-subspace-overlap-as-an-information-geometric-quantity" class="level3">
+<h3 class="anchored" data-anchor-id="the-subspace-overlap-as-an-information-geometric-quantity">The Subspace Overlap as an Information-Geometric Quantity</h3>
+<p>The subspace overlap <span class="math inline">\(O(V_1, V_2)\)</span> is the mean squared cosine of the principal angles — equivalently, it is the normalized Frobenius norm of the product of two orthogonal projections:</p>
+<p><span class="math display">\[
+O = \frac{1}{k}\|P_{V_1} P_{V_2}\|_F^2
+\]</span></p>
+<p>This has a natural interpretation in information geometry: it measures the fraction of “geometric information” shared between two low-dimensional representations of the same high-dimensional space. When <span class="math inline">\(O \gg R^2\)</span>, the two modalities share geometric structure (directional alignment) without sharing amplitude information — the hallmark of a <em>soft constraint</em> rather than a deterministic prediction.</p>
+</section>
+</section>
+<section id="looking-ahead-the-multimodal-decomposition-program" class="level2">
+<h2 class="anchored" data-anchor-id="looking-ahead-the-multimodal-decomposition-program">Looking Ahead: The Multimodal Decomposition Program</h2>
+<p>This paper is the first in a planned three-paper series:</p>
+<p><strong>Paper 0</strong> (this work): Establishes that GM constrains function through a shared low-rank subspace, not pointwise prediction. Introduces nuclear norm regularization and the <span class="math inline">\(O \gg R^2\)</span> diagnostic.</p>
+<p><strong>Paper 1</strong> (in preparation): Asks whether gray matter and white matter constrain the <em>same</em> or <em>different</em> functional subspaces. Uses two-stage subspace decomposition to partition functional variance into four components:</p>
+<p><span class="math display">\[
+f_i = f_i^{(g \cap w)} + f_i^{(g \setminus w)} + f_i^{(w \setminus g)} + f_i^{(\mathrm{res})}
+\]</span></p>
+<p>Key question: is the GM–WM functional overlap redundant or complementary? Data: UK Biobank (<span class="math inline">\(N \approx 30{,}000\)</span>; sMRI + dMRI + resting fMRI).</p>
+<p><strong>Paper 2</strong> (planned): Unified probabilistic framework with joint latent variables, non-Gaussian priors for identifiability, and posterior uncertainty on the variance decomposition. Connects to ICA/IVA frameworks (Adalı) and Bayesian ARD for automatic dimensionality selection.</p>
+<hr>
+</section>
+<section id="paper" class="level2">
+<h2 class="anchored" data-anchor-id="paper">Paper</h2>
+<p><strong>Yuda Bi</strong>, Vince D. Calhoun. <em>Gray Matter Morphometry Reveals a Soft Low-Rank Structure-Function Subspace.</em> In preparation for NeuroImage.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/yudabitrends\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Yuda Bi © 2026</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

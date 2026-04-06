@@ -51,6 +51,23 @@ Existing RNA quality assessment methods evaluate local atomic contacts — they 
 
 ---
 
+### Structure-Function Coupling: Anatomy Sets the Stage
+
+A spectral analysis framework revealing how gray matter morphometry constrains functional brain organization through a low-rank geometric subspace. [Read the full note →](notes/2026-04-sfcoupling/)
+
+![Subspace overlap (0.45) far exceeds variance explained (0.06) — gray matter constrains the *directions* of functional variation, not the amplitudes.](files/sfcoupling-fig5.png){fig-align="center" width="90%"}
+
+Gray matter explains only ~6% of functional connectivity variance — yet aligns with **45% of its directional subspace**. This order-of-magnitude gap reveals that anatomy does not determine how strongly each individual's brain connectivity deviates from the mean, but rather constrains the *coordinate system* in which functional variation occurs.
+
+- **Nuclear norm regularization** on the GM→FNC coefficient matrix recovers a soft low-rank mapping (effective rank ~38)
+- **Subspace overlap $O = 0.447$** at $k=20$, with top 3 principal angles reaching cos $\theta = 0.97, 0.95, 0.86$
+- The structure-coupled FNC subspace achieves **AUC = 0.795** for schizophrenia classification — *outperforming* full FNC
+- Validated across 3 datasets ($N > 39{,}000$ total) with 7 benchmarked methods
+
+**Planned series**: Paper 0 (GM-FNC, in preparation for *NeuroImage*) → Paper 1 (GM + WM decomposition, UK Biobank) → Paper 2 (unified probabilistic framework).
+
+---
+
 ### MultiViT / MultiViT2
 
 Multimodal vision transformer frameworks for brain imaging analysis (2022–2024).
