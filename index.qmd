@@ -35,11 +35,11 @@ listing:
 
 ## About
 
-I am a PhD candidate at the [TReNDS Center](https://trendscenter.org/) (GSU, Georgia Tech, Emory), advised by [Prof. Vince D. Calhoun](https://scholar.google.com/citations?user=WNOoGKIAAAAJ). My research bridges **theoretical neuroscience**, **statistical physics**, and **deep learning**.
+I am a PhD candidate at the [TReNDS Center](https://trendscenter.org/) (GSU, Georgia Tech, Emory), advised by [Prof. Vince D. Calhoun](https://scholar.google.com/citations?user=WNOoGKIAAAAJ).
 
-I develop multimodal vision transformer frameworks for brain imaging analysis, and investigate fundamental principles of information structure, redundancy, and spectral methods across neuroscience, finance, and AI. I am the founder of the **Structural Intelligence (SI)** framework.
+Starting in 2025, I pivoted from engineering-driven multimodal neuroimaging toward a theory-first research program grounded in **statistical physics**, **nonequilibrium thermodynamics**, and **information geometry**. My current work develops exact detectability theory for hidden variables on statistical manifolds — with applications spanning theoretical neuroscience, stochastic thermodynamics, financial physics, and spectral methods for structural biology.
 
-**Research Interests**: Theoretical Neuroscience · Neuroimaging (fMRI/sMRI) · Statistical Physics · Financial Physics · Physics of AI
+**Research Interests**: Statistical Physics · Information Geometry · Nonequilibrium Thermodynamics · Theoretical Neuroscience · Spectral Graph Theory · Financial Physics
 
 **Education**:
 

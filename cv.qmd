@@ -12,21 +12,33 @@ toc: true
 
 - **BS in Management**, Shandong University of Science and Technology, 2013–2017
 
-## Research Experience
+## Research Trajectory
 
-**Graduate Research Assistant**, TReNDS Center, 2020–present
+**2020–2024: Multimodal Neuroimaging Engineering**
 
-- Developing multimodal deep learning frameworks for brain imaging analysis
-- Investigating spectral methods for structural quality assessment
-- Exploring theoretical connections between statistical physics, information theory, and neural systems
+Developed deep learning frameworks for brain imaging — vision transformers, GANs, and diffusion models for fusing structural MRI with functional connectivity. Published in *NeuroImage*, *Human Brain Mapping*, *Journal of Neuroscience Methods*, and multiple IEEE venues (ISBI, EMBC).
+
+**2025–present: Transition to Theory-Driven Cross-Disciplinary Research**
+
+Pivoted from engineering-driven model stacking to a theory-first program rooted in **statistical physics** and **nonequilibrium thermodynamics**. Current work develops exact mathematical foundations for hidden-variable detectability, spectral methods in structural biology, and the physics of learning.
+
+Core research directions:
+
+- **Information geometry of hidden variables** — Quartic detection law on statistical manifolds: exact KL projection geometry, tangent-normal decomposition, semiparametric efficiency bounds (Amari, BKRW, Le Cam). Proves that coarse-grained refitting absorbs $O(\lambda^2)$ perturbations, leaving only $O(\lambda^4)$ normal residuals.
+- **Stochastic thermodynamics from partial observations** — Cross-spectral certification of entropy production under the Lucente impossibility. Pairing principle for minimum probe count. Connection to Mori-Zwanzig projection and thermodynamic uncertainty relations (Seifert, Barato-Seifert).
+- **Spectral graph theory for structural biology** — Graph Laplacian spectra, heat-kernel traces, participation-ratio effective rank. Applied to RNA 3D quality assessment (SpecRNA-QA) and protein ensemble coherence (SCI).
+- **Financial physics** — Volatility-conditioned correlation dynamics in S&P 500, timescale separation in market microstructure. Spectral dark regimes in financial time series.
+- **Physics of AI** — Grokking as a finite-size phase transition. Kurtosis contrast laws in mixture separation.
 
 ## Selected Publications
 
 See full list on the [Publications](publications.qmd) page.
 
+- **Bi Y**, Calhoun VD. Cross spectra break the single-channel impossibility. Under review, *Physical Review Letters*.
+- **Bi Y**, Calhoun VD. Why single probes cannot detect hidden forcing: A quartic detection law. Under review, *Physical Review Letters*.
+- **Bi Y**, Zhang C, Calhoun VD. Timescale coalescence makes hidden persistent forcing spectrally dark. Under review, *Physical Review E*.
+- **Bi Y**, Abrol A, Jia S, Sui J, Calhoun VD. Gray matters: ViT-GAN framework for identifying schizophrenia biomarkers. *NeuroImage*, 2024.
 - **Bi Y**, Abrol A, Fu Z, Calhoun VD. A multimodal vision transformer for interpretable fusion of functional and structural neuroimaging data. *Human Brain Mapping*, 2024.
-- **Bi Y**, Abrol A, Fu Z, Calhoun VD. Gray Matters: An efficient vision transformer GAN framework for predicting functional network connectivity biomarkers from brain structure. *bioRxiv*, 2024.
-- **Bi Y**, Zhu Y, Calhoun VD. Redundancy as a structural information principle for learning and generalization. *arXiv*, 2025.
 
 ## Certifications
 
@@ -34,9 +46,9 @@ See full list on the [Publications](publications.qmd) page.
 
 ## Skills
 
-- **Programming**: Python, PyTorch, TensorFlow, MATLAB, R
+- **Mathematics/Physics**: Information geometry, stochastic processes, spectral graph theory, nonequilibrium thermodynamics, KL divergence & projection, semiparametric theory
+- **Programming**: Python, PyTorch, TensorFlow, MATLAB, R, Mathematica
 - **Neuroimaging**: fMRI, sMRI, functional network connectivity analysis
-- **Theory**: Statistical physics, information theory, spectral graph theory
 - **Languages**: Chinese (native), English (professional)
 
 ## Links

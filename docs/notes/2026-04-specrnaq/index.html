@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-04-07">
+<meta name="description" content="How graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment — outperforming geometry baselines by +0.224 on CASP16.">
 
-<title>Yuda Bi</title>
+<title>SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss – Yuda Bi</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,27 +25,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-26d9cc88ab9604001aabd73cb1ea1d8f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-26d9cc88ab9604001aabd73cb1ea1d8f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,35 +106,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-recent-notes .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-recent-notes'] = new List('listing-recent-notes', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -130,10 +137,9 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="Yuda Bi">
-<meta property="og:description" content="PhD Candidate in Computer Science TReNDS Center (Georgia State University, Georgia Tech, Emory) ybi3@gsu.edu">
-<meta property="og:image" content="https://yudabitrends.github.io/files/profile/avatar.jpg">
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss – Yuda Bi">
+<meta property="og:description" content="How graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment — outperforming geometry baselines by +0.224 on CASP16.">
 <meta property="og:site_name" content="Yuda Bi">
 </head>
 
@@ -144,7 +150,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Yuda Bi</span>
     </a>
   </div>
@@ -155,23 +161,23 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./publications.html"> 
+    <a class="nav-link" href="../../publications.html"> 
 <span class="menu-text">Publications</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./projects.html"> 
+    <a class="nav-link" href="../../projects.html"> 
 <span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./notes.html"> 
+    <a class="nav-link" href="../../notes.html"> 
 <span class="menu-text">Notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./cv.html"> 
+    <a class="nav-link" href="../../cv.html"> 
 <span class="menu-text">CV</span></a>
   </li>  
 </ul>
@@ -199,125 +205,181 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-problem-local-correctness-global-failure" id="toc-the-problem-local-correctness-global-failure" class="nav-link active" data-scroll-target="#the-problem-local-correctness-global-failure">The Problem: Local Correctness, Global Failure</a></li>
+  <li><a href="#the-insight-global-topology-lives-in-the-spectrum" id="toc-the-insight-global-topology-lives-in-the-spectrum" class="nav-link" data-scroll-target="#the-insight-global-topology-lives-in-the-spectrum">The Insight: Global Topology Lives in the Spectrum</a></li>
+  <li><a href="#the-method" id="toc-the-method" class="nav-link" data-scroll-target="#the-method">The Method</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
+  <ul class="collapse">
+  <li><a href="#casp16-benchmark" id="toc-casp16-benchmark" class="nav-link" data-scroll-target="#casp16-benchmark">CASP16 Benchmark</a></li>
+  <li><a href="#where-it-matters-most-large-rnas" id="toc-where-it-matters-most-large-rnas" class="nav-link" data-scroll-target="#where-it-matters-most-large-rnas">Where It Matters Most: Large RNAs</a></li>
+  <li><a href="#most-discriminative-features" id="toc-most-discriminative-features" class="nav-link" data-scroll-target="#most-discriminative-features">Most Discriminative Features</a></li>
+  </ul></li>
+  <li><a href="#connection-to-the-broader-spectral-program" id="toc-connection-to-the-broader-spectral-program" class="nav-link" data-scroll-target="#connection-to-the-broader-spectral-program">Connection to the Broader Spectral Program</a></li>
+  <li><a href="#try-it" id="toc-try-it" class="nav-link" data-scroll-target="#try-it">Try It</a></li>
+  <li><a href="#papers" id="toc-papers" class="nav-link" data-scroll-target="#papers">Papers</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<div class="quarto-about-trestles column-page">
-  <div class="about-entity">
-    <img src="files/profile/avatar.jpg" class="about-image
-  rounded " style="width: 14em;">
+<main class="content" id="quarto-document-content">
+
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Yuda Bi</h1>
-<p class="subtitle lead">PhD Candidate in Computer Science <a href="https://trendscenter.org/">TReNDS Center</a> (Georgia State University, Georgia Tech, Emory) ybi3@gsu.edu</p>
-</div>
-<div class="quarto-title-meta column-page">
+<h1 class="title">SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">spectral methods</div>
+    <div class="quarto-category">RNA structure</div>
+    <div class="quarto-category">bioinformatics</div>
+    <div class="quarto-category">graph theory</div>
   </div>
+  </div>
+
+<div>
+  <div class="description">
+    How graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment — outperforming geometry baselines by +0.224 on CASP16.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 7, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
 </header>
-    <div class="about-links">
-  <a href="mailto:ybi3@gsu.edu" class="about-link" rel="" target="">
-    <i class="bi bi-envelope"></i>
-     <span class="about-link-text">Email</span>
-  </a>
-  <a href="https://scholar.google.com/citations?user=yclnpogAAAAJ&amp;hl=en" class="about-link" rel="" target="">
-    <i class="bi bi-mortarboard"></i>
-     <span class="about-link-text">Google Scholar</span>
-  </a>
-  <a href="https://github.com/yudabitrends" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">GitHub</span>
-  </a>
-  <a href="https://www.linkedin.com/in/yudabi/" class="about-link" rel="" target="">
-    <i class="bi bi-linkedin"></i>
-     <span class="about-link-text">LinkedIn</span>
-  </a>
-</div>
-  </div>
-  <div class="about-contents"><main class="content column-page" id="quarto-document-content">
-<section id="about" class="level2">
-<h2 data-anchor-id="about">About</h2>
-<p>I am a PhD candidate at the <a href="https://trendscenter.org/">TReNDS Center</a> (GSU, Georgia Tech, Emory), advised by <a href="https://scholar.google.com/citations?user=WNOoGKIAAAAJ">Prof.&nbsp;Vince D. Calhoun</a>.</p>
-<p>Starting in 2025, I pivoted from engineering-driven multimodal neuroimaging toward a theory-first research program grounded in <strong>statistical physics</strong>, <strong>nonequilibrium thermodynamics</strong>, and <strong>information geometry</strong>. My current work develops exact detectability theory for hidden variables on statistical manifolds — with applications spanning theoretical neuroscience, stochastic thermodynamics, financial physics, and spectral methods for structural biology.</p>
-<p><strong>Research Interests</strong>: Statistical Physics · Information Geometry · Nonequilibrium Thermodynamics · Theoretical Neuroscience · Spectral Graph Theory · Financial Physics</p>
-<p><strong>Education</strong>:</p>
+
+
+<section id="the-problem-local-correctness-global-failure" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem-local-correctness-global-failure">The Problem: Local Correctness, Global Failure</h2>
+<p>Predicting RNA 3D structure is one of the open frontiers of structural biology. Tools like AlphaFold3 and RoseTTAFold2NA now generate thousands of candidate structures — but <strong>how do you know which ones are right?</strong></p>
+<p>Existing quality assessment (QA) methods evaluate <strong>local</strong> atomic contacts: bond angles, clash scores, pairwise distance distributions. These work well when errors are local. But they fail catastrophically in a common and important failure mode: <strong>the local structure is correct, but entire domains are misplaced.</strong> A helix can be perfectly folded yet docked into the wrong pocket. Every bond angle checks out; the global topology is wrong.</p>
+<p>This is exactly the regime where RNA QA matters most — large, multi-domain structures where the combinatorial space of domain arrangements dwarfs the local conformational space.</p>
+</section>
+<section id="the-insight-global-topology-lives-in-the-spectrum" class="level2">
+<h2 class="anchored" data-anchor-id="the-insight-global-topology-lives-in-the-spectrum">The Insight: Global Topology Lives in the Spectrum</h2>
+<p>A 3D molecular structure is, at its core, a <strong>graph</strong>: nucleotides are nodes, spatial contacts are edges. The spectrum of the graph Laplacian — the eigenvalues of <span class="math inline">\(\mathcal{L} = I - D^{-1/2}WD^{-1/2}\)</span> — encodes the global connectivity pattern in a way that is invariant to rotation, translation, and node relabeling.</p>
+<p>The key mathematical facts:</p>
 <ul>
-<li>PhD in Computer Science, Georgia State University (2020–)</li>
-<li>MS in Computer Science, University of Georgia (2017–2020)</li>
-<li>BS in Management, Shandong University of Science and Technology (2013–2017)</li>
+<li>The <strong>number of zero eigenvalues</strong> equals the number of connected components</li>
+<li>The <strong>Fiedler value</strong> <span class="math inline">\(\lambda_1\)</span> measures how easily the graph can be bisected — a proxy for global compactness</li>
+<li>The <strong>spectral gap</strong> <span class="math inline">\(\lambda_1 - \lambda_0\)</span> quantifies community separation</li>
+<li><strong>Heat-kernel traces</strong> <span class="math inline">\(Z(t) = \sum_k e^{-\lambda_k t}\)</span> capture multi-scale diffusion: small <span class="math inline">\(t\)</span> probes local geometry, large <span class="math inline">\(t\)</span> probes global topology</li>
+<li>The <strong>participation ratio</strong> <span class="math inline">\(\mathrm{PR}(\boldsymbol{\lambda}) = (\sum_k \lambda_k)^2 / \sum_k \lambda_k^2\)</span> measures effective spectral dimensionality</li>
 </ul>
+<p>A misplaced domain changes the large-<span class="math inline">\(t\)</span> heat-kernel trace (disrupted long-range diffusion) while leaving the small-<span class="math inline">\(t\)</span> trace nearly intact (local contacts are fine). This is precisely the information that local metrics cannot access.</p>
+</section>
+<section id="the-method" class="level2">
+<h2 class="anchored" data-anchor-id="the-method">The Method</h2>
+<p><strong>SpecRNA-QA</strong> builds on this insight with a practical pipeline:</p>
+<ol type="1">
+<li><p><strong>Multi-scale contact graphs</strong>: Construct contact networks at multiple distance thresholds (8Å, 10Å, 12Å, 15Å), capturing different spatial resolutions of the RNA architecture.</p></li>
+<li><p><strong>Spectral feature extraction</strong>: From each graph’s normalized Laplacian, extract ~312 features:</p>
+<ul>
+<li>Eigenvalue statistics (mean, variance, skewness, kurtosis of <span class="math inline">\(\{\lambda_k\}\)</span>)</li>
+<li>Heat-kernel traces at multiple diffusion times <span class="math inline">\(Z(t)\)</span> for <span class="math inline">\(t \in \{0.1, 0.5, 1, 2, 5, 10\}\)</span></li>
+<li>Participation ratios and effective rank measures</li>
+<li>Spectral gap and algebraic connectivity</li>
+<li>Normalized Laplacian entropy <span class="math inline">\(H = -\sum_k \hat{\lambda}_k \log \hat{\lambda}_k\)</span></li>
+</ul></li>
+<li><p><strong>Learning-to-rank</strong>: An XGBRanker model trained to rank structures by quality within each target, using spectral features as input.</p></li>
+</ol>
+<p>The entire pipeline runs on <strong>CPU</strong> — no GPU required. Processing time: <strong>15 ms</strong> for a 100-nucleotide structure, <strong>~4.2 seconds</strong> for 800 nucleotides.</p>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<section id="casp16-benchmark" class="level3">
+<h3 class="anchored" data-anchor-id="casp16-benchmark">CASP16 Benchmark</h3>
+<p>On the CASP16 RNA structure prediction assessment (42 targets, 7,368 models):</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Median Spearman <span class="math inline">\(\rho\)</span></th>
+<th><span class="math inline">\(p\)</span>-value vs.&nbsp;SpecRNA-QA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>SpecRNA-QA (supervised)</strong></td>
+<td><strong>0.689</strong></td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>Geometry baselines</td>
+<td>0.465</td>
+<td><span class="math inline">\(1.2 \times 10^{-10}\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="where-it-matters-most-large-rnas" class="level3">
+<h3 class="anchored" data-anchor-id="where-it-matters-most-large-rnas">Where It Matters Most: Large RNAs</h3>
+<p>The advantage is most pronounced for large RNA structures (&gt;200 nucleotides), where the performance gap reaches <strong>+0.233</strong> in Spearman correlation. This is the regime where domain-level misplacements dominate — and where spectral features shine.</p>
+<p>For small RNAs (&lt;100 nt), local metrics are often sufficient because there are few domains to misplace. The spectral advantage grows with structural complexity, exactly as the theory predicts.</p>
+</section>
+<section id="most-discriminative-features" class="level3">
+<h3 class="anchored" data-anchor-id="most-discriminative-features">Most Discriminative Features</h3>
+<p>Feature importance analysis reveals that the top-ranked features are <strong>heat-kernel traces at intermediate-to-large diffusion times</strong> — precisely the features that probe multi-scale and global transport geometry on the contact network. Local eigenvalue statistics (which probe small-scale structure) rank lower.</p>
+<p>This confirms the theoretical motivation: the spectral approach works because it accesses the global information that local methods cannot reach.</p>
+</section>
+</section>
+<section id="connection-to-the-broader-spectral-program" class="level2">
+<h2 class="anchored" data-anchor-id="connection-to-the-broader-spectral-program">Connection to the Broader Spectral Program</h2>
+<p>SpecRNA-QA is part of a broader research program applying spectral graph theory to structural biology:</p>
+<ul>
+<li><strong>SpecRNA-QA</strong> (RNA): Multi-scale Laplacian spectra for RNA 3D quality assessment → under review at <em>Briefings in Bioinformatics</em></li>
+<li><strong>Spectral Coherence Index</strong> (Proteins): Participation-ratio effective rank of inter-model distance-variance matrices for protein ensemble QA, achieving AUC-ROC 0.973 on 110 NMR ensembles → under review at <em>IEEE JBHI</em> (<a href="https://arxiv.org/abs/2603.25880">arXiv:2603.25880</a>)</li>
+</ul>
+<p>Both methods share a design principle: <strong>model-free spectral features that are invariant to coordinate systems and capture global structural properties that local metrics miss.</strong></p>
+</section>
+<section id="try-it" class="level2">
+<h2 class="anchored" data-anchor-id="try-it">Try It</h2>
+<p>SpecRNA-QA is open source and easy to use:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/yudabitrends/specrnaq</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> specrnaq</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-e</span> .</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">specrnaq</span> predict <span class="at">--input</span> structures/ <span class="at">--output</span> scores.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Python 3.10+, CPU-only, no external dependencies beyond standard scientific Python.</p>
 <hr>
 </section>
-<section id="recent-notes" class="level2">
-<h2 data-anchor-id="recent-notes">Recent Notes</h2>
-<div id="listing-recent-notes" class="quarto-listing quarto-listing-container-grid">
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="c3BlY3RyYWwlMjBtZXRob2RzJTJDYnJhaW4lMjBuZXR3b3JrcyUyQ2dyYXBoJTIwdGhlb3J5" data-listing-date-sort="1775491200000" data-listing-file-modified-sort="1775503513980" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="179">
-<a href="./notes/2026-04-spectral-brain-networks/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Spectral Methods in Brain Network Analysis
-</h5>
-<div class="card-text listing-description delink">
-<p>Notes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Apr 7, 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="c3BlY3RyYWwlMjBtZXRob2RzJTJDUk5BJTIwc3RydWN0dXJlJTJDYmlvaW5mb3JtYXRpY3MlMkNncmFwaCUyMHRoZW9yeQ==" data-listing-date-sort="1775491200000" data-listing-file-modified-sort="1775505324960" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="769">
-<a href="./notes/2026-04-specrnaq/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss
-</h5>
-<div class="card-text listing-description delink">
-<p>How graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment — outperforming geometry baselines by +0.224 on CASP16.</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Apr 7, 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="2" data-categories="c3RhdGlzdGljYWwlMjBwaHlzaWNzJTJDaW5mb3JtYXRpb24lMjBnZW9tZXRyeSUyQ2hpZGRlbiUyMHZhcmlhYmxlcyUyQ3NwZWN0cmFsJTIwbWV0aG9kcw==" data-listing-date-sort="1775491200000" data-listing-file-modified-sort="1775505285810" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1451">
-<a href="./notes/2026-04-quartic-detection-theory/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-The Geometry of Invisible Forces: A Quartic Detection Theory
-</h5>
-<div class="card-text listing-description delink">
-<p>Why hidden variables are orders of magnitude harder to detect than classical statistics predicts — and how cross-spectral geometry breaks the impossibility.</p>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Apr 7, 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div>
+<section id="papers" class="level2">
+<h2 class="anchored" data-anchor-id="papers">Papers</h2>
+<ol type="1">
+<li><p>Ying Zhu, Huaiwen Zhang, Vince D. Calhoun<sup>†</sup>, <strong>Yuda Bi</strong><sup>†</sup>. <em>Spectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment.</em> Under review at Briefings in Bioinformatics.</p></li>
+<li><p><strong>Yuda Bi</strong>, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun. <em>Spectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment.</em> Under review at IEEE JBHI. <a href="https://arxiv.org/abs/2603.25880">arXiv:2603.25880</a></p></li>
+</ol>
 
 
 </section>
-</main></div>
-</div>
- <!-- /main -->
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
     const isCodeAnnotation = (el) => {
       for (const clz of el.classList) {
         if (clz.startsWith('code-annotation-')) {                     

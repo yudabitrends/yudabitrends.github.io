@@ -169,4 +169,12 @@ The hierarchy is:
 
 ---
 
-*This note summarizes the theoretical arc of three papers: "Timescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark" (Bi, Zhang, Calhoun), "Cross Spectra Break the Single-Channel Impossibility" (Bi, Calhoun), and "Why Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law" (Bi, Calhoun).*
+## Papers in This Series
+
+1. **Yuda Bi**, Vince D. Calhoun. *Why Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law.* Under review at Physical Review Letters.
+
+2. **Yuda Bi**, Vince D. Calhoun. *Cross Spectra Break the Single-Channel Impossibility.* Under review at Physical Review Letters.
+
+3. **Yuda Bi**, Chenyu Zhang, Vince D. Calhoun. *Timescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark.* Under review at Physical Review E. [arXiv:2603.20917](https://arxiv.org/abs/2603.20917)
+
+4. **Yuda Bi**, Vince D. Calhoun. *Conditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation.* Under review at Physical Review E. [arXiv:2603.14072](https://arxiv.org/abs/2603.14072)

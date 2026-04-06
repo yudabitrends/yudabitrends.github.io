@@ -119,11 +119,3 @@ toc-depth: 2
 [IEEE](https://ieeexplore.ieee.org/document/9871150)
 :::
 
-## Preprints
-
-::: {.pub-item}
-[**Redundancy as a Structural Information Principle for Learning and Generalization**]{.pub-title}
-[**Yuda Bi**, Ying Zhu, Vince D. Calhoun]{.pub-authors}
-[*arXiv*, 2025]{.pub-venue}
-[arXiv:2510.10938](https://arxiv.org/abs/2510.10938)
-:::

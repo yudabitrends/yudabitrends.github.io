@@ -1,15 +1,17 @@
 [
   {
-    "listing": "/notes.html",
+    "listing": "/index.html",
     "items": [
       "/notes/2026-04-spectral-brain-networks/index.html",
+      "/notes/2026-04-specrnaq/index.html",
       "/notes/2026-04-quartic-detection-theory/index.html"
     ]
   },
   {
-    "listing": "/index.html",
+    "listing": "/notes.html",
     "items": [
       "/notes/2026-04-spectral-brain-networks/index.html",
+      "/notes/2026-04-specrnaq/index.html",
       "/notes/2026-04-quartic-detection-theory/index.html"
     ]
   }

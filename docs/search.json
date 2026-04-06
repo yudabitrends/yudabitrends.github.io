@@ -1,40 +1,5 @@
 [
   {
-    "objectID": "publications.html",
-    "href": "publications.html",
-    "title": "Publications",
-    "section": "",
-    "text": "Cross Spectra Break the Single-Channel Impossibility Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nWhy Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nGrokking as a Falsifiable Finite-Size Transition Yuda Bi, Chenyu Zhang, Qiheng Wang, Vince D. Calhoun Under review at Physical Review Letters arXiv:2603.24746\n\n\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark Yuda Bi, Chenyu Zhang, Vince D. Calhoun Under review at Physical Review E arXiv:2603.20917\n\n\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation Yuda Bi, Vince D. Calhoun Under review at Physical Review E arXiv:2603.14072\n\n\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment Yuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun Under review at IEEE Journal of Biomedical and Health Informatics arXiv:2603.25880\n\n\nSpectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment Ying Zhu, Huaiwen Zhang, Vince D. Calhoun†, Yuda Bi† Under review at Briefings in Bioinformatics\n\n\nA 1/R Law for Kurtosis Contrast in Balanced Mixtures Yuda Bi, Wenjun Xiao, Linhao Bai, Vince D. Calhoun IEEE Signal Processing Letters arXiv:2602.22334"
-  },
-  {
-    "objectID": "publications.html#under-review",
-    "href": "publications.html#under-review",
-    "title": "Publications",
-    "section": "",
-    "text": "Cross Spectra Break the Single-Channel Impossibility Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nWhy Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nGrokking as a Falsifiable Finite-Size Transition Yuda Bi, Chenyu Zhang, Qiheng Wang, Vince D. Calhoun Under review at Physical Review Letters arXiv:2603.24746\n\n\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark Yuda Bi, Chenyu Zhang, Vince D. Calhoun Under review at Physical Review E arXiv:2603.20917\n\n\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation Yuda Bi, Vince D. Calhoun Under review at Physical Review E arXiv:2603.14072\n\n\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment Yuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun Under review at IEEE Journal of Biomedical and Health Informatics arXiv:2603.25880\n\n\nSpectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment Ying Zhu, Huaiwen Zhang, Vince D. Calhoun†, Yuda Bi† Under review at Briefings in Bioinformatics\n\n\nA 1/R Law for Kurtosis Contrast in Balanced Mixtures Yuda Bi, Wenjun Xiao, Linhao Bai, Vince D. Calhoun IEEE Signal Processing Letters arXiv:2602.22334"
-  },
-  {
-    "objectID": "publications.html#journal-articles",
-    "href": "publications.html#journal-articles",
-    "title": "Publications",
-    "section": "Journal Articles",
-    "text": "Journal Articles\n\nGray Matters: ViT-GAN Framework for Identifying Schizophrenia Biomarkers Linking Structural MRI and Functional Network Connectivity Yuda Bi, Anees Abrol, Sihan Jia, Jing Sui, Vince D. Calhoun NeuroImage, 297, 120674, 2024 DOI\n\n\nA Multimodal Vision Transformer for Interpretable Fusion of Functional and Structural Neuroimaging Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun Human Brain Mapping, 45(17), e26783, 2024 DOI · PubMed\n\n\nPrediction of Gender from Longitudinal MRI Data via Deep Learning on Adolescent Data Reveals Unique Patterns Associated with Brain Structure and Change over a Two-year Period Yuda Bi, Anees Abrol, Zening Fu, Jiayu Chen, Jingyu Liu, Vince Calhoun Journal of Neuroscience Methods, 384, 109744, 2023 DOI"
-  },
-  {
-    "objectID": "publications.html#conference-papers",
-    "href": "publications.html#conference-papers",
-    "title": "Publications",
-    "section": "Conference Papers",
-    "text": "Conference Papers\n\nMultiViT2: A Data-augmented Multimodal Neuroimaging Prediction Framework via Latent Diffusion Model Yuda Bi, Sihan Jia, Yutong Gao, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE ISBI, 2025 arXiv:2506.13667\n\n\nGM-LDM: Latent Diffusion Model for Brain Biomarker Identification through Functional Data-Driven Gray Matter Synthesis Xu Hu, Jingling Yang, Sihan Jia, Yuda Bi, Vince D. Calhoun IEEE ISBI, 2025 arXiv:2506.12719\n\n\nCross-Modal Synthesis of Structural MRI and Functional Connectivity Networks via Conditional ViT-GANs Yuda Bi, Anees Abrol, Jing Sui, Vince D. Calhoun IEEE ISBI, 2024 arXiv:2309.08160 · IEEE\n\n\nMultiViT: Multimodal Vision Transformer for Schizophrenia Prediction using Structural MRI and Functional Network Connectivity Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE ISBI, 2023 IEEE\n\n\nDeep Learning Prediction and Visualization of Gender Related Brain Changes from Longitudinal Structural MRI Data in the ABCD Study Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE EMBC, 2022 IEEE"
-  },
-  {
-    "objectID": "publications.html#preprints",
-    "href": "publications.html#preprints",
-    "title": "Publications",
-    "section": "Preprints",
-    "text": "Preprints\n\nRedundancy as a Structural Information Principle for Learning and Generalization Yuda Bi, Ying Zhu, Vince D. Calhoun arXiv, 2025 arXiv:2510.10938"
-  },
-  {
     "objectID": "notes/2026-04-quartic-detection-theory/index.html",
     "href": "notes/2026-04-quartic-detection-theory/index.html",
     "title": "The Geometry of Invisible Forces: A Quartic Detection Theory",
@@ -102,84 +67,14 @@
     "href": "notes/2026-04-quartic-detection-theory/index.html#implications",
     "title": "The Geometry of Invisible Forces: A Quartic Detection Theory",
     "section": "Implications",
-    "text": "Implications\nFor neuroscience: Detecting latent neural inputs requires multi-channel recording. The pairing principle prescribes exactly how many electrodes are needed given estimates of coupling and noise. A single fMRI voxel or EEG electrode is provably blind to a shared latent source.\nFor climate science: Detecting unresolved ocean forcing in climate records requires spatially distributed stations. A single station, no matter how long the record, cannot distinguish forced variability from intrinsic noise. The dark regime at timescale coalescence explains why slow ocean modes are so difficult to identify.\nFor stochastic thermodynamics: The single-channel impossibility is not a limitation of current methods — it is a geometric fact about the statistical manifold. The cross-spectral escape provides a constructive route to certifying irreversibility from partial observations.\nFor experimental design: The quartic law transforms the question “how much data do I need?” into “how many probes do I need, and where?” The answer: at least two, sharing the hidden effect, with detection power growing as the number of probe pairs.\n\nThis note summarizes the theoretical arc of three papers: “Timescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark” (Bi, Zhang, Calhoun), “Cross Spectra Break the Single-Channel Impossibility” (Bi, Calhoun), and “Why Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law” (Bi, Calhoun)."
+    "text": "Implications\nFor neuroscience: Detecting latent neural inputs requires multi-channel recording. The pairing principle prescribes exactly how many electrodes are needed given estimates of coupling and noise. A single fMRI voxel or EEG electrode is provably blind to a shared latent source.\nFor climate science: Detecting unresolved ocean forcing in climate records requires spatially distributed stations. A single station, no matter how long the record, cannot distinguish forced variability from intrinsic noise. The dark regime at timescale coalescence explains why slow ocean modes are so difficult to identify.\nFor stochastic thermodynamics: The single-channel impossibility is not a limitation of current methods — it is a geometric fact about the statistical manifold. The cross-spectral escape provides a constructive route to certifying irreversibility from partial observations.\nFor experimental design: The quartic law transforms the question “how much data do I need?” into “how many probes do I need, and where?” The answer: at least two, sharing the hidden effect, with detection power growing as the number of probe pairs."
   },
   {
-    "objectID": "notes.html",
-    "href": "notes.html",
-    "title": "Notes",
-    "section": "",
-    "text": "Spectral Methods in Brain Network Analysis\n\n\n\nspectral methods\n\nbrain networks\n\ngraph theory\n\n\n\nNotes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\nThe Geometry of Invisible Forces: A Quartic Detection Theory\n\n\n\nstatistical physics\n\ninformation geometry\n\nhidden variables\n\nspectral methods\n\n\n\nWhy hidden variables are orders of magnitude harder to detect than classical statistics predicts — and how cross-spectral geometry breaks the impossibility.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "cv.html",
-    "href": "cv.html",
-    "title": "CV",
-    "section": "",
-    "text": "PhD in Computer Science, Georgia State University, 2020–present TReNDS Center (GSU, Georgia Tech, Emory). Advisor: Prof. Vince D. Calhoun\nMS in Computer Science, University of Georgia, 2017–2020\nBS in Management, Shandong University of Science and Technology, 2013–2017"
-  },
-  {
-    "objectID": "cv.html#education",
-    "href": "cv.html#education",
-    "title": "CV",
-    "section": "",
-    "text": "PhD in Computer Science, Georgia State University, 2020–present TReNDS Center (GSU, Georgia Tech, Emory). Advisor: Prof. Vince D. Calhoun\nMS in Computer Science, University of Georgia, 2017–2020\nBS in Management, Shandong University of Science and Technology, 2013–2017"
-  },
-  {
-    "objectID": "cv.html#research-experience",
-    "href": "cv.html#research-experience",
-    "title": "CV",
-    "section": "Research Experience",
-    "text": "Research Experience\nGraduate Research Assistant, TReNDS Center, 2020–present\n\nDeveloping multimodal deep learning frameworks for brain imaging analysis\nInvestigating spectral methods for structural quality assessment\nExploring theoretical connections between statistical physics, information theory, and neural systems"
-  },
-  {
-    "objectID": "cv.html#selected-publications",
-    "href": "cv.html#selected-publications",
-    "title": "CV",
-    "section": "Selected Publications",
-    "text": "Selected Publications\nSee full list on the Publications page.\n\nBi Y, Abrol A, Fu Z, Calhoun VD. A multimodal vision transformer for interpretable fusion of functional and structural neuroimaging data. Human Brain Mapping, 2024.\nBi Y, Abrol A, Fu Z, Calhoun VD. Gray Matters: An efficient vision transformer GAN framework for predicting functional network connectivity biomarkers from brain structure. bioRxiv, 2024.\nBi Y, Zhu Y, Calhoun VD. Redundancy as a structural information principle for learning and generalization. arXiv, 2025."
-  },
-  {
-    "objectID": "cv.html#certifications",
-    "href": "cv.html#certifications",
-    "title": "CV",
-    "section": "Certifications",
-    "text": "Certifications\n\nCFA Level III, CFA Institute"
-  },
-  {
-    "objectID": "cv.html#skills",
-    "href": "cv.html#skills",
-    "title": "CV",
-    "section": "Skills",
-    "text": "Skills\n\nProgramming: Python, PyTorch, TensorFlow, MATLAB, R\nNeuroimaging: fMRI, sMRI, functional network connectivity analysis\nTheory: Statistical physics, information theory, spectral graph theory\nLanguages: Chinese (native), English (professional)"
-  },
-  {
-    "objectID": "cv.html#links",
-    "href": "cv.html#links",
-    "title": "CV",
-    "section": "Links",
-    "text": "Links\n\nGoogle Scholar\nGitHub\nLinkedIn"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Yuda Bi",
-    "section": "",
-    "text": "I am a PhD candidate at the TReNDS Center (GSU, Georgia Tech, Emory), advised by Prof. Vince D. Calhoun. My research bridges theoretical neuroscience, statistical physics, and deep learning.\nI develop multimodal vision transformer frameworks for brain imaging analysis, and investigate fundamental principles of information structure, redundancy, and spectral methods across neuroscience, finance, and AI. I am the founder of the Structural Intelligence (SI) framework.\nResearch Interests: Theoretical Neuroscience · Neuroimaging (fMRI/sMRI) · Statistical Physics · Financial Physics · Physics of AI\nEducation:\n\nPhD in Computer Science, Georgia State University (2020–)\nMS in Computer Science, University of Georgia (2017–2020)\nBS in Management, Shandong University of Science and Technology (2013–2017)"
-  },
-  {
-    "objectID": "index.html#about",
-    "href": "index.html#about",
-    "title": "Yuda Bi",
-    "section": "",
-    "text": "I am a PhD candidate at the TReNDS Center (GSU, Georgia Tech, Emory), advised by Prof. Vince D. Calhoun. My research bridges theoretical neuroscience, statistical physics, and deep learning.\nI develop multimodal vision transformer frameworks for brain imaging analysis, and investigate fundamental principles of information structure, redundancy, and spectral methods across neuroscience, finance, and AI. I am the founder of the Structural Intelligence (SI) framework.\nResearch Interests: Theoretical Neuroscience · Neuroimaging (fMRI/sMRI) · Statistical Physics · Financial Physics · Physics of AI\nEducation:\n\nPhD in Computer Science, Georgia State University (2020–)\nMS in Computer Science, University of Georgia (2017–2020)\nBS in Management, Shandong University of Science and Technology (2013–2017)"
-  },
-  {
-    "objectID": "index.html#recent-notes",
-    "href": "index.html#recent-notes",
-    "title": "Yuda Bi",
-    "section": "Recent Notes",
-    "text": "Recent Notes\n\n\n\n\n\n\n\nSpectral Methods in Brain Network Analysis\n\n\nNotes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\n\n\n\nThe Geometry of Invisible Forces: A Quartic Detection Theory\n\n\nWhy hidden variables are orders of magnitude harder to detect than classical statistics predicts — and how cross-spectral geometry breaks the impossibility.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\nNo matching items"
+    "objectID": "notes/2026-04-quartic-detection-theory/index.html#papers-in-this-series",
+    "href": "notes/2026-04-quartic-detection-theory/index.html#papers-in-this-series",
+    "title": "The Geometry of Invisible Forces: A Quartic Detection Theory",
+    "section": "Papers in This Series",
+    "text": "Papers in This Series\n\nYuda Bi, Vince D. Calhoun. Why Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law. Under review at Physical Review Letters.\nYuda Bi, Vince D. Calhoun. Cross Spectra Break the Single-Channel Impossibility. Under review at Physical Review Letters.\nYuda Bi, Chenyu Zhang, Vince D. Calhoun. Timescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark. Under review at Physical Review E. arXiv:2603.20917\nYuda Bi, Vince D. Calhoun. Conditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation. Under review at Physical Review E. arXiv:2603.14072"
   },
   {
     "objectID": "notes/2026-04-spectral-brain-networks/index.html",
@@ -217,10 +112,171 @@
     "text": "Connection to Statistical Physics\nThe graph Laplacian connects to the partition function of a Gaussian field on the network:\n\\[\nZ(\\beta) = \\int \\exp\\left(-\\frac{\\beta}{2} \\mathbf{x}^T \\mathcal{L} \\mathbf{x}\\right) d\\mathbf{x} = \\prod_{k=1}^{n-1} \\sqrt{\\frac{2\\pi}{\\beta \\lambda_k}}\n\\]\nThe free energy \\(F = -\\frac{1}{\\beta}\\ln Z\\) encodes thermodynamic properties of signal propagation on the network."
   },
   {
+    "objectID": "publications.html",
+    "href": "publications.html",
+    "title": "Publications",
+    "section": "",
+    "text": "Cross Spectra Break the Single-Channel Impossibility Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nWhy Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nGrokking as a Falsifiable Finite-Size Transition Yuda Bi, Chenyu Zhang, Qiheng Wang, Vince D. Calhoun Under review at Physical Review Letters arXiv:2603.24746\n\n\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark Yuda Bi, Chenyu Zhang, Vince D. Calhoun Under review at Physical Review E arXiv:2603.20917\n\n\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation Yuda Bi, Vince D. Calhoun Under review at Physical Review E arXiv:2603.14072\n\n\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment Yuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun Under review at IEEE Journal of Biomedical and Health Informatics arXiv:2603.25880\n\n\nSpectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment Ying Zhu, Huaiwen Zhang, Vince D. Calhoun†, Yuda Bi† Under review at Briefings in Bioinformatics\n\n\nA 1/R Law for Kurtosis Contrast in Balanced Mixtures Yuda Bi, Wenjun Xiao, Linhao Bai, Vince D. Calhoun IEEE Signal Processing Letters arXiv:2602.22334"
+  },
+  {
+    "objectID": "publications.html#under-review",
+    "href": "publications.html#under-review",
+    "title": "Publications",
+    "section": "",
+    "text": "Cross Spectra Break the Single-Channel Impossibility Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nWhy Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nGrokking as a Falsifiable Finite-Size Transition Yuda Bi, Chenyu Zhang, Qiheng Wang, Vince D. Calhoun Under review at Physical Review Letters arXiv:2603.24746\n\n\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark Yuda Bi, Chenyu Zhang, Vince D. Calhoun Under review at Physical Review E arXiv:2603.20917\n\n\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation Yuda Bi, Vince D. Calhoun Under review at Physical Review E arXiv:2603.14072\n\n\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment Yuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun Under review at IEEE Journal of Biomedical and Health Informatics arXiv:2603.25880\n\n\nSpectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment Ying Zhu, Huaiwen Zhang, Vince D. Calhoun†, Yuda Bi† Under review at Briefings in Bioinformatics\n\n\nA 1/R Law for Kurtosis Contrast in Balanced Mixtures Yuda Bi, Wenjun Xiao, Linhao Bai, Vince D. Calhoun IEEE Signal Processing Letters arXiv:2602.22334"
+  },
+  {
+    "objectID": "publications.html#journal-articles",
+    "href": "publications.html#journal-articles",
+    "title": "Publications",
+    "section": "Journal Articles",
+    "text": "Journal Articles\n\nGray Matters: ViT-GAN Framework for Identifying Schizophrenia Biomarkers Linking Structural MRI and Functional Network Connectivity Yuda Bi, Anees Abrol, Sihan Jia, Jing Sui, Vince D. Calhoun NeuroImage, 297, 120674, 2024 DOI\n\n\nA Multimodal Vision Transformer for Interpretable Fusion of Functional and Structural Neuroimaging Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun Human Brain Mapping, 45(17), e26783, 2024 DOI · PubMed\n\n\nPrediction of Gender from Longitudinal MRI Data via Deep Learning on Adolescent Data Reveals Unique Patterns Associated with Brain Structure and Change over a Two-year Period Yuda Bi, Anees Abrol, Zening Fu, Jiayu Chen, Jingyu Liu, Vince Calhoun Journal of Neuroscience Methods, 384, 109744, 2023 DOI"
+  },
+  {
+    "objectID": "publications.html#conference-papers",
+    "href": "publications.html#conference-papers",
+    "title": "Publications",
+    "section": "Conference Papers",
+    "text": "Conference Papers\n\nMultiViT2: A Data-augmented Multimodal Neuroimaging Prediction Framework via Latent Diffusion Model Yuda Bi, Sihan Jia, Yutong Gao, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE ISBI, 2025 arXiv:2506.13667\n\n\nGM-LDM: Latent Diffusion Model for Brain Biomarker Identification through Functional Data-Driven Gray Matter Synthesis Xu Hu, Jingling Yang, Sihan Jia, Yuda Bi, Vince D. Calhoun IEEE ISBI, 2025 arXiv:2506.12719\n\n\nCross-Modal Synthesis of Structural MRI and Functional Connectivity Networks via Conditional ViT-GANs Yuda Bi, Anees Abrol, Jing Sui, Vince D. Calhoun IEEE ISBI, 2024 arXiv:2309.08160 · IEEE\n\n\nMultiViT: Multimodal Vision Transformer for Schizophrenia Prediction using Structural MRI and Functional Network Connectivity Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE ISBI, 2023 IEEE\n\n\nDeep Learning Prediction and Visualization of Gender Related Brain Changes from Longitudinal Structural MRI Data in the ABCD Study Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE EMBC, 2022 IEEE"
+  },
+  {
     "objectID": "projects.html",
     "href": "projects.html",
     "title": "Projects",
     "section": "",
-    "text": "Structural Intelligence (SI) Framework\nA unifying theoretical foundation bridging neuroscience, statistical physics, and AI through structural information principles.\n\nRedundancy as structure: Optimal information redundancy for learning and generalization\nSpectral coherence: Model-free metrics for quality assessment of complex structures\nTimescale physics: How hidden forcing and timescale coalescence shape observable dynamics\nFinancial connectomics: Brain-inspired frameworks for modeling latent market dynamics\n\n\n\n\nSpecRNA-QA\nSpectral graph features for reference-free RNA 3D structure quality assessment. GitHub\n\nModel-free spectral features from RNA contact graphs\nReference-free quality assessment pipeline\nBenchmarked on RNA-Puzzles and CASP-RNA datasets\n\n\n\n\nMultiViT / MultiViT2\nMultimodal vision transformer frameworks for brain imaging analysis.\n\nIntegrates structural MRI and functional connectivity data\nAchieves AUC 0.833 for schizophrenia classification (MultiViT)\nData augmentation via latent diffusion models (MultiViT2)\nPublished in Human Brain Mapping and IEEE ISBI"
+    "text": "Quartic Detection Theory: The Geometry of Hidden Variables\nA series of papers establishing exact detectability theory for hidden degrees of freedom on statistical manifolds. Read the full theory note →\nWe prove that hidden variables are orders of magnitude harder to detect than classical statistics predicts. When a hidden force couples linearly to the dynamics but quadratically to the observables — the generic case for power spectra, covariances, and correlations — the data requirement scales as \\(\\lambda^{-4}\\), not \\(\\lambda^{-2}\\). For a 10% coupling, this quartic penalty demands ~1000× more data than the naive Fisher-information expectation.\nCore results:\n\nQuartic detection law: \\(D_\\mathrm{KL}^\\mathrm{min}(\\lambda) = C\\lambda^4 + O(\\lambda^6)\\) on general statistical manifolds, with exact system-specific coefficients\nPairing principle: A single probe is provably blind to hidden common input; detection requires \\(\\geq 2\\) channels, with power growing as sensor pairs \\(\\binom{n}{2}\\)\nSpectral dark regime: At timescale coalescence the quartic coefficient vanishes — hidden forcing becomes spectrally invisible\nCross-spectral escape: Off-diagonal spectral structure breaks the single-channel impossibility, remaining strictly positive at coalescence\nThermodynamic bridge: Cross-spectral detectability certifies positive entropy production, linking observable structure to the arrow of time\n\nMathematical toolkit: Information geometry (Amari), Kullback-Leibler projection, semiparametric efficiency (BKRW), Whittle likelihood, Mori-Zwanzig coarse-graining, stochastic thermodynamics (Seifert), spectral analysis on statistical manifolds.\nPapers in this series:\n\nWhy Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law — under review, PRL\nCross Spectra Break the Single-Channel Impossibility — under review, PRL\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark — under review, PRE (arXiv:2603.20917)\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation — under review, PRE (arXiv:2603.14072)\n\n\n\n\nSpecRNA-QA: Spectral Graph Methods for RNA 3D Quality Assessment\nA lightweight, reference-free tool for assessing RNA 3D structure quality using spectral graph features. GitHub · Read the method note →\nExisting RNA quality assessment methods evaluate local atomic contacts — they fail when local structure is correct but entire domains are misplaced. SpecRNA-QA solves this by extracting multi-scale spectral features from the graph Laplacian of RNA contact networks, capturing global topology that local metrics miss.\nPerformance:\n\nCASP16 benchmark (42 targets, 7,368 models): median Spearman \\(\\rho = 0.689\\) in supervised mode, outperforming geometry-based baselines (\\(\\rho = 0.465\\)) with \\(p = 1.2 \\times 10^{-10}\\)\nLarge RNAs (&gt;200 nt): performance advantage reaches \\(+0.233\\) in correlation over geometry baselines — the regime where global topology matters most\nFast: 15 ms for 100-nt structures, ~4.2 s for 800-nt molecules. CPU-only, no GPU required\n\nHow it works: Contact graphs at multiple distance thresholds → ~312 spectral features from normalized Laplacian (eigenvalue statistics, heat-kernel traces, participation ratios) → XGBRanker model for quality prediction. The most discriminative features are heat-kernel traces measuring multi-scale diffusion, connecting RNA quality to the transport geometry of the contact network.\nPapers:\n\nSpectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment — under review, Briefings in Bioinformatics\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment — under review, IEEE JBHI (arXiv:2603.25880)\n\n\n\n\nMultiViT / MultiViT2\nMultimodal vision transformer frameworks for brain imaging analysis (2022–2024).\n\nIntegrates structural MRI and functional connectivity data\nAchieves AUC 0.833 for schizophrenia classification (MultiViT)\nData augmentation via latent diffusion models (MultiViT2)\nPublished in NeuroImage, Human Brain Mapping, and IEEE ISBI"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Yuda Bi",
+    "section": "",
+    "text": "I am a PhD candidate at the TReNDS Center (GSU, Georgia Tech, Emory), advised by Prof. Vince D. Calhoun.\nStarting in 2025, I pivoted from engineering-driven multimodal neuroimaging toward a theory-first research program grounded in statistical physics, nonequilibrium thermodynamics, and information geometry. My current work develops exact detectability theory for hidden variables on statistical manifolds — with applications spanning theoretical neuroscience, stochastic thermodynamics, financial physics, and spectral methods for structural biology.\nResearch Interests: Statistical Physics · Information Geometry · Nonequilibrium Thermodynamics · Theoretical Neuroscience · Spectral Graph Theory · Financial Physics\nEducation:\n\nPhD in Computer Science, Georgia State University (2020–)\nMS in Computer Science, University of Georgia (2017–2020)\nBS in Management, Shandong University of Science and Technology (2013–2017)"
+  },
+  {
+    "objectID": "index.html#about",
+    "href": "index.html#about",
+    "title": "Yuda Bi",
+    "section": "",
+    "text": "I am a PhD candidate at the TReNDS Center (GSU, Georgia Tech, Emory), advised by Prof. Vince D. Calhoun.\nStarting in 2025, I pivoted from engineering-driven multimodal neuroimaging toward a theory-first research program grounded in statistical physics, nonequilibrium thermodynamics, and information geometry. My current work develops exact detectability theory for hidden variables on statistical manifolds — with applications spanning theoretical neuroscience, stochastic thermodynamics, financial physics, and spectral methods for structural biology.\nResearch Interests: Statistical Physics · Information Geometry · Nonequilibrium Thermodynamics · Theoretical Neuroscience · Spectral Graph Theory · Financial Physics\nEducation:\n\nPhD in Computer Science, Georgia State University (2020–)\nMS in Computer Science, University of Georgia (2017–2020)\nBS in Management, Shandong University of Science and Technology (2013–2017)"
+  },
+  {
+    "objectID": "index.html#recent-notes",
+    "href": "index.html#recent-notes",
+    "title": "Yuda Bi",
+    "section": "Recent Notes",
+    "text": "Recent Notes\n\n\n\n\n\n\n\nSpectral Methods in Brain Network Analysis\n\n\nNotes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\n\n\n\nSpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss\n\n\nHow graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment — outperforming geometry baselines by +0.224 on CASP16.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\n\n\n\nThe Geometry of Invisible Forces: A Quartic Detection Theory\n\n\nWhy hidden variables are orders of magnitude harder to detect than classical statistics predicts — and how cross-spectral geometry breaks the impossibility.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "cv.html",
+    "href": "cv.html",
+    "title": "CV",
+    "section": "",
+    "text": "PhD in Computer Science, Georgia State University, 2020–present TReNDS Center (GSU, Georgia Tech, Emory). Advisor: Prof. Vince D. Calhoun\nMS in Computer Science, University of Georgia, 2017–2020\nBS in Management, Shandong University of Science and Technology, 2013–2017"
+  },
+  {
+    "objectID": "cv.html#education",
+    "href": "cv.html#education",
+    "title": "CV",
+    "section": "",
+    "text": "PhD in Computer Science, Georgia State University, 2020–present TReNDS Center (GSU, Georgia Tech, Emory). Advisor: Prof. Vince D. Calhoun\nMS in Computer Science, University of Georgia, 2017–2020\nBS in Management, Shandong University of Science and Technology, 2013–2017"
+  },
+  {
+    "objectID": "cv.html#research-trajectory",
+    "href": "cv.html#research-trajectory",
+    "title": "CV",
+    "section": "Research Trajectory",
+    "text": "Research Trajectory\n2020–2024: Multimodal Neuroimaging Engineering\nDeveloped deep learning frameworks for brain imaging — vision transformers, GANs, and diffusion models for fusing structural MRI with functional connectivity. Published in NeuroImage, Human Brain Mapping, Journal of Neuroscience Methods, and multiple IEEE venues (ISBI, EMBC).\n2025–present: Transition to Theory-Driven Cross-Disciplinary Research\nPivoted from engineering-driven model stacking to a theory-first program rooted in statistical physics and nonequilibrium thermodynamics. Current work develops exact mathematical foundations for hidden-variable detectability, spectral methods in structural biology, and the physics of learning.\nCore research directions:\n\nInformation geometry of hidden variables — Quartic detection law on statistical manifolds: exact KL projection geometry, tangent-normal decomposition, semiparametric efficiency bounds (Amari, BKRW, Le Cam). Proves that coarse-grained refitting absorbs \\(O(\\lambda^2)\\) perturbations, leaving only \\(O(\\lambda^4)\\) normal residuals.\nStochastic thermodynamics from partial observations — Cross-spectral certification of entropy production under the Lucente impossibility. Pairing principle for minimum probe count. Connection to Mori-Zwanzig projection and thermodynamic uncertainty relations (Seifert, Barato-Seifert).\nSpectral graph theory for structural biology — Graph Laplacian spectra, heat-kernel traces, participation-ratio effective rank. Applied to RNA 3D quality assessment (SpecRNA-QA) and protein ensemble coherence (SCI).\nFinancial physics — Volatility-conditioned correlation dynamics in S&P 500, timescale separation in market microstructure. Spectral dark regimes in financial time series.\nPhysics of AI — Grokking as a finite-size phase transition. Kurtosis contrast laws in mixture separation."
+  },
+  {
+    "objectID": "cv.html#selected-publications",
+    "href": "cv.html#selected-publications",
+    "title": "CV",
+    "section": "Selected Publications",
+    "text": "Selected Publications\nSee full list on the Publications page.\n\nBi Y, Calhoun VD. Cross spectra break the single-channel impossibility. Under review, Physical Review Letters.\nBi Y, Calhoun VD. Why single probes cannot detect hidden forcing: A quartic detection law. Under review, Physical Review Letters.\nBi Y, Zhang C, Calhoun VD. Timescale coalescence makes hidden persistent forcing spectrally dark. Under review, Physical Review E.\nBi Y, Abrol A, Jia S, Sui J, Calhoun VD. Gray matters: ViT-GAN framework for identifying schizophrenia biomarkers. NeuroImage, 2024.\nBi Y, Abrol A, Fu Z, Calhoun VD. A multimodal vision transformer for interpretable fusion of functional and structural neuroimaging data. Human Brain Mapping, 2024."
+  },
+  {
+    "objectID": "cv.html#certifications",
+    "href": "cv.html#certifications",
+    "title": "CV",
+    "section": "Certifications",
+    "text": "Certifications\n\nCFA Level III, CFA Institute"
+  },
+  {
+    "objectID": "cv.html#skills",
+    "href": "cv.html#skills",
+    "title": "CV",
+    "section": "Skills",
+    "text": "Skills\n\nMathematics/Physics: Information geometry, stochastic processes, spectral graph theory, nonequilibrium thermodynamics, KL divergence & projection, semiparametric theory\nProgramming: Python, PyTorch, TensorFlow, MATLAB, R, Mathematica\nNeuroimaging: fMRI, sMRI, functional network connectivity analysis\nLanguages: Chinese (native), English (professional)"
+  },
+  {
+    "objectID": "cv.html#links",
+    "href": "cv.html#links",
+    "title": "CV",
+    "section": "Links",
+    "text": "Links\n\nGoogle Scholar\nGitHub\nLinkedIn"
+  },
+  {
+    "objectID": "notes.html",
+    "href": "notes.html",
+    "title": "Notes",
+    "section": "",
+    "text": "Spectral Methods in Brain Network Analysis\n\n\n\nspectral methods\n\nbrain networks\n\ngraph theory\n\n\n\nNotes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\nSpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss\n\n\n\nspectral methods\n\nRNA structure\n\nbioinformatics\n\ngraph theory\n\n\n\nHow graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment — outperforming geometry baselines by +0.224 on CASP16.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\nThe Geometry of Invisible Forces: A Quartic Detection Theory\n\n\n\nstatistical physics\n\ninformation geometry\n\nhidden variables\n\nspectral methods\n\n\n\nWhy hidden variables are orders of magnitude harder to detect than classical statistics predicts — and how cross-spectral geometry breaks the impossibility.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html",
+    "href": "notes/2026-04-specrnaq/index.html",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "",
+    "text": "Predicting RNA 3D structure is one of the open frontiers of structural biology. Tools like AlphaFold3 and RoseTTAFold2NA now generate thousands of candidate structures — but how do you know which ones are right?\nExisting quality assessment (QA) methods evaluate local atomic contacts: bond angles, clash scores, pairwise distance distributions. These work well when errors are local. But they fail catastrophically in a common and important failure mode: the local structure is correct, but entire domains are misplaced. A helix can be perfectly folded yet docked into the wrong pocket. Every bond angle checks out; the global topology is wrong.\nThis is exactly the regime where RNA QA matters most — large, multi-domain structures where the combinatorial space of domain arrangements dwarfs the local conformational space."
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html#the-problem-local-correctness-global-failure",
+    "href": "notes/2026-04-specrnaq/index.html#the-problem-local-correctness-global-failure",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "",
+    "text": "Predicting RNA 3D structure is one of the open frontiers of structural biology. Tools like AlphaFold3 and RoseTTAFold2NA now generate thousands of candidate structures — but how do you know which ones are right?\nExisting quality assessment (QA) methods evaluate local atomic contacts: bond angles, clash scores, pairwise distance distributions. These work well when errors are local. But they fail catastrophically in a common and important failure mode: the local structure is correct, but entire domains are misplaced. A helix can be perfectly folded yet docked into the wrong pocket. Every bond angle checks out; the global topology is wrong.\nThis is exactly the regime where RNA QA matters most — large, multi-domain structures where the combinatorial space of domain arrangements dwarfs the local conformational space."
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html#the-insight-global-topology-lives-in-the-spectrum",
+    "href": "notes/2026-04-specrnaq/index.html#the-insight-global-topology-lives-in-the-spectrum",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "The Insight: Global Topology Lives in the Spectrum",
+    "text": "The Insight: Global Topology Lives in the Spectrum\nA 3D molecular structure is, at its core, a graph: nucleotides are nodes, spatial contacts are edges. The spectrum of the graph Laplacian — the eigenvalues of \\(\\mathcal{L} = I - D^{-1/2}WD^{-1/2}\\) — encodes the global connectivity pattern in a way that is invariant to rotation, translation, and node relabeling.\nThe key mathematical facts:\n\nThe number of zero eigenvalues equals the number of connected components\nThe Fiedler value \\(\\lambda_1\\) measures how easily the graph can be bisected — a proxy for global compactness\nThe spectral gap \\(\\lambda_1 - \\lambda_0\\) quantifies community separation\nHeat-kernel traces \\(Z(t) = \\sum_k e^{-\\lambda_k t}\\) capture multi-scale diffusion: small \\(t\\) probes local geometry, large \\(t\\) probes global topology\nThe participation ratio \\(\\mathrm{PR}(\\boldsymbol{\\lambda}) = (\\sum_k \\lambda_k)^2 / \\sum_k \\lambda_k^2\\) measures effective spectral dimensionality\n\nA misplaced domain changes the large-\\(t\\) heat-kernel trace (disrupted long-range diffusion) while leaving the small-\\(t\\) trace nearly intact (local contacts are fine). This is precisely the information that local metrics cannot access."
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html#the-method",
+    "href": "notes/2026-04-specrnaq/index.html#the-method",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "The Method",
+    "text": "The Method\nSpecRNA-QA builds on this insight with a practical pipeline:\n\nMulti-scale contact graphs: Construct contact networks at multiple distance thresholds (8Å, 10Å, 12Å, 15Å), capturing different spatial resolutions of the RNA architecture.\nSpectral feature extraction: From each graph’s normalized Laplacian, extract ~312 features:\n\nEigenvalue statistics (mean, variance, skewness, kurtosis of \\(\\{\\lambda_k\\}\\))\nHeat-kernel traces at multiple diffusion times \\(Z(t)\\) for \\(t \\in \\{0.1, 0.5, 1, 2, 5, 10\\}\\)\nParticipation ratios and effective rank measures\nSpectral gap and algebraic connectivity\nNormalized Laplacian entropy \\(H = -\\sum_k \\hat{\\lambda}_k \\log \\hat{\\lambda}_k\\)\n\nLearning-to-rank: An XGBRanker model trained to rank structures by quality within each target, using spectral features as input.\n\nThe entire pipeline runs on CPU — no GPU required. Processing time: 15 ms for a 100-nucleotide structure, ~4.2 seconds for 800 nucleotides."
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html#results",
+    "href": "notes/2026-04-specrnaq/index.html#results",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "Results",
+    "text": "Results\n\nCASP16 Benchmark\nOn the CASP16 RNA structure prediction assessment (42 targets, 7,368 models):\n\n\n\nMethod\nMedian Spearman \\(\\rho\\)\n\\(p\\)-value vs. SpecRNA-QA\n\n\n\n\nSpecRNA-QA (supervised)\n0.689\n—\n\n\nGeometry baselines\n0.465\n\\(1.2 \\times 10^{-10}\\)\n\n\n\n\n\nWhere It Matters Most: Large RNAs\nThe advantage is most pronounced for large RNA structures (&gt;200 nucleotides), where the performance gap reaches +0.233 in Spearman correlation. This is the regime where domain-level misplacements dominate — and where spectral features shine.\nFor small RNAs (&lt;100 nt), local metrics are often sufficient because there are few domains to misplace. The spectral advantage grows with structural complexity, exactly as the theory predicts.\n\n\nMost Discriminative Features\nFeature importance analysis reveals that the top-ranked features are heat-kernel traces at intermediate-to-large diffusion times — precisely the features that probe multi-scale and global transport geometry on the contact network. Local eigenvalue statistics (which probe small-scale structure) rank lower.\nThis confirms the theoretical motivation: the spectral approach works because it accesses the global information that local methods cannot reach."
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html#connection-to-the-broader-spectral-program",
+    "href": "notes/2026-04-specrnaq/index.html#connection-to-the-broader-spectral-program",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "Connection to the Broader Spectral Program",
+    "text": "Connection to the Broader Spectral Program\nSpecRNA-QA is part of a broader research program applying spectral graph theory to structural biology:\n\nSpecRNA-QA (RNA): Multi-scale Laplacian spectra for RNA 3D quality assessment → under review at Briefings in Bioinformatics\nSpectral Coherence Index (Proteins): Participation-ratio effective rank of inter-model distance-variance matrices for protein ensemble QA, achieving AUC-ROC 0.973 on 110 NMR ensembles → under review at IEEE JBHI (arXiv:2603.25880)\n\nBoth methods share a design principle: model-free spectral features that are invariant to coordinate systems and capture global structural properties that local metrics miss."
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html#try-it",
+    "href": "notes/2026-04-specrnaq/index.html#try-it",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "Try It",
+    "text": "Try It\nSpecRNA-QA is open source and easy to use:\ngit clone https://github.com/yudabitrends/specrnaq\ncd specrnaq\npip install -e .\nspecrnaq predict --input structures/ --output scores.csv\nPython 3.10+, CPU-only, no external dependencies beyond standard scientific Python."
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html#papers",
+    "href": "notes/2026-04-specrnaq/index.html#papers",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "Papers",
+    "text": "Papers\n\nYing Zhu, Huaiwen Zhang, Vince D. Calhoun†, Yuda Bi†. Spectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment. Under review at Briefings in Bioinformatics.\nYuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun. Spectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment. Under review at IEEE JBHI. arXiv:2603.25880"
   }
 ]
