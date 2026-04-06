@@ -32,6 +32,8 @@ We prove that hidden variables are **orders of magnitude harder to detect** than
 
 A lightweight, reference-free tool for assessing RNA 3D structure quality using spectral graph features. [GitHub](https://github.com/yudabitrends/specrnaq) · [Read the method note →](notes/2026-04-specrnaq/)
 
+![RNA 3D structure quality: C4' deviation from best model (blue = 0 Å, red = 50 Å)](files/specrnaq-cover.png){fig-align="center" width="80%"}
+
 Existing RNA quality assessment methods evaluate local atomic contacts — they fail when local structure is correct but entire domains are misplaced. **SpecRNA-QA** solves this by extracting multi-scale spectral features from the graph Laplacian of RNA contact networks, capturing global topology that local metrics miss.
 
 **Performance**:

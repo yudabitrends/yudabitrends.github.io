@@ -3,7 +3,10 @@ title: "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss"
 description: "How graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment — outperforming geometry baselines by +0.224 on CASP16."
 date: 2026-04-07
 categories: [spectral methods, RNA structure, bioinformatics, graph theory]
+image: featured.png
 ---
+
+![RNA 3D structure quality visualization: C4' deviation from best model (blue = 0 Å, red = 50 Å). Structures with correct local geometry but misplaced domains show large red regions — exactly the failure mode that spectral methods detect.](featured.png){fig-align="center" width="90%"}
 
 ## The Problem: Local Correctness, Global Failure
 

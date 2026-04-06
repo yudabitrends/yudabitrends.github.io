@@ -140,7 +140,10 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss – Yuda Bi">
 <meta property="og:description" content="How graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment — outperforming geometry baselines by +0.224 on CASP16.">
+<meta property="og:image" content="https://yudabitrends.github.io/notes/2026-04-specrnaq/featured.png">
 <meta property="og:site_name" content="Yuda Bi">
+<meta property="og:image:height" content="225">
+<meta property="og:image:width" content="292">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -267,6 +270,12 @@ window.Quarto = {
 </header>
 
 
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="featured.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>RNA 3D structure quality visualization: C4’ deviation from best model (blue = 0 Å, red = 50 Å). Structures with correct local geometry but misplaced domains show large red regions — exactly the failure mode that spectral methods detect.</figcaption>
+</figure>
+</div>
 <section id="the-problem-local-correctness-global-failure" class="level2">
 <h2 class="anchored" data-anchor-id="the-problem-local-correctness-global-failure">The Problem: Local Correctness, Global Failure</h2>
 <p>Predicting RNA 3D structure is one of the open frontiers of structural biology. Tools like AlphaFold3 and RoseTTAFold2NA now generate thousands of candidate structures — but <strong>how do you know which ones are right?</strong></p>

@@ -103,7 +103,10 @@ window.Quarto = {
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="Projects – Yuda Bi">
 <meta property="og:description" content="PhD Candidate at TReNDS Center — Theoretical Neuroscience, Statistical Physics, Physics of AI">
+<meta property="og:image" content="https://yudabitrends.github.io/files/specrnaq-cover.png">
 <meta property="og:site_name" content="Yuda Bi">
+<meta property="og:image:height" content="225">
+<meta property="og:image:width" content="292">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -219,6 +222,12 @@ window.Quarto = {
 <section id="specrna-qa-spectral-graph-methods-for-rna-3d-quality-assessment" class="level3">
 <h3 class="anchored" data-anchor-id="specrna-qa-spectral-graph-methods-for-rna-3d-quality-assessment">SpecRNA-QA: Spectral Graph Methods for RNA 3D Quality Assessment</h3>
 <p>A lightweight, reference-free tool for assessing RNA 3D structure quality using spectral graph features. <a href="https://github.com/yudabitrends/specrnaq">GitHub</a> · <a href="notes/2026-04-specrnaq/">Read the method note →</a></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="files/specrnaq-cover.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>RNA 3D structure quality: C4’ deviation from best model (blue = 0 Å, red = 50 Å)</figcaption>
+</figure>
+</div>
 <p>Existing RNA quality assessment methods evaluate local atomic contacts — they fail when local structure is correct but entire domains are misplaced. <strong>SpecRNA-QA</strong> solves this by extracting multi-scale spectral features from the graph Laplacian of RNA contact networks, capturing global topology that local metrics miss.</p>
 <p><strong>Performance</strong>:</p>
 <ul>
