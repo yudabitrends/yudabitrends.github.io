@@ -4,28 +4,35 @@
     "href": "publications.html",
     "title": "Publications",
     "section": "",
-    "text": "A Multimodal Vision Transformer for Interpretable Fusion of Functional and Structural Neuroimaging Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun Human Brain Mapping, 45(17), e26783, 2024 DOI · PubMed"
+    "text": "Cross Spectra Break the Single-Channel Impossibility Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nWhy Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nGrokking as a Falsifiable Finite-Size Transition Yuda Bi, Chenyu Zhang, Qiheng Wang, Vince D. Calhoun Under review at Physical Review Letters arXiv:2603.24746\n\n\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark Yuda Bi, Chenyu Zhang, Vince D. Calhoun Under review at Physical Review E arXiv:2603.20917\n\n\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation Yuda Bi, Vince D. Calhoun Under review at Physical Review E arXiv:2603.14072\n\n\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment Yuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun Under review at IEEE Journal of Biomedical and Health Informatics arXiv:2603.25880\n\n\nSpectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment Ying Zhu, Huaiwen Zhang, Vince D. Calhoun†, Yuda Bi† Under review at Briefings in Bioinformatics\n\n\nA 1/R Law for Kurtosis Contrast in Balanced Mixtures Yuda Bi, Wenjun Xiao, Linhao Bai, Vince D. Calhoun IEEE Signal Processing Letters arXiv:2602.22334"
+  },
+  {
+    "objectID": "publications.html#under-review",
+    "href": "publications.html#under-review",
+    "title": "Publications",
+    "section": "",
+    "text": "Cross Spectra Break the Single-Channel Impossibility Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nWhy Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nGrokking as a Falsifiable Finite-Size Transition Yuda Bi, Chenyu Zhang, Qiheng Wang, Vince D. Calhoun Under review at Physical Review Letters arXiv:2603.24746\n\n\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark Yuda Bi, Chenyu Zhang, Vince D. Calhoun Under review at Physical Review E arXiv:2603.20917\n\n\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation Yuda Bi, Vince D. Calhoun Under review at Physical Review E arXiv:2603.14072\n\n\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment Yuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun Under review at IEEE Journal of Biomedical and Health Informatics arXiv:2603.25880\n\n\nSpectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment Ying Zhu, Huaiwen Zhang, Vince D. Calhoun†, Yuda Bi† Under review at Briefings in Bioinformatics\n\n\nA 1/R Law for Kurtosis Contrast in Balanced Mixtures Yuda Bi, Wenjun Xiao, Linhao Bai, Vince D. Calhoun IEEE Signal Processing Letters arXiv:2602.22334"
   },
   {
     "objectID": "publications.html#journal-articles",
     "href": "publications.html#journal-articles",
     "title": "Publications",
-    "section": "",
-    "text": "A Multimodal Vision Transformer for Interpretable Fusion of Functional and Structural Neuroimaging Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun Human Brain Mapping, 45(17), e26783, 2024 DOI · PubMed"
+    "section": "Journal Articles",
+    "text": "Journal Articles\n\nGray Matters: ViT-GAN Framework for Identifying Schizophrenia Biomarkers Linking Structural MRI and Functional Network Connectivity Yuda Bi, Anees Abrol, Sihan Jia, Jing Sui, Vince D. Calhoun NeuroImage, 297, 120674, 2024 DOI\n\n\nA Multimodal Vision Transformer for Interpretable Fusion of Functional and Structural Neuroimaging Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun Human Brain Mapping, 45(17), e26783, 2024 DOI · PubMed\n\n\nPrediction of Gender from Longitudinal MRI Data via Deep Learning on Adolescent Data Reveals Unique Patterns Associated with Brain Structure and Change over a Two-year Period Yuda Bi, Anees Abrol, Zening Fu, Jiayu Chen, Jingyu Liu, Vince Calhoun Journal of Neuroscience Methods, 384, 109744, 2023 DOI"
   },
   {
     "objectID": "publications.html#conference-papers",
     "href": "publications.html#conference-papers",
     "title": "Publications",
     "section": "Conference Papers",
-    "text": "Conference Papers\n\nMultiViT2: A Data-augmented Multimodal Neuroimaging Prediction Framework via Latent Diffusion Model Yuda Bi, Sihan Jia, Yutong Gao, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE ISBI, 2025 arXiv:2506.13667\n\n\nGM-LDM: Latent Diffusion Model for Brain Biomarker Identification through Functional Data-Driven Gray Matter Synthesis Xu Hu, Jingling Yang, Sihan Jia, Yuda Bi, Vince D. Calhoun IEEE ISBI, 2025 arXiv:2506.12719"
+    "text": "Conference Papers\n\nMultiViT2: A Data-augmented Multimodal Neuroimaging Prediction Framework via Latent Diffusion Model Yuda Bi, Sihan Jia, Yutong Gao, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE ISBI, 2025 arXiv:2506.13667\n\n\nGM-LDM: Latent Diffusion Model for Brain Biomarker Identification through Functional Data-Driven Gray Matter Synthesis Xu Hu, Jingling Yang, Sihan Jia, Yuda Bi, Vince D. Calhoun IEEE ISBI, 2025 arXiv:2506.12719\n\n\nCross-Modal Synthesis of Structural MRI and Functional Connectivity Networks via Conditional ViT-GANs Yuda Bi, Anees Abrol, Jing Sui, Vince D. Calhoun IEEE ISBI, 2024 arXiv:2309.08160 · IEEE\n\n\nMultiViT: Multimodal Vision Transformer for Schizophrenia Prediction using Structural MRI and Functional Network Connectivity Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE ISBI, 2023 IEEE\n\n\nDeep Learning Prediction and Visualization of Gender Related Brain Changes from Longitudinal Structural MRI Data in the ABCD Study Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE EMBC, 2022 IEEE"
   },
   {
     "objectID": "publications.html#preprints",
     "href": "publications.html#preprints",
     "title": "Publications",
     "section": "Preprints",
-    "text": "Preprints\n\nGray Matters: An Efficient Vision Transformer GAN Framework for Predicting Functional Network Connectivity Biomarkers from Brain Structure Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun bioRxiv, 2024 bioRxiv:2024.01.11.575307\n\n\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment Yuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun arXiv, 2026 arXiv:2603.25880\n\n\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation Yuda Bi, Vince D. Calhoun arXiv, 2026 arXiv:2603.14072\n\n\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark Yuda Bi, Chenyu Zhang, Vince D. Calhoun arXiv, 2026 arXiv:2603.20917\n\n\nRedundancy as a Structural Information Principle for Learning and Generalization Yuda Bi, Ying Zhu, Vince D. Calhoun arXiv, 2025 arXiv:2510.10938"
+    "text": "Preprints\n\nRedundancy as a Structural Information Principle for Learning and Generalization Yuda Bi, Ying Zhu, Vince D. Calhoun arXiv, 2025 arXiv:2510.10938"
   },
   {
     "objectID": "notes/2026-04-quartic-detection-theory/index.html",
