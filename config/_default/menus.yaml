@@ -1,0 +1,16 @@
+main:
+  - name: About
+    url: /
+    weight: 10
+  - name: Publications
+    url: /#papers
+    weight: 20
+  - name: Projects
+    url: projects/
+    weight: 30
+  - name: Notes
+    url: notes/
+    weight: 40
+  - name: CV
+    url: experience/
+    weight: 50
