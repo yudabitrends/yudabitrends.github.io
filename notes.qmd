@@ -1,0 +1,9 @@
+---
+title: "Notes"
+listing:
+  contents: notes
+  type: default
+  sort: "date desc"
+  categories: true
+  fields: [date, title, description, categories]
+---

@@ -1,0 +1,34 @@
+---
+title: "Projects"
+toc: false
+---
+
+### Structural Intelligence (SI) Framework
+
+A unifying theoretical foundation bridging neuroscience, statistical physics, and AI through structural information principles.
+
+- **Redundancy as structure**: Optimal information redundancy for learning and generalization
+- **Spectral coherence**: Model-free metrics for quality assessment of complex structures
+- **Timescale physics**: How hidden forcing and timescale coalescence shape observable dynamics
+- **Financial connectomics**: Brain-inspired frameworks for modeling latent market dynamics
+
+---
+
+### SpecRNA-QA
+
+Spectral graph features for reference-free RNA 3D structure quality assessment. [GitHub](https://github.com/yudabitrends/specrnaq)
+
+- Model-free spectral features from RNA contact graphs
+- Reference-free quality assessment pipeline
+- Benchmarked on RNA-Puzzles and CASP-RNA datasets
+
+---
+
+### MultiViT / MultiViT2
+
+Multimodal vision transformer frameworks for brain imaging analysis.
+
+- Integrates structural MRI and functional connectivity data
+- Achieves AUC 0.833 for schizophrenia classification (MultiViT)
+- Data augmentation via latent diffusion models (MultiViT2)
+- Published in *Human Brain Mapping* and *IEEE ISBI*

@@ -1,0 +1,46 @@
+---
+title: "CV"
+toc: true
+---
+
+## Education
+
+- **PhD in Computer Science**, Georgia State University, 2020–present
+  TReNDS Center (GSU, Georgia Tech, Emory). Advisor: Prof. Vince D. Calhoun
+
+- **MS in Computer Science**, University of Georgia, 2017–2020
+
+- **BS in Management**, Shandong University of Science and Technology, 2013–2017
+
+## Research Experience
+
+**Graduate Research Assistant**, TReNDS Center, 2020–present
+
+- Developing multimodal deep learning frameworks for brain imaging analysis
+- Investigating spectral methods for structural quality assessment
+- Exploring theoretical connections between statistical physics, information theory, and neural systems
+
+## Selected Publications
+
+See full list on the [Publications](publications.qmd) page.
+
+- **Bi Y**, Abrol A, Fu Z, Calhoun VD. A multimodal vision transformer for interpretable fusion of functional and structural neuroimaging data. *Human Brain Mapping*, 2024.
+- **Bi Y**, Abrol A, Fu Z, Calhoun VD. Gray Matters: An efficient vision transformer GAN framework for predicting functional network connectivity biomarkers from brain structure. *bioRxiv*, 2024.
+- **Bi Y**, Zhu Y, Calhoun VD. Redundancy as a structural information principle for learning and generalization. *arXiv*, 2025.
+
+## Certifications
+
+- **CFA Level III**, CFA Institute
+
+## Skills
+
+- **Programming**: Python, PyTorch, TensorFlow, MATLAB, R
+- **Neuroimaging**: fMRI, sMRI, functional network connectivity analysis
+- **Theory**: Statistical physics, information theory, spectral graph theory
+- **Languages**: Chinese (native), English (professional)
+
+## Links
+
+- [Google Scholar](https://scholar.google.com/citations?user=yclnpogAAAAJ&hl=en)
+- [GitHub](https://github.com/yudabitrends)
+- [LinkedIn](https://www.linkedin.com/in/yudabi/)

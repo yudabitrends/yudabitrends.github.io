@@ -1,0 +1,55 @@
+---
+title: "Yuda Bi"
+subtitle: |
+  PhD Candidate in Computer Science
+  [TReNDS Center](https://trendscenter.org/) (Georgia State University, Georgia Tech, Emory)
+  ybi3@gsu.edu
+image: files/profile/avatar.png
+page-layout: full
+toc: false
+about:
+  template: trestles
+  image-width: 14em
+  links:
+    - icon: envelope
+      text: Email
+      href: mailto:ybi3@gsu.edu
+    - icon: mortarboard
+      text: Google Scholar
+      href: https://scholar.google.com/citations?user=yclnpogAAAAJ&hl=en
+    - icon: github
+      text: GitHub
+      href: https://github.com/yudabitrends
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/yudabi/
+
+listing:
+  - id: recent-notes
+    contents: notes
+    type: grid
+    max-items: 3
+    fields: [date, title, description]
+    sort: "date desc"
+---
+
+## About
+
+I am a PhD candidate at the [TReNDS Center](https://trendscenter.org/) (GSU, Georgia Tech, Emory), advised by [Prof. Vince D. Calhoun](https://scholar.google.com/citations?user=WNOoGKIAAAAJ). My research bridges **theoretical neuroscience**, **statistical physics**, and **deep learning**.
+
+I develop multimodal vision transformer frameworks for brain imaging analysis, and investigate fundamental principles of information structure, redundancy, and spectral methods across neuroscience, finance, and AI. I am the founder of the **Structural Intelligence (SI)** framework.
+
+**Research Interests**: Theoretical Neuroscience · Neuroimaging (fMRI/sMRI) · Statistical Physics · Financial Physics · Physics of AI
+
+**Education**:
+
+- PhD in Computer Science, Georgia State University (2020–)
+- MS in Computer Science, University of Georgia (2017–2020)
+- BS in Management, Shandong University of Science and Technology (2013–2017)
+
+---
+
+## Recent Notes
+
+:::{#recent-notes}
+:::

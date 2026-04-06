@@ -1,0 +1,149 @@
+[
+  {
+    "objectID": "cv.html",
+    "href": "cv.html",
+    "title": "CV",
+    "section": "",
+    "text": "PhD in Computer Science, Georgia State University, 2020–present TReNDS Center (GSU, Georgia Tech, Emory). Advisor: Prof. Vince D. Calhoun\nMS in Computer Science, University of Georgia, 2017–2020\nBS in Management, Shandong University of Science and Technology, 2013–2017"
+  },
+  {
+    "objectID": "cv.html#education",
+    "href": "cv.html#education",
+    "title": "CV",
+    "section": "",
+    "text": "PhD in Computer Science, Georgia State University, 2020–present TReNDS Center (GSU, Georgia Tech, Emory). Advisor: Prof. Vince D. Calhoun\nMS in Computer Science, University of Georgia, 2017–2020\nBS in Management, Shandong University of Science and Technology, 2013–2017"
+  },
+  {
+    "objectID": "cv.html#research-experience",
+    "href": "cv.html#research-experience",
+    "title": "CV",
+    "section": "Research Experience",
+    "text": "Research Experience\nGraduate Research Assistant, TReNDS Center, 2020–present\n\nDeveloping multimodal deep learning frameworks for brain imaging analysis\nInvestigating spectral methods for structural quality assessment\nExploring theoretical connections between statistical physics, information theory, and neural systems"
+  },
+  {
+    "objectID": "cv.html#selected-publications",
+    "href": "cv.html#selected-publications",
+    "title": "CV",
+    "section": "Selected Publications",
+    "text": "Selected Publications\nSee full list on the Publications page.\n\nBi Y, Abrol A, Fu Z, Calhoun VD. A multimodal vision transformer for interpretable fusion of functional and structural neuroimaging data. Human Brain Mapping, 2024.\nBi Y, Abrol A, Fu Z, Calhoun VD. Gray Matters: An efficient vision transformer GAN framework for predicting functional network connectivity biomarkers from brain structure. bioRxiv, 2024.\nBi Y, Zhu Y, Calhoun VD. Redundancy as a structural information principle for learning and generalization. arXiv, 2025."
+  },
+  {
+    "objectID": "cv.html#certifications",
+    "href": "cv.html#certifications",
+    "title": "CV",
+    "section": "Certifications",
+    "text": "Certifications\n\nCFA Level III, CFA Institute"
+  },
+  {
+    "objectID": "cv.html#skills",
+    "href": "cv.html#skills",
+    "title": "CV",
+    "section": "Skills",
+    "text": "Skills\n\nProgramming: Python, PyTorch, TensorFlow, MATLAB, R\nNeuroimaging: fMRI, sMRI, functional network connectivity analysis\nTheory: Statistical physics, information theory, spectral graph theory\nLanguages: Chinese (native), English (professional)"
+  },
+  {
+    "objectID": "cv.html#links",
+    "href": "cv.html#links",
+    "title": "CV",
+    "section": "Links",
+    "text": "Links\n\nGoogle Scholar\nGitHub\nLinkedIn"
+  },
+  {
+    "objectID": "publications.html",
+    "href": "publications.html",
+    "title": "Publications",
+    "section": "",
+    "text": "A Multimodal Vision Transformer for Interpretable Fusion of Functional and Structural Neuroimaging Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun Human Brain Mapping, 45(17), e26783, 2024 DOI · PubMed"
+  },
+  {
+    "objectID": "publications.html#journal-articles",
+    "href": "publications.html#journal-articles",
+    "title": "Publications",
+    "section": "",
+    "text": "A Multimodal Vision Transformer for Interpretable Fusion of Functional and Structural Neuroimaging Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun Human Brain Mapping, 45(17), e26783, 2024 DOI · PubMed"
+  },
+  {
+    "objectID": "publications.html#conference-papers",
+    "href": "publications.html#conference-papers",
+    "title": "Publications",
+    "section": "Conference Papers",
+    "text": "Conference Papers\n\nMultiViT2: A Data-augmented Multimodal Neuroimaging Prediction Framework via Latent Diffusion Model Yuda Bi, Sihan Jia, Yutong Gao, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE ISBI, 2025 arXiv:2506.13667\n\n\nGM-LDM: Latent Diffusion Model for Brain Biomarker Identification through Functional Data-Driven Gray Matter Synthesis Xu Hu, Jingling Yang, Sihan Jia, Yuda Bi, Vince D. Calhoun IEEE ISBI, 2025 arXiv:2506.12719"
+  },
+  {
+    "objectID": "publications.html#preprints",
+    "href": "publications.html#preprints",
+    "title": "Publications",
+    "section": "Preprints",
+    "text": "Preprints\n\nGray Matters: An Efficient Vision Transformer GAN Framework for Predicting Functional Network Connectivity Biomarkers from Brain Structure Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun bioRxiv, 2024 bioRxiv:2024.01.11.575307\n\n\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment Yuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun arXiv, 2026 arXiv:2603.25880\n\n\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation Yuda Bi, Vince D. Calhoun arXiv, 2026 arXiv:2603.14072\n\n\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark Yuda Bi, Chenyu Zhang, Vince D. Calhoun arXiv, 2026 arXiv:2603.20917\n\n\nRedundancy as a Structural Information Principle for Learning and Generalization Yuda Bi, Ying Zhu, Vince D. Calhoun arXiv, 2025 arXiv:2510.10938"
+  },
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "Structural Intelligence (SI) Framework\nA unifying theoretical foundation bridging neuroscience, statistical physics, and AI through structural information principles.\n\nRedundancy as structure: Optimal information redundancy for learning and generalization\nSpectral coherence: Model-free metrics for quality assessment of complex structures\nTimescale physics: How hidden forcing and timescale coalescence shape observable dynamics\nFinancial connectomics: Brain-inspired frameworks for modeling latent market dynamics\n\n\n\n\nSpecRNA-QA\nSpectral graph features for reference-free RNA 3D structure quality assessment. GitHub\n\nModel-free spectral features from RNA contact graphs\nReference-free quality assessment pipeline\nBenchmarked on RNA-Puzzles and CASP-RNA datasets\n\n\n\n\nMultiViT / MultiViT2\nMultimodal vision transformer frameworks for brain imaging analysis.\n\nIntegrates structural MRI and functional connectivity data\nAchieves AUC 0.833 for schizophrenia classification (MultiViT)\nData augmentation via latent diffusion models (MultiViT2)\nPublished in Human Brain Mapping and IEEE ISBI"
+  },
+  {
+    "objectID": "notes.html",
+    "href": "notes.html",
+    "title": "Notes",
+    "section": "",
+    "text": "Spectral Methods in Brain Network Analysis\n\n\n\nspectral methods\n\nbrain networks\n\ngraph theory\n\n\n\nNotes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Yuda Bi",
+    "section": "",
+    "text": "I am a PhD candidate at the TReNDS Center (GSU, Georgia Tech, Emory), advised by Prof. Vince D. Calhoun. My research bridges theoretical neuroscience, statistical physics, and deep learning.\nI develop multimodal vision transformer frameworks for brain imaging analysis, and investigate fundamental principles of information structure, redundancy, and spectral methods across neuroscience, finance, and AI. I am the founder of the Structural Intelligence (SI) framework.\nResearch Interests: Theoretical Neuroscience · Neuroimaging (fMRI/sMRI) · Statistical Physics · Financial Physics · Physics of AI\nEducation:\n\nPhD in Computer Science, Georgia State University (2020–)\nMS in Computer Science, University of Georgia (2017–2020)\nBS in Management, Shandong University of Science and Technology (2013–2017)"
+  },
+  {
+    "objectID": "index.html#about",
+    "href": "index.html#about",
+    "title": "Yuda Bi",
+    "section": "",
+    "text": "I am a PhD candidate at the TReNDS Center (GSU, Georgia Tech, Emory), advised by Prof. Vince D. Calhoun. My research bridges theoretical neuroscience, statistical physics, and deep learning.\nI develop multimodal vision transformer frameworks for brain imaging analysis, and investigate fundamental principles of information structure, redundancy, and spectral methods across neuroscience, finance, and AI. I am the founder of the Structural Intelligence (SI) framework.\nResearch Interests: Theoretical Neuroscience · Neuroimaging (fMRI/sMRI) · Statistical Physics · Financial Physics · Physics of AI\nEducation:\n\nPhD in Computer Science, Georgia State University (2020–)\nMS in Computer Science, University of Georgia (2017–2020)\nBS in Management, Shandong University of Science and Technology (2013–2017)"
+  },
+  {
+    "objectID": "index.html#recent-notes",
+    "href": "index.html#recent-notes",
+    "title": "Yuda Bi",
+    "section": "Recent Notes",
+    "text": "Recent Notes\n\n\n\n\n\n\n\nSpectral Methods in Brain Network Analysis\n\n\nNotes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "notes/2026-04-spectral-brain-networks/index.html",
+    "href": "notes/2026-04-spectral-brain-networks/index.html",
+    "title": "Spectral Methods in Brain Network Analysis",
+    "section": "",
+    "text": "Given a brain connectivity matrix \\(W \\in \\mathbb{R}^{n \\times n}\\) where \\(w_{ij}\\) represents the functional connectivity between regions \\(i\\) and \\(j\\), the normalized graph Laplacian is:\n\\[\n\\mathcal{L} = I - D^{-1/2} W D^{-1/2}\n\\]\nwhere \\(D = \\text{diag}(d_1, \\ldots, d_n)\\) is the degree matrix with \\(d_i = \\sum_j w_{ij}\\)."
+  },
+  {
+    "objectID": "notes/2026-04-spectral-brain-networks/index.html#graph-laplacian-and-brain-networks",
+    "href": "notes/2026-04-spectral-brain-networks/index.html#graph-laplacian-and-brain-networks",
+    "title": "Spectral Methods in Brain Network Analysis",
+    "section": "",
+    "text": "Given a brain connectivity matrix \\(W \\in \\mathbb{R}^{n \\times n}\\) where \\(w_{ij}\\) represents the functional connectivity between regions \\(i\\) and \\(j\\), the normalized graph Laplacian is:\n\\[\n\\mathcal{L} = I - D^{-1/2} W D^{-1/2}\n\\]\nwhere \\(D = \\text{diag}(d_1, \\ldots, d_n)\\) is the degree matrix with \\(d_i = \\sum_j w_{ij}\\)."
+  },
+  {
+    "objectID": "notes/2026-04-spectral-brain-networks/index.html#spectral-decomposition",
+    "href": "notes/2026-04-spectral-brain-networks/index.html#spectral-decomposition",
+    "title": "Spectral Methods in Brain Network Analysis",
+    "section": "Spectral Decomposition",
+    "text": "Spectral Decomposition\nThe eigendecomposition of \\(\\mathcal{L}\\) yields:\n\\[\n\\mathcal{L} = U \\Lambda U^T = \\sum_{k=0}^{n-1} \\lambda_k \\mathbf{u}_k \\mathbf{u}_k^T\n\\]\nwhere \\(0 = \\lambda_0 \\leq \\lambda_1 \\leq \\cdots \\leq \\lambda_{n-1} \\leq 2\\).\n\nKey Properties\n\nNumber of zero eigenvalues = number of connected components\nThe Fiedler value \\(\\lambda_1\\) measures algebraic connectivity\nThe spectral gap \\(\\lambda_1 - \\lambda_0\\) indicates community separation strength"
+  },
+  {
+    "objectID": "notes/2026-04-spectral-brain-networks/index.html#participation-ratio",
+    "href": "notes/2026-04-spectral-brain-networks/index.html#participation-ratio",
+    "title": "Spectral Methods in Brain Network Analysis",
+    "section": "Participation Ratio",
+    "text": "Participation Ratio\nThe effective rank via participation ratio provides a model-free measure of spectral spread:\n\\[\n\\text{PR}(\\boldsymbol{\\lambda}) = \\frac{\\left(\\sum_k \\lambda_k\\right)^2}{\\sum_k \\lambda_k^2}\n\\]\nThis ranges from 1 (single dominant eigenvalue) to \\(n\\) (uniform spectrum), capturing the effective dimensionality of the network."
+  },
+  {
+    "objectID": "notes/2026-04-spectral-brain-networks/index.html#connection-to-statistical-physics",
+    "href": "notes/2026-04-spectral-brain-networks/index.html#connection-to-statistical-physics",
+    "title": "Spectral Methods in Brain Network Analysis",
+    "section": "Connection to Statistical Physics",
+    "text": "Connection to Statistical Physics\nThe graph Laplacian connects to the partition function of a Gaussian field on the network:\n\\[\nZ(\\beta) = \\int \\exp\\left(-\\frac{\\beta}{2} \\mathbf{x}^T \\mathcal{L} \\mathbf{x}\\right) d\\mathbf{x} = \\prod_{k=1}^{n-1} \\sqrt{\\frac{2\\pi}{\\beta \\lambda_k}}\n\\]\nThe free energy \\(F = -\\frac{1}{\\beta}\\ln Z\\) encodes thermodynamic properties of signal propagation on the network."
+  }
+]

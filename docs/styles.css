@@ -1,0 +1,149 @@
+/* === Black & White Minimal Academic Theme === */
+
+/* Override Bootstrap primary color to black */
+:root {
+  --bs-primary: #000 !important;
+  --bs-link-color: #222 !important;
+  --bs-link-hover-color: #000 !important;
+}
+
+/* Navbar: clean white background, black text */
+.navbar {
+  border-bottom: 1px solid #e0e0e0 !important;
+  background-color: #fff !important;
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link,
+.navbar .navbar-toggler {
+  color: #222 !important;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: #000 !important;
+  font-weight: 600;
+}
+
+/* Body typography */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #222;
+  line-height: 1.7;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #000;
+  font-weight: 600;
+}
+
+/* Links */
+a {
+  color: #222;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  color: #000;
+}
+
+/* About page template tweaks */
+.about-entity .about-links a {
+  color: #333 !important;
+  border: 1px solid #ccc !important;
+  background: transparent !important;
+}
+
+.about-entity .about-links a:hover {
+  background: #f5f5f5 !important;
+  border-color: #999 !important;
+}
+
+/* Footer */
+.nav-footer {
+  border-top: 1px solid #e0e0e0;
+  background-color: #fff;
+  color: #666;
+}
+
+/* Code blocks */
+pre {
+  background-color: #f8f8f8 !important;
+  border: 1px solid #e0e0e0;
+}
+
+code {
+  color: #333;
+}
+
+/* Listing cards */
+.quarto-listing .card {
+  border: 1px solid #e0e0e0;
+  border-radius: 0;
+}
+
+.quarto-listing .card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Table of contents */
+.sidebar nav[role="doc-toc"] a {
+  color: #555;
+}
+
+.sidebar nav[role="doc-toc"] a.active {
+  color: #000;
+  font-weight: 600;
+}
+
+/* Publication listing */
+.pub-item {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.pub-item:last-child {
+  border-bottom: none;
+}
+
+.pub-title {
+  font-weight: 600;
+  color: #000;
+}
+
+.pub-authors {
+  color: #555;
+  font-size: 0.9em;
+}
+
+.pub-venue {
+  font-style: italic;
+  color: #555;
+  font-size: 0.9em;
+}
+
+.pub-links a {
+  display: inline-block;
+  margin-right: 0.5rem;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.8em;
+  border: 1px solid #ccc;
+  color: #333;
+  text-decoration: none;
+}
+
+.pub-links a:hover {
+  background: #f0f0f0;
+  border-color: #999;
+}
+
+/* Search */
+.search-input {
+  border: 1px solid #ccc !important;
+}
+
+/* Math display */
+.MathJax, .katex {
+  font-size: 1.05em;
+}

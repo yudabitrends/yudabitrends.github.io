@@ -1,0 +1,67 @@
+---
+title: "Publications"
+toc: true
+toc-depth: 2
+---
+
+## Journal Articles
+
+::: {.pub-item}
+[**A Multimodal Vision Transformer for Interpretable Fusion of Functional and Structural Neuroimaging Data**]{.pub-title}
+[**Yuda Bi**, Anees Abrol, Zening Fu, Vince D. Calhoun]{.pub-authors}
+[*Human Brain Mapping*, 45(17), e26783, 2024]{.pub-venue}
+[DOI](https://doi.org/10.1002/hbm.26783){.pub-link} · [PubMed](https://pubmed.ncbi.nlm.nih.gov/39600159/)
+:::
+
+## Conference Papers
+
+::: {.pub-item}
+[**MultiViT2: A Data-augmented Multimodal Neuroimaging Prediction Framework via Latent Diffusion Model**]{.pub-title}
+[**Yuda Bi**, Sihan Jia, Yutong Gao, Anees Abrol, Zening Fu, Vince D. Calhoun]{.pub-authors}
+[*IEEE ISBI*, 2025]{.pub-venue}
+[arXiv:2506.13667](https://arxiv.org/abs/2506.13667)
+:::
+
+::: {.pub-item}
+[**GM-LDM: Latent Diffusion Model for Brain Biomarker Identification through Functional Data-Driven Gray Matter Synthesis**]{.pub-title}
+[Xu Hu, Jingling Yang, Sihan Jia, **Yuda Bi**, Vince D. Calhoun]{.pub-authors}
+[*IEEE ISBI*, 2025]{.pub-venue}
+[arXiv:2506.12719](https://arxiv.org/abs/2506.12719)
+:::
+
+## Preprints
+
+::: {.pub-item}
+[**Gray Matters: An Efficient Vision Transformer GAN Framework for Predicting Functional Network Connectivity Biomarkers from Brain Structure**]{.pub-title}
+[**Yuda Bi**, Anees Abrol, Zening Fu, Vince D. Calhoun]{.pub-authors}
+[*bioRxiv*, 2024]{.pub-venue}
+[bioRxiv:2024.01.11.575307](https://www.biorxiv.org/content/10.1101/2024.01.11.575307v1)
+:::
+
+::: {.pub-item}
+[**Spectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment**]{.pub-title}
+[**Yuda Bi**, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun]{.pub-authors}
+[*arXiv*, 2026]{.pub-venue}
+[arXiv:2603.25880](https://arxiv.org/abs/2603.25880)
+:::
+
+::: {.pub-item}
+[**Conditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation**]{.pub-title}
+[**Yuda Bi**, Vince D. Calhoun]{.pub-authors}
+[*arXiv*, 2026]{.pub-venue}
+[arXiv:2603.14072](https://arxiv.org/abs/2603.14072)
+:::
+
+::: {.pub-item}
+[**Timescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark**]{.pub-title}
+[**Yuda Bi**, Chenyu Zhang, Vince D. Calhoun]{.pub-authors}
+[*arXiv*, 2026]{.pub-venue}
+[arXiv:2603.20917](https://arxiv.org/abs/2603.20917)
+:::
+
+::: {.pub-item}
+[**Redundancy as a Structural Information Principle for Learning and Generalization**]{.pub-title}
+[**Yuda Bi**, Ying Zhu, Vince D. Calhoun]{.pub-authors}
+[*arXiv*, 2025]{.pub-venue}
+[arXiv:2510.10938](https://arxiv.org/abs/2510.10938)
+:::

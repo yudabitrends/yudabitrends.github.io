@@ -1,0 +1,48 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Yuda Bi"
+  description: "PhD Candidate at TReNDS Center — Theoretical Neuroscience, Statistical Physics, Physics of AI"
+  site-url: "https://yudabitrends.github.io"
+  open-graph: true
+
+  navbar:
+    background: light
+    left:
+      - text: About
+        href: index.qmd
+      - text: Publications
+        href: publications.qmd
+      - text: Projects
+        href: projects.qmd
+      - text: Notes
+        href: notes.qmd
+      - text: CV
+        href: cv.qmd
+    right:
+      - icon: envelope
+        href: mailto:ybi3@gsu.edu
+      - icon: github
+        href: https://github.com/yudabitrends
+        target: _blank
+      - icon: mortarboard
+        href: https://scholar.google.com/citations?user=yclnpogAAAAJ&hl=en
+        target: _blank
+
+  page-footer:
+    center: "Yuda Bi &copy; 2026"
+
+  search:
+    location: navbar
+    type: textbox
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    footnotes-hover: true
+    link-external-newwindow: true
+    link-external-icon: false
