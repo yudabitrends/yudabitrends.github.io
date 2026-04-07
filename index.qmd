@@ -58,6 +58,26 @@ In 2025 I pivoted from engineering-driven multimodal neuroimaging toward a **the
 
 ---
 
+::: {.theory-card}
+
+#### [The Geometry of Invisible Forces: A Quartic Detection Theory](notes/2026-04-quartic-detection-theory/)
+
+::: {.theory-eq}
+$D_{\mathrm{KL}}^{\min}(\lambda) = C\,\lambda^4 + O(\lambda^6)$
+:::
+
+Hidden variables are orders of magnitude harder to detect than classical statistics predicts. When a reduced model absorbs the leading perturbation through reparametrization, only the *normal residual* survives — producing a quartic, not quadratic, detection law. A single probe is provably blind; two probes sharing the hidden driver break the impossibility via cross-spectral geometry.
+
+Four papers under review at *Physical Review Letters* and *Physical Review E*.
+
+::: {.theory-links}
+[Theory Note](notes/2026-04-quartic-detection-theory/){.btn-note}
+[Project Page](projects.html#quartic-detection-theory-the-geometry-of-hidden-variables){.btn-project}
+[Tutorial PDF](files/quartic_detection_tutorial.pdf){.btn-pdf}
+:::
+
+:::
+
 ::: {.motto}
 "The sad truth is that most evil is done by people who never make up their minds to be good or evil."
 [— Hannah Arendt]{.author}

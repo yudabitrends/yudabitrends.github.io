@@ -174,6 +174,111 @@ code { color: var(--accent-purple); }
   margin-bottom: 0.5rem;
 }
 
+/* Featured theory card */
+.theory-card {
+  position: relative;
+  margin: 2rem auto;
+  max-width: 680px;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%);
+  border: 1.5px solid var(--accent-blue);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.theory-card::before {
+  content: "NEW THEORY";
+  position: absolute;
+  top: 12px;
+  right: -32px;
+  background: var(--accent-rose);
+  color: #fff;
+  font-size: 0.65em;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 0.2rem 2.5rem;
+  transform: rotate(35deg);
+}
+
+.theory-card h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.05em;
+  color: #111;
+}
+
+.theory-card h4 a {
+  color: #111;
+  text-decoration: none;
+}
+
+.theory-card h4 a:hover {
+  color: var(--accent-blue);
+}
+
+.theory-card .theory-eq {
+  text-align: center;
+  margin: 0.8rem 0;
+  font-size: 1.1em;
+  color: var(--accent-purple);
+  font-weight: 600;
+}
+
+.theory-card p {
+  font-size: 0.88em;
+  color: #444;
+  margin: 0.4rem 0;
+  line-height: 1.5;
+}
+
+.theory-card .theory-links {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.theory-card .theory-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.8em;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.theory-card .theory-links a.btn-note {
+  color: var(--accent-blue);
+  border: 1.5px solid var(--accent-blue);
+  background: transparent;
+}
+.theory-card .theory-links a.btn-note:hover {
+  background: var(--accent-blue);
+  color: #fff;
+}
+
+.theory-card .theory-links a.btn-project {
+  color: var(--accent-teal);
+  border: 1.5px solid var(--accent-teal);
+  background: transparent;
+}
+.theory-card .theory-links a.btn-project:hover {
+  background: var(--accent-teal);
+  color: #fff;
+}
+
+.theory-card .theory-links a.btn-pdf {
+  color: #fff;
+  background: var(--accent-rose);
+  border: 1.5px solid var(--accent-rose);
+}
+.theory-card .theory-links a.btn-pdf:hover {
+  background: #be123c;
+  border-color: #be123c;
+}
+
 /* Search */
 .search-input { border: 1px solid #ccc !important; border-radius: 6px !important; }
 
