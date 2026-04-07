@@ -1,9 +1,8 @@
 ---
 title: "Yuda Bi"
 subtitle: |
-  PhD Candidate in Computer Science
+  Ph.D. in Computer Science \
   [TReNDS Center](https://trendscenter.org/) (Georgia State University, Georgia Tech, Emory)
-  ybi3@gsu.edu
 image: files/profile/avatar.jpg
 page-layout: full
 toc: false
@@ -35,17 +34,38 @@ listing:
 
 ## About
 
-I am a PhD candidate at the [TReNDS Center](https://trendscenter.org/) (GSU, Georgia Tech, Emory), advised by [Prof. Vince D. Calhoun](https://scholar.google.com/citations?user=WNOoGKIAAAAJ).
+I received my Ph.D. from the [TReNDS Center](https://trendscenter.org/) (GSU, Georgia Tech, Emory), advised by [Prof. Vince D. Calhoun](https://scholar.google.com/citations?user=WNOoGKIAAAAJ).
 
-Starting in 2025, I pivoted from engineering-driven multimodal neuroimaging toward a theory-first research program grounded in **statistical physics**, **nonequilibrium thermodynamics**, and **information geometry**. My current work develops exact detectability theory for hidden variables on statistical manifolds — with applications spanning theoretical neuroscience, stochastic thermodynamics, financial physics, and spectral methods for structural biology.
+In 2025 I pivoted from engineering-driven multimodal neuroimaging toward a **theory-first** research program grounded in statistical physics, nonequilibrium thermodynamics, and information geometry.
 
-**Research Interests**: Statistical Physics · Information Geometry · Nonequilibrium Thermodynamics · Theoretical Neuroscience · Spectral Graph Theory · Financial Physics
+### Research Directions
 
-**Education**:
+[Statistical Physics]{.research-tag} [Information Geometry]{.research-tag} [Nonequilibrium Thermodynamics]{.research-tag} [Theoretical Neuroscience]{.research-tag} [Spectral Graph Theory]{.research-tag} [Financial Physics]{.research-tag} [Structural Biology]{.research-tag}
 
-- PhD in Computer Science, Georgia State University (2020–)
-- MS in Computer Science, University of Georgia (2017–2020)
-- BS in Management, Shandong University of Science and Technology (2013–2017)
+### Education
+
+::: {.education-item}
+**Ph.D. in Computer Science**, Georgia State University, 2020–2025
+:::
+
+::: {.education-item}
+**M.S. in Computer Science**, University of Georgia, 2017–2020
+:::
+
+::: {.education-item}
+**B.S. in Management**, Shandong University of Science and Technology, 2013–2017
+:::
+
+---
+
+::: {.motto}
+"The sad truth is that most evil is done by people who never make up their minds to be good or evil."
+[— Hannah Arendt]{.author}
+:::
+
+::: {.visitor-badge}
+![](https://visitor-badge.laobi.icu/badge?page_id=yudabitrends.github.io&left_color=gray&right_color=blue)
+:::
 
 ---
 

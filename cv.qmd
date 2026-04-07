@@ -5,7 +5,7 @@ toc: true
 
 ## Education
 
-- **PhD in Computer Science**, Georgia State University, 2020–present
+- **Ph.D. in Computer Science**, Georgia State University, 2020–2025
   TReNDS Center (GSU, Georgia Tech, Emory). Advisor: Prof. Vince D. Calhoun
 
 - **MS in Computer Science**, University of Georgia, 2017–2020
