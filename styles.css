@@ -1,4 +1,4 @@
-/* === Minimal Academic Theme with Accent Colors === */
+/* === Academic Theme with Accent Colors === */
 
 :root {
   --accent-blue: #2563eb;
@@ -6,24 +6,28 @@
   --accent-purple: #7c3aed;
   --accent-rose: #e11d48;
   --accent-amber: #d97706;
+  --accent-indigo: #4f46e5;
+  --accent-emerald: #059669;
   --bs-primary: #1a1a1a !important;
   --bs-link-color: var(--accent-blue) !important;
   --bs-link-hover-color: #1d4ed8 !important;
 }
 
-/* Navbar */
+/* ═══ Navbar ═══ */
 .navbar {
-  border-bottom: 1px solid #e0e0e0 !important;
+  border-bottom: 2px solid var(--accent-blue) !important;
   background-color: #fff !important;
 }
 
 .navbar .navbar-brand {
-  color: #111 !important;
+  color: var(--accent-blue) !important;
   font-weight: 700;
 }
 
 .navbar .nav-link {
   color: #444 !important;
+  font-weight: 500;
+  transition: color 0.2s;
 }
 
 .navbar .nav-link:hover,
@@ -32,7 +36,7 @@
   font-weight: 600;
 }
 
-/* Body */
+/* ═══ Body ═══ */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: #222;
@@ -44,19 +48,16 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
 }
 
-h2 { border-bottom: 2px solid var(--accent-blue); padding-bottom: 0.3rem; display: inline-block; }
+/* Colored section headers */
+h1 { color: var(--accent-indigo); }
+h2 { border-bottom: 2px solid var(--accent-blue); padding-bottom: 0.3rem; display: inline-block; color: var(--accent-blue); }
+h3 { color: var(--accent-teal); }
 
-/* Links: blue accent */
+/* ═══ Links ═══ */
 a { color: var(--accent-blue); text-decoration: none; }
 a:hover { color: #1d4ed8; text-decoration: underline; }
 
-/* Strong/bold inside pub-item: keep dark */
-.pub-title { font-weight: 600; color: #111; }
-.pub-authors { color: #555; font-size: 0.9em; }
-.pub-authors strong { color: var(--accent-teal); }
-.pub-venue { font-style: italic; color: #666; font-size: 0.9em; }
-
-/* About page links */
+/* ═══ About page links ═══ */
 .about-entity .about-links a {
   color: var(--accent-blue) !important;
   border: 1.5px solid var(--accent-blue) !important;
@@ -64,45 +65,78 @@ a:hover { color: #1d4ed8; text-decoration: underline; }
   border-radius: 6px !important;
   transition: all 0.2s;
 }
-
 .about-entity .about-links a:hover {
   background: var(--accent-blue) !important;
   color: #fff !important;
 }
 
-/* Footer */
+/* ═══ Footer ═══ */
 .nav-footer {
-  border-top: 1px solid #e0e0e0;
-  background-color: #fafafa;
-  color: #666;
+  border-top: 2px solid var(--accent-blue);
+  background: linear-gradient(180deg, #fafafa 0%, #f0f4ff 100%);
+  color: #555;
 }
 
-/* Code */
-pre { background-color: #f6f8fa !important; border: 1px solid #e0e0e0; border-radius: 6px; }
+/* ═══ Code ═══ */
+pre {
+  background-color: #f6f8fa !important;
+  border: 1px solid #ddd;
+  border-left: 4px solid var(--accent-purple);
+  border-radius: 6px;
+}
 code { color: var(--accent-purple); }
 
-/* Listing cards */
+/* ═══ Listing cards (Notes page) ═══ */
 .quarto-listing .card {
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  border-radius: 10px;
+  border-top: 3px solid var(--accent-blue);
   transition: box-shadow 0.2s, transform 0.2s;
 }
-
 .quarto-listing .card:hover {
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
-  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.15);
+  transform: translateY(-3px);
+  border-top-color: var(--accent-purple);
+}
+.quarto-listing .card .card-title {
+  color: var(--accent-indigo);
+  font-weight: 600;
+}
+.quarto-listing .card .listing-categories .listing-category {
+  background: var(--accent-teal) !important;
+  color: #fff !important;
+  border-radius: 10px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.7em;
+  font-weight: 600;
 }
 
-/* TOC */
+/* ═══ TOC ═══ */
 .sidebar nav[role="doc-toc"] a { color: #666; }
-.sidebar nav[role="doc-toc"] a.active { color: var(--accent-blue); font-weight: 600; border-left: 3px solid var(--accent-blue); padding-left: 8px; }
+.sidebar nav[role="doc-toc"] a.active {
+  color: var(--accent-blue);
+  font-weight: 600;
+  border-left: 3px solid var(--accent-blue);
+  padding-left: 8px;
+}
 
-/* Publication items */
+/* ═══ Publication items ═══ */
 .pub-item {
-  padding: 0.8rem 0;
+  padding: 1rem 0;
   border-bottom: 1px solid #eee;
+  border-left: 3px solid transparent;
+  padding-left: 0.8rem;
+  transition: border-color 0.2s;
+}
+.pub-item:hover {
+  border-left-color: var(--accent-blue);
+  background: #fafbff;
 }
 .pub-item:last-child { border-bottom: none; }
+.pub-title { font-weight: 600; color: #111; }
+.pub-authors { color: #555; font-size: 0.9em; }
+.pub-authors strong { color: var(--accent-teal); font-weight: 700; }
+.pub-venue { font-style: italic; color: var(--accent-purple); font-size: 0.9em; font-weight: 500; }
 
 /* PDF download buttons */
 .pub-pdf {
@@ -128,53 +162,127 @@ code { color: var(--accent-purple); }
   padding: 0.2rem 0.6rem;
   font-size: 0.8em;
   color: var(--accent-blue);
-  border: 1px solid var(--accent-blue);
+  border: 1.5px solid var(--accent-blue);
   border-radius: 4px;
   text-decoration: none;
   transition: all 0.2s;
 }
 .pub-link:hover { background: var(--accent-blue); color: #fff; text-decoration: none; }
 
-/* Motto / quote styling */
+/* Publication section headers with colored icons */
+#publications h2 {
+  color: var(--accent-indigo);
+}
+
+/* Under Review section — amber accent */
+#under-review ~ .pub-item,
+h2#under-review {
+  border-left-color: var(--accent-amber);
+}
+
+/* ═══ Projects page ═══ */
+#projects h3,
+.quarto-title h1 + .quarto-categories ~ h3 {
+  color: var(--accent-indigo);
+  border-left: 4px solid var(--accent-purple);
+  padding-left: 0.8rem;
+}
+
+/* Project description lists */
+#projects ul, .content ul {
+  list-style: none;
+  padding-left: 0;
+}
+#projects li::before {
+  content: "→ ";
+  color: var(--accent-teal);
+  font-weight: 700;
+}
+
+/* ═══ CV page ═══ */
+
+/* CV section headers */
+#cv h2, #education ~ h2, #research-trajectory ~ h2 {
+  color: var(--accent-indigo);
+  border-bottom-color: var(--accent-purple);
+}
+
+/* CV list items with colored bullets */
+#cv ul li::marker {
+  color: var(--accent-blue);
+}
+
+/* ═══ Notes page — category filter pills ═══ */
+.quarto-listing-category .category {
+  border: 1.5px solid var(--accent-teal) !important;
+  color: var(--accent-teal) !important;
+  border-radius: 12px !important;
+  padding: 0.15rem 0.6rem !important;
+  font-size: 0.8em;
+  transition: all 0.2s;
+}
+.quarto-listing-category .category:hover,
+.quarto-listing-category .category.active {
+  background: var(--accent-teal) !important;
+  color: #fff !important;
+}
+
+/* ═══ Motto / quote ═══ */
 .motto {
   text-align: center;
   margin: 2rem auto;
   padding: 1.5rem 2rem;
   max-width: 600px;
   border-left: 4px solid var(--accent-purple);
-  background: #faf5ff;
+  background: linear-gradient(135deg, #faf5ff 0%, #f0f4ff 100%);
   border-radius: 0 8px 8px 0;
   font-style: italic;
   color: #4a4a4a;
 }
 .motto .author { display: block; margin-top: 0.5rem; font-style: normal; font-weight: 600; color: var(--accent-purple); }
 
-/* Visitor counter */
+/* ═══ Visitor counter ═══ */
 .visitor-badge {
   text-align: center;
   margin: 1rem 0;
   opacity: 0.7;
 }
 
-/* About section structured layout */
+/* ═══ About section ═══ */
 .research-tag {
   display: inline-block;
-  padding: 0.15rem 0.6rem;
+  padding: 0.2rem 0.7rem;
   margin: 0.15rem;
   font-size: 0.8em;
-  background: #eff6ff;
-  color: var(--accent-blue);
-  border-radius: 12px;
-  border: 1px solid #bfdbfe;
+  border-radius: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+/* Alternate tag colors */
+.research-tag:nth-child(1) { background: #eff6ff; color: var(--accent-blue); border: 1px solid #bfdbfe; }
+.research-tag:nth-child(2) { background: #faf5ff; color: var(--accent-purple); border: 1px solid #e9d5ff; }
+.research-tag:nth-child(3) { background: #fff1f2; color: var(--accent-rose); border: 1px solid #fecdd3; }
+.research-tag:nth-child(4) { background: #f0fdfa; color: var(--accent-teal); border: 1px solid #99f6e4; }
+.research-tag:nth-child(5) { background: #fffbeb; color: var(--accent-amber); border: 1px solid #fde68a; }
+.research-tag:nth-child(6) { background: #eef2ff; color: var(--accent-indigo); border: 1px solid #c7d2fe; }
+.research-tag:nth-child(7) { background: #ecfdf5; color: var(--accent-emerald); border: 1px solid #a7f3d0; }
+
+.research-tag:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .education-item {
   padding-left: 1rem;
-  border-left: 3px solid #e0e0e0;
+  border-left: 3px solid var(--accent-blue);
   margin-bottom: 0.5rem;
+  transition: border-color 0.2s;
+}
+.education-item:hover {
+  border-left-color: var(--accent-purple);
 }
 
-/* Featured theory card */
+/* ═══ Featured theory card ═══ */
 .theory-card {
   position: relative;
   margin: 2rem auto;
@@ -185,7 +293,6 @@ code { color: var(--accent-purple); }
   border-radius: 12px;
   overflow: hidden;
 }
-
 .theory-card::before {
   content: "NEW THEORY";
   position: absolute;
@@ -199,22 +306,9 @@ code { color: var(--accent-purple); }
   padding: 0.2rem 2.5rem;
   transform: rotate(35deg);
 }
-
-.theory-card h4 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.05em;
-  color: #111;
-}
-
-.theory-card h4 a {
-  color: #111;
-  text-decoration: none;
-}
-
-.theory-card h4 a:hover {
-  color: var(--accent-blue);
-}
-
+.theory-card h4 { margin: 0 0 0.5rem 0; font-size: 1.05em; color: var(--accent-indigo); }
+.theory-card h4 a { color: var(--accent-indigo); text-decoration: none; }
+.theory-card h4 a:hover { color: var(--accent-blue); }
 .theory-card .theory-eq {
   text-align: center;
   margin: 0.8rem 0;
@@ -222,21 +316,13 @@ code { color: var(--accent-purple); }
   color: var(--accent-purple);
   font-weight: 600;
 }
-
-.theory-card p {
-  font-size: 0.88em;
-  color: #444;
-  margin: 0.4rem 0;
-  line-height: 1.5;
-}
-
+.theory-card p { font-size: 0.88em; color: #444; margin: 0.4rem 0; line-height: 1.5; }
 .theory-card .theory-links {
   display: flex;
   gap: 0.6rem;
   margin-top: 1rem;
   flex-wrap: wrap;
 }
-
 .theory-card .theory-links a {
   display: inline-flex;
   align-items: center;
@@ -248,39 +334,91 @@ code { color: var(--accent-purple); }
   text-decoration: none;
   transition: all 0.2s;
 }
-
 .theory-card .theory-links a.btn-note {
   color: var(--accent-blue);
   border: 1.5px solid var(--accent-blue);
   background: transparent;
 }
-.theory-card .theory-links a.btn-note:hover {
-  background: var(--accent-blue);
-  color: #fff;
-}
-
+.theory-card .theory-links a.btn-note:hover { background: var(--accent-blue); color: #fff; }
 .theory-card .theory-links a.btn-project {
   color: var(--accent-teal);
   border: 1.5px solid var(--accent-teal);
   background: transparent;
 }
-.theory-card .theory-links a.btn-project:hover {
-  background: var(--accent-teal);
-  color: #fff;
-}
-
+.theory-card .theory-links a.btn-project:hover { background: var(--accent-teal); color: #fff; }
 .theory-card .theory-links a.btn-pdf {
   color: #fff;
   background: var(--accent-rose);
   border: 1.5px solid var(--accent-rose);
 }
-.theory-card .theory-links a.btn-pdf:hover {
-  background: #be123c;
-  border-color: #be123c;
+.theory-card .theory-links a.btn-pdf:hover { background: #be123c; border-color: #be123c; }
+
+/* ═══ Blockquotes (in notes) ═══ */
+blockquote {
+  border-left: 4px solid var(--accent-purple);
+  background: #faf5ff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0 6px 6px 0;
+  color: #444;
 }
 
-/* Search */
+/* ═══ Tables ═══ */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+table thead th {
+  background: var(--accent-indigo);
+  color: #fff;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.9em;
+  text-align: left;
+}
+table tbody td {
+  padding: 0.4rem 0.8rem;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9em;
+}
+table tbody tr:hover {
+  background: #f8faff;
+}
+
+/* ═══ Horizontal rules ═══ */
+hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-blue) 0%, var(--accent-purple) 50%, var(--accent-rose) 100%);
+  margin: 2rem 0;
+  border-radius: 1px;
+}
+
+/* ═══ Images in notes ═══ */
+.quarto-figure {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.quarto-figure figcaption {
+  background: #f8faff;
+  padding: 0.5rem 1rem;
+  font-size: 0.85em;
+  color: #555;
+  border-top: 1px solid #eee;
+}
+
+/* ═══ Search ═══ */
 .search-input { border: 1px solid #ccc !important; border-radius: 6px !important; }
 
-/* Math */
+/* ═══ Math ═══ */
 .MathJax, .katex { font-size: 1.05em; }
+
+/* ═══ Strong/emphasis in body ═══ */
+strong { color: #111; }
+em { color: var(--accent-teal); }
+
+/* ═══ Scrollbar (webkit) ═══ */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f0f0f0; }
+::-webkit-scrollbar-thumb { background: var(--accent-blue); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #1d4ed8; }
