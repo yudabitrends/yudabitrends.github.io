@@ -1,8 +1,29 @@
 ---
 title: "Spectral Methods in Brain Network Analysis"
 description: "Notes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations."
+author: "Yuda Bi"
 date: 2026-04-07
 categories: [spectral methods, brain networks, graph theory]
+keywords: [graph Laplacian, spectral clustering, brain networks, functional connectivity, Fiedler value, community detection, neuroscience]
+include-in-header:
+  - text: |
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ScholarlyArticle",
+        "headline": "Spectral Methods in Brain Network Analysis",
+        "author": {"@type": "Person", "name": "Yuda Bi", "url": "https://yudabitrends.github.io"},
+        "datePublished": "2026-04-07",
+        "description": "Notes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.",
+        "keywords": ["spectral methods", "brain networks", "graph Laplacian", "functional connectivity"],
+        "url": "https://yudabitrends.github.io/notes/2026-04-spectral-brain-networks/"
+      }
+      </script>
+      <meta name="citation_title" content="Spectral Methods in Brain Network Analysis">
+      <meta name="citation_author" content="Bi, Yuda">
+      <meta name="citation_date" content="2026/04/07">
+      <meta name="citation_online_date" content="2026/04/07">
+      <meta name="citation_language" content="en">
 ---
 
 ## Graph Laplacian and Brain Networks

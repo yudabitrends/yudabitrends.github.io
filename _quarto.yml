@@ -6,7 +6,18 @@ website:
   title: "Yuda Bi"
   description: "Ph.D. — Statistical Physics, Information Geometry, Theoretical Neuroscience"
   site-url: "https://yudabitrends.github.io"
-  open-graph: true
+
+  open-graph:
+    image: "files/profile/avatar.jpg"
+    description: "Academic homepage of Yuda Bi — statistical physics, information geometry, theoretical neuroscience"
+
+  twitter-card:
+    image: "files/profile/avatar.jpg"
+    card-style: summary_large_image
+    # creator: "@REPLACE_ME"   # 有 Twitter 后取消注释并填入用户名
+    # site: "@REPLACE_ME"
+
+  # google-analytics: "G-REPLACE_ME"   # 注册 GA4 后取消注释并填入 Measurement ID
 
   navbar:
     background: light
@@ -48,3 +59,20 @@ format:
     footnotes-hover: true
     link-external-newwindow: true
     link-external-icon: false
+    include-in-header:
+      # Google Search Console 验证 — 注册后取消注释并填入验证码
+      # - text: |
+      #     <meta name="google-site-verification" content="REPLACE_ME">
+      - file: _includes/seo-global.html
+      - text: |
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;550;600;700;800&display=swap" rel="stylesheet">
+          <script>
+          (function() {
+            var link = document.createElement('link');
+            link.rel = 'canonical';
+            link.href = 'https://yudabitrends.github.io' + location.pathname.replace(/index\.html$/, '');
+            document.head.appendChild(link);
+          })();
+          </script>

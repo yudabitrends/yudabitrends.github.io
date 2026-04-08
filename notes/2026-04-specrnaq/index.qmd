@@ -1,9 +1,31 @@
 ---
 title: "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss"
 description: "How graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment — outperforming geometry baselines by +0.224 on CASP16."
+author: "Yuda Bi"
 date: 2026-04-07
 categories: [spectral methods, RNA structure, bioinformatics, graph theory]
+keywords: [RNA 3D structure, quality assessment, spectral graph theory, graph Laplacian, CASP16, bioinformatics, structural biology]
 image: featured.png
+include-in-header:
+  - text: |
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ScholarlyArticle",
+        "headline": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+        "author": {"@type": "Person", "name": "Yuda Bi", "url": "https://yudabitrends.github.io"},
+        "datePublished": "2026-04-07",
+        "description": "How graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment.",
+        "keywords": ["RNA structure", "spectral graph theory", "quality assessment", "CASP16"],
+        "image": "https://yudabitrends.github.io/notes/2026-04-specrnaq/featured.png",
+        "url": "https://yudabitrends.github.io/notes/2026-04-specrnaq/"
+      }
+      </script>
+      <meta name="citation_title" content="SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss">
+      <meta name="citation_author" content="Bi, Yuda">
+      <meta name="citation_date" content="2026/04/07">
+      <meta name="citation_online_date" content="2026/04/07">
+      <meta name="citation_language" content="en">
 ---
 
 ![RNA 3D structure quality visualization: C4' deviation from best model (blue = 0 Å, red = 50 Å). Structures with correct local geometry but misplaced domains show large red regions — exactly the failure mode that spectral methods detect.](featured.png){fig-align="center" width="90%"}

@@ -1,8 +1,16 @@
 ---
 title: "Publications"
+description: "Peer-reviewed publications by Yuda Bi on statistical physics, information geometry, spectral graph theory, and theoretical neuroscience."
+keywords: [Yuda Bi, publications, statistical physics, information geometry, quartic detection law, spectral graph theory, neuroimaging, Physical Review Letters]
 toc: true
 toc-depth: 2
 ---
+
+::: {.page-hero}
+# Publications
+
+Peer-reviewed journal articles, conference papers, and preprints spanning statistical physics, information geometry, spectral methods, and neuroimaging.
+:::
 
 ## Under Review
 

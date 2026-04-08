@@ -4,11 +4,13 @@ subtitle: |
   Ph.D. in Computer Science \
   [TReNDS Center](https://trendscenter.org/) (Georgia State University, Georgia Tech, Emory)
 image: files/profile/avatar.jpg
+keywords: [Yuda Bi, statistical physics, information geometry, theoretical neuroscience, spectral graph theory, nonequilibrium thermodynamics, TReNDS Center, Georgia State University]
 page-layout: full
 toc: false
 about:
   template: trestles
   image-width: 14em
+  image-alt: "Portrait photo of Yuda Bi"
   links:
     - icon: envelope
       text: Email
@@ -58,6 +60,27 @@ In 2025 I pivoted from engineering-driven multimodal neuroimaging toward a **the
 
 ---
 
+::: {.stats-grid}
+::: {.stat-card}
+[7]{.stat-number}
+[Under Review]{.stat-label}
+:::
+::: {.stat-card}
+[4]{.stat-number}
+[PRL / PRE]{.stat-label}
+:::
+::: {.stat-card}
+[3]{.stat-number}
+[Journal Articles]{.stat-label}
+:::
+::: {.stat-card}
+[5]{.stat-number}
+[Conference Papers]{.stat-label}
+:::
+:::
+
+---
+
 ::: {.theory-card}
 
 #### [The Geometry of Invisible Forces: A Quartic Detection Theory](notes/2026-04-quartic-detection-theory/)
@@ -84,7 +107,7 @@ Four papers under review at *Physical Review Letters* and *Physical Review E*.
 :::
 
 ::: {.visitor-badge}
-![](https://visitor-badge.laobi.icu/badge?page_id=yudabitrends.github.io&left_color=gray&right_color=blue)
+![Visitor count](https://visitor-badge.laobi.icu/badge?page_id=yudabitrends.github.io&left_color=gray&right_color=blue)
 :::
 
 ---

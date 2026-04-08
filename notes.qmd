@@ -1,9 +1,22 @@
 ---
 title: "Notes"
+description: "Technical research notes on statistical physics, information geometry, spectral methods, and theoretical neuroscience by Yuda Bi."
+keywords: [research notes, statistical physics, information geometry, spectral methods, theoretical neuroscience, Yuda Bi]
 listing:
   contents: notes
   type: default
   sort: "date desc"
   categories: true
   fields: [date, title, description, categories]
+  feed:
+    title: "Yuda Bi — Research Notes"
+    description: "Technical notes on statistical physics, information geometry, spectral methods, and theoretical neuroscience."
+    language: en
+    items: 20
 ---
+
+::: {.page-hero}
+# Research Notes
+
+Technical notes and tutorials on statistical physics, information geometry, spectral methods, and theoretical neuroscience.
+:::

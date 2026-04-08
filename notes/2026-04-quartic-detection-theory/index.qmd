@@ -1,8 +1,29 @@
 ---
 title: "The Geometry of Invisible Forces: A Quartic Detection Theory"
 description: "Why hidden variables are orders of magnitude harder to detect than classical statistics predicts — and how cross-spectral geometry breaks the impossibility."
+author: "Yuda Bi"
 date: 2026-04-07
 categories: [statistical physics, information geometry, hidden variables, spectral methods]
+keywords: [quartic detection law, hidden variables, Fisher information, KL divergence, statistical manifold, cross-spectral geometry, information geometry]
+include-in-header:
+  - text: |
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ScholarlyArticle",
+        "headline": "The Geometry of Invisible Forces: A Quartic Detection Theory",
+        "author": {"@type": "Person", "name": "Yuda Bi", "url": "https://yudabitrends.github.io"},
+        "datePublished": "2026-04-07",
+        "description": "Why hidden variables are orders of magnitude harder to detect than classical statistics predicts — and how cross-spectral geometry breaks the impossibility.",
+        "keywords": ["statistical physics", "information geometry", "hidden variables", "quartic detection law"],
+        "url": "https://yudabitrends.github.io/notes/2026-04-quartic-detection-theory/"
+      }
+      </script>
+      <meta name="citation_title" content="The Geometry of Invisible Forces: A Quartic Detection Theory">
+      <meta name="citation_author" content="Bi, Yuda">
+      <meta name="citation_date" content="2026/04/07">
+      <meta name="citation_online_date" content="2026/04/07">
+      <meta name="citation_language" content="en">
 ---
 
 ## The Problem: Forces You Cannot See

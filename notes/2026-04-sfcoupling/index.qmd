@@ -1,9 +1,31 @@
 ---
 title: "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization"
 description: "Gray matter explains only ~6% of functional connectivity variance — yet aligns with 45% of its directional subspace. Why amplitudes and geometry tell fundamentally different stories about brain structure-function coupling."
+author: "Yuda Bi"
 date: 2026-04-07
 categories: [neuroscience, structure-function coupling, spectral methods, linear algebra]
+keywords: [structure-function coupling, gray matter, functional connectivity, brain networks, subspace alignment, spectral methods, neuroscience]
 image: featured.png
+include-in-header:
+  - text: |
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ScholarlyArticle",
+        "headline": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
+        "author": {"@type": "Person", "name": "Yuda Bi", "url": "https://yudabitrends.github.io"},
+        "datePublished": "2026-04-07",
+        "description": "Gray matter explains only ~6% of functional connectivity variance — yet aligns with 45% of its directional subspace.",
+        "keywords": ["structure-function coupling", "gray matter", "functional connectivity", "neuroscience"],
+        "image": "https://yudabitrends.github.io/notes/2026-04-sfcoupling/featured.png",
+        "url": "https://yudabitrends.github.io/notes/2026-04-sfcoupling/"
+      }
+      </script>
+      <meta name="citation_title" content="Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization">
+      <meta name="citation_author" content="Bi, Yuda">
+      <meta name="citation_date" content="2026/04/07">
+      <meta name="citation_online_date" content="2026/04/07">
+      <meta name="citation_language" content="en">
 ---
 
 ![**Spectral fingerprint of structure-function coupling.** (a) Singular value spectrum of the GM→FNC coefficient matrix showing rapid spectral decay — the coupling is low-rank. (b) Principal angle cosines between GM-selected and FNC-dominant subspaces: near-perfect alignment in ~3 dimensions, then rapid falloff. (c) The signature gap: subspace overlap reaches 0.45 while variance explained ($R^2$) stays at ~0.06.](featured.png){fig-align="center" width="100%"}

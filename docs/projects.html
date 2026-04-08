@@ -6,6 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="keywords" content="quartic detection theory, hidden variables, SpecRNA-QA, RNA quality assessment, structure-function coupling, spectral methods">
+<meta name="description" content="Research projects by Yuda Bi: quartic detection theory on statistical manifolds, spectral RNA quality assessment, brain structure-function coupling.">
 
 <title>Projects – Yuda Bi</title>
 <style>
@@ -69,6 +71,63 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Yuda Bi",
+  "url": "https://yudabitrends.github.io",
+  "jobTitle": "Ph.D. in Computer Science",
+  "affiliation": {
+    "@type": "Organization",
+    "name": "TReNDS Center",
+    "url": "https://trendscenter.org/"
+  },
+  "alumniOf": [
+    {
+      "@type": "CollegeOrUniversity",
+      "name": "Georgia State University"
+    },
+    {
+      "@type": "CollegeOrUniversity",
+      "name": "University of Georgia"
+    }
+  ],
+  "sameAs": [
+    "https://scholar.google.com/citations?user=yclnpogAAAAJ",
+    "https://github.com/yudabitrends",
+    "https://www.linkedin.com/in/yudabi/"
+  ],
+  "knowsAbout": [
+    "Statistical Physics",
+    "Information Geometry",
+    "Nonequilibrium Thermodynamics",
+    "Theoretical Neuroscience",
+    "Spectral Graph Theory",
+    "Structural Biology"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Yuda Bi",
+  "url": "https://yudabitrends.github.io",
+  "description": "Academic homepage of Yuda Bi — statistical physics, information geometry, theoretical neuroscience"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;550;600;700;800&amp;display=swap" rel="stylesheet">
+<script>
+(function() {
+  var link = document.createElement('link');
+  link.rel = 'canonical';
+  link.href = 'https://yudabitrends.github.io' + location.pathname.replace(/index\.html$/, '');
+  document.head.appendChild(link);
+})();
+</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -102,11 +161,13 @@ window.Quarto = {
 
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="Projects – Yuda Bi">
-<meta property="og:description" content="Ph.D.&nbsp;— Statistical Physics, Information Geometry, Theoretical Neuroscience">
-<meta property="og:image" content="https://yudabitrends.github.io/files/specrnaq-cover.png">
+<meta property="og:description" content="Academic homepage of Yuda Bi — statistical physics, information geometry, theoretical neuroscience">
+<meta property="og:image" content="https://yudabitrends.github.io/files/profile/avatar.jpg">
 <meta property="og:site_name" content="Yuda Bi">
-<meta property="og:image:height" content="225">
-<meta property="og:image:width" content="292">
+<meta name="twitter:title" content="Projects – Yuda Bi">
+<meta name="twitter:description" content="Research projects by Yuda Bi: quartic detection theory on statistical manifolds, spectral RNA quality assessment, brain structure-function coupling.">
+<meta name="twitter:image" content="https://yudabitrends.github.io/files/profile/avatar.jpg">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -183,6 +244,11 @@ window.Quarto = {
 <h1 class="title">Projects</h1>
 </div>
 
+<div>
+  <div class="description">
+    Research projects by Yuda Bi: quartic detection theory on statistical manifolds, spectral RNA quality assessment, brain structure-function coupling.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -193,14 +259,33 @@ window.Quarto = {
   </div>
   
 
+<div>
+  <div class="keywords">
+    <div class="block-title">Keywords</div>
+    <p>quartic detection theory, hidden variables, SpecRNA-QA, RNA quality assessment, structure-function coupling, spectral methods</p>
+  </div>
+</div>
 
 </header>
 
 
+<section id="research-projects" class="level1 page-hero">
+<h1>Research Projects</h1>
+<p>Theory-driven research programs spanning statistical physics, spectral methods in structural biology, and brain network analysis.</p>
+</section>
+<div class="project-card accent-indigo">
+<div class="project-card-header">
+<div class="project-icon">
+
+</div>
 <section id="quartic-detection-theory-the-geometry-of-hidden-variables" class="level3">
 <h3 class="anchored" data-anchor-id="quartic-detection-theory-the-geometry-of-hidden-variables">Quartic Detection Theory: The Geometry of Hidden Variables</h3>
+</section>
+</div>
+<div class="project-card-body">
 <p>A series of papers establishing exact detectability theory for hidden degrees of freedom on statistical manifolds. <a href="notes/2026-04-quartic-detection-theory/">Read the full theory note →</a></p>
 <p>We prove that hidden variables are <strong>orders of magnitude harder to detect</strong> than classical statistics predicts. When a hidden force couples linearly to the dynamics but quadratically to the observables — the generic case for power spectra, covariances, and correlations — the data requirement scales as <span class="math inline">\(\lambda^{-4}\)</span>, not <span class="math inline">\(\lambda^{-2}\)</span>. For a 10% coupling, this quartic penalty demands ~1000× more data than the naive Fisher-information expectation.</p>
+<div class="project-results">
 <p><strong>Core results</strong>:</p>
 <ul>
 <li><strong>Quartic detection law</strong>: <span class="math inline">\(D_\mathrm{KL}^\mathrm{min}(\lambda) = C\lambda^4 + O(\lambda^6)\)</span> on general statistical manifolds, with exact system-specific coefficients</li>
@@ -209,6 +294,7 @@ window.Quarto = {
 <li><strong>Cross-spectral escape</strong>: Off-diagonal spectral structure breaks the single-channel impossibility, remaining strictly positive at coalescence</li>
 <li><strong>Thermodynamic bridge</strong>: Cross-spectral detectability certifies positive entropy production, linking observable structure to the arrow of time</li>
 </ul>
+</div>
 <p><strong>Mathematical toolkit</strong>: Information geometry (Amari), Kullback-Leibler projection, semiparametric efficiency (BKRW), Whittle likelihood, Mori-Zwanzig coarse-graining, stochastic thermodynamics (Seifert), spectral analysis on statistical manifolds.</p>
 <p><strong>Papers in this series</strong>:</p>
 <ul>
@@ -217,10 +303,19 @@ window.Quarto = {
 <li><em>Timescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark</em> — under review, PRE (<a href="https://arxiv.org/abs/2603.20917">arXiv:2603.20917</a>)</li>
 <li><em>Conditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation</em> — under review, PRE (<a href="https://arxiv.org/abs/2603.14072">arXiv:2603.14072</a>)</li>
 </ul>
+</div>
+</div>
 <hr>
-</section>
+<div class="project-card accent-teal">
+<div class="project-card-header">
+<div class="project-icon">
+
+</div>
 <section id="specrna-qa-spectral-graph-methods-for-rna-3d-quality-assessment" class="level3">
 <h3 class="anchored" data-anchor-id="specrna-qa-spectral-graph-methods-for-rna-3d-quality-assessment">SpecRNA-QA: Spectral Graph Methods for RNA 3D Quality Assessment</h3>
+</section>
+</div>
+<div class="project-card-body">
 <p>A lightweight, reference-free tool for assessing RNA 3D structure quality using spectral graph features. <a href="https://github.com/yudabitrends/specrnaq">GitHub</a> · <a href="notes/2026-04-specrnaq/">Read the method note →</a></p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -229,22 +324,33 @@ window.Quarto = {
 </figure>
 </div>
 <p>Existing RNA quality assessment methods evaluate local atomic contacts — they fail when local structure is correct but entire domains are misplaced. <strong>SpecRNA-QA</strong> solves this by extracting multi-scale spectral features from the graph Laplacian of RNA contact networks, capturing global topology that local metrics miss.</p>
+<div class="project-results">
 <p><strong>Performance</strong>:</p>
 <ul>
 <li><strong>CASP16 benchmark</strong> (42 targets, 7,368 models): median Spearman <span class="math inline">\(\rho = 0.689\)</span> in supervised mode, outperforming geometry-based baselines (<span class="math inline">\(\rho = 0.465\)</span>) with <span class="math inline">\(p = 1.2 \times 10^{-10}\)</span></li>
 <li><strong>Large RNAs</strong> (&gt;200 nt): performance advantage reaches <span class="math inline">\(+0.233\)</span> in correlation over geometry baselines — the regime where global topology matters most</li>
 <li><strong>Fast</strong>: 15 ms for 100-nt structures, ~4.2 s for 800-nt molecules. CPU-only, no GPU required</li>
 </ul>
+</div>
 <p><strong>How it works</strong>: Contact graphs at multiple distance thresholds → ~312 spectral features from normalized Laplacian (eigenvalue statistics, heat-kernel traces, participation ratios) → XGBRanker model for quality prediction. The most discriminative features are heat-kernel traces measuring multi-scale diffusion, connecting RNA quality to the <em>transport geometry</em> of the contact network.</p>
 <p><strong>Papers</strong>:</p>
 <ul>
 <li><em>Spectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment</em> — under review, Briefings in Bioinformatics</li>
 <li><em>Spectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment</em> — under review, IEEE JBHI (<a href="https://arxiv.org/abs/2603.25880">arXiv:2603.25880</a>)</li>
 </ul>
+</div>
+</div>
 <hr>
-</section>
+<div class="project-card accent-blue">
+<div class="project-card-header">
+<div class="project-icon">
+
+</div>
 <section id="structure-function-coupling-anatomy-sets-the-stage" class="level3">
 <h3 class="anchored" data-anchor-id="structure-function-coupling-anatomy-sets-the-stage">Structure-Function Coupling: Anatomy Sets the Stage</h3>
+</section>
+</div>
+<div class="project-card-body">
 <p>A spectral analysis framework revealing how gray matter morphometry constrains functional brain organization through a low-rank geometric subspace. <a href="notes/2026-04-sfcoupling/">Read the full note →</a></p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -253,17 +359,29 @@ window.Quarto = {
 </figure>
 </div>
 <p>Gray matter explains only ~6% of functional connectivity variance — yet aligns with <strong>45% of its directional subspace</strong>. This order-of-magnitude gap reveals that anatomy does not determine how strongly each individual’s brain connectivity deviates from the mean, but rather constrains the <em>coordinate system</em> in which functional variation occurs.</p>
+<div class="project-results">
+<p><strong>Key findings</strong>:</p>
 <ul>
 <li><strong>Nuclear norm regularization</strong> on the GM→FNC coefficient matrix recovers a soft low-rank mapping (effective rank ~38)</li>
 <li><strong>Subspace overlap <span class="math inline">\(O = 0.447\)</span></strong> at <span class="math inline">\(k=20\)</span>, with top 3 principal angles reaching cos <span class="math inline">\(\theta = 0.97, 0.95, 0.86\)</span></li>
 <li>The structure-coupled FNC subspace achieves <strong>AUC = 0.795</strong> for schizophrenia classification — <em>outperforming</em> full FNC</li>
 <li>Validated across 3 datasets (<span class="math inline">\(N &gt; 39{,}000\)</span> total) with 7 benchmarked methods</li>
 </ul>
+</div>
 <p><strong>Planned series</strong>: Paper 0 (GM-FNC, in preparation for <em>NeuroImage</em>) → Paper 1 (GM + WM decomposition, UK Biobank) → Paper 2 (unified probabilistic framework).</p>
+</div>
+</div>
 <hr>
-</section>
+<div class="project-card accent-amber">
+<div class="project-card-header">
+<div class="project-icon">
+
+</div>
 <section id="multivit-multivit2" class="level3">
 <h3 class="anchored" data-anchor-id="multivit-multivit2">MultiViT / MultiViT2</h3>
+</section>
+</div>
+<div class="project-card-body">
 <p>Multimodal vision transformer frameworks for brain imaging analysis (2022–2024).</p>
 <ul>
 <li>Integrates structural MRI and functional connectivity data</li>
@@ -271,9 +389,10 @@ window.Quarto = {
 <li>Data augmentation via latent diffusion models (MultiViT2)</li>
 <li>Published in <em>NeuroImage</em>, <em>Human Brain Mapping</em>, and <em>IEEE ISBI</em></li>
 </ul>
+</div>
+</div>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

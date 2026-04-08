@@ -1,24 +1,57 @@
 ---
 title: "CV"
+description: "Curriculum Vitae of Yuda Bi — Ph.D. in Computer Science, TReNDS Center (GSU/Georgia Tech/Emory). Research in statistical physics, information geometry, and theoretical neuroscience."
+keywords: [Yuda Bi, CV, curriculum vitae, computer science PhD, TReNDS Center, statistical physics, information geometry]
 toc: true
 ---
 
+::: {.page-hero}
+# Curriculum Vitae
+
+Ph.D. in Computer Science — statistical physics, information geometry, and theoretical neuroscience.
+:::
+
+::: {.cv-section}
+
 ## Education
 
-- **Ph.D. in Computer Science**, Georgia State University, 2020–2025
-  TReNDS Center (GSU, Georgia Tech, Emory). Advisor: Prof. Vince D. Calhoun
+::: {.education-item}
+[2020–2025]{.cv-period}
 
-- **MS in Computer Science**, University of Georgia, 2017–2020
+**Ph.D. in Computer Science**, Georgia State University
 
-- **BS in Management**, Shandong University of Science and Technology, 2013–2017
+TReNDS Center (GSU, Georgia Tech, Emory). Advisor: Prof. Vince D. Calhoun
+:::
+
+::: {.education-item}
+[2017–2020]{.cv-period}
+
+**M.S. in Computer Science**, University of Georgia
+:::
+
+::: {.education-item}
+[2013–2017]{.cv-period}
+
+**B.S. in Management**, Shandong University of Science and Technology
+:::
+
+:::
+
+::: {.cv-section}
 
 ## Research Trajectory
 
-**2020–2024: Multimodal Neuroimaging Engineering**
+[2020–2024]{.cv-period}
+
+**Multimodal Neuroimaging Engineering**
 
 Developed deep learning frameworks for brain imaging — vision transformers, GANs, and diffusion models for fusing structural MRI with functional connectivity. Published in *NeuroImage*, *Human Brain Mapping*, *Journal of Neuroscience Methods*, and multiple IEEE venues (ISBI, EMBC).
 
-**2025–present: Transition to Theory-Driven Cross-Disciplinary Research**
+---
+
+[2025–present]{.cv-period}
+
+**Transition to Theory-Driven Cross-Disciplinary Research**
 
 Pivoted from engineering-driven model stacking to a theory-first program rooted in **statistical physics** and **nonequilibrium thermodynamics**. Current work develops exact mathematical foundations for hidden-variable detectability, spectral methods in structural biology, and the physics of learning.
 
@@ -30,6 +63,10 @@ Core research directions:
 - **Financial physics** — Volatility-conditioned correlation dynamics in S&P 500, timescale separation in market microstructure. Spectral dark regimes in financial time series.
 - **Physics of AI** — Grokking as a finite-size phase transition. Kurtosis contrast laws in mixture separation.
 
+:::
+
+::: {.cv-section}
+
 ## Selected Publications
 
 See full list on the [Publications](publications.qmd) page.
@@ -40,19 +77,58 @@ See full list on the [Publications](publications.qmd) page.
 - **Bi Y**, Abrol A, Jia S, Sui J, Calhoun VD. Gray matters: ViT-GAN framework for identifying schizophrenia biomarkers. *NeuroImage*, 2024.
 - **Bi Y**, Abrol A, Fu Z, Calhoun VD. A multimodal vision transformer for interpretable fusion of functional and structural neuroimaging data. *Human Brain Mapping*, 2024.
 
+:::
+
+::: {.cv-section}
+
 ## Certifications
 
-- **CFA Level III**, CFA Institute
+::: {.cv-cert-badge}
+CFA Level III — CFA Institute
+:::
+
+:::
+
+::: {.cv-section}
 
 ## Skills
 
-- **Mathematics/Physics**: Information geometry, stochastic processes, spectral graph theory, nonequilibrium thermodynamics, KL divergence & projection, semiparametric theory
-- **Programming**: Python, PyTorch, TensorFlow, MATLAB, R, Mathematica
-- **Neuroimaging**: fMRI, sMRI, functional network connectivity analysis
-- **Languages**: Chinese (native), English (professional)
+::: {.cv-skills-grid}
+
+::: {.cv-skill-card}
+**Mathematics & Physics**
+
+Information geometry, stochastic processes, spectral graph theory, nonequilibrium thermodynamics, KL divergence & projection, semiparametric theory
+:::
+
+::: {.cv-skill-card}
+**Programming**
+
+Python, PyTorch, TensorFlow, MATLAB, R, Mathematica
+:::
+
+::: {.cv-skill-card}
+**Neuroimaging**
+
+fMRI, sMRI, functional network connectivity analysis
+:::
+
+::: {.cv-skill-card}
+**Languages**
+
+Chinese (native), English (professional)
+:::
+
+:::
+
+:::
+
+::: {.cv-section}
 
 ## Links
 
 - [Google Scholar](https://scholar.google.com/citations?user=yclnpogAAAAJ&hl=en)
 - [GitHub](https://github.com/yudabitrends)
 - [LinkedIn](https://www.linkedin.com/in/yudabi/)
+
+:::
