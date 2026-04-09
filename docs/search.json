@@ -1,290 +1,38 @@
 [
   {
-    "objectID": "notes/2026-04-sfcoupling/index.html",
-    "href": "notes/2026-04-sfcoupling/index.html",
-    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
-    "section": "",
-    "text": "Spectral fingerprint of structure-function coupling. (a) Singular value spectrum of the GM→FNC coefficient matrix showing rapid spectral decay — the coupling is low-rank. (b) Principal angle cosines between GM-selected and FNC-dominant subspaces: near-perfect alignment in ~3 dimensions, then rapid falloff. (c) The signature gap: subspace overlap reaches 0.45 while variance explained (\\(R^2\\)) stays at ~0.06."
-  },
-  {
-    "objectID": "notes/2026-04-sfcoupling/index.html#the-paradox-weak-prediction-strong-geometry",
-    "href": "notes/2026-04-sfcoupling/index.html#the-paradox-weak-prediction-strong-geometry",
-    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
-    "section": "The Paradox: Weak Prediction, Strong Geometry",
-    "text": "The Paradox: Weak Prediction, Strong Geometry\nA persistent puzzle in systems neuroscience: gray matter morphometry (regional volume, thickness, surface area) predicts functional network connectivity (FNC) poorly — typically explaining only a few percent of variance. This has led many to dismiss the structure-function relationship as negligible for gray matter, focusing attention on white-matter tractography instead.\nBut variance explained is the wrong metric. It measures whether structure predicts the amplitude of functional variation — how strongly each person’s connectivity deviates from the mean. A more fundamental question is whether structure predicts the directions — the coordinate axes along which functional variation occurs at all.\nThese are mathematically distinct quantities. A linear map \\(\\hat{Y} = XB\\) from GM features (\\(X \\in \\mathbb{R}^{N \\times p}\\)) to FNC (\\(Y \\in \\mathbb{R}^{N \\times q}\\)) can have low \\(R^2\\) (weak amplitude prediction) while its coefficient matrix \\(B\\) has column space closely aligned with the dominant subspace of \\(Y\\) (strong directional alignment)."
-  },
-  {
-    "objectID": "notes/2026-04-sfcoupling/index.html#the-method-nuclear-norm-regularization-and-svd",
-    "href": "notes/2026-04-sfcoupling/index.html#the-method-nuclear-norm-regularization-and-svd",
-    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
-    "section": "The Method: Nuclear Norm Regularization and SVD",
-    "text": "The Method: Nuclear Norm Regularization and SVD\nTo disentangle amplitude from geometry, we use a spectral regularization framework:\n\\[\n\\min_B \\; \\frac{1}{2N}\\|Y - XB\\|_F^2 + \\lambda \\|B\\|_*\n\\]\nwhere \\(\\|B\\|_* = \\sum_i \\sigma_i(B)\\) is the nuclear norm — the tightest convex relaxation of matrix rank. This encourages the learned mapping to be low-rank, concentrating the structure-function relationship into a small number of principal modes.\nThe proximal step has a closed-form solution via soft singular value thresholding:\n\\[\nB^{(t+1)} = U\\,\\mathrm{diag}\\bigl((\\sigma_i - \\lambda/L)_+\\bigr)\\,V^\\top\n\\]\nThe SVD of the resulting coefficient matrix \\(B = U\\Sigma V^\\top\\) gives us:\n\n\\(V\\): the FNC directions most aligned with GM variation (the “stage geometry”)\n\\(U\\): the GM features driving each coupling mode (the “structural scaffolding”)\n\\(\\Sigma\\): the coupling strength per mode (spectral concentration)"
-  },
-  {
-    "objectID": "notes/2026-04-sfcoupling/index.html#measuring-directional-alignment-subspace-overlap",
-    "href": "notes/2026-04-sfcoupling/index.html#measuring-directional-alignment-subspace-overlap",
-    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
-    "section": "Measuring Directional Alignment: Subspace Overlap",
-    "text": "Measuring Directional Alignment: Subspace Overlap\nTo compare GM-selected functional directions with the dominant directions of FNC variation itself, we compute principal angles between two subspaces:\n\\[\n\\cos\\theta_i = \\sigma_i(V_1^\\top V_2)\n\\]\nwhere \\(V_1\\) are the top-\\(k\\) right singular vectors of \\(B\\) (GM-selected directions) and \\(V_2\\) are the top-\\(k\\) PCA directions of FNC. The subspace overlap is:\n\\[\nO(V_1, V_2) = \\frac{1}{k}\\sum_{i=1}^{k} \\cos^2\\theta_i \\;\\in [0, 1]\n\\]"
-  },
-  {
-    "objectID": "notes/2026-04-sfcoupling/index.html#the-core-finding-o-0.45-vs.-r2-0.06",
-    "href": "notes/2026-04-sfcoupling/index.html#the-core-finding-o-0.45-vs.-r2-0.06",
-    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
-    "section": "The Core Finding: \\(O = 0.45\\) vs. \\(R^2 = 0.06\\)",
-    "text": "The Core Finding: \\(O = 0.45\\) vs. \\(R^2 = 0.06\\)\nAcross three datasets (schizophrenia cohort \\(N=1{,}151\\); external validation \\(N=102\\); UK Biobank \\(N \\approx 37{,}775\\)):\n\n\n\n\n\n\n\n\nMetric\nValue\nInterpretation\n\n\n\n\nVariance explained (\\(R^2\\))\n~0.06\nGM weakly predicts FNC amplitudes\n\n\nSubspace overlap (\\(O\\))\n0.447\nGM strongly constrains FNC directions\n\n\nTop 3 principal angle cosines\n0.97, 0.95, 0.86\nNear-perfect alignment in 3 dimensions\n\n\n4th principal angle\n0.28\nSharp dropoff — concentrated coupling\n\n\nChance overlap (at \\(k=20\\))\n~0.015\nObserved overlap is 30× above chance\n\n\n\nThe gap is an order of magnitude. Gray matter does not determine how strongly individuals deviate from mean connectivity — but it strongly constrains in which directions that deviation can occur.\nThe analogy: anatomy sets the stage geometry; neural dynamics determine how the actors perform on that stage. The theater constrains the repertoire of possible plays without scripting any particular performance."
-  },
-  {
-    "objectID": "notes/2026-04-sfcoupling/index.html#what-the-coupling-modes-look-like",
-    "href": "notes/2026-04-sfcoupling/index.html#what-the-coupling-modes-look-like",
-    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
-    "section": "What the Coupling Modes Look Like",
-    "text": "What the Coupling Modes Look Like\n\n\n\nStructure-function coupling modes. Each row shows one SVD mode: left panel shows GM loadings on a dorsal glass brain (node size = loading magnitude, color = network domain), right panel shows the corresponding FNC loading matrix (domain-sorted). Mode 1 (36.5% of coupled variance) captures a global sensorimotor-cognitive axis; Mode 2 (9.2%) isolates default mode and visual interactions; Mode 3 (7.9%) captures cerebellar-cortical coupling.\n\n\nThe SVD decomposition reveals interpretable structure-function coupling modes:\n\nMode 1 (36.5% of coupled variance): A distributed pattern spanning cognitive control, sensorimotor, and visual domains. This is the dominant axis along which GM morphometry shapes functional organization.\nMode 2 (9.2%): Concentrated in default mode and visual network interactions — reflecting the structural basis of resting-state network architecture.\nMode 3 (7.9%): Captures cerebellar-cortical coupling patterns, highlighting the structural underpinning of cerebro-cerebellar communication.\n\nThese modes are highly stable across random seeds (correlation \\(r &gt; 0.9\\) for the top 3) and replicate across datasets."
-  },
-  {
-    "objectID": "notes/2026-04-sfcoupling/index.html#linearity-the-coupling-really-is-linear",
-    "href": "notes/2026-04-sfcoupling/index.html#linearity-the-coupling-really-is-linear",
-    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
-    "section": "Linearity: The Coupling Really Is Linear",
-    "text": "Linearity: The Coupling Really Is Linear\nA critical finding: nonlinear models provide no reliable improvement over the linear nuclear norm solution.\n\nMLP (multilayer perceptron) gains +0.004 \\(R^2\\) on discovery data but reverses to −0.009 on external validation\nA nonlinear residual model performs worse than nuclear norm alone on both datasets\nWhen initialized from the linear solution, the MLP’s mixing parameter converges to \\(\\alpha = 0.60\\), staying close to the linear regime\n\nThis linearity is not an assumption — it is an empirical finding validated across datasets. The structure-function relationship, at the population level, is well-captured by a linear, low-rank map."
-  },
-  {
-    "objectID": "notes/2026-04-sfcoupling/index.html#clinical-relevance-the-coupled-subspace-carries-disease-information",
-    "href": "notes/2026-04-sfcoupling/index.html#clinical-relevance-the-coupled-subspace-carries-disease-information",
-    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
-    "section": "Clinical Relevance: The Coupled Subspace Carries Disease Information",
-    "text": "Clinical Relevance: The Coupled Subspace Carries Disease Information\nDecomposing each subject’s FNC into a structure-coupled component (\\(y_\\mathrm{coup} = V_r V_r^\\top y\\)) and a structure-uncoupled component (\\(y_\\mathrm{uncoup} = (I - V_r V_r^\\top) y\\)):\n\n\n\nComponent\nSZ classification AUC\n\n\n\n\nCoupled FNC (rank 38)\n0.795 [0.726, 0.857]\n\n\nFull FNC\n0.773 [0.712, 0.839]\n\n\nUncoupled FNC\n0.728\n\n\n\nThe structure-coupled component outperforms full FNC for schizophrenia classification. This means that the functional variation constrained by gray matter morphometry preferentially carries clinically relevant information — anatomical structure does not just constrain function; it constrains the clinically informative part of function."
-  },
-  {
-    "objectID": "notes/2026-04-sfcoupling/index.html#physical-and-mathematical-significance",
-    "href": "notes/2026-04-sfcoupling/index.html#physical-and-mathematical-significance",
-    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
-    "section": "Physical and Mathematical Significance",
-    "text": "Physical and Mathematical Significance\n\nWhy Nuclear Norm?\nThe nuclear norm \\(\\|B\\|_*\\) is the \\(\\ell_1\\) norm of the singular value vector — it induces sparsity in the spectral domain just as LASSO induces sparsity in the coefficient domain. This is the natural regularizer when the underlying relationship is low-rank: it seeks the simplest (lowest effective rank) linear map consistent with the data.\nIn the landscape of regularization:\n\n\n\n\n\n\n\n\nMethod\nWhat it regularizes\nBias\n\n\n\n\nRidge (\\(\\|B\\|_F^2\\))\nShrinks all singular values equally\nPreserves rank, weakens all directions\n\n\nPLS\nMaximizes covariance in few components\nGreedily selects modes, poor generalization\n\n\nNuclear Norm (\\(\\|B\\|_*\\))\nSoft-thresholds singular values\nSuppresses weak modes, preserves strong ones\n\n\n\nNuclear Norm achieves the highest external generalization (74% retention) vs. PLS (45%) precisely because it soft-thresholds rather than hard-truncates the spectral structure.\n\n\nThe Subspace Overlap as an Information-Geometric Quantity\nThe subspace overlap \\(O(V_1, V_2)\\) is the mean squared cosine of the principal angles — equivalently, it is the normalized Frobenius norm of the product of two orthogonal projections:\n\\[\nO = \\frac{1}{k}\\|P_{V_1} P_{V_2}\\|_F^2\n\\]\nThis has a natural interpretation in information geometry: it measures the fraction of “geometric information” shared between two low-dimensional representations of the same high-dimensional space. When \\(O \\gg R^2\\), the two modalities share geometric structure (directional alignment) without sharing amplitude information — the hallmark of a soft constraint rather than a deterministic prediction."
-  },
-  {
-    "objectID": "notes/2026-04-sfcoupling/index.html#looking-ahead-the-multimodal-decomposition-program",
-    "href": "notes/2026-04-sfcoupling/index.html#looking-ahead-the-multimodal-decomposition-program",
-    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
-    "section": "Looking Ahead: The Multimodal Decomposition Program",
-    "text": "Looking Ahead: The Multimodal Decomposition Program\nThis paper is the first in a planned three-paper series:\nPaper 0 (this work): Establishes that GM constrains function through a shared low-rank subspace, not pointwise prediction. Introduces nuclear norm regularization and the \\(O \\gg R^2\\) diagnostic.\nPaper 1 (in preparation): Asks whether gray matter and white matter constrain the same or different functional subspaces. Uses two-stage subspace decomposition to partition functional variance into four components:\n\\[\nf_i = f_i^{(g \\cap w)} + f_i^{(g \\setminus w)} + f_i^{(w \\setminus g)} + f_i^{(\\mathrm{res})}\n\\]\nKey question: is the GM–WM functional overlap redundant or complementary? Data: UK Biobank (\\(N \\approx 30{,}000\\); sMRI + dMRI + resting fMRI).\nPaper 2 (planned): Unified probabilistic framework with joint latent variables, non-Gaussian priors for identifiability, and posterior uncertainty on the variance decomposition. Connects to ICA/IVA frameworks (Adalı) and Bayesian ARD for automatic dimensionality selection."
-  },
-  {
-    "objectID": "notes/2026-04-sfcoupling/index.html#paper",
-    "href": "notes/2026-04-sfcoupling/index.html#paper",
-    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
-    "section": "Paper",
-    "text": "Paper\nYuda Bi, Vince D. Calhoun. Gray Matter Morphometry Reveals a Soft Low-Rank Structure-Function Subspace. In preparation for NeuroImage."
-  },
-  {
-    "objectID": "notes/2026-04-specrnaq/index.html",
-    "href": "notes/2026-04-specrnaq/index.html",
-    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
-    "section": "",
-    "text": "RNA 3D structure quality visualization: C4’ deviation from best model (blue = 0 Å, red = 50 Å). Structures with correct local geometry but misplaced domains show large red regions — exactly the failure mode that spectral methods detect."
-  },
-  {
-    "objectID": "notes/2026-04-specrnaq/index.html#the-problem-local-correctness-global-failure",
-    "href": "notes/2026-04-specrnaq/index.html#the-problem-local-correctness-global-failure",
-    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
-    "section": "The Problem: Local Correctness, Global Failure",
-    "text": "The Problem: Local Correctness, Global Failure\nPredicting RNA 3D structure is one of the open frontiers of structural biology. Tools like AlphaFold3 and RoseTTAFold2NA now generate thousands of candidate structures — but how do you know which ones are right?\nExisting quality assessment (QA) methods evaluate local atomic contacts: bond angles, clash scores, pairwise distance distributions. These work well when errors are local. But they fail catastrophically in a common and important failure mode: the local structure is correct, but entire domains are misplaced. A helix can be perfectly folded yet docked into the wrong pocket. Every bond angle checks out; the global topology is wrong.\nThis is exactly the regime where RNA QA matters most — large, multi-domain structures where the combinatorial space of domain arrangements dwarfs the local conformational space."
-  },
-  {
-    "objectID": "notes/2026-04-specrnaq/index.html#the-insight-global-topology-lives-in-the-spectrum",
-    "href": "notes/2026-04-specrnaq/index.html#the-insight-global-topology-lives-in-the-spectrum",
-    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
-    "section": "The Insight: Global Topology Lives in the Spectrum",
-    "text": "The Insight: Global Topology Lives in the Spectrum\nA 3D molecular structure is, at its core, a graph: nucleotides are nodes, spatial contacts are edges. The spectrum of the graph Laplacian — the eigenvalues of \\(\\mathcal{L} = I - D^{-1/2}WD^{-1/2}\\) — encodes the global connectivity pattern in a way that is invariant to rotation, translation, and node relabeling.\nThe key mathematical facts:\n\nThe number of zero eigenvalues equals the number of connected components\nThe Fiedler value \\(\\lambda_1\\) measures how easily the graph can be bisected — a proxy for global compactness\nThe spectral gap \\(\\lambda_1 - \\lambda_0\\) quantifies community separation\nHeat-kernel traces \\(Z(t) = \\sum_k e^{-\\lambda_k t}\\) capture multi-scale diffusion: small \\(t\\) probes local geometry, large \\(t\\) probes global topology\nThe participation ratio \\(\\mathrm{PR}(\\boldsymbol{\\lambda}) = (\\sum_k \\lambda_k)^2 / \\sum_k \\lambda_k^2\\) measures effective spectral dimensionality\n\nA misplaced domain changes the large-\\(t\\) heat-kernel trace (disrupted long-range diffusion) while leaving the small-\\(t\\) trace nearly intact (local contacts are fine). This is precisely the information that local metrics cannot access."
-  },
-  {
-    "objectID": "notes/2026-04-specrnaq/index.html#the-method",
-    "href": "notes/2026-04-specrnaq/index.html#the-method",
-    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
-    "section": "The Method",
-    "text": "The Method\nSpecRNA-QA builds on this insight with a practical pipeline:\n\nMulti-scale contact graphs: Construct contact networks at multiple distance thresholds (8Å, 10Å, 12Å, 15Å), capturing different spatial resolutions of the RNA architecture.\nSpectral feature extraction: From each graph’s normalized Laplacian, extract ~312 features:\n\nEigenvalue statistics (mean, variance, skewness, kurtosis of \\(\\{\\lambda_k\\}\\))\nHeat-kernel traces at multiple diffusion times \\(Z(t)\\) for \\(t \\in \\{0.1, 0.5, 1, 2, 5, 10\\}\\)\nParticipation ratios and effective rank measures\nSpectral gap and algebraic connectivity\nNormalized Laplacian entropy \\(H = -\\sum_k \\hat{\\lambda}_k \\log \\hat{\\lambda}_k\\)\n\nLearning-to-rank: An XGBRanker model trained to rank structures by quality within each target, using spectral features as input.\n\nThe entire pipeline runs on CPU — no GPU required. Processing time: 15 ms for a 100-nucleotide structure, ~4.2 seconds for 800 nucleotides."
-  },
-  {
-    "objectID": "notes/2026-04-specrnaq/index.html#results",
-    "href": "notes/2026-04-specrnaq/index.html#results",
-    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
-    "section": "Results",
-    "text": "Results\n\nCASP16 Benchmark\nOn the CASP16 RNA structure prediction assessment (42 targets, 7,368 models):\n\n\n\nMethod\nMedian Spearman \\(\\rho\\)\n\\(p\\)-value vs. SpecRNA-QA\n\n\n\n\nSpecRNA-QA (supervised)\n0.689\n—\n\n\nGeometry baselines\n0.465\n\\(1.2 \\times 10^{-10}\\)\n\n\n\n\n\nWhere It Matters Most: Large RNAs\nThe advantage is most pronounced for large RNA structures (&gt;200 nucleotides), where the performance gap reaches +0.233 in Spearman correlation. This is the regime where domain-level misplacements dominate — and where spectral features shine.\nFor small RNAs (&lt;100 nt), local metrics are often sufficient because there are few domains to misplace. The spectral advantage grows with structural complexity, exactly as the theory predicts.\n\n\nMost Discriminative Features\nFeature importance analysis reveals that the top-ranked features are heat-kernel traces at intermediate-to-large diffusion times — precisely the features that probe multi-scale and global transport geometry on the contact network. Local eigenvalue statistics (which probe small-scale structure) rank lower.\nThis confirms the theoretical motivation: the spectral approach works because it accesses the global information that local methods cannot reach."
-  },
-  {
-    "objectID": "notes/2026-04-specrnaq/index.html#connection-to-the-broader-spectral-program",
-    "href": "notes/2026-04-specrnaq/index.html#connection-to-the-broader-spectral-program",
-    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
-    "section": "Connection to the Broader Spectral Program",
-    "text": "Connection to the Broader Spectral Program\nSpecRNA-QA is part of a broader research program applying spectral graph theory to structural biology:\n\nSpecRNA-QA (RNA): Multi-scale Laplacian spectra for RNA 3D quality assessment → under review at Briefings in Bioinformatics\nSpectral Coherence Index (Proteins): Participation-ratio effective rank of inter-model distance-variance matrices for protein ensemble QA, achieving AUC-ROC 0.973 on 110 NMR ensembles → under review at IEEE JBHI (arXiv:2603.25880)\n\nBoth methods share a design principle: model-free spectral features that are invariant to coordinate systems and capture global structural properties that local metrics miss."
-  },
-  {
-    "objectID": "notes/2026-04-specrnaq/index.html#try-it",
-    "href": "notes/2026-04-specrnaq/index.html#try-it",
-    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
-    "section": "Try It",
-    "text": "Try It\nSpecRNA-QA is open source and easy to use:\ngit clone https://github.com/yudabitrends/specrnaq\ncd specrnaq\npip install -e .\nspecrnaq predict --input structures/ --output scores.csv\nPython 3.10+, CPU-only, no external dependencies beyond standard scientific Python."
-  },
-  {
-    "objectID": "notes/2026-04-specrnaq/index.html#papers",
-    "href": "notes/2026-04-specrnaq/index.html#papers",
-    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
-    "section": "Papers",
-    "text": "Papers\n\nYing Zhu, Huaiwen Zhang, Vince D. Calhoun†, Yuda Bi†. Spectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment. Under review at Briefings in Bioinformatics.\nYuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun. Spectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment. Under review at IEEE JBHI. arXiv:2603.25880"
-  },
-  {
-    "objectID": "notes.html",
-    "href": "notes.html",
-    "title": "Notes",
-    "section": "",
-    "text": "Research Notes\nTechnical notes and tutorials on statistical physics, information geometry, spectral methods, and theoretical neuroscience.\n\n\n\n\n\n\n\n\n\n\nSpectral Methods in Brain Network Analysis\n\n\n\nspectral methods\n\nbrain networks\n\ngraph theory\n\n\n\nNotes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\nSpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss\n\n\n\nspectral methods\n\nRNA structure\n\nbioinformatics\n\ngraph theory\n\n\n\nHow graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment — outperforming geometry baselines by +0.224 on CASP16.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\nThe Geometry of Invisible Forces: A Quartic Detection Theory\n\n\n\nstatistical physics\n\ninformation geometry\n\nhidden variables\n\nspectral methods\n\n\n\nWhy hidden variables are orders of magnitude harder to detect than classical statistics predicts — and how cross-spectral geometry breaks the impossibility.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\nStructure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization\n\n\n\nneuroscience\n\nstructure-function coupling\n\nspectral methods\n\nlinear algebra\n\n\n\nGray matter explains only ~6% of functional connectivity variance — yet aligns with 45% of its directional subspace. Why amplitudes and geometry tell fundamentally different stories about brain structure-function coupling.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "cv.html",
-    "href": "cv.html",
-    "title": "CV",
-    "section": "",
-    "text": "Ph.D. in Computer Science — statistical physics, information geometry, and theoretical neuroscience."
-  },
-  {
-    "objectID": "cv.html#education",
-    "href": "cv.html#education",
-    "title": "CV",
-    "section": "Education",
-    "text": "Education\n\n2020–2025\nPh.D. in Computer Science, Georgia State University\nTReNDS Center (GSU, Georgia Tech, Emory). Advisor: Prof. Vince D. Calhoun\n\n\n2017–2020\nM.S. in Computer Science, University of Georgia\n\n\n2013–2017\nB.S. in Management, Shandong University of Science and Technology"
-  },
-  {
-    "objectID": "cv.html#research-trajectory",
-    "href": "cv.html#research-trajectory",
-    "title": "CV",
-    "section": "Research Trajectory",
-    "text": "Research Trajectory\n2020–2024\nMultimodal Neuroimaging Engineering\nDeveloped deep learning frameworks for brain imaging — vision transformers, GANs, and diffusion models for fusing structural MRI with functional connectivity. Published in NeuroImage, Human Brain Mapping, Journal of Neuroscience Methods, and multiple IEEE venues (ISBI, EMBC).\n\n2025–present\nTransition to Theory-Driven Cross-Disciplinary Research\nPivoted from engineering-driven model stacking to a theory-first program rooted in statistical physics and nonequilibrium thermodynamics. Current work develops exact mathematical foundations for hidden-variable detectability, spectral methods in structural biology, and the physics of learning.\nCore research directions:\n\nInformation geometry of hidden variables — Quartic detection law on statistical manifolds: exact KL projection geometry, tangent-normal decomposition, semiparametric efficiency bounds (Amari, BKRW, Le Cam). Proves that coarse-grained refitting absorbs \\(O(\\lambda^2)\\) perturbations, leaving only \\(O(\\lambda^4)\\) normal residuals.\nStochastic thermodynamics from partial observations — Cross-spectral certification of entropy production under the Lucente impossibility. Pairing principle for minimum probe count. Connection to Mori-Zwanzig projection and thermodynamic uncertainty relations (Seifert, Barato-Seifert).\nSpectral graph theory for structural biology — Graph Laplacian spectra, heat-kernel traces, participation-ratio effective rank. Applied to RNA 3D quality assessment (SpecRNA-QA) and protein ensemble coherence (SCI).\nFinancial physics — Volatility-conditioned correlation dynamics in S&P 500, timescale separation in market microstructure. Spectral dark regimes in financial time series.\nPhysics of AI — Grokking as a finite-size phase transition. Kurtosis contrast laws in mixture separation."
-  },
-  {
-    "objectID": "cv.html#selected-publications",
-    "href": "cv.html#selected-publications",
-    "title": "CV",
-    "section": "Selected Publications",
-    "text": "Selected Publications\nSee full list on the Publications page.\n\nBi Y, Calhoun VD. Cross spectra break the single-channel impossibility. Under review, Physical Review Letters.\nBi Y, Calhoun VD. Why single probes cannot detect hidden forcing: A quartic detection law. Under review, Physical Review Letters.\nBi Y, Zhang C, Calhoun VD. Timescale coalescence makes hidden persistent forcing spectrally dark. Under review, Physical Review E.\nBi Y, Abrol A, Jia S, Sui J, Calhoun VD. Gray matters: ViT-GAN framework for identifying schizophrenia biomarkers. NeuroImage, 2024.\nBi Y, Abrol A, Fu Z, Calhoun VD. A multimodal vision transformer for interpretable fusion of functional and structural neuroimaging data. Human Brain Mapping, 2024."
-  },
-  {
-    "objectID": "cv.html#certifications",
-    "href": "cv.html#certifications",
-    "title": "CV",
-    "section": "Certifications",
-    "text": "Certifications\n\nCFA Level III — CFA Institute"
-  },
-  {
-    "objectID": "cv.html#skills",
-    "href": "cv.html#skills",
-    "title": "CV",
-    "section": "Skills",
-    "text": "Skills\n\n\nMathematics & Physics\nInformation geometry, stochastic processes, spectral graph theory, nonequilibrium thermodynamics, KL divergence & projection, semiparametric theory\n\n\nProgramming\nPython, PyTorch, TensorFlow, MATLAB, R, Mathematica\n\n\nNeuroimaging\nfMRI, sMRI, functional network connectivity analysis\n\n\nLanguages\nChinese (native), English (professional)"
-  },
-  {
-    "objectID": "cv.html#links",
-    "href": "cv.html#links",
-    "title": "CV",
-    "section": "Links",
-    "text": "Links\n\nGoogle Scholar\nGitHub\nLinkedIn"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
+    "objectID": "novels/beijianzhideshijie/index.html#裂隙",
+    "href": "novels/beijianzhideshijie/index.html#裂隙",
     "title": "Yuda Bi",
-    "section": "",
-    "text": "I received my Ph.D. from the TReNDS Center (GSU, Georgia Tech, Emory), advised by Prof. Vince D. Calhoun.\nIn 2025 I pivoted from engineering-driven multimodal neuroimaging toward a theory-first research program grounded in statistical physics, nonequilibrium thermodynamics, and information geometry.\n\n\nStatistical Physics Information Geometry Nonequilibrium Thermodynamics Theoretical Neuroscience Spectral Graph Theory Financial Physics Structural Biology\n\n\n\n\nPh.D. in Computer Science, Georgia State University, 2020–2025\n\n\nM.S. in Computer Science, University of Georgia, 2017–2020\n\n\nB.S. in Management, Shandong University of Science and Technology, 2013–2017\n\n\n\n\n7 Under Review\n\n\n4 PRL / PRE\n\n\n3 Journal Articles\n\n\n5 Conference Papers\n\n\n\n\n\n\n\\(D_{\\mathrm{KL}}^{\\min}(\\lambda) = C\\,\\lambda^4 + O(\\lambda^6)\\)\n\nHidden variables are orders of magnitude harder to detect than classical statistics predicts. When a reduced model absorbs the leading perturbation through reparametrization, only the normal residual survives — producing a quartic, not quadratic, detection law. A single probe is provably blind; two probes sharing the hidden driver break the impossibility via cross-spectral geometry.\nFour papers under review at Physical Review Letters and Physical Review E.\n\nTheory Note Project Page Tutorial PDF\n\n\n\n“The sad truth is that most evil is done by people who never make up their minds to be good or evil.” — Hannah Arendt\n\n\n\n\n\nVisitor count"
+    "section": "裂隙",
+    "text": "裂隙"
   },
   {
-    "objectID": "index.html#about",
-    "href": "index.html#about",
+    "objectID": "novels/beijianzhideshijie/index.html#重写",
+    "href": "novels/beijianzhideshijie/index.html#重写",
     "title": "Yuda Bi",
-    "section": "",
-    "text": "I received my Ph.D. from the TReNDS Center (GSU, Georgia Tech, Emory), advised by Prof. Vince D. Calhoun.\nIn 2025 I pivoted from engineering-driven multimodal neuroimaging toward a theory-first research program grounded in statistical physics, nonequilibrium thermodynamics, and information geometry.\n\n\nStatistical Physics Information Geometry Nonequilibrium Thermodynamics Theoretical Neuroscience Spectral Graph Theory Financial Physics Structural Biology\n\n\n\n\nPh.D. in Computer Science, Georgia State University, 2020–2025\n\n\nM.S. in Computer Science, University of Georgia, 2017–2020\n\n\nB.S. in Management, Shandong University of Science and Technology, 2013–2017\n\n\n\n\n7 Under Review\n\n\n4 PRL / PRE\n\n\n3 Journal Articles\n\n\n5 Conference Papers\n\n\n\n\n\n\n\\(D_{\\mathrm{KL}}^{\\min}(\\lambda) = C\\,\\lambda^4 + O(\\lambda^6)\\)\n\nHidden variables are orders of magnitude harder to detect than classical statistics predicts. When a reduced model absorbs the leading perturbation through reparametrization, only the normal residual survives — producing a quartic, not quadratic, detection law. A single probe is provably blind; two probes sharing the hidden driver break the impossibility via cross-spectral geometry.\nFour papers under review at Physical Review Letters and Physical Review E.\n\nTheory Note Project Page Tutorial PDF\n\n\n\n“The sad truth is that most evil is done by people who never make up their minds to be good or evil.” — Hannah Arendt\n\n\n\n\n\nVisitor count"
+    "section": "重写",
+    "text": "重写"
   },
   {
-    "objectID": "index.html#recent-notes",
-    "href": "index.html#recent-notes",
+    "objectID": "novels/beijianzhideshijie/index.html#剪枝",
+    "href": "novels/beijianzhideshijie/index.html#剪枝",
     "title": "Yuda Bi",
-    "section": "Recent Notes",
-    "text": "Recent Notes\n\n\n\n\n\n\n\nSpectral Methods in Brain Network Analysis\n\n\nNotes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\n\n\n\nSpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss\n\n\nHow graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment — outperforming geometry baselines by +0.224 on CASP16.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\n\n\n\nThe Geometry of Invisible Forces: A Quartic Detection Theory\n\n\nWhy hidden variables are orders of magnitude harder to detect than classical statistics predicts — and how cross-spectral geometry breaks the impossibility.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\nNo matching items"
+    "section": "剪枝",
+    "text": "剪枝"
   },
   {
-    "objectID": "projects.html",
-    "href": "projects.html",
-    "title": "Projects",
-    "section": "",
-    "text": "Research Projects\nTheory-driven research programs spanning statistical physics, spectral methods in structural biology, and brain network analysis.\n\n\n\n\n\n\n\nQuartic Detection Theory: The Geometry of Hidden Variables\n\n\n\nA series of papers establishing exact detectability theory for hidden degrees of freedom on statistical manifolds. Read the full theory note →\nWe prove that hidden variables are orders of magnitude harder to detect than classical statistics predicts. When a hidden force couples linearly to the dynamics but quadratically to the observables — the generic case for power spectra, covariances, and correlations — the data requirement scales as \\(\\lambda^{-4}\\), not \\(\\lambda^{-2}\\). For a 10% coupling, this quartic penalty demands ~1000× more data than the naive Fisher-information expectation.\n\nCore results:\n\nQuartic detection law: \\(D_\\mathrm{KL}^\\mathrm{min}(\\lambda) = C\\lambda^4 + O(\\lambda^6)\\) on general statistical manifolds, with exact system-specific coefficients\nPairing principle: A single probe is provably blind to hidden common input; detection requires \\(\\geq 2\\) channels, with power growing as sensor pairs \\(\\binom{n}{2}\\)\nSpectral dark regime: At timescale coalescence the quartic coefficient vanishes — hidden forcing becomes spectrally invisible\nCross-spectral escape: Off-diagonal spectral structure breaks the single-channel impossibility, remaining strictly positive at coalescence\nThermodynamic bridge: Cross-spectral detectability certifies positive entropy production, linking observable structure to the arrow of time\n\n\nMathematical toolkit: Information geometry (Amari), Kullback-Leibler projection, semiparametric efficiency (BKRW), Whittle likelihood, Mori-Zwanzig coarse-graining, stochastic thermodynamics (Seifert), spectral analysis on statistical manifolds.\nPapers in this series:\n\nWhy Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law — under review, PRL\nCross Spectra Break the Single-Channel Impossibility — under review, PRL\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark — under review, PRE (arXiv:2603.20917)\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation — under review, PRE (arXiv:2603.14072)\n\n\n\n\n\n\n\n\n\n\nSpecRNA-QA: Spectral Graph Methods for RNA 3D Quality Assessment\n\n\n\nA lightweight, reference-free tool for assessing RNA 3D structure quality using spectral graph features. GitHub · Read the method note →\n\n\n\nRNA 3D structure quality: C4’ deviation from best model (blue = 0 Å, red = 50 Å)\n\n\nExisting RNA quality assessment methods evaluate local atomic contacts — they fail when local structure is correct but entire domains are misplaced. SpecRNA-QA solves this by extracting multi-scale spectral features from the graph Laplacian of RNA contact networks, capturing global topology that local metrics miss.\n\nPerformance:\n\nCASP16 benchmark (42 targets, 7,368 models): median Spearman \\(\\rho = 0.689\\) in supervised mode, outperforming geometry-based baselines (\\(\\rho = 0.465\\)) with \\(p = 1.2 \\times 10^{-10}\\)\nLarge RNAs (&gt;200 nt): performance advantage reaches \\(+0.233\\) in correlation over geometry baselines — the regime where global topology matters most\nFast: 15 ms for 100-nt structures, ~4.2 s for 800-nt molecules. CPU-only, no GPU required\n\n\nHow it works: Contact graphs at multiple distance thresholds → ~312 spectral features from normalized Laplacian (eigenvalue statistics, heat-kernel traces, participation ratios) → XGBRanker model for quality prediction. The most discriminative features are heat-kernel traces measuring multi-scale diffusion, connecting RNA quality to the transport geometry of the contact network.\nPapers:\n\nSpectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment — under review, Briefings in Bioinformatics\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment — under review, IEEE JBHI (arXiv:2603.25880)\n\n\n\n\n\n\n\n\n\n\nStructure-Function Coupling: Anatomy Sets the Stage\n\n\n\nA spectral analysis framework revealing how gray matter morphometry constrains functional brain organization through a low-rank geometric subspace. Read the full note →\n\n\n\nSubspace overlap (0.45) far exceeds variance explained (0.06) — gray matter constrains the directions of functional variation, not the amplitudes.\n\n\nGray matter explains only ~6% of functional connectivity variance — yet aligns with 45% of its directional subspace. This order-of-magnitude gap reveals that anatomy does not determine how strongly each individual’s brain connectivity deviates from the mean, but rather constrains the coordinate system in which functional variation occurs.\n\nKey findings:\n\nNuclear norm regularization on the GM→FNC coefficient matrix recovers a soft low-rank mapping (effective rank ~38)\nSubspace overlap \\(O = 0.447\\) at \\(k=20\\), with top 3 principal angles reaching cos \\(\\theta = 0.97, 0.95, 0.86\\)\nThe structure-coupled FNC subspace achieves AUC = 0.795 for schizophrenia classification — outperforming full FNC\nValidated across 3 datasets (\\(N &gt; 39{,}000\\) total) with 7 benchmarked methods\n\n\nPlanned series: Paper 0 (GM-FNC, in preparation for NeuroImage) → Paper 1 (GM + WM decomposition, UK Biobank) → Paper 2 (unified probabilistic framework).\n\n\n\n\n\n\n\n\n\nMultiViT / MultiViT2\n\n\n\nMultimodal vision transformer frameworks for brain imaging analysis (2022–2024).\n\nIntegrates structural MRI and functional connectivity data\nAchieves AUC 0.833 for schizophrenia classification (MultiViT)\nData augmentation via latent diffusion models (MultiViT2)\nPublished in NeuroImage, Human Brain Mapping, and IEEE ISBI"
+    "objectID": "novels.html#漫长的求证",
+    "href": "novels.html#漫长的求证",
+    "title": "Yuda Bi",
+    "section": "漫长的求证",
+    "text": "漫长的求证\n\n沉 · 隧 · 渠\n\n\n县城的水泥台阶上，一个女孩蹲在那里用粉笔写统计物理的公式，一个男孩蹲在旁边替她挡风。暮色四合，街也显得比平时长了一截。\n后来她去了更好的学府，他拐进二本；两人之间只余一根细若游丝的线——电话那头她讲起题来语速快得刹不住车，课本空白处偶尔冒出她的批注。再后来，纸页一翻，天便换了颜色。她停在了某一刻，此后四季更迭，再与她无关。\n他带着那本卷了边的《统计物理》去了大洋彼岸。扉页上有一行铅笔小字：“这本书的主人将来会做很了不起的事，但他自己还不知道。” 写字的人没有登场。此后所有的公式、实验、深夜的灯，都是一场漫长的求证——证给自己看，也证给那行字看。\n\n\n县城 物理 异乡 学术 失去与求索\n\n\n“正因为慢，微末之物才有机会被看见。”\n\n阅读章节目录 →"
   },
   {
-    "objectID": "publications.html",
-    "href": "publications.html",
-    "title": "Publications",
-    "section": "",
-    "text": "Peer-reviewed journal articles, conference papers, and preprints spanning statistical physics, information geometry, spectral methods, and neuroimaging."
-  },
-  {
-    "objectID": "publications.html#under-review",
-    "href": "publications.html#under-review",
-    "title": "Publications",
-    "section": "Under Review",
-    "text": "Under Review\n\nCross Spectra Break the Single-Channel Impossibility Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nWhy Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nGrokking as a Falsifiable Finite-Size Transition Yuda Bi, Chenyu Zhang, Qiheng Wang, Vince D. Calhoun Under review at Physical Review Letters arXiv PDF\n\n\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark Yuda Bi, Chenyu Zhang, Vince D. Calhoun Under review at Physical Review E arXiv PDF\n\n\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation Yuda Bi, Vince D. Calhoun Under review at Physical Review E arXiv PDF\n\n\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment Yuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun Under review at IEEE Journal of Biomedical and Health Informatics arXiv PDF\n\n\nSpectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment Ying Zhu, Huaiwen Zhang, Vince D. Calhoun†, Yuda Bi† Under review at Briefings in Bioinformatics\n\n\nA 1/R Law for Kurtosis Contrast in Balanced Mixtures Yuda Bi, Wenjun Xiao, Linhao Bai, Vince D. Calhoun IEEE Signal Processing Letters arXiv PDF"
-  },
-  {
-    "objectID": "publications.html#in-preparation",
-    "href": "publications.html#in-preparation",
-    "title": "Publications",
-    "section": "In Preparation",
-    "text": "In Preparation\n\nGray Matter Morphometry Reveals a Soft Low-Rank Structure-Function Subspace Yuda Bi, Vince D. Calhoun In preparation for NeuroImage"
-  },
-  {
-    "objectID": "publications.html#journal-articles",
-    "href": "publications.html#journal-articles",
-    "title": "Publications",
-    "section": "Journal Articles",
-    "text": "Journal Articles\n\nGray Matters: ViT-GAN Framework for Identifying Schizophrenia Biomarkers Linking Structural MRI and Functional Network Connectivity Yuda Bi, Anees Abrol, Sihan Jia, Jing Sui, Vince D. Calhoun NeuroImage, 297, 120674, 2024 DOI PDF\n\n\nA Multimodal Vision Transformer for Interpretable Fusion of Functional and Structural Neuroimaging Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun Human Brain Mapping, 45(17), e26783, 2024 DOI PubMed PDF\n\n\nPrediction of Gender from Longitudinal MRI Data via Deep Learning on Adolescent Data Reveals Unique Patterns Associated with Brain Structure and Change over a Two-year Period Yuda Bi, Anees Abrol, Zening Fu, Jiayu Chen, Jingyu Liu, Vince Calhoun Journal of Neuroscience Methods, 384, 109744, 2023 DOI"
-  },
-  {
-    "objectID": "publications.html#conference-papers",
-    "href": "publications.html#conference-papers",
-    "title": "Publications",
-    "section": "Conference Papers",
-    "text": "Conference Papers\n\nMultiViT2: A Data-augmented Multimodal Neuroimaging Prediction Framework via Latent Diffusion Model Yuda Bi, Sihan Jia, Yutong Gao, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE ISBI, 2025 arXiv PDF\n\n\nGM-LDM: Latent Diffusion Model for Brain Biomarker Identification through Functional Data-Driven Gray Matter Synthesis Xu Hu, Jingling Yang, Sihan Jia, Yuda Bi, Vince D. Calhoun IEEE ISBI, 2025 arXiv PDF\n\n\nCross-Modal Synthesis of Structural MRI and Functional Connectivity Networks via Conditional ViT-GANs Yuda Bi, Anees Abrol, Jing Sui, Vince D. Calhoun IEEE ISBI, 2024 arXiv IEEE\n\n\nMultiViT: Multimodal Vision Transformer for Schizophrenia Prediction using Structural MRI and Functional Network Connectivity Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE ISBI, 2023 IEEE\n\n\nDeep Learning Prediction and Visualization of Gender Related Brain Changes from Longitudinal Structural MRI Data in the ABCD Study Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE EMBC, 2022 IEEE"
-  },
-  {
-    "objectID": "notes/2026-04-spectral-brain-networks/index.html",
-    "href": "notes/2026-04-spectral-brain-networks/index.html",
-    "title": "Spectral Methods in Brain Network Analysis",
-    "section": "",
-    "text": "Given a brain connectivity matrix \\(W \\in \\mathbb{R}^{n \\times n}\\) where \\(w_{ij}\\) represents the functional connectivity between regions \\(i\\) and \\(j\\), the normalized graph Laplacian is:\n\\[\n\\mathcal{L} = I - D^{-1/2} W D^{-1/2}\n\\]\nwhere \\(D = \\text{diag}(d_1, \\ldots, d_n)\\) is the degree matrix with \\(d_i = \\sum_j w_{ij}\\)."
-  },
-  {
-    "objectID": "notes/2026-04-spectral-brain-networks/index.html#graph-laplacian-and-brain-networks",
-    "href": "notes/2026-04-spectral-brain-networks/index.html#graph-laplacian-and-brain-networks",
-    "title": "Spectral Methods in Brain Network Analysis",
-    "section": "",
-    "text": "Given a brain connectivity matrix \\(W \\in \\mathbb{R}^{n \\times n}\\) where \\(w_{ij}\\) represents the functional connectivity between regions \\(i\\) and \\(j\\), the normalized graph Laplacian is:\n\\[\n\\mathcal{L} = I - D^{-1/2} W D^{-1/2}\n\\]\nwhere \\(D = \\text{diag}(d_1, \\ldots, d_n)\\) is the degree matrix with \\(d_i = \\sum_j w_{ij}\\)."
-  },
-  {
-    "objectID": "notes/2026-04-spectral-brain-networks/index.html#spectral-decomposition",
-    "href": "notes/2026-04-spectral-brain-networks/index.html#spectral-decomposition",
-    "title": "Spectral Methods in Brain Network Analysis",
-    "section": "Spectral Decomposition",
-    "text": "Spectral Decomposition\nThe eigendecomposition of \\(\\mathcal{L}\\) yields:\n\\[\n\\mathcal{L} = U \\Lambda U^T = \\sum_{k=0}^{n-1} \\lambda_k \\mathbf{u}_k \\mathbf{u}_k^T\n\\]\nwhere \\(0 = \\lambda_0 \\leq \\lambda_1 \\leq \\cdots \\leq \\lambda_{n-1} \\leq 2\\).\n\nKey Properties\n\nNumber of zero eigenvalues = number of connected components\nThe Fiedler value \\(\\lambda_1\\) measures algebraic connectivity\nThe spectral gap \\(\\lambda_1 - \\lambda_0\\) indicates community separation strength"
-  },
-  {
-    "objectID": "notes/2026-04-spectral-brain-networks/index.html#participation-ratio",
-    "href": "notes/2026-04-spectral-brain-networks/index.html#participation-ratio",
-    "title": "Spectral Methods in Brain Network Analysis",
-    "section": "Participation Ratio",
-    "text": "Participation Ratio\nThe effective rank via participation ratio provides a model-free measure of spectral spread:\n\\[\n\\text{PR}(\\boldsymbol{\\lambda}) = \\frac{\\left(\\sum_k \\lambda_k\\right)^2}{\\sum_k \\lambda_k^2}\n\\]\nThis ranges from 1 (single dominant eigenvalue) to \\(n\\) (uniform spectrum), capturing the effective dimensionality of the network."
-  },
-  {
-    "objectID": "notes/2026-04-spectral-brain-networks/index.html#connection-to-statistical-physics",
-    "href": "notes/2026-04-spectral-brain-networks/index.html#connection-to-statistical-physics",
-    "title": "Spectral Methods in Brain Network Analysis",
-    "section": "Connection to Statistical Physics",
-    "text": "Connection to Statistical Physics\nThe graph Laplacian connects to the partition function of a Gaussian field on the network:\n\\[\nZ(\\beta) = \\int \\exp\\left(-\\frac{\\beta}{2} \\mathbf{x}^T \\mathcal{L} \\mathbf{x}\\right) d\\mathbf{x} = \\prod_{k=1}^{n-1} \\sqrt{\\frac{2\\pi}{\\beta \\lambda_k}}\n\\]\nThe free energy \\(F = -\\frac{1}{\\beta}\\ln Z\\) encodes thermodynamic properties of signal propagation on the network."
+    "objectID": "novels.html#被剪枝的世界",
+    "href": "novels.html#被剪枝的世界",
+    "title": "Yuda Bi",
+    "section": "被剪枝的世界",
+    "text": "被剪枝的世界\n\n一套将最坏解释当成真实的系统\n\n\n门禁从零点三秒变成十一秒，是第三年开始的事。\n陈维曾是一名研究员，如今他的名字在系统里亮着红灯——买止痛药要写意图声明，充交通卡要填出行目的，连查一个公开版本号都会弹出 Access revoked。广播每三十秒循环一次：“For public safety, the worst-case interpretation applies.” 没有人反应，好像这句话早已长进了日常。\n前同事向思敏带着一份数据找到他。曲线的尾部被剪过——不是噪声被清洗，而是信号本身被裁掉了，边缘硬得像刀口。她签了一份”风险缓释附件”，副本还在手里，审计窗口四十八小时后关闭。她母亲每周三次肾透析，挂在研究所的医疗通道上。她说：“我不是想当英雄，我只是不能失业。”\n他们用铅笔、收据背面和一台离线旧电脑，试图在一个不断重写自身记录的系统里，保住最后一点不被覆盖的真实。\n\n\n近未来 监控 合规 数据 算法治理\n\n\n“自然噪声不会这么听话。”\n\n阅读章节目录 →"
   },
   {
     "objectID": "notes/2026-04-quartic-detection-theory/index.html",
@@ -362,5 +110,306 @@
     "title": "The Geometry of Invisible Forces: A Quartic Detection Theory",
     "section": "Papers in This Series",
     "text": "Papers in This Series\n\nYuda Bi, Vince D. Calhoun. Why Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law. Under review at Physical Review Letters.\nYuda Bi, Vince D. Calhoun. Cross Spectra Break the Single-Channel Impossibility. Under review at Physical Review Letters.\nYuda Bi, Chenyu Zhang, Vince D. Calhoun. Timescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark. Under review at Physical Review E. arXiv:2603.20917\nYuda Bi, Vince D. Calhoun. Conditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation. Under review at Physical Review E. arXiv:2603.14072"
+  },
+  {
+    "objectID": "notes/2026-04-spectral-brain-networks/index.html",
+    "href": "notes/2026-04-spectral-brain-networks/index.html",
+    "title": "Spectral Methods in Brain Network Analysis",
+    "section": "",
+    "text": "Given a brain connectivity matrix \\(W \\in \\mathbb{R}^{n \\times n}\\) where \\(w_{ij}\\) represents the functional connectivity between regions \\(i\\) and \\(j\\), the normalized graph Laplacian is:\n\\[\n\\mathcal{L} = I - D^{-1/2} W D^{-1/2}\n\\]\nwhere \\(D = \\text{diag}(d_1, \\ldots, d_n)\\) is the degree matrix with \\(d_i = \\sum_j w_{ij}\\)."
+  },
+  {
+    "objectID": "notes/2026-04-spectral-brain-networks/index.html#graph-laplacian-and-brain-networks",
+    "href": "notes/2026-04-spectral-brain-networks/index.html#graph-laplacian-and-brain-networks",
+    "title": "Spectral Methods in Brain Network Analysis",
+    "section": "",
+    "text": "Given a brain connectivity matrix \\(W \\in \\mathbb{R}^{n \\times n}\\) where \\(w_{ij}\\) represents the functional connectivity between regions \\(i\\) and \\(j\\), the normalized graph Laplacian is:\n\\[\n\\mathcal{L} = I - D^{-1/2} W D^{-1/2}\n\\]\nwhere \\(D = \\text{diag}(d_1, \\ldots, d_n)\\) is the degree matrix with \\(d_i = \\sum_j w_{ij}\\)."
+  },
+  {
+    "objectID": "notes/2026-04-spectral-brain-networks/index.html#spectral-decomposition",
+    "href": "notes/2026-04-spectral-brain-networks/index.html#spectral-decomposition",
+    "title": "Spectral Methods in Brain Network Analysis",
+    "section": "Spectral Decomposition",
+    "text": "Spectral Decomposition\nThe eigendecomposition of \\(\\mathcal{L}\\) yields:\n\\[\n\\mathcal{L} = U \\Lambda U^T = \\sum_{k=0}^{n-1} \\lambda_k \\mathbf{u}_k \\mathbf{u}_k^T\n\\]\nwhere \\(0 = \\lambda_0 \\leq \\lambda_1 \\leq \\cdots \\leq \\lambda_{n-1} \\leq 2\\).\n\nKey Properties\n\nNumber of zero eigenvalues = number of connected components\nThe Fiedler value \\(\\lambda_1\\) measures algebraic connectivity\nThe spectral gap \\(\\lambda_1 - \\lambda_0\\) indicates community separation strength"
+  },
+  {
+    "objectID": "notes/2026-04-spectral-brain-networks/index.html#participation-ratio",
+    "href": "notes/2026-04-spectral-brain-networks/index.html#participation-ratio",
+    "title": "Spectral Methods in Brain Network Analysis",
+    "section": "Participation Ratio",
+    "text": "Participation Ratio\nThe effective rank via participation ratio provides a model-free measure of spectral spread:\n\\[\n\\text{PR}(\\boldsymbol{\\lambda}) = \\frac{\\left(\\sum_k \\lambda_k\\right)^2}{\\sum_k \\lambda_k^2}\n\\]\nThis ranges from 1 (single dominant eigenvalue) to \\(n\\) (uniform spectrum), capturing the effective dimensionality of the network."
+  },
+  {
+    "objectID": "notes/2026-04-spectral-brain-networks/index.html#connection-to-statistical-physics",
+    "href": "notes/2026-04-spectral-brain-networks/index.html#connection-to-statistical-physics",
+    "title": "Spectral Methods in Brain Network Analysis",
+    "section": "Connection to Statistical Physics",
+    "text": "Connection to Statistical Physics\nThe graph Laplacian connects to the partition function of a Gaussian field on the network:\n\\[\nZ(\\beta) = \\int \\exp\\left(-\\frac{\\beta}{2} \\mathbf{x}^T \\mathcal{L} \\mathbf{x}\\right) d\\mathbf{x} = \\prod_{k=1}^{n-1} \\sqrt{\\frac{2\\pi}{\\beta \\lambda_k}}\n\\]\nThe free energy \\(F = -\\frac{1}{\\beta}\\ln Z\\) encodes thermodynamic properties of signal propagation on the network."
+  },
+  {
+    "objectID": "publications.html",
+    "href": "publications.html",
+    "title": "Publications",
+    "section": "",
+    "text": "Peer-reviewed journal articles, conference papers, and preprints spanning statistical physics, information geometry, spectral methods, and neuroimaging."
+  },
+  {
+    "objectID": "publications.html#under-review",
+    "href": "publications.html#under-review",
+    "title": "Publications",
+    "section": "Under Review",
+    "text": "Under Review\n\nCross Spectra Break the Single-Channel Impossibility Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nWhy Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law Yuda Bi, Vince D. Calhoun Under review at Physical Review Letters\n\n\nGrokking as a Falsifiable Finite-Size Transition Yuda Bi, Chenyu Zhang, Qiheng Wang, Vince D. Calhoun Under review at Physical Review Letters arXiv PDF\n\n\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark Yuda Bi, Chenyu Zhang, Vince D. Calhoun Under review at Physical Review E arXiv PDF\n\n\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation Yuda Bi, Vince D. Calhoun Under review at Physical Review E arXiv PDF\n\n\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment Yuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun Under review at IEEE Journal of Biomedical and Health Informatics arXiv PDF\n\n\nSpectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment Ying Zhu, Huaiwen Zhang, Vince D. Calhoun†, Yuda Bi† Under review at Briefings in Bioinformatics\n\n\nA 1/R Law for Kurtosis Contrast in Balanced Mixtures Yuda Bi, Wenjun Xiao, Linhao Bai, Vince D. Calhoun IEEE Signal Processing Letters arXiv PDF"
+  },
+  {
+    "objectID": "publications.html#in-preparation",
+    "href": "publications.html#in-preparation",
+    "title": "Publications",
+    "section": "In Preparation",
+    "text": "In Preparation\n\nGray Matter Morphometry Reveals a Soft Low-Rank Structure-Function Subspace Yuda Bi, Vince D. Calhoun In preparation for NeuroImage"
+  },
+  {
+    "objectID": "publications.html#journal-articles",
+    "href": "publications.html#journal-articles",
+    "title": "Publications",
+    "section": "Journal Articles",
+    "text": "Journal Articles\n\nGray Matters: ViT-GAN Framework for Identifying Schizophrenia Biomarkers Linking Structural MRI and Functional Network Connectivity Yuda Bi, Anees Abrol, Sihan Jia, Jing Sui, Vince D. Calhoun NeuroImage, 297, 120674, 2024 DOI PDF\n\n\nA Multimodal Vision Transformer for Interpretable Fusion of Functional and Structural Neuroimaging Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun Human Brain Mapping, 45(17), e26783, 2024 DOI PubMed PDF\n\n\nPrediction of Gender from Longitudinal MRI Data via Deep Learning on Adolescent Data Reveals Unique Patterns Associated with Brain Structure and Change over a Two-year Period Yuda Bi, Anees Abrol, Zening Fu, Jiayu Chen, Jingyu Liu, Vince Calhoun Journal of Neuroscience Methods, 384, 109744, 2023 DOI"
+  },
+  {
+    "objectID": "publications.html#conference-papers",
+    "href": "publications.html#conference-papers",
+    "title": "Publications",
+    "section": "Conference Papers",
+    "text": "Conference Papers\n\nMultiViT2: A Data-augmented Multimodal Neuroimaging Prediction Framework via Latent Diffusion Model Yuda Bi, Sihan Jia, Yutong Gao, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE ISBI, 2025 arXiv PDF\n\n\nGM-LDM: Latent Diffusion Model for Brain Biomarker Identification through Functional Data-Driven Gray Matter Synthesis Xu Hu, Jingling Yang, Sihan Jia, Yuda Bi, Vince D. Calhoun IEEE ISBI, 2025 arXiv PDF\n\n\nCross-Modal Synthesis of Structural MRI and Functional Connectivity Networks via Conditional ViT-GANs Yuda Bi, Anees Abrol, Jing Sui, Vince D. Calhoun IEEE ISBI, 2024 arXiv IEEE\n\n\nMultiViT: Multimodal Vision Transformer for Schizophrenia Prediction using Structural MRI and Functional Network Connectivity Data Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE ISBI, 2023 IEEE\n\n\nDeep Learning Prediction and Visualization of Gender Related Brain Changes from Longitudinal Structural MRI Data in the ABCD Study Yuda Bi, Anees Abrol, Zening Fu, Vince D. Calhoun IEEE EMBC, 2022 IEEE"
+  },
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "Research Projects\nTheory-driven research programs spanning statistical physics, spectral methods in structural biology, and brain network analysis.\n\n\n\n\n\n\n\nQuartic Detection Theory: The Geometry of Hidden Variables\n\n\n\nA series of papers establishing exact detectability theory for hidden degrees of freedom on statistical manifolds. Read the full theory note →\nWe prove that hidden variables are orders of magnitude harder to detect than classical statistics predicts. When a hidden force couples linearly to the dynamics but quadratically to the observables — the generic case for power spectra, covariances, and correlations — the data requirement scales as \\(\\lambda^{-4}\\), not \\(\\lambda^{-2}\\). For a 10% coupling, this quartic penalty demands ~1000× more data than the naive Fisher-information expectation.\n\nCore results:\n\nQuartic detection law: \\(D_\\mathrm{KL}^\\mathrm{min}(\\lambda) = C\\lambda^4 + O(\\lambda^6)\\) on general statistical manifolds, with exact system-specific coefficients\nPairing principle: A single probe is provably blind to hidden common input; detection requires \\(\\geq 2\\) channels, with power growing as sensor pairs \\(\\binom{n}{2}\\)\nSpectral dark regime: At timescale coalescence the quartic coefficient vanishes — hidden forcing becomes spectrally invisible\nCross-spectral escape: Off-diagonal spectral structure breaks the single-channel impossibility, remaining strictly positive at coalescence\nThermodynamic bridge: Cross-spectral detectability certifies positive entropy production, linking observable structure to the arrow of time\n\n\nMathematical toolkit: Information geometry (Amari), Kullback-Leibler projection, semiparametric efficiency (BKRW), Whittle likelihood, Mori-Zwanzig coarse-graining, stochastic thermodynamics (Seifert), spectral analysis on statistical manifolds.\nPapers in this series:\n\nWhy Single Probes Cannot Detect Hidden Forcing: A Quartic Detection Law — under review, PRL\nCross Spectra Break the Single-Channel Impossibility — under review, PRL\nTimescale Coalescence Makes Hidden Persistent Forcing Spectrally Dark — under review, PRE (arXiv:2603.20917)\nConditioning on a Volatility Proxy Compresses the Apparent Timescale of Collective Market Correlation — under review, PRE (arXiv:2603.14072)\n\n\n\n\n\n\n\n\n\n\nSpecRNA-QA: Spectral Graph Methods for RNA 3D Quality Assessment\n\n\n\nA lightweight, reference-free tool for assessing RNA 3D structure quality using spectral graph features. GitHub · Read the method note →\n\n\n\nRNA 3D structure quality: C4’ deviation from best model (blue = 0 Å, red = 50 Å)\n\n\nExisting RNA quality assessment methods evaluate local atomic contacts — they fail when local structure is correct but entire domains are misplaced. SpecRNA-QA solves this by extracting multi-scale spectral features from the graph Laplacian of RNA contact networks, capturing global topology that local metrics miss.\n\nPerformance:\n\nCASP16 benchmark (42 targets, 7,368 models): median Spearman \\(\\rho = 0.689\\) in supervised mode, outperforming geometry-based baselines (\\(\\rho = 0.465\\)) with \\(p = 1.2 \\times 10^{-10}\\)\nLarge RNAs (&gt;200 nt): performance advantage reaches \\(+0.233\\) in correlation over geometry baselines — the regime where global topology matters most\nFast: 15 ms for 100-nt structures, ~4.2 s for 800-nt molecules. CPU-only, no GPU required\n\n\nHow it works: Contact graphs at multiple distance thresholds → ~312 spectral features from normalized Laplacian (eigenvalue statistics, heat-kernel traces, participation ratios) → XGBRanker model for quality prediction. The most discriminative features are heat-kernel traces measuring multi-scale diffusion, connecting RNA quality to the transport geometry of the contact network.\nPapers:\n\nSpectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment — under review, Briefings in Bioinformatics\nSpectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment — under review, IEEE JBHI (arXiv:2603.25880)\n\n\n\n\n\n\n\n\n\n\nStructure-Function Coupling: Anatomy Sets the Stage\n\n\n\nA spectral analysis framework revealing how gray matter morphometry constrains functional brain organization through a low-rank geometric subspace. Read the full note →\n\n\n\nSubspace overlap (0.45) far exceeds variance explained (0.06) — gray matter constrains the directions of functional variation, not the amplitudes.\n\n\nGray matter explains only ~6% of functional connectivity variance — yet aligns with 45% of its directional subspace. This order-of-magnitude gap reveals that anatomy does not determine how strongly each individual’s brain connectivity deviates from the mean, but rather constrains the coordinate system in which functional variation occurs.\n\nKey findings:\n\nNuclear norm regularization on the GM→FNC coefficient matrix recovers a soft low-rank mapping (effective rank ~38)\nSubspace overlap \\(O = 0.447\\) at \\(k=20\\), with top 3 principal angles reaching cos \\(\\theta = 0.97, 0.95, 0.86\\)\nThe structure-coupled FNC subspace achieves AUC = 0.795 for schizophrenia classification — outperforming full FNC\nValidated across 3 datasets (\\(N &gt; 39{,}000\\) total) with 7 benchmarked methods\n\n\nPlanned series: Paper 0 (GM-FNC, in preparation for NeuroImage) → Paper 1 (GM + WM decomposition, UK Biobank) → Paper 2 (unified probabilistic framework).\n\n\n\n\n\n\n\n\n\nMultiViT / MultiViT2\n\n\n\nMultimodal vision transformer frameworks for brain imaging analysis (2022–2024).\n\nIntegrates structural MRI and functional connectivity data\nAchieves AUC 0.833 for schizophrenia classification (MultiViT)\nData augmentation via latent diffusion models (MultiViT2)\nPublished in NeuroImage, Human Brain Mapping, and IEEE ISBI"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Yuda Bi",
+    "section": "",
+    "text": "I received my Ph.D. from the TReNDS Center (GSU, Georgia Tech, Emory), advised by Prof. Vince D. Calhoun. In 2025 I pivoted from engineering-driven multimodal neuroimaging toward a theory-first research program grounded in statistical physics, nonequilibrium thermodynamics, and information geometry."
+  },
+  {
+    "objectID": "index.html#recent-notes",
+    "href": "index.html#recent-notes",
+    "title": "Yuda Bi",
+    "section": "Recent Notes",
+    "text": "Recent Notes\nLatest research notes and technical write-ups."
+  },
+  {
+    "objectID": "cv.html",
+    "href": "cv.html",
+    "title": "CV",
+    "section": "",
+    "text": "Ph.D. in Computer Science — statistical physics, information geometry, and theoretical neuroscience."
+  },
+  {
+    "objectID": "cv.html#education",
+    "href": "cv.html#education",
+    "title": "CV",
+    "section": "Education",
+    "text": "Education\n\n2020–2025\nPh.D. in Computer Science, Georgia State University\nTReNDS Center (GSU, Georgia Tech, Emory). Advisor: Prof. Vince D. Calhoun\n\n\n2017–2020\nM.S. in Computer Science, University of Georgia\n\n\n2013–2017\nB.S. in Management, Shandong University of Science and Technology"
+  },
+  {
+    "objectID": "cv.html#research-trajectory",
+    "href": "cv.html#research-trajectory",
+    "title": "CV",
+    "section": "Research Trajectory",
+    "text": "Research Trajectory\n2020–2024\nMultimodal Neuroimaging Engineering\nDeveloped deep learning frameworks for brain imaging — vision transformers, GANs, and diffusion models for fusing structural MRI with functional connectivity. Published in NeuroImage, Human Brain Mapping, Journal of Neuroscience Methods, and multiple IEEE venues (ISBI, EMBC).\n\n2025–present\nTransition to Theory-Driven Cross-Disciplinary Research\nPivoted from engineering-driven model stacking to a theory-first program rooted in statistical physics and nonequilibrium thermodynamics. Current work develops exact mathematical foundations for hidden-variable detectability, spectral methods in structural biology, and the physics of learning.\nCore research directions:\n\nInformation geometry of hidden variables — Quartic detection law on statistical manifolds: exact KL projection geometry, tangent-normal decomposition, semiparametric efficiency bounds (Amari, BKRW, Le Cam). Proves that coarse-grained refitting absorbs \\(O(\\lambda^2)\\) perturbations, leaving only \\(O(\\lambda^4)\\) normal residuals.\nStochastic thermodynamics from partial observations — Cross-spectral certification of entropy production under the Lucente impossibility. Pairing principle for minimum probe count. Connection to Mori-Zwanzig projection and thermodynamic uncertainty relations (Seifert, Barato-Seifert).\nSpectral graph theory for structural biology — Graph Laplacian spectra, heat-kernel traces, participation-ratio effective rank. Applied to RNA 3D quality assessment (SpecRNA-QA) and protein ensemble coherence (SCI).\nFinancial physics — Volatility-conditioned correlation dynamics in S&P 500, timescale separation in market microstructure. Spectral dark regimes in financial time series.\nPhysics of AI — Grokking as a finite-size phase transition. Kurtosis contrast laws in mixture separation."
+  },
+  {
+    "objectID": "cv.html#selected-publications",
+    "href": "cv.html#selected-publications",
+    "title": "CV",
+    "section": "Selected Publications",
+    "text": "Selected Publications\nSee full list on the Publications page.\n\nBi Y, Calhoun VD. Cross spectra break the single-channel impossibility. Under review, Physical Review Letters.\nBi Y, Calhoun VD. Why single probes cannot detect hidden forcing: A quartic detection law. Under review, Physical Review Letters.\nBi Y, Zhang C, Calhoun VD. Timescale coalescence makes hidden persistent forcing spectrally dark. Under review, Physical Review E.\nBi Y, Abrol A, Jia S, Sui J, Calhoun VD. Gray matters: ViT-GAN framework for identifying schizophrenia biomarkers. NeuroImage, 2024.\nBi Y, Abrol A, Fu Z, Calhoun VD. A multimodal vision transformer for interpretable fusion of functional and structural neuroimaging data. Human Brain Mapping, 2024."
+  },
+  {
+    "objectID": "cv.html#certifications",
+    "href": "cv.html#certifications",
+    "title": "CV",
+    "section": "Certifications",
+    "text": "Certifications\n\nCFA Level III — CFA Institute"
+  },
+  {
+    "objectID": "cv.html#skills",
+    "href": "cv.html#skills",
+    "title": "CV",
+    "section": "Skills",
+    "text": "Skills\n\n\nMathematics & Physics\nInformation geometry, stochastic processes, spectral graph theory, nonequilibrium thermodynamics, KL divergence & projection, semiparametric theory\n\n\nProgramming\nPython, PyTorch, TensorFlow, MATLAB, R, Mathematica\n\n\nNeuroimaging\nfMRI, sMRI, functional network connectivity analysis\n\n\nLanguages\nChinese (native), English (professional)"
+  },
+  {
+    "objectID": "cv.html#links",
+    "href": "cv.html#links",
+    "title": "CV",
+    "section": "Links",
+    "text": "Links\n\nGoogle Scholar\nGitHub\nLinkedIn"
+  },
+  {
+    "objectID": "notes.html",
+    "href": "notes.html",
+    "title": "Notes",
+    "section": "",
+    "text": "Research Notes\nTechnical notes and tutorials on statistical physics, information geometry, spectral methods, and theoretical neuroscience.\n\n\n\n\n\n\n\n\n\n\nSpectral Methods in Brain Network Analysis\n\n\n\nspectral methods\n\nbrain networks\n\ngraph theory\n\n\n\nNotes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\nSpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss\n\n\n\nspectral methods\n\nRNA structure\n\nbioinformatics\n\ngraph theory\n\n\n\nHow graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment — outperforming geometry baselines by +0.224 on CASP16.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\nThe Geometry of Invisible Forces: A Quartic Detection Theory\n\n\n\nstatistical physics\n\ninformation geometry\n\nhidden variables\n\nspectral methods\n\n\n\nWhy hidden variables are orders of magnitude harder to detect than classical statistics predicts — and how cross-spectral geometry breaks the impossibility.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\nStructure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization\n\n\n\nneuroscience\n\nstructure-function coupling\n\nspectral methods\n\nlinear algebra\n\n\n\nGray matter explains only ~6% of functional connectivity variance — yet aligns with 45% of its directional subspace. Why amplitudes and geometry tell fundamentally different stories about brain structure-function coupling.\n\n\n\n\n\nApr 7, 2026\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html",
+    "href": "notes/2026-04-specrnaq/index.html",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "",
+    "text": "RNA 3D structure quality visualization: C4’ deviation from best model (blue = 0 Å, red = 50 Å). Structures with correct local geometry but misplaced domains show large red regions — exactly the failure mode that spectral methods detect."
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html#the-problem-local-correctness-global-failure",
+    "href": "notes/2026-04-specrnaq/index.html#the-problem-local-correctness-global-failure",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "The Problem: Local Correctness, Global Failure",
+    "text": "The Problem: Local Correctness, Global Failure\nPredicting RNA 3D structure is one of the open frontiers of structural biology. Tools like AlphaFold3 and RoseTTAFold2NA now generate thousands of candidate structures — but how do you know which ones are right?\nExisting quality assessment (QA) methods evaluate local atomic contacts: bond angles, clash scores, pairwise distance distributions. These work well when errors are local. But they fail catastrophically in a common and important failure mode: the local structure is correct, but entire domains are misplaced. A helix can be perfectly folded yet docked into the wrong pocket. Every bond angle checks out; the global topology is wrong.\nThis is exactly the regime where RNA QA matters most — large, multi-domain structures where the combinatorial space of domain arrangements dwarfs the local conformational space."
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html#the-insight-global-topology-lives-in-the-spectrum",
+    "href": "notes/2026-04-specrnaq/index.html#the-insight-global-topology-lives-in-the-spectrum",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "The Insight: Global Topology Lives in the Spectrum",
+    "text": "The Insight: Global Topology Lives in the Spectrum\nA 3D molecular structure is, at its core, a graph: nucleotides are nodes, spatial contacts are edges. The spectrum of the graph Laplacian — the eigenvalues of \\(\\mathcal{L} = I - D^{-1/2}WD^{-1/2}\\) — encodes the global connectivity pattern in a way that is invariant to rotation, translation, and node relabeling.\nThe key mathematical facts:\n\nThe number of zero eigenvalues equals the number of connected components\nThe Fiedler value \\(\\lambda_1\\) measures how easily the graph can be bisected — a proxy for global compactness\nThe spectral gap \\(\\lambda_1 - \\lambda_0\\) quantifies community separation\nHeat-kernel traces \\(Z(t) = \\sum_k e^{-\\lambda_k t}\\) capture multi-scale diffusion: small \\(t\\) probes local geometry, large \\(t\\) probes global topology\nThe participation ratio \\(\\mathrm{PR}(\\boldsymbol{\\lambda}) = (\\sum_k \\lambda_k)^2 / \\sum_k \\lambda_k^2\\) measures effective spectral dimensionality\n\nA misplaced domain changes the large-\\(t\\) heat-kernel trace (disrupted long-range diffusion) while leaving the small-\\(t\\) trace nearly intact (local contacts are fine). This is precisely the information that local metrics cannot access."
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html#the-method",
+    "href": "notes/2026-04-specrnaq/index.html#the-method",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "The Method",
+    "text": "The Method\nSpecRNA-QA builds on this insight with a practical pipeline:\n\nMulti-scale contact graphs: Construct contact networks at multiple distance thresholds (8Å, 10Å, 12Å, 15Å), capturing different spatial resolutions of the RNA architecture.\nSpectral feature extraction: From each graph’s normalized Laplacian, extract ~312 features:\n\nEigenvalue statistics (mean, variance, skewness, kurtosis of \\(\\{\\lambda_k\\}\\))\nHeat-kernel traces at multiple diffusion times \\(Z(t)\\) for \\(t \\in \\{0.1, 0.5, 1, 2, 5, 10\\}\\)\nParticipation ratios and effective rank measures\nSpectral gap and algebraic connectivity\nNormalized Laplacian entropy \\(H = -\\sum_k \\hat{\\lambda}_k \\log \\hat{\\lambda}_k\\)\n\nLearning-to-rank: An XGBRanker model trained to rank structures by quality within each target, using spectral features as input.\n\nThe entire pipeline runs on CPU — no GPU required. Processing time: 15 ms for a 100-nucleotide structure, ~4.2 seconds for 800 nucleotides."
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html#results",
+    "href": "notes/2026-04-specrnaq/index.html#results",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "Results",
+    "text": "Results\n\nCASP16 Benchmark\nOn the CASP16 RNA structure prediction assessment (42 targets, 7,368 models):\n\n\n\nMethod\nMedian Spearman \\(\\rho\\)\n\\(p\\)-value vs. SpecRNA-QA\n\n\n\n\nSpecRNA-QA (supervised)\n0.689\n—\n\n\nGeometry baselines\n0.465\n\\(1.2 \\times 10^{-10}\\)\n\n\n\n\n\nWhere It Matters Most: Large RNAs\nThe advantage is most pronounced for large RNA structures (&gt;200 nucleotides), where the performance gap reaches +0.233 in Spearman correlation. This is the regime where domain-level misplacements dominate — and where spectral features shine.\nFor small RNAs (&lt;100 nt), local metrics are often sufficient because there are few domains to misplace. The spectral advantage grows with structural complexity, exactly as the theory predicts.\n\n\nMost Discriminative Features\nFeature importance analysis reveals that the top-ranked features are heat-kernel traces at intermediate-to-large diffusion times — precisely the features that probe multi-scale and global transport geometry on the contact network. Local eigenvalue statistics (which probe small-scale structure) rank lower.\nThis confirms the theoretical motivation: the spectral approach works because it accesses the global information that local methods cannot reach."
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html#connection-to-the-broader-spectral-program",
+    "href": "notes/2026-04-specrnaq/index.html#connection-to-the-broader-spectral-program",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "Connection to the Broader Spectral Program",
+    "text": "Connection to the Broader Spectral Program\nSpecRNA-QA is part of a broader research program applying spectral graph theory to structural biology:\n\nSpecRNA-QA (RNA): Multi-scale Laplacian spectra for RNA 3D quality assessment → under review at Briefings in Bioinformatics\nSpectral Coherence Index (Proteins): Participation-ratio effective rank of inter-model distance-variance matrices for protein ensemble QA, achieving AUC-ROC 0.973 on 110 NMR ensembles → under review at IEEE JBHI (arXiv:2603.25880)\n\nBoth methods share a design principle: model-free spectral features that are invariant to coordinate systems and capture global structural properties that local metrics miss."
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html#try-it",
+    "href": "notes/2026-04-specrnaq/index.html#try-it",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "Try It",
+    "text": "Try It\nSpecRNA-QA is open source and easy to use:\ngit clone https://github.com/yudabitrends/specrnaq\ncd specrnaq\npip install -e .\nspecrnaq predict --input structures/ --output scores.csv\nPython 3.10+, CPU-only, no external dependencies beyond standard scientific Python."
+  },
+  {
+    "objectID": "notes/2026-04-specrnaq/index.html#papers",
+    "href": "notes/2026-04-specrnaq/index.html#papers",
+    "title": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
+    "section": "Papers",
+    "text": "Papers\n\nYing Zhu, Huaiwen Zhang, Vince D. Calhoun†, Yuda Bi†. Spectral Graph Features Capture Global Topology for Reference-free RNA 3D Structure Quality Assessment. Under review at Briefings in Bioinformatics.\nYuda Bi, Huaiwen Zhang, Jingnan Sun, Vince D. Calhoun. Spectral Coherence Index: A Model-Free Metric for Protein Structural Ensemble Quality Assessment. Under review at IEEE JBHI. arXiv:2603.25880"
+  },
+  {
+    "objectID": "notes/2026-04-sfcoupling/index.html",
+    "href": "notes/2026-04-sfcoupling/index.html",
+    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
+    "section": "",
+    "text": "Spectral fingerprint of structure-function coupling. (a) Singular value spectrum of the GM→FNC coefficient matrix showing rapid spectral decay — the coupling is low-rank. (b) Principal angle cosines between GM-selected and FNC-dominant subspaces: near-perfect alignment in ~3 dimensions, then rapid falloff. (c) The signature gap: subspace overlap reaches 0.45 while variance explained (\\(R^2\\)) stays at ~0.06."
+  },
+  {
+    "objectID": "notes/2026-04-sfcoupling/index.html#the-paradox-weak-prediction-strong-geometry",
+    "href": "notes/2026-04-sfcoupling/index.html#the-paradox-weak-prediction-strong-geometry",
+    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
+    "section": "The Paradox: Weak Prediction, Strong Geometry",
+    "text": "The Paradox: Weak Prediction, Strong Geometry\nA persistent puzzle in systems neuroscience: gray matter morphometry (regional volume, thickness, surface area) predicts functional network connectivity (FNC) poorly — typically explaining only a few percent of variance. This has led many to dismiss the structure-function relationship as negligible for gray matter, focusing attention on white-matter tractography instead.\nBut variance explained is the wrong metric. It measures whether structure predicts the amplitude of functional variation — how strongly each person’s connectivity deviates from the mean. A more fundamental question is whether structure predicts the directions — the coordinate axes along which functional variation occurs at all.\nThese are mathematically distinct quantities. A linear map \\(\\hat{Y} = XB\\) from GM features (\\(X \\in \\mathbb{R}^{N \\times p}\\)) to FNC (\\(Y \\in \\mathbb{R}^{N \\times q}\\)) can have low \\(R^2\\) (weak amplitude prediction) while its coefficient matrix \\(B\\) has column space closely aligned with the dominant subspace of \\(Y\\) (strong directional alignment)."
+  },
+  {
+    "objectID": "notes/2026-04-sfcoupling/index.html#the-method-nuclear-norm-regularization-and-svd",
+    "href": "notes/2026-04-sfcoupling/index.html#the-method-nuclear-norm-regularization-and-svd",
+    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
+    "section": "The Method: Nuclear Norm Regularization and SVD",
+    "text": "The Method: Nuclear Norm Regularization and SVD\nTo disentangle amplitude from geometry, we use a spectral regularization framework:\n\\[\n\\min_B \\; \\frac{1}{2N}\\|Y - XB\\|_F^2 + \\lambda \\|B\\|_*\n\\]\nwhere \\(\\|B\\|_* = \\sum_i \\sigma_i(B)\\) is the nuclear norm — the tightest convex relaxation of matrix rank. This encourages the learned mapping to be low-rank, concentrating the structure-function relationship into a small number of principal modes.\nThe proximal step has a closed-form solution via soft singular value thresholding:\n\\[\nB^{(t+1)} = U\\,\\mathrm{diag}\\bigl((\\sigma_i - \\lambda/L)_+\\bigr)\\,V^\\top\n\\]\nThe SVD of the resulting coefficient matrix \\(B = U\\Sigma V^\\top\\) gives us:\n\n\\(V\\): the FNC directions most aligned with GM variation (the “stage geometry”)\n\\(U\\): the GM features driving each coupling mode (the “structural scaffolding”)\n\\(\\Sigma\\): the coupling strength per mode (spectral concentration)"
+  },
+  {
+    "objectID": "notes/2026-04-sfcoupling/index.html#measuring-directional-alignment-subspace-overlap",
+    "href": "notes/2026-04-sfcoupling/index.html#measuring-directional-alignment-subspace-overlap",
+    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
+    "section": "Measuring Directional Alignment: Subspace Overlap",
+    "text": "Measuring Directional Alignment: Subspace Overlap\nTo compare GM-selected functional directions with the dominant directions of FNC variation itself, we compute principal angles between two subspaces:\n\\[\n\\cos\\theta_i = \\sigma_i(V_1^\\top V_2)\n\\]\nwhere \\(V_1\\) are the top-\\(k\\) right singular vectors of \\(B\\) (GM-selected directions) and \\(V_2\\) are the top-\\(k\\) PCA directions of FNC. The subspace overlap is:\n\\[\nO(V_1, V_2) = \\frac{1}{k}\\sum_{i=1}^{k} \\cos^2\\theta_i \\;\\in [0, 1]\n\\]"
+  },
+  {
+    "objectID": "notes/2026-04-sfcoupling/index.html#the-core-finding-o-0.45-vs.-r2-0.06",
+    "href": "notes/2026-04-sfcoupling/index.html#the-core-finding-o-0.45-vs.-r2-0.06",
+    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
+    "section": "The Core Finding: \\(O = 0.45\\) vs. \\(R^2 = 0.06\\)",
+    "text": "The Core Finding: \\(O = 0.45\\) vs. \\(R^2 = 0.06\\)\nAcross three datasets (schizophrenia cohort \\(N=1{,}151\\); external validation \\(N=102\\); UK Biobank \\(N \\approx 37{,}775\\)):\n\n\n\n\n\n\n\n\nMetric\nValue\nInterpretation\n\n\n\n\nVariance explained (\\(R^2\\))\n~0.06\nGM weakly predicts FNC amplitudes\n\n\nSubspace overlap (\\(O\\))\n0.447\nGM strongly constrains FNC directions\n\n\nTop 3 principal angle cosines\n0.97, 0.95, 0.86\nNear-perfect alignment in 3 dimensions\n\n\n4th principal angle\n0.28\nSharp dropoff — concentrated coupling\n\n\nChance overlap (at \\(k=20\\))\n~0.015\nObserved overlap is 30× above chance\n\n\n\nThe gap is an order of magnitude. Gray matter does not determine how strongly individuals deviate from mean connectivity — but it strongly constrains in which directions that deviation can occur.\nThe analogy: anatomy sets the stage geometry; neural dynamics determine how the actors perform on that stage. The theater constrains the repertoire of possible plays without scripting any particular performance."
+  },
+  {
+    "objectID": "notes/2026-04-sfcoupling/index.html#what-the-coupling-modes-look-like",
+    "href": "notes/2026-04-sfcoupling/index.html#what-the-coupling-modes-look-like",
+    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
+    "section": "What the Coupling Modes Look Like",
+    "text": "What the Coupling Modes Look Like\n\n\n\nStructure-function coupling modes. Each row shows one SVD mode: left panel shows GM loadings on a dorsal glass brain (node size = loading magnitude, color = network domain), right panel shows the corresponding FNC loading matrix (domain-sorted). Mode 1 (36.5% of coupled variance) captures a global sensorimotor-cognitive axis; Mode 2 (9.2%) isolates default mode and visual interactions; Mode 3 (7.9%) captures cerebellar-cortical coupling.\n\n\nThe SVD decomposition reveals interpretable structure-function coupling modes:\n\nMode 1 (36.5% of coupled variance): A distributed pattern spanning cognitive control, sensorimotor, and visual domains. This is the dominant axis along which GM morphometry shapes functional organization.\nMode 2 (9.2%): Concentrated in default mode and visual network interactions — reflecting the structural basis of resting-state network architecture.\nMode 3 (7.9%): Captures cerebellar-cortical coupling patterns, highlighting the structural underpinning of cerebro-cerebellar communication.\n\nThese modes are highly stable across random seeds (correlation \\(r &gt; 0.9\\) for the top 3) and replicate across datasets."
+  },
+  {
+    "objectID": "notes/2026-04-sfcoupling/index.html#linearity-the-coupling-really-is-linear",
+    "href": "notes/2026-04-sfcoupling/index.html#linearity-the-coupling-really-is-linear",
+    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
+    "section": "Linearity: The Coupling Really Is Linear",
+    "text": "Linearity: The Coupling Really Is Linear\nA critical finding: nonlinear models provide no reliable improvement over the linear nuclear norm solution.\n\nMLP (multilayer perceptron) gains +0.004 \\(R^2\\) on discovery data but reverses to −0.009 on external validation\nA nonlinear residual model performs worse than nuclear norm alone on both datasets\nWhen initialized from the linear solution, the MLP’s mixing parameter converges to \\(\\alpha = 0.60\\), staying close to the linear regime\n\nThis linearity is not an assumption — it is an empirical finding validated across datasets. The structure-function relationship, at the population level, is well-captured by a linear, low-rank map."
+  },
+  {
+    "objectID": "notes/2026-04-sfcoupling/index.html#clinical-relevance-the-coupled-subspace-carries-disease-information",
+    "href": "notes/2026-04-sfcoupling/index.html#clinical-relevance-the-coupled-subspace-carries-disease-information",
+    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
+    "section": "Clinical Relevance: The Coupled Subspace Carries Disease Information",
+    "text": "Clinical Relevance: The Coupled Subspace Carries Disease Information\nDecomposing each subject’s FNC into a structure-coupled component (\\(y_\\mathrm{coup} = V_r V_r^\\top y\\)) and a structure-uncoupled component (\\(y_\\mathrm{uncoup} = (I - V_r V_r^\\top) y\\)):\n\n\n\nComponent\nSZ classification AUC\n\n\n\n\nCoupled FNC (rank 38)\n0.795 [0.726, 0.857]\n\n\nFull FNC\n0.773 [0.712, 0.839]\n\n\nUncoupled FNC\n0.728\n\n\n\nThe structure-coupled component outperforms full FNC for schizophrenia classification. This means that the functional variation constrained by gray matter morphometry preferentially carries clinically relevant information — anatomical structure does not just constrain function; it constrains the clinically informative part of function."
+  },
+  {
+    "objectID": "notes/2026-04-sfcoupling/index.html#physical-and-mathematical-significance",
+    "href": "notes/2026-04-sfcoupling/index.html#physical-and-mathematical-significance",
+    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
+    "section": "Physical and Mathematical Significance",
+    "text": "Physical and Mathematical Significance\n\nWhy Nuclear Norm?\nThe nuclear norm \\(\\|B\\|_*\\) is the \\(\\ell_1\\) norm of the singular value vector — it induces sparsity in the spectral domain just as LASSO induces sparsity in the coefficient domain. This is the natural regularizer when the underlying relationship is low-rank: it seeks the simplest (lowest effective rank) linear map consistent with the data.\nIn the landscape of regularization:\n\n\n\n\n\n\n\n\nMethod\nWhat it regularizes\nBias\n\n\n\n\nRidge (\\(\\|B\\|_F^2\\))\nShrinks all singular values equally\nPreserves rank, weakens all directions\n\n\nPLS\nMaximizes covariance in few components\nGreedily selects modes, poor generalization\n\n\nNuclear Norm (\\(\\|B\\|_*\\))\nSoft-thresholds singular values\nSuppresses weak modes, preserves strong ones\n\n\n\nNuclear Norm achieves the highest external generalization (74% retention) vs. PLS (45%) precisely because it soft-thresholds rather than hard-truncates the spectral structure.\n\n\nThe Subspace Overlap as an Information-Geometric Quantity\nThe subspace overlap \\(O(V_1, V_2)\\) is the mean squared cosine of the principal angles — equivalently, it is the normalized Frobenius norm of the product of two orthogonal projections:\n\\[\nO = \\frac{1}{k}\\|P_{V_1} P_{V_2}\\|_F^2\n\\]\nThis has a natural interpretation in information geometry: it measures the fraction of “geometric information” shared between two low-dimensional representations of the same high-dimensional space. When \\(O \\gg R^2\\), the two modalities share geometric structure (directional alignment) without sharing amplitude information — the hallmark of a soft constraint rather than a deterministic prediction."
+  },
+  {
+    "objectID": "notes/2026-04-sfcoupling/index.html#looking-ahead-the-multimodal-decomposition-program",
+    "href": "notes/2026-04-sfcoupling/index.html#looking-ahead-the-multimodal-decomposition-program",
+    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
+    "section": "Looking Ahead: The Multimodal Decomposition Program",
+    "text": "Looking Ahead: The Multimodal Decomposition Program\nThis paper is the first in a planned three-paper series:\nPaper 0 (this work): Establishes that GM constrains function through a shared low-rank subspace, not pointwise prediction. Introduces nuclear norm regularization and the \\(O \\gg R^2\\) diagnostic.\nPaper 1 (in preparation): Asks whether gray matter and white matter constrain the same or different functional subspaces. Uses two-stage subspace decomposition to partition functional variance into four components:\n\\[\nf_i = f_i^{(g \\cap w)} + f_i^{(g \\setminus w)} + f_i^{(w \\setminus g)} + f_i^{(\\mathrm{res})}\n\\]\nKey question: is the GM–WM functional overlap redundant or complementary? Data: UK Biobank (\\(N \\approx 30{,}000\\); sMRI + dMRI + resting fMRI).\nPaper 2 (planned): Unified probabilistic framework with joint latent variables, non-Gaussian priors for identifiability, and posterior uncertainty on the variance decomposition. Connects to ICA/IVA frameworks (Adalı) and Bayesian ARD for automatic dimensionality selection."
+  },
+  {
+    "objectID": "notes/2026-04-sfcoupling/index.html#paper",
+    "href": "notes/2026-04-sfcoupling/index.html#paper",
+    "title": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
+    "section": "Paper",
+    "text": "Paper\nYuda Bi, Vince D. Calhoun. Gray Matter Morphometry Reveals a Soft Low-Rank Structure-Function Subspace. In preparation for NeuroImage."
+  },
+  {
+    "objectID": "novels/manchangdeqiuzheng/index.html#沉",
+    "href": "novels/manchangdeqiuzheng/index.html#沉",
+    "title": "Yuda Bi",
+    "section": "沉",
+    "text": "沉"
+  },
+  {
+    "objectID": "novels/manchangdeqiuzheng/index.html#隧",
+    "href": "novels/manchangdeqiuzheng/index.html#隧",
+    "title": "Yuda Bi",
+    "section": "隧",
+    "text": "隧"
+  },
+  {
+    "objectID": "novels/manchangdeqiuzheng/index.html#渠",
+    "href": "novels/manchangdeqiuzheng/index.html#渠",
+    "title": "Yuda Bi",
+    "section": "渠",
+    "text": "渠"
   }
 ]

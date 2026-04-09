@@ -30,6 +30,8 @@ website:
         href: projects.qmd
       - text: Notes
         href: notes.qmd
+      - text: Novels
+        href: novels.qmd
       - text: CV
         href: cv.qmd
     right:
@@ -67,7 +69,7 @@ format:
       - text: |
           <link rel="preconnect" href="https://fonts.googleapis.com">
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;550;600;700;800&display=swap" rel="stylesheet">
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;550;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
           <script>
           (function() {
             var link = document.createElement('link');

@@ -1,0 +1,116 @@
+---
+title: ""
+page-layout: custom
+toc: false
+css: novels.css
+include-in-header:
+  - text: |
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+---
+
+::: {.novels-page}
+
+::: {.novels-header}
+::: {.novels-header-inner}
+
+[Fiction]{.novels-label-en}
+
+# 小说
+
+[纸上的人走过的路，比谁都长。]{.novels-epigraph}
+
+:::
+:::
+
+::: {.novels-content}
+
+::: {.novel-card}
+::: {.novel-cover}
+![漫长的求证](files/novels/漫长的求证.jpg){.cover-img}
+:::
+::: {.novel-info}
+
+::: {.novel-badge}
+长篇小说 &middot; 三部十六章
+:::
+
+## [漫长的求证](novels/manchangdeqiuzheng/) {.novel-title}
+
+::: {.novel-subtitle}
+沉 &middot; 隧 &middot; 渠
+:::
+
+::: {.novel-synopsis}
+县城的水泥台阶上，一个女孩蹲在那里用粉笔写统计物理的公式，一个男孩蹲在旁边替她挡风。暮色四合，街也显得比平时长了一截。
+
+后来她去了更好的学府，他拐进二本；两人之间只余一根细若游丝的线——电话那头她讲起题来语速快得刹不住车，课本空白处偶尔冒出她的批注。再后来，纸页一翻，天便换了颜色。她停在了某一刻，此后四季更迭，再与她无关。
+
+他带着那本卷了边的《统计物理》去了大洋彼岸。扉页上有一行铅笔小字：**"这本书的主人将来会做很了不起的事，但他自己还不知道。"** 写字的人没有登场。此后所有的公式、实验、深夜的灯，都是一场漫长的求证——证给自己看，也证给那行字看。
+:::
+
+::: {.novel-meta}
+[县城]{.meta-tag} [物理]{.meta-tag} [异乡]{.meta-tag} [学术]{.meta-tag} [失去与求索]{.meta-tag}
+:::
+
+::: {.novel-quote}
+"正因为慢，微末之物才有机会被看见。"
+:::
+
+[阅读章节目录 &rarr;](novels/manchangdeqiuzheng/){.novel-read-link}
+
+:::
+:::
+
+::: {.novel-divider}
+:::
+
+::: {.novel-card .novel-card-alt}
+::: {.novel-cover}
+![被剪枝的世界](files/novels/被剪枝的世界.jpg){.cover-img}
+:::
+::: {.novel-info}
+
+::: {.novel-badge}
+长篇小说 &middot; 三十章连载
+:::
+
+## [被剪枝的世界](novels/beijianzhideshijie/) {.novel-title}
+
+::: {.novel-subtitle}
+一套将最坏解释当成真实的系统
+:::
+
+::: {.novel-synopsis}
+门禁从零点三秒变成十一秒，是第三年开始的事。
+
+陈维曾是一名研究员，如今他的名字在系统里亮着红灯——买止痛药要写意图声明，充交通卡要填出行目的，连查一个公开版本号都会弹出 *Access revoked*。广播每三十秒循环一次：**"For public safety, the worst-case interpretation applies."** 没有人反应，好像这句话早已长进了日常。
+
+前同事向思敏带着一份数据找到他。曲线的尾部被剪过——不是噪声被清洗，而是信号本身被裁掉了，边缘硬得像刀口。她签了一份"风险缓释附件"，副本还在手里，审计窗口四十八小时后关闭。她母亲每周三次肾透析，挂在研究所的医疗通道上。她说：**"我不是想当英雄，我只是不能失业。"**
+
+他们用铅笔、收据背面和一台离线旧电脑，试图在一个不断重写自身记录的系统里，保住最后一点不被覆盖的真实。
+:::
+
+::: {.novel-meta}
+[近未来]{.meta-tag} [监控]{.meta-tag} [合规]{.meta-tag} [数据]{.meta-tag} [算法治理]{.meta-tag}
+:::
+
+::: {.novel-quote}
+"自然噪声不会这么听话。"
+:::
+
+[阅读章节目录 &rarr;](novels/beijianzhideshijie/){.novel-read-link}
+
+:::
+:::
+
+:::
+
+::: {.novels-footer}
+::: {.novels-footer-inner}
+以上作品均为虚构。如有雷同，是因为现实比小说更不讲道理。
+:::
+:::
+
+:::

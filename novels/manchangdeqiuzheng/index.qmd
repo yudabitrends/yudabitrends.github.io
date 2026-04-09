@@ -1,0 +1,243 @@
+---
+title: ""
+page-layout: custom
+toc: false
+css: ../../novels.css
+include-in-header:
+  - text: |
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+---
+
+::: {.novels-page}
+
+::: {.novel-detail-hero}
+::: {.novel-detail-hero-inner}
+::: {.novel-detail-cover}
+![漫长的求证](../../files/novels/漫长的求证.jpg){.cover-img}
+:::
+::: {.novel-detail-header}
+[长篇小说 &middot; 三部十六章]{.novels-label-en}
+
+# 漫长的求证 {.novel-detail-title}
+
+[沉 &middot; 隧 &middot; 渠]{.novel-detail-subtitle}
+
+::: {.novel-detail-synopsis}
+县城的水泥台阶上，一个女孩蹲在那里用粉笔写统计物理的公式，一个男孩蹲在旁边替她挡风。后来劳燕分飞，纸页一翻，天便换了颜色。他带着一本卷了边的旧课本去了大洋彼岸，扉页上那行铅笔小字，成了此后所有公式的源头。
+:::
+
+[&larr; 返回小说列表](../../novels.qmd){.novel-back-link}
+
+:::
+:::
+:::
+
+::: {.novels-content}
+
+::: {.novel-toc-section}
+
+::: {.novel-part}
+::: {.novel-part-header}
+::: {.novel-part-number}
+第一部
+:::
+
+## 沉 {.novel-part-title}
+:::
+
+::: {.novel-chapter-list}
+
+::: {.novel-chapter}
+::: {.chapter-number}
+一
+:::
+::: {.chapter-title}
+粉笔
+:::
+:::
+
+::: {.novel-chapter}
+::: {.chapter-number}
+二
+:::
+::: {.chapter-title}
+简并态
+:::
+:::
+
+::: {.novel-chapter}
+::: {.chapter-number}
+三
+:::
+::: {.chapter-title}
+断流
+:::
+:::
+
+::: {.novel-chapter}
+::: {.chapter-number}
+四
+:::
+::: {.chapter-title}
+开放系统
+:::
+:::
+
+::: {.novel-chapter}
+::: {.chapter-number}
+五
+:::
+::: {.chapter-title}
+渡
+:::
+:::
+
+:::
+:::
+
+::: {.novel-part-divider}
+:::
+
+::: {.novel-part}
+::: {.novel-part-header}
+::: {.novel-part-number}
+第二部
+:::
+
+## 隧 {.novel-part-title}
+:::
+
+::: {.novel-chapter-list}
+
+::: {.novel-chapter}
+::: {.chapter-number}
+六
+:::
+::: {.chapter-title}
+信号与噪声
+:::
+:::
+
+::: {.novel-chapter}
+::: {.chapter-number}
+七
+:::
+::: {.chapter-title}
+先验
+:::
+:::
+
+::: {.novel-chapter}
+::: {.chapter-number}
+八
+:::
+::: {.chapter-title}
+薄冰
+:::
+:::
+
+::: {.novel-chapter}
+::: {.chapter-number}
+九
+:::
+::: {.chapter-title}
+旷野中的灯
+:::
+:::
+
+::: {.novel-chapter}
+::: {.chapter-number}
+十
+:::
+::: {.chapter-title}
+基线
+:::
+:::
+
+::: {.novel-chapter}
+::: {.chapter-number}
+十一
+:::
+::: {.chapter-title}
+暗物质
+:::
+:::
+
+::: {.novel-chapter}
+::: {.chapter-number}
+十二
+:::
+::: {.chapter-title}
+相变
+:::
+:::
+
+:::
+:::
+
+::: {.novel-part-divider}
+:::
+
+::: {.novel-part}
+::: {.novel-part-header}
+::: {.novel-part-number}
+第三部
+:::
+
+## 渠 {.novel-part-title}
+:::
+
+::: {.novel-chapter-list}
+
+::: {.novel-chapter}
+::: {.chapter-number}
+十三
+:::
+::: {.chapter-title}
+三票
+:::
+:::
+
+::: {.novel-chapter}
+::: {.chapter-number}
+十四
+:::
+::: {.chapter-title}
+故人
+:::
+:::
+
+::: {.novel-chapter}
+::: {.chapter-number}
+十五
+:::
+::: {.chapter-title}
+薪尽火传
+:::
+:::
+
+::: {.novel-chapter}
+::: {.chapter-number}
+十六
+:::
+::: {.chapter-title}
+源头
+:::
+:::
+
+:::
+:::
+
+:::
+
+:::
+
+::: {.novels-footer}
+::: {.novels-footer-inner}
+"章名并排搁着，前后遥遥照应，草蛇灰线，伏脉千里。"
+:::
+:::
+
+:::
