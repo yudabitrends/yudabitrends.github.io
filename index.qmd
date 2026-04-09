@@ -4,13 +4,12 @@ subtitle: |
   Ph.D. in Computer Science \
   [TReNDS Center](https://trendscenter.org/) (Georgia State University, Georgia Tech, Emory)
 image: files/profile/avatar.jpg
-description-meta: "Academic homepage of Yuda Bi — statistical physics, information geometry, theoretical neuroscience, spectral graph theory, nonequilibrium thermodynamics"
+keywords: [Yuda Bi, statistical physics, information geometry, theoretical neuroscience, spectral graph theory, nonequilibrium thermodynamics, TReNDS Center, Georgia State University]
 page-layout: full
 toc: false
 about:
   template: trestles
-  image-width: 11rem
-  image-shape: round
+  image-width: 14em
   image-alt: "Portrait photo of Yuda Bi"
   links:
     - icon: envelope
@@ -35,16 +34,18 @@ listing:
     sort: "date desc"
 ---
 
-::: {.about-text}
+## About
+
 I received my Ph.D. from the [TReNDS Center](https://trendscenter.org/) (GSU, Georgia Tech, Emory), advised by [Prof. Vince D. Calhoun](https://scholar.google.com/citations?user=WNOoGKIAAAAJ).
+
 In 2025 I pivoted from engineering-driven multimodal neuroimaging toward a **theory-first** research program grounded in statistical physics, nonequilibrium thermodynamics, and information geometry.
-:::
 
-::: {.research-tags-container}
+### Research Directions
+
 [Statistical Physics]{.research-tag} [Information Geometry]{.research-tag} [Nonequilibrium Thermodynamics]{.research-tag} [Theoretical Neuroscience]{.research-tag} [Spectral Graph Theory]{.research-tag} [Financial Physics]{.research-tag} [Structural Biology]{.research-tag}
-:::
 
-::: {.education-cards}
+### Education
+
 ::: {.education-item}
 **Ph.D. in Computer Science**, Georgia State University, 2020–2025
 :::
@@ -56,7 +57,8 @@ In 2025 I pivoted from engineering-driven multimodal neuroimaging toward a **the
 ::: {.education-item}
 **B.S. in Management**, Shandong University of Science and Technology, 2013–2017
 :::
-:::
+
+---
 
 ::: {.stats-grid}
 ::: {.stat-card}
@@ -76,6 +78,8 @@ In 2025 I pivoted from engineering-driven multimodal neuroimaging toward a **the
 [Conference Papers]{.stat-label}
 :::
 :::
+
+---
 
 ::: {.theory-card}
 
@@ -102,11 +106,13 @@ Four papers under review at *Physical Review Letters* and *Physical Review E*.
 [— Hannah Arendt]{.author}
 :::
 
-::: {.section-header-block}
-## Recent Notes
-
-Latest research notes and technical write-ups.
+::: {.visitor-badge}
+![Visitor count](https://visitor-badge.laobi.icu/badge?page_id=yudabitrends.github.io&left_color=gray&right_color=blue)
 :::
+
+---
+
+## Recent Notes
 
 :::{#recent-notes}
 :::

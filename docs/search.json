@@ -186,14 +186,21 @@
     "href": "index.html",
     "title": "Yuda Bi",
     "section": "",
-    "text": "I received my Ph.D. from the TReNDS Center (GSU, Georgia Tech, Emory), advised by Prof. Vince D. Calhoun. In 2025 I pivoted from engineering-driven multimodal neuroimaging toward a theory-first research program grounded in statistical physics, nonequilibrium thermodynamics, and information geometry."
+    "text": "I received my Ph.D. from the TReNDS Center (GSU, Georgia Tech, Emory), advised by Prof. Vince D. Calhoun.\nIn 2025 I pivoted from engineering-driven multimodal neuroimaging toward a theory-first research program grounded in statistical physics, nonequilibrium thermodynamics, and information geometry.\n\n\nStatistical Physics Information Geometry Nonequilibrium Thermodynamics Theoretical Neuroscience Spectral Graph Theory Financial Physics Structural Biology\n\n\n\n\nPh.D. in Computer Science, Georgia State University, 2020–2025\n\n\nM.S. in Computer Science, University of Georgia, 2017–2020\n\n\nB.S. in Management, Shandong University of Science and Technology, 2013–2017\n\n\n\n\n7 Under Review\n\n\n4 PRL / PRE\n\n\n3 Journal Articles\n\n\n5 Conference Papers\n\n\n\n\n\n\n\\(D_{\\mathrm{KL}}^{\\min}(\\lambda) = C\\,\\lambda^4 + O(\\lambda^6)\\)\n\nHidden variables are orders of magnitude harder to detect than classical statistics predicts. When a reduced model absorbs the leading perturbation through reparametrization, only the normal residual survives — producing a quartic, not quadratic, detection law. A single probe is provably blind; two probes sharing the hidden driver break the impossibility via cross-spectral geometry.\nFour papers under review at Physical Review Letters and Physical Review E.\n\nTheory Note Project Page Tutorial PDF\n\n\n\n“The sad truth is that most evil is done by people who never make up their minds to be good or evil.” — Hannah Arendt\n\n\n\n\n\nVisitor count"
+  },
+  {
+    "objectID": "index.html#about",
+    "href": "index.html#about",
+    "title": "Yuda Bi",
+    "section": "",
+    "text": "I received my Ph.D. from the TReNDS Center (GSU, Georgia Tech, Emory), advised by Prof. Vince D. Calhoun.\nIn 2025 I pivoted from engineering-driven multimodal neuroimaging toward a theory-first research program grounded in statistical physics, nonequilibrium thermodynamics, and information geometry.\n\n\nStatistical Physics Information Geometry Nonequilibrium Thermodynamics Theoretical Neuroscience Spectral Graph Theory Financial Physics Structural Biology\n\n\n\n\nPh.D. in Computer Science, Georgia State University, 2020–2025\n\n\nM.S. in Computer Science, University of Georgia, 2017–2020\n\n\nB.S. in Management, Shandong University of Science and Technology, 2013–2017\n\n\n\n\n7 Under Review\n\n\n4 PRL / PRE\n\n\n3 Journal Articles\n\n\n5 Conference Papers\n\n\n\n\n\n\n\\(D_{\\mathrm{KL}}^{\\min}(\\lambda) = C\\,\\lambda^4 + O(\\lambda^6)\\)\n\nHidden variables are orders of magnitude harder to detect than classical statistics predicts. When a reduced model absorbs the leading perturbation through reparametrization, only the normal residual survives — producing a quartic, not quadratic, detection law. A single probe is provably blind; two probes sharing the hidden driver break the impossibility via cross-spectral geometry.\nFour papers under review at Physical Review Letters and Physical Review E.\n\nTheory Note Project Page Tutorial PDF\n\n\n\n“The sad truth is that most evil is done by people who never make up their minds to be good or evil.” — Hannah Arendt\n\n\n\n\n\nVisitor count"
   },
   {
     "objectID": "index.html#recent-notes",
     "href": "index.html#recent-notes",
     "title": "Yuda Bi",
     "section": "Recent Notes",
-    "text": "Recent Notes\nLatest research notes and technical write-ups."
+    "text": "Recent Notes\n\n\n\n\n\n\n\nSpectral Methods in Brain Network Analysis\n\n\nNotes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\n\n\n\nSpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss\n\n\nHow graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment — outperforming geometry baselines by +0.224 on CASP16.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\n\n\n\n\nThe Geometry of Invisible Forces: A Quartic Detection Theory\n\n\nWhy hidden variables are orders of magnitude harder to detect than classical statistics predicts — and how cross-spectral geometry breaks the impossibility.\n\n\n\nApr 7, 2026\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "projects.html",
