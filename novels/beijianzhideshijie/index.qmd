@@ -7,7 +7,7 @@ include-in-header:
   - text: |
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 ---
 
 ::: {.novels-page}
@@ -25,7 +25,7 @@ include-in-header:
 [一套将最坏解释当成真实的系统]{.novel-detail-subtitle}
 
 ::: {.novel-detail-synopsis}
-门禁从零点三秒变成十一秒，是第三年开始的事。一名被系统标红的前研究员，一份被剪过尾部的数据，一个四十八小时后即将关闭的审计窗口。他们用铅笔和收据背面，试图在不断重写自身记录的世界里，保住最后一点不被覆盖的真实。
+门禁从零点三秒变成十一秒，是第三年开始的事。广播每三十秒循环一次，桌边的人低头吃饭，像这套话早已长进了日常。他们用铅笔和收据背面，试图在不断重写自身记录的世界里，保住最后一点不被覆盖的真实。
 :::
 
 [&larr; 返回小说列表](/novels.html){.novel-back-link}
@@ -362,7 +362,7 @@ include-in-header:
 
 ::: {.novels-footer}
 ::: {.novels-footer-inner}
-"它不是在管数据。它在管'你为什么要看这个数据'。"
+“它不是在管数据。它在管‘你为什么要看这个数据’。”
 :::
 :::
 

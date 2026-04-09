@@ -7,7 +7,7 @@ include-in-header:
   - text: |
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 ---
 
 ::: {.novels-page}
@@ -25,7 +25,7 @@ include-in-header:
 [沉 &middot; 隧 &middot; 渠]{.novel-detail-subtitle}
 
 ::: {.novel-detail-synopsis}
-县城的水泥台阶上，一个女孩蹲在那里用粉笔写统计物理的公式，一个男孩蹲在旁边替她挡风。后来劳燕分飞，纸页一翻，天便换了颜色。他带着一本卷了边的旧课本去了大洋彼岸，扉页上那行铅笔小字，成了此后所有公式的源头。
+傍晚起了风，她蹲在县城的水泥台阶上做题，他蹲在旁边替她挡风。后来劳燕分飞，纸页一翻，天便换了颜色。他带着那本卷了边的旧课本去了大洋彼岸，扉页上那行铅笔小字，成了此后所有公式的源头。
 :::
 
 [&larr; 返回小说列表](/novels.html){.novel-back-link}
@@ -236,7 +236,7 @@ include-in-header:
 
 ::: {.novels-footer}
 ::: {.novels-footer-inner}
-"章名并排搁着，前后遥遥照应，草蛇灰线，伏脉千里。"
+“章名并排搁着，前后遥遥照应，草蛇灰线，伏脉千里。”
 :::
 :::
 

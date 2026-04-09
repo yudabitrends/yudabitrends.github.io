@@ -12,8 +12,8 @@
   --n-text-dim:  #666666;
   --n-text-sec:  #999999;
   --n-accent:    #1a1a1a;
-  --n-serif:     'Noto Serif SC', 'Songti SC', 'STSong', 'SimSun', 'Source Han Serif SC', serif;
-  --n-serif-en:  'EB Garamond', 'Georgia', serif;
+  --n-serif:     'Times New Roman', 'Songti SC', 'STSong', 'SimSun', 'Noto Serif SC', serif;
+  --n-serif-en:  'Times New Roman', 'Georgia', serif;
 }
 
 /* ── Quarto overrides ── */
