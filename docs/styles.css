@@ -210,23 +210,23 @@ a:hover {
 }
 
 /* Novels nav highlight */
-.navbar .nav-link[href="./novels.html"],
-.navbar .nav-link[href="novels.html"] {
+.navbar .nav-link[href*="novels.html"] {
   color: var(--c-rose) !important;
   font-weight: 700;
   letter-spacing: 0.02em;
+  -webkit-text-fill-color: var(--c-rose) !important;
 }
 
-.navbar .nav-link[href="./novels.html"]:hover,
-.navbar .nav-link[href="novels.html"]:hover {
+.navbar .nav-link[href*="novels.html"]:hover {
   color: var(--c-white) !important;
-  background: var(--c-rose);
+  -webkit-text-fill-color: var(--c-white) !important;
+  background: var(--c-rose) !important;
 }
 
-.navbar .nav-link[href="./novels.html"].active,
-.navbar .nav-link[href="novels.html"].active {
+.navbar .nav-link[href*="novels.html"].active {
   color: var(--c-white) !important;
-  background: var(--c-rose);
+  -webkit-text-fill-color: var(--c-white) !important;
+  background: var(--c-rose) !important;
 }
 
 /* ══════════════════════════════════════

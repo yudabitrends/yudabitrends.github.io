@@ -30,6 +30,35 @@ body:has(.novels-page) #title-block-header {
   display: none;
 }
 
+/* Force light navbar on novels pages */
+body:has(.novels-page) .navbar {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+  box-shadow: none !important;
+}
+
+body:has(.novels-page) .navbar .navbar-brand,
+body:has(.novels-page) .navbar .nav-link {
+  color: #334155 !important;
+  -webkit-text-fill-color: #334155 !important;
+}
+
+body:has(.novels-page) .navbar .nav-link[href*="novels.html"] {
+  color: #f43f5e !important;
+  -webkit-text-fill-color: #f43f5e !important;
+}
+
+body:has(.novels-page) .navbar .nav-link[href*="novels.html"].active {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  background: #f43f5e !important;
+}
+
+body:has(.novels-page) .nav-footer {
+  background: #ffffff !important;
+  border-top: 1px solid #e0e0e0 !important;
+}
+
 /* ── Page Container ── */
 .novels-page {
   background: var(--n-bg);
