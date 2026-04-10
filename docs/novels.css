@@ -455,6 +455,20 @@ body:has(.novels-page) .nav-footer a {
 
 .novel-chapter.chapter-available {
   padding-bottom: 0.92rem;
+  cursor: pointer;
+}
+
+.novel-chapter.chapter-available:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.novel-chapter.chapter-available:hover .chapter-title a {
+  text-decoration: underline !important;
+  text-decoration-color: rgba(34, 34, 34, 0.28);
+}
+
+.novel-chapter.chapter-available:hover .chapter-teaser {
+  color: var(--novel-text);
 }
 
 .chapter-page-shell {

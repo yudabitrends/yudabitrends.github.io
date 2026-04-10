@@ -57,7 +57,7 @@ css: ../../novels.css
 
 ::: {.novel-chapter-list}
 
-::: {.novel-chapter .chapter-available}
+::: {.novel-chapter .chapter-available data-href="chapter-01-fenbi/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 一
 :::
@@ -71,7 +71,7 @@ css: ../../novels.css
 :::
 :::
 
-::: {.novel-chapter .chapter-available}
+::: {.novel-chapter .chapter-available data-href="chapter-02-jianbingtai/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 二
 :::
