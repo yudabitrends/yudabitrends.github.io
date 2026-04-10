@@ -1,13 +1,17 @@
 ---
-title: ""
+title: "漫长的求证"
+description: "长篇小说《漫长的求证》章节目录页，关于县城、物理、异乡与漫长求索。"
+lang: zh-CN
+image: "https://yudabitrends.github.io/files/novels/%E6%BC%AB%E9%95%BF%E7%9A%84%E6%B1%82%E8%AF%81.jpg"
+image-alt: "《漫长的求证》封面"
+open-graph:
+  locale: zh_CN
+  image-alt: "《漫长的求证》封面"
+twitter-card:
+  image-alt: "《漫长的求证》封面"
 page-layout: custom
 toc: false
 css: ../../novels.css
-include-in-header:
-  - text: |
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 ---
 
 ::: {.novels-page}
@@ -38,6 +42,10 @@ include-in-header:
 
 ::: {.novel-toc-section}
 
+::: {.novel-progress-note}
+目前已整理正文试读：第一章《粉笔》与第二章《简并态》。
+:::
+
 ::: {.novel-part}
 ::: {.novel-part-header}
 ::: {.novel-part-number}
@@ -49,21 +57,31 @@ include-in-header:
 
 ::: {.novel-chapter-list}
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available}
 ::: {.chapter-number}
 一
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-粉笔
+[粉笔](chapter-01-fenbi/)
+:::
+::: {.chapter-teaser}
+搬家时翻出的旧《统计物理》，把陆沉重新带回县城台阶上那一片被风吹白的夏天。
+:::
 :::
 :::
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available}
 ::: {.chapter-number}
 二
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-简并态
+[简并态](chapter-02-jianbingtai/)
+:::
+::: {.chapter-teaser}
+实验班、水房电话与“简并态”的一句解释，让两个人之间的距离第一次有了清晰的轮廓。
+:::
 :::
 :::
 

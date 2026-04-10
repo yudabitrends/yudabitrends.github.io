@@ -1,13 +1,17 @@
 ---
-title: ""
+title: "被剪枝的世界"
+description: "长篇小说《被剪枝的世界》章节目录页，关于系统、记录重写与不被覆盖的真实。"
+lang: zh-CN
+image: "https://yudabitrends.github.io/files/novels/%E8%A2%AB%E5%89%AA%E6%9E%9D%E7%9A%84%E4%B8%96%E7%95%8C.jpg"
+image-alt: "《被剪枝的世界》封面"
+open-graph:
+  locale: zh_CN
+  image-alt: "《被剪枝的世界》封面"
+twitter-card:
+  image-alt: "《被剪枝的世界》封面"
 page-layout: custom
 toc: false
 css: ../../novels.css
-include-in-header:
-  - text: |
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 ---
 
 ::: {.novels-page}

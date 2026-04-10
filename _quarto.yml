@@ -8,11 +8,14 @@ website:
   site-url: "https://yudabitrends.github.io"
 
   open-graph:
-    image: "files/profile/avatar.jpg"
-    description: "Academic homepage of Yuda Bi — statistical physics, information geometry, theoretical neuroscience"
+    image: "https://yudabitrends.github.io/files/profile/avatar.jpg"
+    image-alt: "Portrait photo of Yuda Bi"
+    locale: en_US
+    site-name: "Yuda Bi"
 
   twitter-card:
-    image: "files/profile/avatar.jpg"
+    image: "https://yudabitrends.github.io/files/profile/avatar.jpg"
+    image-alt: "Portrait photo of Yuda Bi"
     card-style: summary_large_image
     # creator: "@REPLACE_ME"   # 有 Twitter 后取消注释并填入用户名
     # site: "@REPLACE_ME"
@@ -44,7 +47,7 @@ website:
 
   page-footer:
     center: |
-      Yuda Bi &copy; 2026 &ensp;|&ensp;
+      Yuda Bi &ensp;|&ensp;
       Built with [Quarto](https://quarto.org)
 
   search:
@@ -53,26 +56,17 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme:
+      - theme.scss
+      - cosmo
     css: styles.css
     toc: true
     footnotes-hover: true
     link-external-newwindow: true
     link-external-icon: false
+    canonical-url: true
     include-in-header:
       # Google Search Console 验证 — 注册后取消注释并填入验证码
       # - text: |
       #     <meta name="google-site-verification" content="REPLACE_ME">
       - file: _includes/seo-global.html
-      - text: |
-          <link rel="preconnect" href="https://fonts.googleapis.com">
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-          <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-          <script>
-          (function() {
-            var link = document.createElement('link');
-            link.rel = 'canonical';
-            link.href = 'https://yudabitrends.github.io' + location.pathname.replace(/index\.html$/, '');
-            document.head.appendChild(link);
-          })();
-          </script>

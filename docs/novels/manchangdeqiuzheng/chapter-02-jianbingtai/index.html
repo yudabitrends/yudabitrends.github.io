@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="《漫长的求证》第二章《简并态》：实验班、水房电话与一条看不见的尺子，让两个人之间的距离第一次有了清晰的轮廓。">
+
+<title>第二章：简并态 – Yuda Bi</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-608b1f326ca2940ca45e01f13838d248.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-b54d7094352fb34f57fb9d963a180894.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "没有结果",
+    "search-matching-documents-text": "匹配的文档",
+    "search-copy-link-title": "复制搜索链接",
+    "search-hide-matches-text": "隐藏其它匹配结果",
+    "search-more-match-text": "更多匹配结果",
+    "search-more-matches-text": "更多匹配结果",
+    "search-clear-button-title": "清除",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "提交",
+    "search-label": "搜索"
+  }
+}</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Yuda Bi",
+  "url": "https://yudabitrends.github.io",
+  "jobTitle": "Ph.D. in Computer Science",
+  "affiliation": {
+    "@type": "Organization",
+    "name": "TReNDS Center",
+    "url": "https://trendscenter.org/"
+  },
+  "alumniOf": [
+    {
+      "@type": "CollegeOrUniversity",
+      "name": "Georgia State University"
+    },
+    {
+      "@type": "CollegeOrUniversity",
+      "name": "University of Georgia"
+    }
+  ],
+  "sameAs": [
+    "https://scholar.google.com/citations?user=yclnpogAAAAJ",
+    "https://github.com/yudabitrends",
+    "https://www.linkedin.com/in/yudabi/"
+  ],
+  "knowsAbout": [
+    "Statistical Physics",
+    "Information Geometry",
+    "Nonequilibrium Thermodynamics",
+    "Theoretical Neuroscience",
+    "Spectral Graph Theory",
+    "Structural Biology"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Yuda Bi",
+  "url": "https://yudabitrends.github.io",
+  "description": "Academic homepage of Yuda Bi — statistical physics, information geometry, theoretical neuroscience"
+}
+</script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+<link rel="stylesheet" href="../../../novels.css">
+<meta property="og:title" content="第二章：简并态 – Yuda Bi">
+<meta property="og:description" content="《漫长的求证》第二章《简并态》：实验班、水房电话与一条看不见的尺子，让两个人之间的距离第一次有了清晰的轮廓。">
+<meta property="og:image" content="https://yudabitrends.github.io/files/novels/%E6%BC%AB%E9%95%BF%E7%9A%84%E6%B1%82%E8%AF%81.jpg">
+<meta property="og:site_name" content="Yuda Bi">
+<meta property="og:image:alt" content="《漫长的求证》封面">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:title" content="第二章：简并态 – Yuda Bi">
+<meta name="twitter:description" content="《漫长的求证》第二章《简并态》：实验班、水房电话与一条看不见的尺子，让两个人之间的距离第一次有了清晰的轮廓。">
+<meta name="twitter:image" content="https://yudabitrends.github.io/files/novels/%E6%BC%AB%E9%95%BF%E7%9A%84%E6%B1%82%E8%AF%81.jpg">
+<meta name="twitter:image:alt" content="《漫长的求证》封面">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://yudabitrends.github.io/novels/manchangdeqiuzheng/chapter-02-jianbingtai/">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Yuda Bi</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="搜索"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="展开或折叠导航栏" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html">
+<span class="menu-text">About</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../../publications.html">
+<span class="menu-text">Publications</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../../projects.html">
+<span class="menu-text">Projects</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../../notes.html">
+<span class="menu-text">Notes</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../../novels.html">
+<span class="menu-text">小说 Novels</span></a>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:ybi3@gsu.edu"> <i class="bi bi-envelope" role="img">
+</i>
+<span class="menu-text"></span></a>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/yudabitrends" target="_blank"> <i class="bi bi-github" role="img">
+</i>
+<span class="menu-text"></span></a>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=yclnpogAAAAJ&amp;hl=en" target="_blank"> <i class="bi bi-mortarboard" role="img">
+</i>
+<span class="menu-text"></span></a>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-layout-custom page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+<!-- main -->
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">第二章：简并态</h1>
+</div>
+
+<div>
+  <div class="description">
+    《漫长的求证》第二章《简并态》：实验班、水房电话与一条看不见的尺子，让两个人之间的距离第一次有了清晰的轮廓。
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+
+
+
+  </div>
+
+
+
+</header>
+
+
+<div class="novels-page novel-chapter-page">
+<div class="chapter-page-shell">
+<div class="chapter-header">
+<p><span class="chapter-running-title">《漫长的求证》 · 第一部「沉」</span></p>
+<section id="第二章简并态" class="level1 chapter-page-title">
+<h1 class="chapter-page-title">第二章：简并态</h1>
+<p><span class="chapter-lead-quote">很多东西停在同一层台阶上。别人只看台阶，就会觉得它们差不多。其实里头差别大得很。</span></p>
+</section>
+</div>
+<div class="chapter-body">
+<p>初中那几年，县中的一天总是先被喇叭拎起来。</p>
+<p>广播操的音乐隔着操场传过来，失真得发毛。升旗台边那根铁绳碰着旗杆，叮地响一下，又一下。教室里的旧绿黑板总擦不净，第三节课一到，老师袖口上先蹭出一层薄白。那阵子县城也跟着热闹，街口文具店开始卖会唱歌的电子贺卡、五环颜色的塑料手环和印着“加油”的贴纸，连小卖部玻璃上都贴出一排亮闪闪的标语，好像只要贴得够多，这地方就能和外面那股越来越大的风站到一条线上去。</p>
+<p>学校也在跟着那股风往前跑。运动会开幕式那天，操场边插满了小旗子，主席台前挂着一条红布横幅，字写得太用力，边角都卷了。班主任让每个人胳膊上都套一个塑料腕带，喊口号时要把手举高一点。黎知秋站在队伍里，腕带松松挂在手腕上，像随时会掉。轮到他们班经过主席台，她嘴唇动都没动，等走过去以后才低声说：“题不会因为你喊得响就变简单。”</p>
+<p>陆沉听见了，想笑，又没敢笑。前排同学正回头催他们喊整齐一点，操场上的鼓点一下一下往前顶，像谁在背后推着整座学校走。</p>
+<p>陆沉和黎知秋还是走同一条路去学校。</p>
+<p>早晨六点多，街上刚被菜贩和早点摊叫醒，豆浆锅口的白汽一阵阵往上撞，卖烧饼的人把案板拍得咚咚响，像替整条街把一天先敲开了。两个人背着书包，一前一后走过录像厅、修鞋铺和王婆的馄饨摊。陆沉的书包总比她重，卷子、练习册、参考书，全塞得鼓鼓囊囊。黎知秋的包反倒轻些，可她走路快，像总有东西在前面等她。到了校门口，铃还没响，她就被数学老师叫去办公室。陆沉把作业本从后门递上去，老师接过去，顺手压到卷子底下，眼睛已经转回前排那几个竞赛组的学生。黎知秋回来时校服袖口常常多出一层粉笔灰，像刚从别的地方借了一截更亮的光回来。</p>
+<p>分数还没来得及把他们真正拉开。</p>
+<p>先变的是声音。</p>
+<p>陆沉还在旧教学楼里听吊扇吱呀呀地转，听老师用板擦拍出一阵灰。黎知秋已经开始被借去听竞赛课，回来说起题目时，语速会比平时更快，像脑子里有几扇门同时开着。同一张卷子，老师讲到前几道还肯在黑板上多停一会儿，讲到后半道大题，眼睛就先去找前排那几个人，默认他们跟得上，后面的人自己补。有时她把卷子往陆沉桌上一拍，说这题不难；可说完又把卷子拿回去，自己先低头改题干，改到一半忽然皱眉，像先嫌题里给出的条件不够干净。</p>
+<p>有一回下午最后一节自习，学校广播在讲台上方嗡嗡响，念的是奥运志愿者、文明礼仪和下周升旗的注意事项。黎知秋却压根没听，低头在卷子背面改一道几何题。改到一半，她忽然把卷子推给陆沉：“这儿不对。”</p>
+<p>陆沉看了半天，只说：“你把这条辅助线画早了。”</p>
+<p>“早了就不能画？”</p>
+<p>“能画，就是你后面都得跟着改。”</p>
+<p>她盯着那页纸看了几秒，抬手把辅助线整段擦掉，纸面都快擦破了。广播正好念到“同一个梦想”。她低声说了句：“他们天天喊一个梦想，题怎么就不能有一条自己的路。”</p>
+<p>那时候两家联系还主要靠座机。</p>
+<p>周末晚上，陆沉常坐在堂屋的小方桌边等电话。先听见母亲把电视声音拧小，再听见听筒里长长的拨号音，像一条线从街那头慢慢牵过来。后来黎知秋父亲给她添了一台直板小手机，银灰色，按键摁下去有很轻的一声响，只够打电话和发短信。她话又急，常把一句很长的话压成两条，后一条隔半分钟才追上来。她的人已经被更亮、更远的地方往前拽了一截，声音却还得沿着旧县城的电线，一段一段折回来。</p>
+<p>那阵子短信一条一毛。黎知秋用得抠，能打电话就不发字，可偶尔也会在他意想不到的时候发一条过来。</p>
+<p>比如周三中午，陆沉刚在食堂排到窗口，裤袋里的手机震了一下。屏幕上只有短短一行：</p>
+<div class="chapter-kaiti chapter-message">
+<p>你们物理老师讲到受力分析没有</p>
+</div>
+<div class="chapter-kaiti chapter-message is-reply">
+<p>陆沉回：讲了</p>
+</div>
+<div class="chapter-kaiti chapter-message">
+<p>别抄答案</p>
+</div>
+<p>再比如深夜一点多，他正要睡，手机又震了一下：</p>
+<div class="chapter-kaiti chapter-message">
+<p>我觉得我们老师这道题写得很烂</p>
+</div>
+<p>陆沉盯着那行字看了半天，回了一句：</p>
+<div class="chapter-kaiti chapter-message is-reply">
+<p>那你还不睡</p>
+</div>
+<p>隔了五分钟，才追来第二条：</p>
+<div class="chapter-kaiti chapter-message">
+<p>睡不着</p>
+</div>
+<p>真正的分流，是在她考进省重点理科实验班以后。</p>
+<p>开学前一天，出租车轮胎压过街口那块坑，闷响了一下。</p>
+<p>那时车还没开远。黎知秋坐在后座，车窗摇下半截，胳膊肘搭在窗边，头发让风吹得有点乱。她家门口放着两个箱子，一个蓝色行李箱，一个装书的纸箱。纸箱四角全让胶带缠硬了，抱起来直硌手。她母亲站在门里，拿毛巾擦手，一边看她往里塞书，一边说：“书别全带，到了那边再买也一样。”</p>
+<p>黎知秋蹲在地上，把最后两本书压进去，头也不抬：“不一样。”</p>
+<p>“哪里不一样？”</p>
+<p>“手熟。”</p>
+<p>她说这两个字时，像在说一件别人本来就该懂的事。她母亲看着她，想笑，又没笑出来。</p>
+<p>陆沉帮她搬箱子。</p>
+<p>蓝色行李箱倒还好，拖杆一拉，轮子能走。那只纸箱却很沉，沉得他抱起来的时候手臂一下绷紧。最上面露出半截《普通物理学》，边上还挤着一本竞赛题集，封皮已经卷了。黎知秋看见他低头，说了一句：“别掉了，我都按顺序放的。”</p>
+<p>“高中带这么多书？”</p>
+<p>“不够。”</p>
+<p>司机本来只想搭把手，接过纸箱时手腕也跟着往下一坠，笑了：“闺女这是去上大学啊？”</p>
+<p>黎知秋站在车门边：“高中。”</p>
+<p>司机愣了一下，又笑：“高中带这么多书，大学还不得把图书馆搬走。”</p>
+<p>她把手按在后备箱边沿，回得很快：“到了再买。”</p>
+<p>这回连她母亲都笑了。只有陆沉没笑。他把后备箱按下去，掌心还残着纸箱边缘压出来的硬印。那天风不大，街上的树叶也没怎么动。黎知秋坐进去，冲他摆了一下手：“周末给你打电话。”</p>
+<p>司机踩油门，车慢慢往街口挪。轮胎压到那块坑，又闷响了一下。</p>
+<p>陆沉站在路边，没有跟着走。车拐出街口以后，录像厅门口的海报还是那张海报，修鞋铺门口的老头还在翻鞋底，卖冰棍的三轮车停在阴影里，车把上挂着一只白毛巾。什么都没变，街却一下空了。</p>
+<p>那天晚上，他从自家院子里抬头，看见黎知秋房间的灯灭得很早。</p>
+<p>开学以后，电话成了周末最固定的事。</p>
+<p>黎知秋去的那所省重点理科实验班寄宿。宿舍楼老，走廊长，周末晚自习一结束，管得会松一点。她常站在走廊尽头给陆沉打电话，身后是水房和洗衣间的声音。有人端着脸盆走过去，拖鞋啪嗒啪嗒响。有人拧水龙头，水就哗啦啦地冲下来。热水壶盖子掀起来，会蹿出一声很短的汽。陆沉这边要安静得多。县中的晚自习一散，人很快走空。前排那几个分数高的常被老师留住，多讲两句压轴题，陆沉收完自己的卷子，从后门出去，没人再叫他。他回家路上先经过小卖部，冰柜嗡嗡响，里面的冰棍结着一层薄霜。进了院子，他把书包往桌上一放，先去接一壶水。屋里电视机开着，母亲看八点档连续剧，声音不高。窗外有虫叫，再远一点，是夜里经过县城的火车。</p>
+<p>他们就隔着这些声音说话。</p>
+<p>最开始其实并不顺。</p>
+<p>第一次电话打了不到五分钟。她在那头语速太快，讲实验班的课表、寝室、值周老师，讲到一半忽然问他听懂没有。陆沉停了一下，说差不多。她“啧”了一声，说你根本没懂。挂掉以后，陆沉坐在桌前想了很久，第二天专门去文具店买了个最小的线圈本。后来她每次说起什么题、什么书、什么词，他就记在那个本子上。记久了，本子边上全是被手汗蹭出来的毛。</p>
+<p>有次她在电话里讲到半路，忽然问：“你是不是又只顾着记，没自己想？”</p>
+<p>陆沉愣了一下：“你怎么知道？”</p>
+<p>“你停顿的声音不对。”</p>
+<p>她说完就把电话挂了。晚上十一点多，又发来一条短信：</p>
+<div class="chapter-kaiti chapter-message">
+<p>别光听</p>
+</div>
+<p>隔了半分钟，第二条才追上来：</p>
+<div class="chapter-kaiti chapter-message">
+<p>自己想</p>
+</div>
+<p>从那以后，陆沉接电话时开始习惯性地带一支笔。她说的每个词他并不都记，真正怕的是自己听着听着又只顾着跟着她跑。她在那头讲一句，他就在纸边记一个箭头、一个圈，或者一个自己还不明白的问号。有时候电话挂了，他还会把刚才那几句最绕的话重新念一遍，念到后来，连母亲都听出来了，隔着门问：“你俩到底是在谈对象，还是在补课？”</p>
+<p>陆沉没答。那页纸被他折了两折，塞进抽屉最里面。可下周电话一来，他还是会重新把笔摸出来。</p>
+<p>起初总是她讲得多。讲实验班有个女生写题快得像在抢东西，讲老师做题从不看答案，讲食堂的土豆又没炒熟，讲他们教室的空调坏了，整层楼一边扇本子一边考试。陆沉一开始跟不上她的速度，只能捡自己听懂的回一句。有一次他其实没明白，还是硬接了一句“那就是把条件并起来”。电话那头顿了顿，黎知秋直接说：“不是。你别装懂。”她说完又把语气收回去，重新从前一步讲起。有时候她讲着讲着忽然停住，扔下一句“等等”，人就没声了。陆沉拿着电话，也不催，只听水房里的水从那头往下流。</p>
+<p>另一次，她在电话里跟他说电磁感应，说到一半突然不说了。</p>
+<p>陆沉喂了两句。</p>
+<p>过了几秒，黎知秋才出声：“你别打断。”</p>
+<p>“怎么了？”</p>
+<p>“我快想到了。”</p>
+<p>电话那头只剩水流声。有人把拖鞋踢得啪嗒啪嗒响，从她身边走过去。再过一会儿，她说：“行了。”</p>
+<p>“哪行了？”</p>
+<p>“问题找着了。”</p>
+<p>“什么问题？”</p>
+<p>“不告诉你。下次讲。”</p>
+<p>她高兴的时候，卖关子也很直。陆沉握着那只旧手机，屏幕光照在虎口上，亮了一小块。他说不出太多好听话，只问：“你站在水房门口吧？”</p>
+<p>“你怎么知道？”</p>
+<p>“有水声。”</p>
+<p>“还有呢？”</p>
+<p>“有人吹头发。”</p>
+<p>她笑了一声：“你听东西还挺仔细。”</p>
+<p>就是从那以后，她开始认认真真跟他说物理。</p>
+<p>她讲自己怎么想，哪一步总觉得别扭，老师哪句话说得太快，哪道题答案对了，路却走得笨。很多词陆沉其实不懂，可他能听出来她什么时候是真的兴奋，什么时候只是在完成功课。她说“有意思”的时候，尾音会压低一点；她说“这题真蠢”的时候，语速会忽然快起来；她如果连着问两遍“你在听吗”，后面多半就是她最想讲的地方。</p>
+<p>电话也不是次次都能讲很久。有时候她只来得及打三分钟。铃刚响两下，人就接起来，说自己要去打热水，或者要回寝室点名，只能先讲一句。还有一回，她只说：“我刚发现我们老师把一道题的符号写反了。”</p>
+<p>陆沉问：“你指出来了？”</p>
+<p>“没有。”</p>
+<p>“为什么？”</p>
+<p>“他已经讲过去了，我懒得救他。”</p>
+<p>说完她自己先笑。笑完又补一句：“你别学我。”</p>
+<p>那种零零碎碎的电话和短信，把两个人的关系接得很细。重要的事其实不多，可线就是这么一点点接上的。</p>
+<p>高一下学期一个周末，外面下雨。</p>
+<p>县城这边的屋檐一直在滴水，院子里的石榴树被风吹得来回响。黎知秋那边有人不断经过走廊，电话里总夹着几声很轻的回音。她先问他在干吗。陆沉说在改数学卷子。她问错了多少。他说一半。她“哦”了一声，沉默了一会儿，忽然问：</p>
+<p>“陆沉，你知道什么是简并态吗？”</p>
+<p>陆沉拿笔尖在卷子边上点了点：“大概知道。不同的状态可以有同一个能量。”</p>
+<p>“对。”</p>
+<p>她那边的水龙头没关严，滴答一声，隔很久再滴一声。她大概在想怎么说得更明白些，停了一阵，才往下讲：“你可以当成很多东西停在同一层台阶上。别人只看台阶，就会觉得它们差不多。其实里头差别大得很。”</p>
+<p>陆沉没出声。</p>
+<p>她又说：“你和那些最好的学校里的人，放在一把尺子上量，当然差很多。可我不爱那把尺子。”</p>
+<p>“那你看什么？”</p>
+<p>电话那边静了静。大概有人从她身边挤过去，她把身子让开了，衣料擦出一点细响。再开口时，她说得很慢：</p>
+<p>“我看你听东西的方式。大部分人等你说完，是为了接自己的话。你会接着往下想。”</p>
+<p>窗缝里有风钻进来，把陆沉桌上的卷子吹起一角。屋里电视里的人正在吵架，母亲隔着门喊他早点睡。他应了一声，眼睛却一直落在那道几何题上。</p>
+<p>“这个比聪明值钱。”黎知秋说。</p>
+<p>陆沉拿着电话，过了很久才“嗯”了一声。</p>
+<p>第二天早上，母亲过来收拾桌子，看见草稿纸背面写着“同一个能量”，还问他这也算物理。陆沉把纸折起来，夹进课本里，没解释。那张纸后来被他压在字典底下，压得很平，像怕那句话一松手就飞了。</p>
+<p>国庆放假时，黎知秋回来过一次。</p>
+<p>只两天。陆沉去车站接她，看见她从大巴上下来，肩上只背了一个黑色书包，书包鼓鼓的。她比开学前瘦了一点，头发扎得更紧，走路也更快。车站门口还是卖甘蔗汁和茶叶蛋的那两家小摊，地上湿一块干一块。她把书包往他手里一塞，说了句“沉死了”，自己去买矿泉水，拧开盖子灌了两口，才问：“你最近物理做到哪了？”</p>
+<p>两个人沿着旧街往回走。她一边走一边说实验班的卷子发得有多快，周测月测挤在一起，刚收上去一张，又落下来一张。走到文具店门口，她忽然停下，进去买了两支黑色中性笔、一袋活页纸和一小盒润喉糖。老板娘认得她，笑着说：“省城回来的就是不一样。”黎知秋低头找零钱，没有接这个话。</p>
+<p>回到街上以后，她把糖扔给陆沉一颗：“你含着。”</p>
+<p>“我又不咳嗽。”</p>
+<p>“你说话老是干巴巴的。”</p>
+<p>陆沉捏着那颗糖，半天没剥。她走在前面，肩膀比从前更薄一点，书包却还是鼓的，像她把一整层楼的作业都背回来了。</p>
+<p>晚上，她把陆沉最近一张物理卷子要过去，看了十几分钟。她没先看分数，先看错题。看到一道关于动量守恒的题，她用笔敲了敲卷面：“你这步会做，就是懒得往下走。”</p>
+<p>陆沉坐在对面，没反驳。</p>
+<p>她又往后翻了一页，脱口而出：“你们老师怎么还讲这个？”</p>
+<p>话说完，她自己也停了一下。窗外有人骑自行车过去，铃铛响了一声，很快没了。陆沉低头看桌沿，没抬眼。他先觉得难堪，气反倒还没上来，像有人顺手把他一直待着的地方叫旧了。</p>
+<p>“什么意思？”他问。</p>
+<p>“没什么意思。”</p>
+<p>“你刚才就是那个意思。”</p>
+<p>她张了张嘴，先说了半句“本来就不该”，说到这儿才硬生生停住。她低头把卷子往回翻，笔尖一下按得太重，纸面戳出个小坑，过了两秒才继续给他圈步骤：“分数先放着。你先把路走通。”</p>
+<p>那天夜里，两个人坐在院里分一个石榴，谁都没再提那句话。她讲宿舍里一个女生把洗好的袜子挂反了，第二天满走廊都在笑。又讲老师点名太快，她有一次走神，差点没答到。实验班里还有人为了抢位置，六点不到就去教室开门。陆沉听着，手里慢慢掰石榴皮。灯下飞来几只小虫，不断往桌面撞。剥到一半的时候，黎知秋忽然说：</p>
+<p>“我对你们老师没什么意见。”</p>
+<p>陆沉没抬头：“嗯。”</p>
+<p>“我是烦。”</p>
+<p>“你一直都烦。”</p>
+<p>她听见这句，笑了：“你现在倒敢说了。”</p>
+<p>第二天下午她就回省城了。书包还是那么沉。陆沉帮她把包提上车，手臂往下一坠。等车窗摇下来，她还是那句：“周末给你打电话。”</p>
+<p>她在那边越跑越快。</p>
+<p>她会说实验班已经有人开始看大学教材，也会说老师讲竞赛题时一节课写断了三根粉笔。最近她又总在想，为什么有些结论明明可以从更简单的地方出发，却总有人爱绕远。她讲话的时候，总带着一股往前顶的劲。可越是这样，陆沉越能听出她什么时候在累。有几次她说着说着突然没声，过两秒才接上，人已经快睡着了，只剩嘴还在硬撑。</p>
+<p>有一年元旦前夜，县中也放了半天假。班里有人在走廊放鞭炮录音，音箱破得厉害，炸出来全是毛边。陆沉回到家刚放下书包，手机就震了。她发来一张很糊的照片。照片里是实验班教室最后一排，窗台上摆着三杯泡得发白的方便面，旁边一张草稿纸写满了式子。她只配了四个字：</p>
+<div class="chapter-kaiti chapter-message">
+<p>我们还活着</p>
+</div>
+<p>陆沉看着那张图，先笑了一下，随后又有点说不出的难受。他回：</p>
+<div class="chapter-kaiti chapter-message is-reply">
+<p>你别把自己累死</p>
+</div>
+<p>她很久没回。快到一点的时候，电话才打过来。那边闹得厉害，像一整层楼都没睡。她第一句却是：“你怎么老说死不死的。”</p>
+<p>“我随口一说。”</p>
+<p>“以后别随口。”</p>
+<p>这句话她说得不重，甚至有点困。可落下来以后，陆沉拿着手机，很久都没接下一句。</p>
+<p>陆沉这边则更慢。</p>
+<p>别人做一道题，看见答案就过去了，他会在那儿停很久，非要想明白那个答案是怎么长出来的。可县中的节奏容不下这种慢。老师赶进度，试卷一套接一套发下来，红色分数挂在走廊榜单上，一眼就把人排成了队。讲题时也是一样，谁做出来了，谁的名字就先被点到；谁卡住了，谁就先被归到后面。陆沉有时抬头看那些分数，只觉得自己站错了地方。</p>
+<p>高二那年，黎知秋拿了省物理竞赛一等奖。</p>
+<p>消息是她亲自打电话说的。那天周日下午，县城电压不稳，座机里的声音一阵一阵发虚。陆沉在家帮母亲择菜，手上还沾着豆角的汁，电话一响，他先在裤子上擦了两下手才去接。黎知秋开口就说：“我拿了省一。”</p>
+<p>他说：“恭喜。”</p>
+<p>“别恭喜。”她那边在翻纸，“帮我想一道题，我卡三天了。”</p>
+<p>然后她就把题目念给他。</p>
+<p>念得很快，变量和条件一股脑往外倒。陆沉当然解不出来。他连题目都没法完整抄在纸上，只能边听边问。问到第三遍的时候，他忽然停住：“你这个边界条件，默认成无限体系了吧？”</p>
+<p>电话那头没声了。</p>
+<p>院子里有鸡在啄菜叶，母亲在旁边洗豆角，水龙头哗哗响。陆沉还以为自己问错了，正要补一句“我随口一说”，就听见那边很轻地骂了一句：</p>
+<p>“操。”</p>
+<p>纸张被翻得很快。过了十几秒，她才重新贴回来，声音比刚才亮多了：“你说得对。”</p>
+<p>陆沉愣了一下：“我就是随口一问。”</p>
+<p>“你少来。”她说，“以后别老随口。”</p>
+<p>她后面又往下讲推导，语速快得停不住。陆沉没全听进去，只听出她整个人都亮了。那通电话挂掉以后，他站在院子里很久都没进去。豆角还在盆里泡着，母亲从厨房探出头来问他怎么了。他说没事，只是手有点凉。</p>
+<p>高三冬天，县城下了第一场雪。</p>
+<p>雪不大，落地就化。陆沉晚自习回家，鞋帮上沾了一圈泥，刚进院子，电话就响了。黎知秋那边正好是水房的水声。她大概也是刚下晚自习，声音里带着困意，还是先问他今天怎么样。</p>
+<p>陆沉说一般。</p>
+<p>她问怎么一般。</p>
+<p>他说模拟考又没考好。</p>
+<p>她说没考好就看错在哪，下一次再改。</p>
+<p>陆沉没接这个，只说：“反正你以后会去更远的地方。”</p>
+<p>她那边静了一下：“然后呢？”</p>
+<p>“然后我们就隔得很远了。”</p>
+<p>“你怎么又来了。”</p>
+<p>“本来就是。”</p>
+<p>“陆沉。”</p>
+<p>“你以后会认识很多比我厉害得多的人。”</p>
+<p>电话那头忽然只剩水声。过了两秒，黎知秋一下打断他：“你能不能别每次都先替别人判你死刑？”</p>
+<p>她说得太快，后半句几乎是抢着出来的。陆沉站在屋檐下，手里还拎着书包，听见那边啪一声，电话挂了。</p>
+<p>院子里一下静了。</p>
+<p>母亲在厨房盛饭，勺子碰着锅沿，一下一下。陆沉把手机塞进口袋，去井边打水洗手。水冷得很，手背立刻红了。他一边洗一边想，她是不是也觉得自己烦，觉得这些话说了一遍又一遍，再听下去只会耽误她做题。那一刻他甚至想，干脆别再接她电话了。那天晚上他吃饭吃得很快，饭粒沾在碗边也没看见。母亲问他怎么了，他说没事。</p>
+<p>十分钟后，电话又响了。</p>
+<p>还是她。</p>
+<p>陆沉接起来，没先说话。黎知秋那边也静了两秒，第一句就是：“对不起，我刚才太凶了。”</p>
+<p>他说：“没事。”</p>
+<p>“有事。我太困了。”</p>
+<p>她吸了一口气，声音轻下去一点：“但你别老这么说自己。你每次一这么说，我就特别想骂你。”</p>
+<p>陆沉站在窗边，看见院子里那棵石榴树被薄雪压着，枝条没怎么弯，只是颜色更黑了些。他嗯了一声。电话那头有人喊熄灯，她应了一句“来了”，临挂断前又补了一句：“你先别急着把自己扔了。”</p>
+<p>陆沉没接这句，手里却一直攥着手机。第二天一早，他出门前把那晚的通话记录翻出来，看了两遍，最后没删。像删了就真把那十分钟也删掉了。</p>
+<p>到了高三后半段，差距开始变成很硬的数字。</p>
+<p>她月考总分总在七百上下，理综贴着满分走，数学最后一题做完还有空回头检查。陆沉这边总在六百线附近晃，有时多一点，有时少一点。老师在讲台上报分数，报到前几名时语气会自然高一点；报到后面的人，纸往下一翻，就过去了。有一回物理老师发月考卷，发到陆沉桌前时停了一下，最后只把卷子往下一放：“后面大题多看看。”可她回家时，从来不拿这件事压他。寒假有一次，两个人在街口买烤红薯。摊主把红薯从铁皮炉子里夹出来，白气直往外冒。黎知秋掰开一半递给他，自己那半边拿在手里，一边吹一边说：“我们班有个男生，做题特别快，快得烦人。”</p>
+<p>陆沉问：“那你呢？”</p>
+<p>“我不快。”她咬了一口，烫得皱眉，“我就是烦。我受不了有东西没弄懂。”</p>
+<p>陆沉把手里那半块红薯翻了个面，看着焦黑的皮：“我跟你不一样。”</p>
+<p>“哪不一样？”</p>
+<p>“你是真会。我是慢。”</p>
+<p>黎知秋没立刻回。她低头把手指上那点红薯心蹭到纸袋里，过了一会儿才说：“慢也分很多种。”</p>
+<p>“比如？”</p>
+<p>“比如一种是慢得懒，一种是慢得要命。”</p>
+<p>“我是哪种？”</p>
+<p>她抬头看了他一眼，没直接答，只说：“你总想把东西弄明白。这个毛病有时候挺讨厌。”</p>
+<p>“有时候？”</p>
+<p>“大部分时候。”</p>
+<p>她说完自己先笑了，笑意却很短。风从街口吹过来，带着煤灰味。陆沉把后面那半句“你是不是也觉得我拖累人”咽了回去。</p>
+<p>高考成绩出来那天，县城很热。</p>
+<p>陆沉先查到自己的，刚过一本线。页面转了半天圈，最后把分数定在那里。屋里没人说话。父亲坐在风扇下面抽烟，抽到一半，把烟掐了。母亲去厨房烧水，铝壶盖子在灶上轻轻跳。过了十分钟，黎知秋的电话打进来。</p>
+<p>她没先说自己的分数，先问他的。</p>
+<p>陆沉报了。</p>
+<p>电话那边静了一瞬：“一本。”</p>
+<p>“嗯。”</p>
+<p>又静了一会儿，她才说：“我六百九十三。”</p>
+<p>数字很清楚。六百九十三。后来名次出来，她全省前五十，去了 top 2 的物理系。陆沉因为志愿填报失误，最后滑进一所二本工科院校。</p>
+<p>那天傍晚，他一个人去河堤走了很久。</p>
+<p>河水不深，夏天水草长起来，远远看过去，整条边都发绿。桥底下有小孩在摸鱼，笑声一阵阵传过来。陆沉把手机攥在手里，攥得掌心全是汗。走到一半时，他脑子里忽然冒出一个念头：她刚才停那一下，多半是在想怎么把话说得轻一点。</p>
+<p>这念头一出来，他先没顾上恶心，只觉得胸口那股火一下顶了上来。她凭什么每次都知道该怎么把话说轻一点？凭什么她明明站得更高，还总能摆出一副看见了他的样子？这股念头来得又快又脏，连他自己都不愿细看。过了半晌，那点恶心才追上来。她明明什么也没做错。可他还是在那一瞬间，先恨到了她头上。分高这件事他认。真正刺人的，是她偏偏总能把话说对，是她总像站在更高一点的地方往下看清楚他，哪怕没有恶意，也还是让人难堪。陆沉站在河堤边，弯腰捡起一块石头，用力扔进水里。石头没打出什么响，扑通一声，就没了。</p>
+<p>回家以后，电话又响了，还是她。</p>
+<p>这一次，他先沉默了很久。</p>
+<p>是黎知秋开口问：“你在想什么？”</p>
+<p>陆沉看着窗外那棵石榴树。树上果子还没熟，青的，圆圆地挂着。院子里有蚊子在飞，母亲点了盘蚊香，烟细细往上绕。他说：“我在想，你以后会不会认识很多比我厉害一万倍的人，然后觉得我很无聊。”</p>
+<p>黎知秋没有立刻答。电话那头有风声，还有纸页被翻动的声音。过了一会儿，她说：</p>
+<p>“陆沉，你总觉得自己是条弯路。”</p>
+<p>他说：“这话有错吗？”</p>
+<p>“你先听我说。”</p>
+<p>她停了停，大概是在找一个他还没学过、又得现在抓住的词。</p>
+<p>“路径积分告诉我们，对最终结果有贡献的不只是最短路径。”</p>
+<p>陆沉没出声。</p>
+<p>“所有的路都要算进去。”她在电话那头慢慢说，“直的，弯的，绕远的，看着走不通的，都得算。最后出来的结果，不会只认那条最快的路。”</p>
+<p>院子里有风穿过石榴树。很远的地方，一列火车从县城边上过去，汽笛拖得很长。</p>
+<p>“你听懂没有？”她问。</p>
+<p>陆沉过了很久才说：“没全懂。”</p>
+<p>“没事。”</p>
+<p>“那你还说。”</p>
+<p>“我先说了，等你以后慢慢懂。”</p>
+<p>她这句话说得很平，只是把一件东西先放在他面前。陆沉站在窗边，听她把那几句话说完。等电话挂了以后，他从桌上扯过一张草稿纸，在背面写下四个字。</p>
+<div class="chapter-kaiti">
+<p>路径积分。</p>
+</div>
+</div>
+<div class="chapter-nav">
+<p><a href="../chapter-01-fenbi/" class="chapter-nav-link">← 上一章：粉笔</a> <a href="../" class="chapter-nav-link">返回目录 →</a></p>
+</div>
+</div>
+</div>
+
+
+
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "已复制");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "已复制");
+        tooltip = new bootstrap.Tooltip(button,
+          { trigger: "manual",
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/yudabitrends\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config);
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined;
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              }
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            }
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>
+    <div class="nav-footer-center">
+<p>Yuda Bi  |  Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

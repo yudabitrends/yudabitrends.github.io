@@ -27,6 +27,12 @@ jobs:
       - name: Render
         uses: quarto-dev/quarto-actions/render@v2
 
+      - name: Postprocess generated site
+        run: python3 scripts/postprocess_site.py
+
+      - name: Validate site quality
+        run: python3 scripts/check_site_quality.py
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

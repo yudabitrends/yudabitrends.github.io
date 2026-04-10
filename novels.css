@@ -7,6 +7,7 @@
   --novel-line-strong: #cfc6bc;
   --novel-accent: #3c3129;
   --novel-serif: "Songti SC", "STSong", "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
+  --novel-kaiti: "Kaiti SC", "STKaiti", "KaiTi", "BiauKai", serif;
   --novel-ui: "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", sans-serif;
 
   min-height: 100vh;
@@ -153,6 +154,18 @@ body:has(.novels-page) .nav-footer a {
   max-width: 960px;
   margin: 0 auto;
   padding: 0.8rem 1.5rem 3.5rem;
+}
+
+.novel-progress-note {
+  max-width: 760px;
+  margin: 0 auto 1.1rem;
+  padding: 0.2rem 0 0.95rem;
+  color: var(--novel-muted);
+  font-family: var(--novel-kaiti);
+  font-size: 0.94rem;
+  line-height: 1.9;
+  text-align: center;
+  border-bottom: 1px solid rgba(221, 214, 205, 0.78);
 }
 
 .novel-card {
@@ -417,6 +430,184 @@ body:has(.novels-page) .nav-footer a {
   letter-spacing: 0;
 }
 
+.chapter-entry {
+  min-width: 0;
+}
+
+.chapter-title a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.chapter-title a:hover {
+  color: inherit !important;
+  text-decoration: underline !important;
+  text-decoration-color: rgba(34, 34, 34, 0.28);
+}
+
+.chapter-teaser {
+  margin-top: 0.18rem;
+  color: var(--novel-muted);
+  font-family: var(--novel-serif);
+  font-size: 0.9rem;
+  line-height: 1.78;
+}
+
+.novel-chapter.chapter-available {
+  padding-bottom: 0.92rem;
+}
+
+.chapter-page-shell {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 3.4rem;
+}
+
+.chapter-header {
+  max-width: 760px;
+  margin: 0 auto 1.5rem;
+  padding: 1.1rem 0 1.35rem;
+  text-align: center;
+  border-bottom: 1px solid var(--novel-line);
+}
+
+.chapter-running-title {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: var(--novel-muted);
+  font-family: var(--novel-ui);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+.chapter-page-title {
+  margin: 0 !important;
+  font-size: 2rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em;
+}
+
+.chapter-lead-quote {
+  display: block;
+  max-width: 32rem;
+  margin: 0.85rem auto 0;
+  color: var(--novel-muted);
+  font-family: var(--novel-kaiti);
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.chapter-body {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2.4rem clamp(1.25rem, 4vw, 3rem) 2.8rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(221, 214, 205, 0.86);
+  box-shadow: 0 12px 28px rgba(40, 31, 22, 0.05);
+}
+
+.chapter-body p {
+  margin: 0;
+  color: var(--novel-text);
+  font-family: var(--novel-serif);
+  font-size: 1.05rem;
+  line-height: 2.04;
+  text-indent: 2em;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+
+.chapter-body > p:first-of-type {
+  text-indent: 0;
+}
+
+.chapter-body p + p {
+  margin-top: 0.08rem;
+}
+
+.chapter-body em {
+  font-style: normal;
+}
+
+.chapter-body blockquote,
+.chapter-kaiti {
+  margin: 1.55rem auto;
+  padding: 0.85rem 1.2rem;
+  color: #584c44;
+  font-family: var(--novel-kaiti);
+  font-size: 1rem;
+  line-height: 1.9;
+  background: rgba(251, 248, 241, 0.95);
+  border-left: 2px solid rgba(207, 198, 188, 0.92);
+}
+
+.chapter-body blockquote {
+  max-width: 32rem;
+}
+
+.chapter-body blockquote p,
+.chapter-kaiti p {
+  text-indent: 0;
+  font-family: inherit;
+}
+
+.chapter-kaiti {
+  max-width: 24rem;
+  text-align: center;
+  border-left: none;
+  background: transparent;
+}
+
+.chapter-message {
+  max-width: 22rem;
+  margin: 0.9rem 0 0.95rem 2rem;
+  padding: 0.3rem 0 0.3rem 1rem;
+  text-align: left;
+  border-left: 1px solid rgba(207, 198, 188, 0.92);
+  background: transparent;
+}
+
+.chapter-message.is-reply {
+  margin-left: 4.5rem;
+}
+
+.chapter-nav {
+  max-width: 760px;
+  margin: 1.2rem auto 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--novel-line);
+}
+
+.chapter-nav p {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+  margin: 0;
+}
+
+.chapter-nav p a:last-child {
+  margin-left: auto;
+  text-align: right;
+}
+
+.chapter-nav-link {
+  color: var(--novel-accent) !important;
+  font-family: var(--novel-ui);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none !important;
+  border-bottom: 1px solid rgba(60, 49, 41, 0.22);
+}
+
+.chapter-nav-link:hover {
+  color: var(--novel-accent) !important;
+  border-bottom-color: var(--novel-accent);
+}
+
 @media (max-width: 900px) {
   .novel-card,
   .novel-detail-hero-inner {
@@ -441,7 +632,8 @@ body:has(.novels-page) .nav-footer a {
   }
 
   .novels-content,
-  .novels-footer {
+  .novels-footer,
+  .chapter-page-shell {
     padding-left: 1.15rem;
     padding-right: 1.15rem;
   }
@@ -456,6 +648,32 @@ body:has(.novels-page) .nav-footer a {
 
   .novel-detail-title {
     font-size: 1.6rem !important;
+  }
+
+  .chapter-page-title {
+    font-size: 1.72rem !important;
+  }
+
+  .chapter-body {
+    padding: 1.75rem 1.05rem 2rem;
+  }
+
+  .chapter-body p {
+    font-size: 1rem;
+    line-height: 1.96;
+  }
+
+  .chapter-nav {
+    flex-direction: column;
+  }
+
+  .chapter-nav p {
+    flex-direction: column;
+  }
+
+  .chapter-nav p a:last-child {
+    margin-left: 0;
+    text-align: left;
   }
 }
 

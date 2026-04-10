@@ -2,9 +2,9 @@
    A warmer, more cohesive visual system for Quarto research sites. */
 
 :root {
-  --font-ui: "Instrument Sans", "Avenir Next", "Segoe UI", sans-serif;
-  --font-serif: "Source Serif 4", "Iowan Old Style", Georgia, serif;
-  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  --font-ui: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif;
+  --font-mono: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 
   --bg: #f4efe7;
   --bg-soft: #fbf8f2;
@@ -713,17 +713,6 @@ body:has(.page-hero) main.content > #title-block-header {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted-soft);
-}
-
-.visitor-badge {
-  margin: 0 0 1rem;
-  text-align: left;
-  opacity: 0.78;
-}
-
-.visitor-badge img {
-  border-radius: 999px;
-  box-shadow: 0 8px 16px rgba(18, 30, 42, 0.08);
 }
 
 .quarto-listing-container-grid .list {

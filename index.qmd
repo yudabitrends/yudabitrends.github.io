@@ -1,5 +1,6 @@
 ---
 title: "Yuda Bi"
+description: "Academic homepage of Yuda Bi, featuring research in statistical physics, information geometry, theoretical neuroscience, and spectral methods."
 subtitle: |
   Ph.D. in Computer Science \
   [TReNDS Center](https://trendscenter.org/) (Georgia State University, Georgia Tech, Emory)
@@ -121,8 +122,4 @@ Four papers under review at *Physical Review Letters* and *Physical Review E*.
 ::: {.motto}
 "The sad truth is that most evil is done by people who never make up their minds to be good or evil."
 [— Hannah Arendt]{.author}
-:::
-
-::: {.visitor-badge}
-![Visitor count](https://visitor-badge.laobi.icu/badge?page_id=yudabitrends.github.io&left_color=gray&right_color=blue)
 :::
