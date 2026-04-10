@@ -1,4 +1,22 @@
-@import url("files/fonts/novel-fonts.css");
+@font-face {
+  font-family: "Novel Songti";
+  src:
+    url("files/fonts/novel-songti-subset.woff2") format("woff2"),
+    url("files/fonts/novel-songti-subset.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Novel Kaiti";
+  src:
+    url("files/fonts/novel-kaiti-subset.woff2") format("woff2"),
+    url("files/fonts/novel-kaiti-subset.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
 
 .novels-page {
   --novel-bg: #fbfaf7;
@@ -8,8 +26,8 @@
   --novel-line: #ddd6cd;
   --novel-line-strong: #cfc6bc;
   --novel-accent: #3c3129;
-  --novel-serif: "Noto Serif SC Variable", "Songti SC", "STSong", "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
-  --novel-kaiti: "LXGW WenKai Screen", "Kaiti SC", "STKaiti", "KaiTi", "BiauKai", serif;
+  --novel-serif: "Novel Songti", "LXGW ZhiSong MN", "Songti SC", "STSong", "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
+  --novel-kaiti: "Novel Kaiti", "LXGW WenKai GB", "LXGW WenKai", "Kaiti SC", "STKaiti", "KaiTi", "BiauKai", serif;
   --novel-ui: "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", sans-serif;
 
   min-height: 100vh;
