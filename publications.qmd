@@ -7,6 +7,8 @@ toc-depth: 2
 ---
 
 ::: {.page-hero}
+[Research Record]{.hero-kicker}
+
 # Publications
 
 Peer-reviewed journal articles, conference papers, and preprints spanning statistical physics, information geometry, spectral methods, and neuroimaging.

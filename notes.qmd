@@ -16,6 +16,8 @@ listing:
 ---
 
 ::: {.page-hero}
+[Working Notes]{.hero-kicker}
+
 # Research Notes
 
 Technical notes and tutorials on statistical physics, information geometry, spectral methods, and theoretical neuroscience.

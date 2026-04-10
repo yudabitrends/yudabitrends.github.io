@@ -6,6 +6,8 @@ toc: false
 ---
 
 ::: {.page-hero}
+[Current Programs]{.hero-kicker}
+
 # Research Projects
 
 Theory-driven research programs spanning statistical physics, spectral methods in structural biology, and brain network analysis.
@@ -14,6 +16,7 @@ Theory-driven research programs spanning statistical physics, spectral methods i
 ::: {.project-card .accent-indigo}
 ::: {.project-card-header}
 ::: {.project-icon}
+QD
 :::
 
 ### Quartic Detection Theory: The Geometry of Hidden Variables
@@ -53,6 +56,7 @@ We prove that hidden variables are **orders of magnitude harder to detect** than
 ::: {.project-card .accent-teal}
 ::: {.project-card-header}
 ::: {.project-icon}
+RNA
 :::
 
 ### SpecRNA-QA: Spectral Graph Methods for RNA 3D Quality Assessment
@@ -89,6 +93,7 @@ Existing RNA quality assessment methods evaluate local atomic contacts — they 
 ::: {.project-card .accent-blue}
 ::: {.project-card-header}
 ::: {.project-icon}
+SFC
 :::
 
 ### Structure-Function Coupling: Anatomy Sets the Stage
@@ -121,6 +126,7 @@ Gray matter explains only ~6% of functional connectivity variance — yet aligns
 ::: {.project-card .accent-amber}
 ::: {.project-card-header}
 ::: {.project-icon}
+VIT
 :::
 
 ### MultiViT / MultiViT2

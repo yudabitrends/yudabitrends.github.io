@@ -34,17 +34,29 @@ listing:
     sort: "date desc"
 ---
 
-## About
+## Research Program
 
 I received my Ph.D. from the [TReNDS Center](https://trendscenter.org/) (GSU, Georgia Tech, Emory), advised by [Prof. Vince D. Calhoun](https://scholar.google.com/citations?user=WNOoGKIAAAAJ).
 
 In 2025 I pivoted from engineering-driven multimodal neuroimaging toward a **theory-first** research program grounded in statistical physics, nonequilibrium thermodynamics, and information geometry.
 
+::: {.home-intro-grid}
+::: {.home-panel}
+[Research Program]{.section-kicker}
+I study how latent structure leaves faint but principled signatures in data: hidden forcing in stochastic systems, spectral structure in biological molecules, and low-rank geometry in large-scale brain organization.
+:::
+
+::: {.home-panel}
+[Methodological Style]{.section-kicker}
+My work sits at the intersection of statistical manifolds, stochastic thermodynamics, spectral graph theory, and matrix geometry, with an emphasis on compact theory that still leads to concrete empirical tests.
+:::
+:::
+
 ### Research Directions
 
 [Statistical Physics]{.research-tag} [Information Geometry]{.research-tag} [Nonequilibrium Thermodynamics]{.research-tag} [Theoretical Neuroscience]{.research-tag} [Spectral Graph Theory]{.research-tag} [Financial Physics]{.research-tag} [Structural Biology]{.research-tag}
 
-### Education
+### Academic Path
 
 ::: {.education-item}
 **Ph.D. in Computer Science**, Georgia State University, 2020–2025
@@ -58,28 +70,28 @@ In 2025 I pivoted from engineering-driven multimodal neuroimaging toward a **the
 **B.S. in Management**, Shandong University of Science and Technology, 2013–2017
 :::
 
----
+## Working Snapshot
 
-::: {.stats-grid}
-::: {.stat-card}
-[7]{.stat-number}
-[Under Review]{.stat-label}
+::: {.snapshot-grid}
+::: {.snapshot-card}
+[Current axis]{.snapshot-label}
+[Hidden forcing and detectability]{.snapshot-value}
 :::
-::: {.stat-card}
-[4]{.stat-number}
-[PRL / PRE]{.stat-label}
+::: {.snapshot-card}
+[Core toolkit]{.snapshot-label}
+[Geometry, spectra, and thermodynamics]{.snapshot-value}
 :::
-::: {.stat-card}
-[3]{.stat-number}
-[Journal Articles]{.stat-label}
+::: {.snapshot-card}
+[Application domains]{.snapshot-label}
+[Brains, molecules, and market-like collective systems]{.snapshot-value}
 :::
-::: {.stat-card}
-[5]{.stat-number}
-[Conference Papers]{.stat-label}
+::: {.snapshot-card}
+[Output style]{.snapshot-label}
+[Papers, technical notes, and open methods]{.snapshot-value}
 :::
 :::
 
----
+## Featured Work
 
 ::: {.theory-card}
 
@@ -101,6 +113,11 @@ Four papers under review at *Physical Review Letters* and *Physical Review E*.
 
 :::
 
+## Recent Notes
+
+:::{#recent-notes}
+:::
+
 ::: {.motto}
 "The sad truth is that most evil is done by people who never make up their minds to be good or evil."
 [— Hannah Arendt]{.author}
@@ -108,11 +125,4 @@ Four papers under review at *Physical Review Letters* and *Physical Review E*.
 
 ::: {.visitor-badge}
 ![Visitor count](https://visitor-badge.laobi.icu/badge?page_id=yudabitrends.github.io&left_color=gray&right_color=blue)
-:::
-
----
-
-## Recent Notes
-
-:::{#recent-notes}
 :::
