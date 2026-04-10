@@ -15,8 +15,6 @@ include-in-header:
 ::: {.novels-header}
 ::: {.novels-header-inner}
 
-[Fiction]{.novels-label-en}
-
 # 小说
 
 [纸上的人走过的路，比谁都长。]{.novels-epigraph}
