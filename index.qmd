@@ -35,6 +35,11 @@ listing:
     sort: "date desc"
 ---
 
+::: {.home-visit-counter}
+[Homepage Visits]{.home-visit-label}
+![Homepage visit counter](https://visitor-badge.laobi.icu/badge?page_id=yudabitrends.yudabitrends.github.io.home&left_text=Visits&left_color=5f6d78&right_color=115e59){.home-visit-badge}
+:::
+
 ## Research Program
 
 I received my Ph.D. from the [TReNDS Center](https://trendscenter.org/) (GSU, Georgia Tech, Emory), advised by [Prof. Vince D. Calhoun](https://scholar.google.com/citations?user=WNOoGKIAAAAJ).

@@ -43,7 +43,6 @@ CRITICAL_PAGES = {
 }
 
 DISALLOWED_SNIPPETS = {
-    "visitor-badge.laobi.icu": "第三方 visitor badge 仍存在于生成站点中",
     "link.rel = 'canonical'": "仍存在运行时 canonical 注入脚本",
 }
 

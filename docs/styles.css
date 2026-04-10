@@ -483,6 +483,37 @@ body:has(.page-hero) main.content > #title-block-header {
   margin: 1.25rem 0 0;
 }
 
+.home-visit-counter {
+  margin: 0.15rem 0 1rem;
+}
+
+.home-visit-counter p {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0.5rem 0.8rem 0.5rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: var(--shadow-sm);
+}
+
+.home-visit-label {
+  color: var(--muted-soft);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home-visit-badge {
+  display: block;
+  height: 20px;
+  width: auto;
+}
+
 .home-panel,
 .snapshot-card {
   padding: 0.95rem 1rem;

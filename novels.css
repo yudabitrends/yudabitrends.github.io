@@ -1,3 +1,5 @@
+@import url("/files/fonts/novel-fonts.css");
+
 .novels-page {
   --novel-bg: #fbfaf7;
   --novel-paper: #ffffff;
@@ -6,14 +8,15 @@
   --novel-line: #ddd6cd;
   --novel-line-strong: #cfc6bc;
   --novel-accent: #3c3129;
-  --novel-serif: "Songti SC", "STSong", "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
-  --novel-kaiti: "Kaiti SC", "STKaiti", "KaiTi", "BiauKai", serif;
+  --novel-serif: "Noto Serif SC Variable", "Songti SC", "STSong", "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
+  --novel-kaiti: "LXGW WenKai Screen", "Kaiti SC", "STKaiti", "KaiTi", "BiauKai", serif;
   --novel-ui: "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", sans-serif;
 
   min-height: 100vh;
   background: var(--novel-bg);
   color: var(--novel-text);
   font-family: var(--novel-serif);
+  font-synthesis: none;
 }
 
 body:has(.novels-page) {
