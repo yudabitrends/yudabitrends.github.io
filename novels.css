@@ -544,20 +544,17 @@ body:has(.novels-page) .nav-footer a {
   font-style: normal;
 }
 
-.chapter-body blockquote,
-.chapter-kaiti {
-  margin: 1.55rem auto;
-  padding: 0.85rem 1.2rem;
+.chapter-body blockquote {
+  max-width: 29rem;
+  margin: 1.25rem auto 1.35rem;
+  padding: 0.2rem 1rem;
   color: #584c44;
   font-family: var(--novel-kaiti);
   font-size: 1rem;
-  line-height: 1.9;
-  background: rgba(251, 248, 241, 0.95);
-  border-left: 2px solid rgba(207, 198, 188, 0.92);
-}
-
-.chapter-body blockquote {
-  max-width: 32rem;
+  line-height: 1.95;
+  text-align: center;
+  background: transparent;
+  border-left: none;
 }
 
 .chapter-body blockquote p,
@@ -566,24 +563,52 @@ body:has(.novels-page) .nav-footer a {
   font-family: inherit;
 }
 
-.chapter-kaiti {
+.chapter-body blockquote p + p,
+.chapter-kaiti p + p {
+  margin-top: 0.12rem;
+}
+
+.chapter-kaiti:not(.chapter-message) {
   max-width: 24rem;
+  margin: 1.45rem auto;
+  padding: 0.2rem 1rem;
+  color: #584c44;
+  font-family: var(--novel-kaiti);
+  font-size: 1rem;
+  line-height: 1.95;
   text-align: center;
   border-left: none;
   background: transparent;
 }
 
 .chapter-message {
-  max-width: 22rem;
-  margin: 0.9rem 0 0.95rem 2rem;
-  padding: 0.3rem 0 0.3rem 1rem;
+  width: fit-content;
+  max-width: min(24rem, calc(100% - 2rem));
+  margin: 0.8rem 0 0.9rem 1.35rem;
+  padding: 0.1rem 0 0.1rem 0.95rem;
+  color: #584c44;
+  font-family: var(--novel-kaiti);
+  font-size: 0.98rem;
+  line-height: 1.95;
   text-align: left;
   border-left: 1px solid rgba(207, 198, 188, 0.92);
   background: transparent;
 }
 
 .chapter-message.is-reply {
-  margin-left: 4.5rem;
+  margin-left: 3.35rem;
+}
+
+.chapter-body > p + .chapter-message,
+.chapter-body > p + blockquote,
+.chapter-body > p + .chapter-kaiti:not(.chapter-message) {
+  margin-top: 0.95rem;
+}
+
+.chapter-body > .chapter-message + p,
+.chapter-body > blockquote + p,
+.chapter-body > .chapter-kaiti:not(.chapter-message) + p {
+  margin-top: 0.75rem;
 }
 
 .chapter-nav {
@@ -688,6 +713,12 @@ body:has(.novels-page) .nav-footer a {
   .chapter-nav p a:last-child {
     margin-left: 0;
     text-align: left;
+  }
+
+  .chapter-message,
+  .chapter-message.is-reply {
+    max-width: calc(100% - 1rem);
+    margin-left: 0.9rem;
   }
 }
 
