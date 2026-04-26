@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 import shutil
 import string
 import subprocess
@@ -12,11 +13,12 @@ import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 FONT_DIR = ROOT / "files" / "fonts"
+DOCS_DIR = ROOT / "docs"
 
 FONT_SOURCES = {
     "novel-songti": {
-        "url": "https://github.com/lxgw/LxgwZhiSong/releases/download/v0.527/LXGWZhiSongMN.ttf",
-        "filename": "LXGWZhiSongMN.ttf",
+        "url": "https://cdn.jsdelivr.net/gh/adobe-fonts/source-han-serif@release/SubsetOTF/CN/SourceHanSerifCN-Regular.otf",
+        "filename": "SourceHanSerifCN-Regular.otf",
     },
     "novel-kaiti": {
         "url": "https://github.com/lxgw/LxgwWenkaiGB/releases/download/v1.522/LXGWWenKaiGB-Regular.ttf",
@@ -27,7 +29,15 @@ FONT_SOURCES = {
 EXTRA_CHARS = (
     "“”‘’《》「」『』【】—–…·、。，；：？！（）〔〕〈〉﹏"
     "复制搜索链接隐藏其它匹配结果清除提交搜索已复制展开或折叠导航栏小说Novels"
+    "档消取文件页面切换主题深浅色加载更多上一章下一章目录返回首页关于我"
 )
+
+PUNCT_RANGES = (
+    (0x3000, 0x303F),
+    (0xFF00, 0xFFEF),
+)
+
+HTML_TAG_RE = re.compile(r"<[^>]+>")
 
 OLD_FONT_ARTIFACTS = [
     FONT_DIR / "novel-fonts.css",
@@ -47,18 +57,41 @@ def build_charset_file(temp_dir: Path) -> Path:
     charset = set(string.printable)
     charset.update(EXTRA_CHARS)
 
+    for start, end in PUNCT_RANGES:
+        charset.update(chr(cp) for cp in range(start, end + 1))
+
     source_files = [ROOT / "novels.qmd", *sorted((ROOT / "novels").rglob("*.qmd"))]
     for path in source_files:
         if path.name.startswith("._") or not path.is_file():
             continue
         charset.update(path.read_text(encoding="utf-8", errors="ignore"))
 
+    docs_novels = DOCS_DIR / "novels"
+    html_files = []
+    if (DOCS_DIR / "novels.html").is_file():
+        html_files.append(DOCS_DIR / "novels.html")
+    if docs_novels.is_dir():
+        html_files.extend(sorted(docs_novels.rglob("*.html")))
+    for path in html_files:
+        if path.name.startswith("._") or not path.is_file():
+            continue
+        html = path.read_text(encoding="utf-8", errors="ignore")
+        text = HTML_TAG_RE.sub(" ", html)
+        charset.update(text)
+
     charset_file = temp_dir / "novel_chars.txt"
     charset_file.write_text("".join(sorted(charset)), encoding="utf-8")
     return charset_file
 
 
+CACHE_DIR = Path("/tmp/font-cache")
+
+
 def download_font(url: str, destination: Path) -> None:
+    cached = CACHE_DIR / destination.name
+    if cached.is_file() and cached.stat().st_size > 0:
+        destination.write_bytes(cached.read_bytes())
+        return
     with urllib.request.urlopen(url) as response:
         destination.write_bytes(response.read())
 

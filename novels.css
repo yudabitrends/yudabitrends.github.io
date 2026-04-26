@@ -26,7 +26,7 @@
   --novel-line: #ddd6cd;
   --novel-line-strong: #cfc6bc;
   --novel-accent: #3c3129;
-  --novel-serif: "Novel Songti", "LXGW ZhiSong MN", "Songti SC", "STSong", "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
+  --novel-serif: "Novel Songti", "Source Han Serif SC", "Source Han Serif CN", "Noto Serif CJK SC", "Noto Serif SC", "Songti SC", "STSong", "SimSun", "Times New Roman", serif;
   --novel-kaiti: "Novel Kaiti", "LXGW WenKai GB", "LXGW WenKai", "Kaiti SC", "STKaiti", "KaiTi", "BiauKai", serif;
   --novel-ui: "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", sans-serif;
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss  xmlns:atom="http://www.w3.org/2005/Atom"
-      xmlns:media="http://search.yahoo.com/mrss/"
-      xmlns:content="http://purl.org/rss/1.0/modules/content/"
-      xmlns:dc="http://purl.org/dc/elements/1.1/"
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
       version="2.0">
 <channel>
 <title>Yuda Bi — Research Notes</title>
@@ -16,7 +16,7 @@
   <title>Spectral Methods in Brain Network Analysis</title>
   <dc:creator>Yuda Bi</dc:creator>
   <link>https://yudabitrends.github.io/notes/2026-04-spectral-brain-networks/</link>
-  <description><![CDATA[
+  <description><![CDATA[ 
 
 
 
@@ -67,7 +67,7 @@
   <title>SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss</title>
   <dc:creator>Yuda Bi</dc:creator>
   <link>https://yudabitrends.github.io/notes/2026-04-specrnaq/</link>
-  <description><![CDATA[
+  <description><![CDATA[ 
 
 
 
@@ -208,7 +208,7 @@ font-style: inherit;">--output</span> scores.csv</span></code></pre></div></div>
   <title>The Geometry of Invisible Forces: A Quartic Detection Theory</title>
   <dc:creator>Yuda Bi</dc:creator>
   <link>https://yudabitrends.github.io/notes/2026-04-quartic-detection-theory/</link>
-  <description><![CDATA[
+  <description><![CDATA[ 
 
 
 
@@ -366,7 +366,7 @@ font-style: inherit;">--output</span> scores.csv</span></code></pre></div></div>
   <title>Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization</title>
   <dc:creator>Yuda Bi</dc:creator>
   <link>https://yudabitrends.github.io/notes/2026-04-sfcoupling/</link>
-  <description><![CDATA[
+  <description><![CDATA[ 
 
 
 
