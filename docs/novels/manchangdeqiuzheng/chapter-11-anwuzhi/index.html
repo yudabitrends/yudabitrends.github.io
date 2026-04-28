@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="《漫长的求证》第十一章《暗物质》：三次失败把他一寸寸往下拽。一个雪夜里，Whitmore 也坐到地上，讲起七十年代末那篇三十年没人引用的旧论文。">
+
+<title>第十一章：暗物质 – Yuda Bi</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-608b1f326ca2940ca45e01f13838d248.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-b54d7094352fb34f57fb9d963a180894.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "没有结果",
+    "search-matching-documents-text": "匹配的文档",
+    "search-copy-link-title": "复制搜索链接",
+    "search-hide-matches-text": "隐藏其它匹配结果",
+    "search-more-match-text": "更多匹配结果",
+    "search-more-matches-text": "更多匹配结果",
+    "search-clear-button-title": "清除",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "提交",
+    "search-label": "搜索"
+  }
+}</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Yuda Bi",
+  "url": "https://yudabitrends.github.io",
+  "jobTitle": "Ph.D. in Computer Science",
+  "affiliation": {
+    "@type": "Organization",
+    "name": "TReNDS Center",
+    "url": "https://trendscenter.org/"
+  },
+  "alumniOf": [
+    {
+      "@type": "CollegeOrUniversity",
+      "name": "Georgia State University"
+    },
+    {
+      "@type": "CollegeOrUniversity",
+      "name": "University of Georgia"
+    }
+  ],
+  "sameAs": [
+    "https://scholar.google.com/citations?user=yclnpogAAAAJ",
+    "https://github.com/yudabitrends",
+    "https://www.linkedin.com/in/yudabi/"
+  ],
+  "knowsAbout": [
+    "Statistical Physics",
+    "Information Geometry",
+    "Nonequilibrium Thermodynamics",
+    "Theoretical Neuroscience",
+    "Spectral Graph Theory",
+    "Structural Biology"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Yuda Bi",
+  "url": "https://yudabitrends.github.io",
+  "description": "Academic homepage of Yuda Bi — statistical physics, information geometry, theoretical neuroscience"
+}
+</script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+<link rel="stylesheet" href="../../../novels.css">
+<meta property="og:title" content="第十一章：暗物质 – Yuda Bi">
+<meta property="og:description" content="《漫长的求证》第十一章《暗物质》：三次失败把他一寸寸往下拽。一个雪夜里，Whitmore 也坐到地上，讲起七十年代末那篇三十年没人引用的旧论文。">
+<meta property="og:image" content="https://yuda-bi.com/files/novels/%E6%BC%AB%E9%95%BF%E7%9A%84%E6%B1%82%E8%AF%81.jpg">
+<meta property="og:site_name" content="Yuda Bi">
+<meta property="og:image:alt" content="《漫长的求证》封面">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:title" content="第十一章：暗物质 – Yuda Bi">
+<meta name="twitter:description" content="《漫长的求证》第十一章《暗物质》：三次失败把他一寸寸往下拽。一个雪夜里，Whitmore 也坐到地上，讲起七十年代末那篇三十年没人引用的旧论文。">
+<meta name="twitter:image" content="https://yuda-bi.com/files/novels/%E6%BC%AB%E9%95%BF%E7%9A%84%E6%B1%82%E8%AF%81.jpg">
+<meta name="twitter:image:alt" content="《漫长的求证》封面">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://yuda-bi.com/novels/manchangdeqiuzheng/chapter-11-anwuzhi/">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Yuda Bi</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="搜索"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="展开或折叠导航栏" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../novels.html"> 
+<span class="menu-text">小说 Novels</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:ybi3@gsu.edu"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/yudabitrends" target="_blank"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=yclnpogAAAAJ&amp;hl=en" target="_blank"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-layout-custom page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+<!-- main -->
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">第十一章：暗物质</h1>
+</div>
+
+<div>
+  <div class="description">
+    《漫长的求证》第十一章《暗物质》：三次失败把他一寸寸往下拽。一个雪夜里，Whitmore 也坐到地上，讲起七十年代末那篇三十年没人引用的旧论文。
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="novels-page novel-chapter-page">
+<div class="chapter-page-shell">
+<div class="chapter-header">
+<p><span class="chapter-running-title">《漫长的求证》 · 第二部「隧」</span></p>
+<section id="第十一章暗物质" class="level1 chapter-page-title">
+<h1 class="chapter-page-title">第十一章：暗物质</h1>
+<p><span class="chapter-lead-quote">You are not finding it. It is finding you.</span></p>
+</section>
+</div>
+<div class="chapter-body">
+<p>进入Whitmore实验室第六个月的时候，陆沉开始明白，科研里最重的东西往往看不见。</p>
+<p>不是论文，不是公式，也不是会议海报上那几行压得很满的摘要。真正把人往下拽的，是那些已经花掉、却不产生结果的时间。它们没有形状，没有声音，不会像考试成绩那样挂在走廊上，也不会像拒信那样整整齐齐躺在邮箱里。它们只是慢慢积起来，像宇宙里的暗物质，谁也看不见，可一整条轨道都被它拽弯了。</p>
+<p>第一次失败来得还不算难看。</p>
+<p>那时候陆沉已经把市场数据清洗到能看的程度，开始做相关矩阵的特征值分解。他想找的不是单只股票的涨跌，而是更底下那层看不见的集体运动。白天他跟着组里开会、听报告、回邮件，晚上等实验室安静下来，才把真正想做的东西一点点往前推。楼道里最后总会剩下两种声音，一种是空调出风口轻微的嗡响，一种是服务器机柜风扇不知疲倦地转，像一群脾气很坏的昆虫被关在金属里。</p>
+<p>一开始，结果很乱。</p>
+<p>不是数据噪声那种乱，是一种更让人烦的乱。特征值的位置会随着时间窗的平移突然跳，前一天还好好的谱结构，换一段窗口就歪了。他盯着屏幕看了两夜，起初以为是数据还不干净，后来才慢慢明白：问题不在脏，是这市场本身就不是一个平稳系统。</p>
+<p>他觉得自己找到了修正方法。</p>
+<p>办法并不花哨。先把序列做局部去趋势，再在滚动窗口里重标定，让不同时间段的波动被压到可比的尺度上。想明白那一刻，他甚至没站起来，只是把手里的笔往桌上一放，抬头看了眼玻璃窗里自己的影子。夜里两点，实验室已经没人，影子也很淡，像贴在黑玻璃上的一层灰。他把那套修正写进代码，提交任务，给集群排了整整一周。</p>
+<p>那一周他过得像在守一个病人。</p>
+<p>白天上课、吃饭、处理助研杂事，晚上回来第一件事就是看日志。数字一行行往下走，像心电图终于开始有了规矩。第三天的时候，Kevin从旁边经过，停下来扫了一眼屏幕，说：“Looks smoother.”</p>
+<p>陆沉说：“应该快出来了。”</p>
+<p>Kevin点点头，手里端着一杯外带咖啡，杯壁上写着名字，黑色马克笔划得很快。“Smooth is dangerous,”他说，“but sometimes you need dangerous things first.”</p>
+<p>陆沉没接这句。他知道 Kevin 说得对一半。让图变好看的操作大多自带风险——曲线先稳下来，原来藏在波动里的东西也跟着被压住了。</p>
+<p>第七天傍晚，结果出来了。</p>
+<p>谱线比之前稳定得多。干净，整齐，几乎挑不出毛病。他盯着那张图看了很久，先没有高兴，反而起了点不安。太顺了。陆沉把窗口参数往前挪，又往后挪，结果还是顺。他又换了一组样本，还是顺。夜里他回公寓煮了一锅最便宜的意大利面，面煮得有点软，番茄酱倒多了，锅边都是红的。他端着盘子站在灶台边吃，吃到一半，忽然想到一个问题。</p>
+<p>如果不是系统变稳定了，而是自己把所有不稳定都提前磨平了呢？</p>
+<p>第二天一早，他回实验室，把那套修正一步步拆开。</p>
+<p>先去趋势。再重标定。再恢复窗口。再看原始分布。看到第三步的时候，他手心开始发热。那套方法确实让谱结构稳定了，但代价是引入了新的偏差。所有他最想保留下来的跃迁信息，都在标准化里被抹掉了一层。不是算法帮他看见了秩序，是他先把世界削成了自己想看的样子。</p>
+<p>他把鼠标放下，靠在椅背上，眼睛还盯着屏幕。屏幕里的曲线没变，还是那么平顺。可他知道，那已经不是结果了。那是化妆。</p>
+<p>中午Whitmore路过他桌边，问了一句：“How’s the beast?”</p>
+<p>陆沉说：“It was tame because I cut off its legs.”</p>
+<p>Whitmore看了他一眼，没有笑，只点了点头。“Good,”他说，“at least you noticed.”</p>
+<p>这句话没让陆沉好过一点。</p>
+<p>第一种失败带来的主要不是羞耻，是愤怒。愤怒于自己差一点就被一张好看的图骗过去，愤怒于这种事竟然会让人产生近乎喜悦的错觉。那天晚上他把整整一周生成的中间文件挪进一个新文件夹，命名成 <code>failed_fix_01</code>。敲最后一个回车的时候，键盘发出很轻的一声响，像谁在远处打了个结。</p>
+<p>那个文件夹他后来一直没删。</p>
+<p>实验室公用集群的存储有限，每三个月会跑一次清理脚本——所有标了 <code>tmp_</code> 或者 <code>archive_</code> 前缀的文件夹都会被删。陆沉特意没用这两个前缀。<code>failed_fix_01</code> 就那样安安静静占着 230MB，挤在他主目录最里面。半年后做第三次失败的时候，他想过要把它删掉，最后还是没删。他说不清为什么——大概是他想让那一周的痕迹留着，不是为了纪念，是为了下次再被一张好看的图诱惑时，他知道这种东西他干过一次。</p>
+<p>那一晚他没有立刻回公寓。</p>
+<p>实验室空了以后，他在窗户前站了一会儿。窗外是冬天里没融的雪，停车场只剩三辆车，每一辆都被一层薄白盖住了顶。他自己映在窗上，脸有点发青。他没有想 Kevin 那句”sometimes you need dangerous things first”——他知道 Kevin 没说错。可知道没说错和让自己接受是两件不同的事。他在窗前站了大概十分钟，才转身收拾东西离开。</p>
+<p>第二次失败慢得多，也更深。</p>
+<p>它不突然。它像潮气，从墙根一点一点往上爬，刚开始你看不出什么，等看出来的时候，整面墙已经花了。</p>
+<p>前一次推倒重来以后，陆沉把问题收得更小。他不再急着问市场为什么会一起动，而是先问：什么叫一起动？这个问题表面上很笨，像已经问过。但真正往下拆时，他才发现自己以前说的”集体行为”太含糊了。公司同属一个行业，消息一来，会一起涨一起跌；指数大跌那天，几乎所有资产都会被拽着下去。这两种同步在图上看都像相关，可它们也许不是同一种东西。</p>
+<p>他一开始没有把它们分开。</p>
+<p>短程关联、板块内部的联动、由流动性和情绪造成的整体塌缩，他在谱空间里把这些都叫作”collective mode”。白板上写得顺，报告里说得也顺，连自己都快被说服了。整整两个月，他都在沿着这个前提往下跑。白天做助教，晚上回来写推导。洗衣房的烘干机滚了一轮又一轮，他带下去的衬衫总是忘在机器里，过了半夜才想起。美国超市的鸡蛋贵了一次又降回去，他记得很清。天气也变了，中西部的秋天短得像有人把夏天从桌上一下抽走，树叶昨天还黄着，今天就开始掉。</p>
+<p>那段时间里，陆沉常常在实验室白板前站到凌晨。</p>
+<p>Whitmore 的白板不好擦，旧笔迹总会留一点淡淡的影。陆沉就在那些影子上面继续写。矩阵、投影、谱分解、关联长度、时间尺度。越写越觉得哪里不对。不是算错——是手感不对。每一步都顺，可两步之间总像差了一个东西，他自己也说不清差在哪。</p>
+<p>真正让他停下来的是组会上的一个问题。</p>
+<p>那天轮到他更新进展。投影仪的风扇一直在响，灯光打在屏幕上有一点轻微的灰。报告讲到一半，Whitmore忽然抬头问：“When you say collective, do you mean local coordination or global collapse?”</p>
+<p>陆沉说：“Both.”</p>
+<p>Whitmore没有立刻接话，只用笔在本子上点了一下。</p>
+<p>Kevin 坐在靠后的位置，转着手里的笔，笔帽一下一下敲着桌边。他没说什么。但陆沉看见他的动作，心里沉了一下。“both” 这个回答他自己听了都不像答案。它什么都包括了，等于什么都没回到点上。</p>
+<p>那天晚上，陆沉没回公寓。</p>
+<p>楼里清空以后，他一个人把白板全擦掉，只留下最上面两个词：local 和 global。写完以后，他退后两步，看了很久。白板太白了，白得像雪地。过了一会儿，他重新走上去，在两个词中间画了一道很长的竖线。</p>
+<p>接下来的三周，他几乎没再碰之前那套完整框架。</p>
+<p>他改做玩具模型。先把市场拆成小系统，再一点点加耦合；先看短相关，再看长相关；先看板块内部的同涨同跌，再看真正意义上的全局模式。他像在黑屋里摸家具，摸到一张桌角，才敢往前挪一步。凌晨三点的实验室最像海底。走廊没有人，自动贩卖机的灯长时间亮着，亮得发冷。陆沉常常饿到胃一抽一抽地缩，只好去机器里买一包花生或者一根蛋白棒，吃的时候一边盯着屏幕，一边看白板上的字一点点被夜色压灰。</p>
+<p>最后，他不得不承认，自己前两个月抓住的是两个不同层级的东西。</p>
+<p>板块内部的联动是一群相熟的资产之间互相影响：声音有边界，方向也清楚。危机前那种真正的集体化是另一回事——它不挑行业、不挑大小，是一种压在所有人头上的同向变化。它们都能在统计量上留下痕迹，可不是同一个谱对象。</p>
+<p>明白这一点的那个夜里，陆沉没有发火。</p>
+<p>他只是坐在桌前，看着自己两个月的推导和图一页页摊开，像看一叠写错题目的答卷。纸没有错，字也没错，甚至很多地方都写得很认真。错的是题目从一开始就问偏了。</p>
+<p>第二种失败带来的不是愤怒，是自我怀疑。</p>
+<p>他开始反复想，自己是不是根本没有能力区分一个好问题和一个坏问题。是不是那些华人导师说的都对，他只是因为足够认真，才把这种认真误认成了方向感。那段时间，他在超市站在货架前会忽然发呆，盯着一排长得一模一样的燕麦片看很久，最后什么也没拿。夜里躺下以后，脑子里也不是公式，而是Whitmore在组会上那句很短的问题，像针卡在磁带里，不断倒回去。</p>
+<p>他还是继续改。</p>
+<p>只是那种继续里已经混进了别的东西——不全是求真，还有怕。怕自己再花几个月，最后只是把错误说得更复杂一点；怕那本《统计物理》翻了一遍又一遍，最终也只把他往前推一小段就停住。</p>
+<p>那段时间他给自己定了一些怪规矩。</p>
+<p>第一条：每天晚上离开实验室之前，必须先在白板上写一行”明天要回到的最低问题”——一个具体到他自己也没法绕过去的小问题。第二天早上他一进门就先回到那一行，做完那一题再做别的。</p>
+<p>第二条：每次想到一个看上去聪明的修正，必须先在草稿纸上手算最简单的两个特例。如果两个特例算不出他想要的方向，再聪明的修正都不要写进代码。</p>
+<p>第三条：每周五下午把所有这一周的中间文件归档，命名按”周年-周次-状态”。状态那一栏只写两个字之一：“活”或”死”。死的不删，但不再打开。</p>
+<p>这三条他没告诉任何人——告诉了别人会显得太刻意。可他自己知道，这三条规矩是他这段时间唯一能扶住自己的东西。</p>
+<hr>
+<p>第三次失败发生在冬天。</p>
+<p>那天外面下了今年第一场真正的雪。窗外停车场全白了，几辆车埋在雪里，只露出挡风玻璃和后视镜。实验室暖气太足，陆沉脱了外套，只穿一件旧毛衣，袖口磨得有点起球。他已经连续两周没怎么正常回家。淋浴在公寓里洗，饭在实验室楼下的咖啡馆和自动贩卖机之间对付，睡眠被压成一小块一小块，像在玻璃上哈出来又很快散掉的雾。</p>
+<p>可是结果终于像样了。</p>
+<p>这一次不是靠修饰，也不是靠概念偷懒。他把层级分开，重做了窗口，重新检查了每一道预处理，再把理论预测和经验谱演化一段段对齐。曲线出来的那个傍晚，他先是不敢相信，后来把图放大，缩小，再放大。屏幕上的那条线像缝在数据里的骨头，位置非常稳。不是完美到假。是刚好能让人认出来，那里面确实有一个结构。</p>
+<p>他甚至把图打印了出来。</p>
+<p>打印机吐纸的时候卡了一下，热乎乎的纸页卷着边出来，墨还没完全干。陆沉把它压在桌上，看了很久。那张图并不华丽，黑白的，线条克制，像实验室里大多数不会被人转发的图。可他知道那是自己这半年第一次真正想拿去给Whitmore看的东西。</p>
+<p>夜里十一点，楼里只剩下很少的人。Kevin从会议室出来，看见他桌上那几张纸，停下扫了一眼。</p>
+<p>“Looks real,”他说。</p>
+<p>陆沉没有谦虚，也没有立刻顺着这句话往下接。他只是说：“I need to check the pipeline one more time.”</p>
+<p>Kevin点头：“Good. The last error is always the stupid one.”</p>
+<p>他走了以后，陆沉又把预处理代码从头翻了一遍。</p>
+<p>不是因为不放心，是因为事情太顺的时候，他反而会生出一种接近迷信的谨慎。他从第一行开始看。读文件，清洗缺失值，同步时间戳，滚动窗口，对数收益，对齐标签。代码是他自己写的，每一步都熟。可熟不等于对。读到一半时，他忽然停住。</p>
+<p>屏幕右下角的时间是凌晨一点十七。</p>
+<p>雪还在下，窗外的白比刚才更厚一点。实验室里只有他这一片亮着。服务器的风扇一直响，响得像有人在隔壁屋里磨刀。陆沉把光标挪回那一行，又看了一遍。再看一遍。然后整个人慢慢坐直了。</p>
+<p>是一个 off-by-one error。</p>
+<p>窗口切片的时候，他把收益序列和标签序列错开了一位。不是大错。不是程序直接崩溃那种错。恰恰相反，它太小了，小得足以在两周里安静地躲过去，还在最后给你一张近乎完美的图。像扣子从第一颗就扣错了，但因为大衣厚，走很久都看不出来。</p>
+<p>陆沉没有马上骂人，也没砸键盘。</p>
+<p>他只是把那一行改回去，重新跑了一个最小样本。</p>
+<p>五分钟后，小样本结果出来。那条漂亮的曲线塌了。</p>
+<p>不是轻微变差，是直接散掉。原来像骨头的那条线一下没了，剩下一堆他已经见过很多次的噪声和犹疑。陆沉又跑了第二组，第三组，结果一样。他把打印出来的图拿起来，看了一眼，又放下。墨已经干了，纸页边缘因为暖气略微卷起，像一张做旧的地图。</p>
+<p>他坐着没动。</p>
+<p>屏幕上还开着之前那张错误的图。它仍然很好看，好看到近乎无辜。可那只是一个小错位喂给他的幻觉。两周。整整两周——白天、夜里、自动贩卖机的花生、楼下咖啡馆冷掉的汤——都被这一个错位吃掉了。</p>
+<p>这一次，他连愤怒都没有了。</p>
+<p>第三种失败带来的只剩虚脱。</p>
+<p>人累到极点的时候，不会立刻崩。先是空。像身体里所有能拿来发火、羞耻、后悔的东西都被掏干净了，只剩一层壳。陆沉把椅子往后推，站起来的时候，膝盖有一瞬发软。他走了两步，没有去饮水机，也没有去厕所，而是顺着桌边慢慢坐到了地上。</p>
+<p>不是椅子上。</p>
+<p>是地板上。</p>
+<p>实验室的地板很冷，冷意透过牛仔裤慢慢往上渗。头顶的日光灯发出持续的嗡鸣，像某种没有情绪的审判。屏幕还亮着，那张错误的图就在他侧前方，像一块被人故意挂着不撤的证物。桌下有一只被谁踢进去的矿泉水瓶，瓶身瘪了一半。远处打印机待机时偶尔会响一下，又很快静下去。</p>
+<p>陆沉把手臂搭在膝盖上，低着头。</p>
+<p>他没有算时间。大概过了很久，也可能只有十几分钟。门被推开的时候，他先听见的是钥匙碰门框的一声轻响，然后是一阵很慢的脚步声。Whitmore走进来，手里拿着一个纸杯。杯里大概是咖啡，隔着一段距离都能闻到煮过头的苦味。</p>
+<p>他看见陆沉坐在地上，没有说”Are you okay”。</p>
+<p>他只是停了停，把纸杯放在最近的一张桌子上，然后朝这边走过来。Whitmore年纪大了，蹲下去不太利索，膝盖弯到一半时明显停顿了一下，最后索性也坐到了地上。背靠着墙。离陆沉大概一臂远。两个人中间隔着一块空地，空地上什么也没有，只有日光灯落下来的一点白。</p>
+<p>他们先坐了一会儿。</p>
+<p>门关着。实验室里还是那几种声音，风扇，灯，远处不知哪台机器的低鸣。Whitmore 把眼镜摘下来，用衬衫下摆擦了一下，又戴回去。陆沉看见他手背上有些褐色的老年斑，指节很大，骨头像要从皮下面凸出来。</p>
+<p>陆沉那一刻忽然想起一件极小的事。许多年前，一个深夜，黎知秋在电话那头说：<em>我觉得我理解的所有东西最终都会被证明是错的。</em> 他当时只回了一句：<em>那就等它被证明是错的再说，现在先睡觉。</em> 他记得清楚的是她那边长长的水房水声，然后是她轻轻的”嗯”。</p>
+<p>现在轮到他自己了。可这间公寓里没人会替他说”那就先睡觉”。</p>
+<p>过了一会儿，Whitmore 开口。</p>
+<p>“我在七十年代末写过一篇论文。”他说，“关于无序系统里的相变。”</p>
+<p>他的声音不高，像在说一件已经放了很久的旧东西，拿起来时不需要太大力。陆沉没有抬头，也没有答。</p>
+<p>Whitmore继续说：“那篇论文发出去以后，三十年几乎没人引用。不是五年，不是八年。三十年。每年圣诞节学校放假，我都会把那一期期刊从办公室书架上拿下来，重新读一遍。不是为了怀旧。是为了确认我没写错。”</p>
+<p>他说到这里，停了一下。</p>
+<p>陆沉终于抬头看了他一眼。</p>
+<p>Whitmore 的侧脸在白光下显得更老，鼻梁边的纹路压得很深。他看着前面的地板，没有看陆沉。这段话像是放了很久才被讲出来。</p>
+<p>“你知道最糟的不是没人看见。”他说，“最糟的是你一个人拿着某个结构太久，久到连你自己都开始怀疑，是不是只是你比别人更擅长编一个漂亮的故事。那篇论文放在那儿的每一年，我都比前一年更怕。不是怕世界不承认它。我怕的是，万一世界是对的。”</p>
+<p>实验室里静得很。</p>
+<p>屏幕上的错误曲线还亮着。陆沉看着它，忽然觉得 Whitmore 说的不是一篇老论文，是他自己桌上这张刚死掉的图——你恨世界不看它的时候还撑得住，怕的是有一天怀疑它本身。</p>
+<p>Whitmore把手放在膝盖上，继续往下说。</p>
+<p>“第三十一年，一个做冷原子物理的年轻人在他的 Nature 论文里引用了我。他说我的方法是他整个框架的起点。后来他得了诺贝尔奖。大家听到这里，通常会以为这是故事的高潮。”他轻轻摇了下头，“不是。那不重要。重要的是七十年代末那个晚上，我一个人在办公室里，知道自己看见了一个真的结构。那种感觉，不是兴奋，不是得意，甚至不是快乐。更像是某种可怕的安静。你突然知道，有一块东西在那儿，不管别人来不来看，它都在那儿。”</p>
+<p>他顿了顿，像在给膝盖挪一个更舒服的位置。布料摩擦地板，发出一点干涩的响。</p>
+<p>“那是这一行唯一值得要的东西。”Whitmore说，“如果你是为了别的来的，现在离开还来得及。”</p>
+<p>陆沉把视线从那张错误的图上挪开，看向地板。</p>
+<p>地板上有一小块被咖啡滴过的旧印，颜色比周围深一点，像木头里长出来的结。他看着那块印子，很久才开口：“我不知道我看到的是不是真的。”</p>
+<p>Whitmore没有立刻答。</p>
+<p>他把眼镜往上推了一下，镜片反出头顶灯管的一截白。过了几秒，他说：“那就继续看。”</p>
+<p>“如果是假的，你会知道的。真的东西有一种……”他说到这里停了停，像在一堆并不合适的词里挑一个最接近的，“inevitability。”</p>
+<p>这个词落下来，实验室里又静了几秒。</p>
+<p>Whitmore看着前面的黑暗，慢慢把后半句说完：“你不是发现它。你是被它找到的。”</p>
+<p>陆沉没有马上明白这句话。</p>
+<p>或者说，他明白了一半。另一半还在离他很远的地方，轮廓刚刚开始有，手够不到。他坐在地上，忽然觉得自己这半年以来所有做错的事、白费的时间、跑坏的程序、写满又擦掉的白板，并没有因为这几句话就变轻。它们还在原处。第一周的偏差、第二个月的问题错误、刚刚死掉的那条曲线，沉甸甸地压着。</p>
+<p>可他第一次觉得，这些东西也许不是纯粹的浪费。</p>
+<p>它们各自占住了一块位置，把他从更顺的那条轨道上一点一点拖偏，拖向更慢、更费力、但也更难骗自己的方向。</p>
+<p>Whitmore扶着墙站起来的时候，膝盖轻轻响了一下。他没有伸手拉陆沉，只走过去把那杯已经有点凉的咖啡拿过来，放在陆沉旁边。</p>
+<p>“Don’t drink it because it’s good,”他说，“drink it because it’s hot.”</p>
+<p>这话说得很随便，甚至有点破坏气氛。陆沉却点了下头。</p>
+<p>Whitmore往门口走了两步，又停住，回头看了一眼那块屏幕。</p>
+<p>“Leave the false plot there tonight,”他说，“Tomorrow it will look less seductive.”</p>
+<p>门关上以后，实验室重新只剩机器的声音。</p>
+<p>陆沉坐在地上，把那杯咖啡拿起来，纸杯外壁已经不怎么烫了，只剩一点余温。他喝了一口，很苦，苦得像把整晚的焦糊都煮进去了。他把杯子放下，又抬头看向屏幕。那条错误的曲线还亮着，像雪夜里一条很远的路。它依旧好看，但不再像刚才那样有蛊惑力了。它只是错。</p>
+<p>这还不算答案。</p>
+<p>可至少，错就是错。真就是还没找到的真。</p>
+<p>那天夜里，陆沉最后没有把屏幕关掉。他在地上又坐了一会儿，直到窗外的雪慢慢停下来，停车场边缘露出一点发灰的凌晨。他站起身，把桌上的打印纸叠好，压进抽屉最下面。抽屉里躺着几根用空的笔芯，一把备用钥匙，还有一张超市小票。最上面那行写着鸡蛋、牛奶、番茄、洗衣液。日期是两周前。</p>
+<p>他把抽屉推回去，声音很轻。</p>
+<p>然后重新坐到桌前，打开代码。</p>
+</div>
+<div class="chapter-nav">
+<p><a href="../chapter-10-jixian/" class="chapter-nav-link">← 上一章：基线</a> <a href="../chapter-12-xiangbian/" class="chapter-nav-link">下一章：相变 →</a></p>
+</div>
+</div>
+</div>
+
+
+
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "已复制");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "已复制");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/yuda-bi\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Yuda Bi  |  Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

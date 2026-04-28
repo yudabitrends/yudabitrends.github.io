@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="《漫长的求证》第四章《开放系统》：那本《统计物理》从床底下被拖出来以后，黎知秋留下来的字、问题和坏脾气都跟着回来了。">
+
+<title>第四章：开放系统 – Yuda Bi</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-608b1f326ca2940ca45e01f13838d248.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-b54d7094352fb34f57fb9d963a180894.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "没有结果",
+    "search-matching-documents-text": "匹配的文档",
+    "search-copy-link-title": "复制搜索链接",
+    "search-hide-matches-text": "隐藏其它匹配结果",
+    "search-more-match-text": "更多匹配结果",
+    "search-more-matches-text": "更多匹配结果",
+    "search-clear-button-title": "清除",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "提交",
+    "search-label": "搜索"
+  }
+}</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Yuda Bi",
+  "url": "https://yudabitrends.github.io",
+  "jobTitle": "Ph.D. in Computer Science",
+  "affiliation": {
+    "@type": "Organization",
+    "name": "TReNDS Center",
+    "url": "https://trendscenter.org/"
+  },
+  "alumniOf": [
+    {
+      "@type": "CollegeOrUniversity",
+      "name": "Georgia State University"
+    },
+    {
+      "@type": "CollegeOrUniversity",
+      "name": "University of Georgia"
+    }
+  ],
+  "sameAs": [
+    "https://scholar.google.com/citations?user=yclnpogAAAAJ",
+    "https://github.com/yudabitrends",
+    "https://www.linkedin.com/in/yudabi/"
+  ],
+  "knowsAbout": [
+    "Statistical Physics",
+    "Information Geometry",
+    "Nonequilibrium Thermodynamics",
+    "Theoretical Neuroscience",
+    "Spectral Graph Theory",
+    "Structural Biology"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Yuda Bi",
+  "url": "https://yudabitrends.github.io",
+  "description": "Academic homepage of Yuda Bi — statistical physics, information geometry, theoretical neuroscience"
+}
+</script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+<link rel="stylesheet" href="../../../novels.css">
+<meta property="og:title" content="第四章：开放系统 – Yuda Bi">
+<meta property="og:description" content="《漫长的求证》第四章《开放系统》：那本《统计物理》从床底下被拖出来以后，黎知秋留下来的字、问题和坏脾气都跟着回来了。">
+<meta property="og:image" content="https://yuda-bi.com/files/novels/%E6%BC%AB%E9%95%BF%E7%9A%84%E6%B1%82%E8%AF%81.jpg">
+<meta property="og:site_name" content="Yuda Bi">
+<meta property="og:image:alt" content="《漫长的求证》封面">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:title" content="第四章：开放系统 – Yuda Bi">
+<meta name="twitter:description" content="《漫长的求证》第四章《开放系统》：那本《统计物理》从床底下被拖出来以后，黎知秋留下来的字、问题和坏脾气都跟着回来了。">
+<meta name="twitter:image" content="https://yuda-bi.com/files/novels/%E6%BC%AB%E9%95%BF%E7%9A%84%E6%B1%82%E8%AF%81.jpg">
+<meta name="twitter:image:alt" content="《漫长的求证》封面">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://yuda-bi.com/novels/manchangdeqiuzheng/chapter-04-kaifangxitong/">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Yuda Bi</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="搜索"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="展开或折叠导航栏" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../novels.html"> 
+<span class="menu-text">小说 Novels</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:ybi3@gsu.edu"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/yudabitrends" target="_blank"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=yclnpogAAAAJ&amp;hl=en" target="_blank"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-layout-custom page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+<!-- main -->
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">第四章：开放系统</h1>
+</div>
+
+<div>
+  <div class="description">
+    《漫长的求证》第四章《开放系统》：那本《统计物理》从床底下被拖出来以后，黎知秋留下来的字、问题和坏脾气都跟着回来了。
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="novels-page novel-chapter-page">
+<div class="chapter-page-shell">
+<div class="chapter-header">
+<p><span class="chapter-running-title">《漫长的求证》 · 第一部「沉」</span></p>
+<section id="第四章开放系统" class="level1 chapter-page-title">
+<h1 class="chapter-page-title">第四章：开放系统</h1>
+<p><span class="chapter-lead-quote">远离平衡态的开放系统，在适当条件下可以自发形成有序结构。</span></p>
+</section>
+</div>
+<div class="chapter-body">
+<p>黎知秋死后的第三个月，陆沉第一次把那本《统计物理》从床底下拖了出来。</p>
+<p>书脊上落了一层细灰，像冬天窗台积下来的霜。他拿手背抹了一下，灰没有完全抹净，反倒在封面上拖出一道更明显的痕。宿舍里只有他一个人，另外两个室友都去上课了。阳台上挂着的袜子滴滴答答往下掉水，水点落在瓷砖地上，声音很轻，像有人在隔壁屋里一下一下地数数。</p>
+<p>他把书放到桌上，没有立刻翻开。桌角有一道裂纹，是上学期搬宿舍时磕出来的，裂口里卡着一点黑色的泥。他盯着那道裂纹看了一会儿，才把书打开。第37页，热力学第二定律旁边，有一行纤细的铅笔字：</p>
+<blockquote class="blockquote">
+<p>“熵增是宇宙的懒惰。但宇宙不总是懒的，不然你我都不会存在。——知秋，凌晨两点，困了但舍不得睡”</p>
+</blockquote>
+<p>这行字以前一直在这里。他看见过很多次。她写批注那会儿，他常趴在图书馆桌上打盹，或者坐在对面发呆，等她把一大段公式推完，拿笔帽敲一下他的手背，说，醒醒，帮我看看这里是不是写反了。那时候他总以为，这些字会一直待在书边，她也会一直坐在对面，脑后那缕碎发被空调风一下一下吹过去。</p>
+<p>现在人没了，字还在。</p>
+<p>他盯着那行字看了一个下午。太阳从窗户左边挪到右边，照在纸上的光先是白，后来发黄，最后沉下去，只剩操场那边反进来的灰。他连水都没去打。开水瓶靠在桌腿旁，瓶身掉了一块漆，露出底下一截灰白的铁皮。</p>
+<p>傍晚，上铺那个男生回来了，白衬衫套在身上有点发紧，手里拿着一支正在漏墨的黑笔。他在准备教资试讲，明天一早要去外校面试。进门以后，他先对着手机前置摄像头理了理领口，才看见陆沉坐在那里。</p>
+<p>“你干吗呢？”他问。</p>
+<p>“看书。”</p>
+<p>那男生哦了一声，把漏墨的黑笔在废纸上划了两下，划不出来，又问陆沉借了一支。借完就站到阳台边，对着手机压低声音试讲：“同学们，今天我们来看植物细胞……”</p>
+<p>宿舍重新变成一间普通宿舍。有试讲声，有塑料袋响，有晾衣架轻轻碰到栏杆的声音。陆沉把书合上，放进双肩包，下楼去食堂。</p>
+<p>吃完饭以后，他没有回宿舍，直接去了图书馆。</p>
+<p>那天风很硬，吹得楼前宣传栏上的海报边角不停拍墙。图书馆前台坐着一个戴老花镜的老师，接过借书证时先抬头看了他一眼，又低头在电脑上敲了几下。陆沉报出《从存在到演化》的书名，对方愣了一下，说这书很久没人借了。等他把书从架子最上层抽出来，封面上已经积了一层很细的灰，书页里还夹着一张七八年前的借书单。最早那个名字，他不认识。</p>
+<p>回去的路上，他把那本书夹在胳膊下面，走得很快。风把页角一点点吹起来，像书自己想往后翻。他路过操场的时候，正赶上学院里有人在排练元旦晚会，音箱里放着一首过分热闹的歌。灯打在草地上，亮得像另一块不相干的地方。他从那片光边上擦过去，怀里那本深绿色的书却始终很沉。</p>
+<p>夜间窗口只剩下西红柿鸡蛋盖饭。盛饭的阿姨动作很快，勺子往盆里一铲，红黄两色就扣在米饭上，汤汁沿着餐盘边往下淌。他端着盘子找座位的时候，食堂电视正围着一圈人，屏幕上是围棋盘和一条一直跳的胜率曲线。有人边看边说，机器果然稳，机器不会乱。旁边另一个人接话，说以后很多事大概都不用人想了，算就行。</p>
+<p>陆沉端着盘子坐下，低头吃了一口，才想起书页上还有她那句”我现在饿得前胸贴后背，但这个式子是真的好看”。那盘番茄炒蛋汤汁多，米饭很快泡软了。他低头吃，脑子里先浮上来的是她低着头吃饭的样子。头发扎得乱，肩胛骨从校服里顶出来，嘴上嫌食堂难吃，筷子却没停。她会边吃边嫌那页书写得没睡醒，嫌着嫌着又把那一页重新推导一遍。</p>
+<p>后来一段时间，陆沉每天都在翻那本书。</p>
+<p>他翻得很慢，一页一页查，一行一行停。第152页，配分函数推导旁边，她写：“Z 这个字母长得像一条打了两次弯的路。所有的路都被算进去了。陆沉你以后走的弯路也算。”第203页，关联函数那一页，她写：“我现在饿得前胸贴后背，但这个式子是真的好看。”第241页，相变定义旁边，她写：“这页写得像没睡醒。陆沉别抄了，先想清楚再写。”</p>
+<p>回来的不是一张需要端正摆好的脸。是那些她活着的时候留下来的坏脾气和小毛病：困的时候嫌书写得烂，饿的时候先抱怨再看公式，看见他抄得快了就忍不住骂一句。还是那个会皱着眉说”这个地方你别背，你先懂”的黎知秋。</p>
+<p>陆沉读书的方式就是从那时候开始变的。</p>
+<p>他桌上慢慢固定了三支笔。黑色写公式，红色写疑问，蓝色写她说过的话。黑笔用得最快，笔芯一根接一根空掉；红笔总压得很重，纸背面常鼓起一排小小的凸点；蓝笔最慢，有时写了一句，他盯着看很久，最后又划掉，觉得不像她会那样说，也不像自己真正听见过。</p>
+<p>他开始往书页里夹票据。食堂小票，打印店的找零纸条，图书馆借书单。那些纸片薄得很，夹在厚书里，一翻就掉出来，像他那段时间过的日子，明明乱，却全压在同一本书里。</p>
+<p>后来纸片不够用了，他又去买了一沓最便宜的便签。</p>
+<p>黄色一张，蓝色一张，贴在床边、桌沿、墙角和书页之间。写”平衡态不等于安稳”，写”她为什么会说宇宙不总是懒的”，写”如果边界换了，里头会不会跟着变”。贴多了以后，墙上一块黄一块蓝，像谁在宿舍里开了一个很小、很乱的展览。上铺那个男生有天回来，站在门口看了两秒，说你这弄得跟命案现场分析似的。</p>
+<p>陆沉没笑，也没解释。晚上他自己看着那面墙，忽然又觉得太满，伸手撕掉了三分之一。便签背胶不牢，撕下来以后墙上还留了一点点发灰的印。他盯着那些印子看了半天，又把其中两张重新贴了回去。</p>
+<p>有几回他甚至想过去心理中心看看。</p>
+<p>那地方在学院楼后面，一栋刷得过白的小楼，门口种了两棵修得太整齐的冬青。辅导员给他的那张预约单一直夹在书里，纸边都卷了。陆沉路过过两次。一次是下雨，玻璃门里坐着一个穿浅色毛衣的值班老师，正低头填表；一次是傍晚，楼里亮着暖黄色的灯，门口摆了一块”欢迎倾诉”的立牌。陆沉站在台阶下看了一会儿，最后还是转身去了图书馆。</p>
+<p>不是因为他觉得那地方没用。他只是说不清，要把什么讲给谁听。讲给别人听，事情就会被说成完整的一段话，像可以被收纳、被处理、被建议。可他心里那团东西还乱着，连自己都不肯替它找顺序。</p>
+<p>晚上宿舍一熄灯，床帘后面就一格格亮起来，手机屏把每个人的下巴照得发白。班群里的课件最早还从QQ群传，后来打印店老板嫌总收不到附件，在柜台边立了收款码，让人加微信发文件。陆沉常常把PDF传过去，再骑一辆蹬起来会咯吱响的共享单车去取。车篮里放着刚打印出来的论文和讲义，纸角被风一吹，就往上翻。打印店里总放着同一首流行歌，老板娘边裁纸边接孩子电话，催对方别忘了去补课。陆沉站在柜台边等装订时，偶尔会听见旁边的人谈出国、谈考公、谈编制，谈得都很快，好像路早就摆在那儿，谁走慢了都是自己耽误自己。</p>
+<p>图书馆闭馆前十分钟，管理员总会从最里面那排书架开始往外赶人。有人合上电脑，有人把耳机线一圈圈绕好，有人边走边看手机。陆沉常常是最后几个才起身的。他面前摊着纸，纸上全是分叉、箭头和被叉掉的句子，像一张被不断改道的地图。有天晚上管理员走到他桌边，敲了敲桌角，说同学要关灯了。陆沉抬起头，眼睛发酸，才发现窗外的天早就黑透了。</p>
+<p>那段时间他的课也不是没受影响。</p>
+<p>有一次专业课小测，卷子发下来，他盯着第一题看了很久，脑子里先冒出来的却是前一晚没想通的一个定义。教室里翻卷子的声音一片片过去，老师在讲台上提醒还有四十分钟。陆沉低头写，写到最后也只写了八成。成绩发下来那天，他分数不好不坏，卡在一个最让人说不出话的位置。老师把卷子发到他手里时，顺口说了句：“你最近是不是心不静？”</p>
+<p>陆沉嗯了一声，没解释。</p>
+<p>回宿舍以后，他把卷子压到书底下，再也没翻出来。不是不在乎，只是那一刻他更烦的是，连一张普通小测都在逼他赶快回到”正常轨道”上去。可他偏偏回不去，或者说，不想那么快回去。</p>
+<p>晚上室友回来，随手翻到那张卷子，看见分数，愣了一下：“你以前不这样啊。”</p>
+<p>陆沉把卷子抽回来，夹进书里：“偶尔。”</p>
+<p>“你要不要歇两天？”</p>
+<p>“歇也没用。”</p>
+<p>他说这句时语气不重，听上去却有点硬。室友看了他一眼，最后只把自己的热水壶往他桌边推了推，像是想帮点什么，又不知道还能帮什么。</p>
+<p>他开始对着墙说话。</p>
+<p>哪一步推导要是不能用自己的话复述出来，他就认定自己还没懂。起初只是在心里过，后来会站起来，拿着笔，在墙边来回走，说到卡住的地方就停下，皱着眉，退回去重来。有一回上铺那个男生录完试讲，刚把手机架子收起来，就听见他在床边低声说：“这里没变大的不是概率，是约束条件。”</p>
+<p>那男生愣了两秒：“你跟谁说话呢？”</p>
+<p>“我自己。”</p>
+<p>“你半夜能不能小点声？”那男生把领带往桌上一扔，语气也有点硬，“我明早六点的车，还得再顺一遍课。”</p>
+<p>陆沉正好卡在一句话上，头也没抬：“你白天录了两个小时，我也没说什么。”</p>
+<p>宿舍里一下静了。</p>
+<p>那男生看着他，像还想再说点什么，最后只把讲义卷起来，拿着手机去了走廊尽头。隔着门板，陆沉还能听见他压低声音继续讲”叶绿体”和”线粒体”。第二天一早，那男生出门前还是顺手把宿舍门口堆着的垃圾带下去了。陆沉听见塑料袋擦过门框的声音，人却一直坐在桌前，没有抬头。过了一会儿，他自己下楼买早饭，看见那男生站在宿舍楼前啃包子，领带打歪了还没发现。他本来想提醒一句，话到嘴边又咽了回去。</p>
+<p>他并没有一下变好。</p>
+<p>有时他烦得很。烦别人说”看开点”，烦室友翻书太响，烦食堂阿姨把番茄炒蛋舀成一滩糊，烦每个人都在给他建议，好像只要把建议接住，事情就能顺着往前走。</p>
+<p>辅导员找他谈话，是在一个闷得发潮的下午。</p>
+<p>办公室窗户开着，外面有知了在叫。桌上摆着胖大海泡开的玻璃杯，一沓奖学金表格，还有一本封面印着拼音练习的作业本，角上写着”果果”。辅导员刚替另一个学生签完贫困认定表，那学生出去时还忘了拿身份证，回头一路小跑又取走。门重新关上以后，屋里才安静下来。</p>
+<p>“陆沉，”辅导员看了他一眼，“你最近是不是还没走出来？”</p>
+<p>办公室墙上挂着”厚德博学”四个字，金框反着一点刺眼的光。窗台上那盆绿萝有几片叶子发黄，边缘卷起来。陆沉坐在那把掉皮的黑椅子上，手放在膝盖上，很久才说：</p>
+<p>“我走出来了。”</p>
+<p>停了停，又补一句：</p>
+<p>“我在往里走。”</p>
+<p>辅导员愣住了，像没料到会听见这种回答。他端起杯子喝了口水，刚想再说什么，桌上的座机响了。电话那头大概在催名单，他低声应了几句，写下一个名字，挂断以后才把话接回去。</p>
+<p>“你要不要去学校心理中心试试？”他说，“不是说你有问题。就是……总得找个地方说一说。”</p>
+<p>陆沉点了点头，却没说去，也没说不去。</p>
+<p>“你别嫌我烦。”辅导员又说，“我女儿也快高考了，这阵子一点风吹草动我都怕。”</p>
+<p>这句话说得很轻，倒把屋子里的气卸了一点。陆沉抬头看了他一眼。对方眼底有很淡的青，桌角那本拼音作业本边上还压着一张幼儿园接送卡。那一瞬间，他本来想顶回去的话没说出口，只说了句：“我知道。”</p>
+<p>出门以后，那张预约单还在他手里。</p>
+<p>他沿着教学楼台阶慢慢往下走，走到一半，把纸对折了一次，又对折了一次，最后塞进了裤袋。晚上回宿舍换衣服，纸从口袋里掉出来，落到地上，被鞋底蹭出一道灰印。陆沉弯腰把它捡起来，看了两秒，还是夹回了书里。像他根本没决定过要不要去，只是暂时不肯把这条路扔掉。</p>
+<p>从办公室出来的时候，天更闷了。地上的白光晃得人睁不开眼。他去超市买了一瓶最便宜的矿泉水，又顺手拿了一支圆珠笔。回到宿舍时，屋里正断电。窗和门原本都关着，湿毛巾、泡面汤和男生鞋袜的味道闷在一起，像一层发热的布。上铺那个男生正在整理明天面试要用的衬衫，先骂了一句热，抬脚把门踢开了。</p>
+<p>走廊里的风一下灌进来。</p>
+<p>桌上的讲义哗地翻开，最上面那本正好是陆沉借来的《从存在到演化》。纸页被吹得往后折，停在一句画过线的话上：远离平衡态的开放系统，在适当条件下可以自发形成有序结构。</p>
+<p>他站在门口，没有立刻去按住书页。</p>
+<p>风从门外进来，带进来别的宿舍说话声、楼下卖冰粉的小喇叭声，还有一股不知道是谁刚洗完头的洗发水味。刚才还闷得发涨的屋子，慢慢松开了一点。上铺那个男生拿衣架把衬衫撑起来，嘴里还在抱怨：“再不开门，人都要闷死了。”</p>
+<p>那句抱怨落下去，陆沉忽然想起一些很小的事。夏天停电门一开，风进来。河道堵住了，水会发臭。那两件小事在脑子里碰到一起，他没急着往下想，只觉得身体里有什么松了一下。</p>
+<p>那天夜里，他在书边停了很久。</p>
+<p>他没一下把那个概念想透。先让它贴到了身体上：一间屋子如果封死，迟早是要坏的。她已经不在了，可她留下来的问题、话、脾气，还在一阵一阵往里进。那些东西没有让他变轻，反而一直在扰动他，把他从原来那种靠分数、作业和考试勉强维持的平衡里往外推。</p>
+<p>他开始真正往下读普里戈金。</p>
+<p>还是会卡，还是会烦。有时整整一页看过去，一个地方都没读通；有时好不容易想明白半步，又被另一个定义绊住。有一回他在图书馆抄式子，抄到一半突然觉得前面三页全是废话，气得把笔往桌上一扔，笔帽弹出去，滚到对面女生脚边。那女生抬头看了他一眼，把笔帽捡起来放回桌上，没说话。陆沉愣了一下，低声说了句谢谢，耳朵却先热了。</p>
+<p>还有一阵，他连续三天都卡在同一页。</p>
+<p>白天看，晚上看，第二天早起去食堂买了个最便宜的馒头，一边走一边还在想那一行为什么非得那样写。想到第三天傍晚，他骑车去打印店，路上差点跟一辆送外卖的电动车撞上。对方回头骂了一句看路，他站在路边愣了半天，才发现自己脑子里还在转同一个符号。那一瞬间他先冒出来的是烦——这种东西偏不肯痛快一点。</p>
+<p>晚上回宿舍，他把那一页纸撕下来，团成一团，扔进垃圾桶。十分钟后又蹲下去捡出来，重新摊平。纸面被揉出一道道细褶，再怎么压都直不回去。陆沉拿着那张皱纸看了很久，最后还是把它夹回书里。</p>
+<p>他照旧去食堂，照旧上课，照旧去打印店、图书馆和实验楼之间来回骑那辆旧得直响的共享单车。食堂电视里偶尔还在重播那场人机对局，旁边总有人说机器会赢，是因为机器不会乱。陆沉也抬头看过几次。他说不清自己在别扭什么。只是每次抬头，屏幕上那条胜率曲线都跳得比下面所有人讲话的速度都快。</p>
+<p>冬天来得很快。</p>
+<p>考研前一晚，陆沉住在考场附近一家很便宜的小旅馆。房间不大，墙纸起了边，床头灯罩发黄。窗外是一条旧街，卖烤红薯和炒栗子的摊子摆到很晚，甜味从窗缝里渗进来。隔壁房间有人在背政治大题，声音时高时低，像一台接触不良的收音机。</p>
+<p>他把那本 <em>《统计物理》</em> 放到床上，翻到第37页。她那句”熵增是宇宙的懒惰”还在，字尾微微挑起来，是她写字一向的样子。他看了很久，从笔袋里抽出一支黑色签字笔，在那句话下面一笔一画写下：</p>
+<div class="chapter-kaiti">
+<p>因为系统是开放的。</p>
+</div>
+<p>黑色的签字笔比铅笔重，压在她那行字下面，颜色明显深一截。暖气管在墙里敲了一下。街上有人收摊，铁皮车轮滚过地面，拉出长长的一道响。陆沉把笔帽扣上，没有再往下写。</p>
+<p>考研以后，他在家过了一个比往年更安静的春节。年三十晚上一家人吃了顿饺子，电视里春晚放着，他没看几眼，先去把屋外那盏快烧坏的灯泡换了。母亲嫌天冷，把厨房门关了一半，韭菜馅的味道还是从门缝里挤出来。父亲倒了一小杯白酒，没敬他，先给祖宗那边敬了。陆沉吃了两碗，没说什么。</p>
+<p>成绩在年后一个下午出来。他过了线，本校的研究生录取不久就寄到了系里。物理系一位老师打电话过来，问他要不要在保研那段时间先到实验室坐一坐，跟着读点 paper。他答应了。</p>
+<p>之后那半年，他白天在实验室，下午看文献，晚上回宿舍发英文邮件。陶瓷杯里泡的茶一遍一遍续。普林斯顿、康奈尔、纽约州立、伊利诺伊、休斯顿——他一个学校一个学校查导师的个人主页，把可能有兴趣的人列成一张表。表上每多一个名字，他都先停一下，再往下打字。</p>
+<p>个人陈述他写了将近两个月。</p>
+<p>第一稿写得很正经——三段论，把自己怎么从县城走到这里说了一遍，写了”梦想”、写了”对科学的热爱”、写了”我相信第一原理”。写完他自己读了一遍，把整篇文档关掉了。第二天他把那一稿删了，重头开始。</p>
+<p>第二稿里他不再讲自己的”故事”，只讲一个具体的物理问题——他想理解市场在崩盘前的集体行为为什么会以那种方式同步起来。他用了大概一千五百词，从相关矩阵的特征值结构往 Langevin 那一类描述上引。中间引了普里戈金，引了 Onsager。他自己读着觉得这一稿太硬，可”太硬”反而让他放心一点——他知道想要这个的人会留下来读完。</p>
+<p>第三稿他加了一句话：</p>
+<blockquote class="blockquote">
+<p><em>I do not believe in prediction without understanding. A model that predicts perfectly but explains nothing has merely relocated our ignorance.</em></p>
+</blockquote>
+<p>写完这一句的那个晚上，他坐在宿舍床边读了三遍，最后让它留下了。这句话他知道是冒险——很多 admission committee 看见这种”哲学声明”会立刻跳过。但他也知道，那种会因为这一句话跳过他的实验室，他去了也没用。</p>
+<p>那一冬一春，邮件回得很慢。</p>
+<p>大多数主页上挂着 <em>I’ll respond to all serious inquiries</em> 的教授并没有回他。模板拒绝的邮件他收到过四五封——<em>I am not taking new students this year</em> / <em>Your background, while interesting, doesn’t fit my current research directions</em>。陆沉读完每一封，先把那封邮件标成已读，再把对应那个学校从他的”待跟进”表里划掉。</p>
+<p>划掉的方式是在那个名字上画一道横线。从十二月到三月，那张表上的横线越来越多。到三月中，整张表上还没被划掉的名字只剩下五个。</p>
+<p>他没有放弃。他只是把”五个”这个数字记在心里。</p>
+<p>第一封录取邮件来在五月初的一个深夜。</p>
+<p>标题平得像一封系统通知：<em>Decision: Admitted</em>。陆沉盯着屏幕看了三遍。第一遍看见 admitted；第二遍看见正文中间一行小字，<em>funding unavailable for this program at the Master’s level</em>；第三遍才往下找押金截止日期。宿舍里除了他都睡了。床帘后面有人在看短视频，笑了一下，又把声音压住。陆沉从抽屉里摸出一张废纸，一行一行往下写：学费、保险、房租、押金、机票、第一学期生活费。写到最后，纸面剩下不到一指宽的空白。他没有合电脑，先去刷了牙。</p>
+<p>半个月之后，学校把电子版 I-20 寄了过来。一张正式的表，密密麻麻全是英文，他一栏栏对着字典看。最关键的一栏写着 <em>Estimated Total Expenses for One Academic Year</em>。他按当时的汇率算了一下，约合人民币三十七万。他把这一行截图，发到了家里那个只有三个人的微信群。母亲半小时后回了三个字：“看到了。”父亲没回。隔了一天，群里跳出一条：“我跟你大伯说一下。”</p>
+<p>学校的指引里还有一条：申请签证用的存款证明，金额必须在账户里至少滞留六个月。父母把家里所有定期存款集中到一张县城建行卡里，跑了两趟才办下来一张能开英文版证明的卡。陆沉那年暑假回家，跟着母亲去取证明。柜员把一张 A4 纸从玻璃下递过来，上面盖了两个红章。金额那一行先用阿拉伯数字写了一遍，旁边又用英文大写写了一遍。母亲接过纸，先对着窗外的光看了一下，再夹进档案袋里。陆沉从银行出来时把档案袋抱在胸口。回家有十几分钟路，娘儿俩谁都没说话。</p>
+<p>钱还差不少。父亲那天晚上从抽屉最深处拿出一个铁盒。盒子上有一把小锁，钥匙找了将近半小时，最后是在母亲针线笸箩底下翻出来的。父亲把锁打开，从里面拿出一本绿色封皮的房产证——县城老城区一套老房子，2003 年买的，单价不高。父亲说：“拿去公证吧。”</p>
+<p>公证处排队两个小时。陆沉前面是一对老夫妇。老人手抖得签不动名字，年轻的工作人员把笔递给他三次。轮到陆沉的时候，公证员问：“这是给谁公证？”他说：“我自己出国用。”公证员点了下头，没再多问。回家路上他把那本绿色房产证放进双肩包最里层的夹层。过马路的时候他无意识地用手按了一下背包。</p>
+<p>差额最后是借齐的。父亲跟大伯借了两万，跟舅舅借了三万，说好半年后取出来还。三笔钱在那张卡上汇齐的那一天，母亲在窗口边上很轻地说了一句：“这下够了。”她说这话的时候声音不大，像怕银行里别人听见。</p>
+<p>签证那部分手续是他自己办的。SEVIS 费 $350 用学校发的 PIN 码在网站上交，刷的是父亲的信用卡。DS-160 表他填了三个晚上，每一个空格都重新检查过。面签那天他坐了五个小时硬座到省会，凌晨四点到大使馆门口排队。签证官隔着厚玻璃问了三个问题：你为什么去这所学校？谁出钱供你？毕业以后回国吗？陆沉把准备好的答案说了出来。整个过程不到九十秒。签证官说了一声 “approved”，把那张蓝色小条夹进他的护照里。</p>
+<p>走出大使馆的时候他的手有点抖。不是高兴，是因为他从凌晨开始还没吃过东西。大使馆对面有一个煎饼摊。摊主一边摊面糊一边接电话，对那头说：“妈我吃过了你别老问。”陆沉站在摊子边上等，先把护照塞进背包夹层。摊主把煎饼装进一个小纸袋递过来，纸袋一面已经被油浸湿。陆沉接过来，没有立刻吃，往回走了一段，到地铁口才咬了第一口。</p>
+</div>
+<div class="chapter-nav">
+<p><a href="../chapter-03-duanliu/" class="chapter-nav-link">← 上一章：断流</a> <a href="../chapter-05-du/" class="chapter-nav-link">下一章：渡 →</a></p>
+</div>
+</div>
+</div>
+
+
+
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "已复制");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "已复制");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/yuda-bi\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Yuda Bi  |  Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

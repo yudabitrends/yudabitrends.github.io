@@ -43,7 +43,7 @@ css: ../../novels.css
 ::: {.novel-toc-section}
 
 ::: {.novel-progress-note}
-目前已整理正文试读：第一章《粉笔》与第二章《简并态》。
+全书十六章正文已上线，可按章节顺序进入阅读。
 :::
 
 ::: {.novel-part}
@@ -80,35 +80,50 @@ css: ../../novels.css
 [简并态](chapter-02-jianbingtai/)
 :::
 ::: {.chapter-teaser}
-实验班、水房电话与“简并态”的一句解释，让两个人之间的距离第一次有了清晰的轮廓。
+实验班、水房电话与"简并态"的一句解释，让两个人之间的距离第一次有了清晰的轮廓。
 :::
 :::
 :::
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available data-href="chapter-03-duanliu/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 三
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-断流
+[断流](chapter-03-duanliu/)
+:::
+::: {.chapter-teaser}
+图书馆靠窗的位置空着两个，他把书放下；从下午两点半开始，他给她打了十七个电话。
+:::
 :::
 :::
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available data-href="chapter-04-kaifangxitong/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 四
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-开放系统
+[开放系统](chapter-04-kaifangxitong/)
+:::
+::: {.chapter-teaser}
+普里戈金那本旧书被风掀开，他在熵增旁边添了第一句自己的回应：因为系统是开放的。
+:::
 :::
 :::
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available data-href="chapter-05-du/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 五
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-渡
+[渡](chapter-05-du/)
+:::
+::: {.chapter-teaser}
+出发那天父亲在车站门口替他买了一瓶水却没递出去；飞机抬头时，他翻到课本封底那行铅笔字。
+:::
 :::
 :::
 
@@ -129,66 +144,101 @@ css: ../../novels.css
 
 ::: {.novel-chapter-list}
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available data-href="chapter-06-xinhaoyuzaosheng/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 六
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-信号与噪声
+[信号与噪声](chapter-06-xinhaoyuzaosheng/)
+:::
+::: {.chapter-teaser}
+异国超市自助结账机、第一次 Zoom 面试、桌角四道月牙形小坑——他被礼貌地拨回属于自己的那一格。
+:::
 :::
 :::
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available data-href="chapter-07-xianyan/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 七
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-先验
+[先验](chapter-07-xianyan/)
+:::
+::: {.chapter-teaser}
+从赵启维的合影墙到周教授办公室那盘薄荷糖，三种华人面孔同一种逻辑，把他一次次温柔地放回更低的位置。
+:::
 :::
 :::
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available data-href="chapter-08-baobing/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 八
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-薄冰
+[薄冰](chapter-08-baobing/)
+:::
+::: {.chapter-teaser}
+异国冬天里三段越来越薄的关系，最后一颗番茄被切开，籽排成一个近乎对称的安静图案。
+:::
 :::
 :::
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available data-href="chapter-09-kuangyezhongdedeng/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 九
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-旷野中的灯
+[旷野中的灯](chapter-09-kuangyezhongdedeng/)
+:::
+::: {.chapter-teaser}
+一封不带 capacity、也不带 not the right fit 的短回信，把他从一长串模板拒绝里拽起来。
+:::
 :::
 :::
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available data-href="chapter-10-jixian/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 十
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-基线
+[基线](chapter-10-jixian/)
+:::
+::: {.chapter-teaser}
+第一次组会被一句"What's your baseline?"拦在半空；Kevin 抽屉里露出半截写着 Phase Transitions 的旧本子。
+:::
 :::
 :::
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available data-href="chapter-11-anwuzhi/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 十一
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-暗物质
+[暗物质](chapter-11-anwuzhi/)
+:::
+::: {.chapter-teaser}
+三次失败把他一寸寸往下拽。一个雪夜，Whitmore 也坐到地上，讲起七十年代末那篇等了三十年的旧论文。
+:::
 :::
 :::
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available data-href="chapter-12-xiangbian/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 十二
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-相变
+[相变](chapter-12-xiangbian/)
+:::
+::: {.chapter-teaser}
+他不再盯着最大那一根特征值。当最后一行条件落到白板上，他突然明白知秋的死也是同一种逻辑。
+:::
 :::
 :::
 
@@ -209,39 +259,59 @@ css: ../../novels.css
 
 ::: {.novel-chapter-list}
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available data-href="chapter-13-sanpiao/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 十三
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-三票
+[三票](chapter-13-sanpiao/)
+:::
+::: {.chapter-teaser}
+稿件投出之后的等待与三份审稿意见。Appendix B 那半页，他按下 Delete 又撤销，最后一字未改。
+:::
 :::
 :::
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available data-href="chapter-14-guren/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 十四
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-故人
+[故人](chapter-14-guren/)
+:::
+::: {.chapter-teaser}
+会议中心的 poster 区，赵启维在右下角那张小图前停了八到十秒——那是一次沉默的确认。
+:::
 :::
 :::
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available data-href="chapter-15-xinjinhuochuan/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 十五
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-薪尽火传
+[薪尽火传](chapter-15-xinjinhuochuan/)
+:::
+::: {.chapter-teaser}
+接收邮件来的那个普通下午，他一个人吃了一碗面。书翻到第三十七页那行旧字旁边，多年以后写上一句新的回声。
+:::
 :::
 :::
 
-::: {.novel-chapter}
+::: {.novel-chapter .chapter-available data-href="chapter-16-yuantou/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 十六
 :::
+::: {.chapter-entry}
 ::: {.chapter-title}
-源头
+[源头](chapter-16-yuantou/)
+:::
+::: {.chapter-teaser}
+回县城，去黎家，去墓地。最后一段从一个外人的视角写下：很多年以后，我在一所大学走廊里第一次见到陆沉。
+:::
 :::
 :::
 
@@ -254,7 +324,7 @@ css: ../../novels.css
 
 ::: {.novels-footer}
 ::: {.novels-footer-inner}
-“章名并排搁着，前后遥遥照应，草蛇灰线，伏脉千里。”
+"章名并排搁着，前后遥遥照应，草蛇灰线，伏脉千里。"
 :::
 :::
 
