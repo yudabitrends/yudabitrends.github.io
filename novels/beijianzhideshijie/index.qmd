@@ -2,7 +2,7 @@
 title: "被剪枝的世界"
 description: "长篇小说《被剪枝的世界》章节目录页，关于系统、记录重写与不被覆盖的真实。"
 lang: zh-CN
-image: "https://yudabitrends.github.io/files/novels/%E8%A2%AB%E5%89%AA%E6%9E%9D%E7%9A%84%E4%B8%96%E7%95%8C.jpg"
+image: "https://yuda-bi.com/files/novels/%E8%A2%AB%E5%89%AA%E6%9E%9D%E7%9A%84%E4%B8%96%E7%95%8C.jpg"
 image-alt: "《被剪枝的世界》封面"
 open-graph:
   locale: zh_CN

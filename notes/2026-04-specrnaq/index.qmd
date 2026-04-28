@@ -13,12 +13,12 @@ include-in-header:
         "@context": "https://schema.org",
         "@type": "ScholarlyArticle",
         "headline": "SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss",
-        "author": {"@type": "Person", "name": "Yuda Bi", "url": "https://yudabitrends.github.io"},
+        "author": {"@type": "Person", "name": "Yuda Bi", "url": "https://yuda-bi.com"},
         "datePublished": "2026-04-07",
         "description": "How graph Laplacian spectra capture global RNA topology for reference-free 3D structure quality assessment.",
         "keywords": ["RNA structure", "spectral graph theory", "quality assessment", "CASP16"],
-        "image": "https://yudabitrends.github.io/notes/2026-04-specrnaq/featured.png",
-        "url": "https://yudabitrends.github.io/notes/2026-04-specrnaq/"
+        "image": "https://yuda-bi.com/notes/2026-04-specrnaq/featured.png",
+        "url": "https://yuda-bi.com/notes/2026-04-specrnaq/"
       }
       </script>
       <meta name="citation_title" content="SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss">

@@ -1,20 +1,22 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - CNAME
 
 website:
   title: "Yuda Bi"
   description: "Ph.D. — Statistical Physics, Information Geometry, Theoretical Neuroscience"
-  site-url: "https://yudabitrends.github.io"
+  site-url: "https://yuda-bi.com"
 
   open-graph:
-    image: "https://yudabitrends.github.io/files/profile/avatar.jpg"
+    image: "https://yuda-bi.com/files/profile/avatar.jpg"
     image-alt: "Portrait photo of Yuda Bi"
     locale: en_US
     site-name: "Yuda Bi"
 
   twitter-card:
-    image: "https://yudabitrends.github.io/files/profile/avatar.jpg"
+    image: "https://yuda-bi.com/files/profile/avatar.jpg"
     image-alt: "Portrait photo of Yuda Bi"
     card-style: summary_large_image
     # creator: "@REPLACE_ME"   # 有 Twitter 后取消注释并填入用户名

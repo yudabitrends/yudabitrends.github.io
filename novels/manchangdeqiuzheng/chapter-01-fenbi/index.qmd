@@ -2,7 +2,7 @@
 title: "第一章：粉笔"
 description: "《漫长的求证》第一章《粉笔》：旧课本扉页上的一句题辞，把陆沉带回县城台阶与粉笔灰漫天的夏天。"
 lang: zh-CN
-image: "https://yudabitrends.github.io/files/novels/%E6%BC%AB%E9%95%BF%E7%9A%84%E6%B1%82%E8%AF%81.jpg"
+image: "https://yuda-bi.com/files/novels/%E6%BC%AB%E9%95%BF%E7%9A%84%E6%B1%82%E8%AF%81.jpg"
 image-alt: "《漫长的求证》封面"
 open-graph:
   locale: zh_CN

@@ -11,7 +11,7 @@ import sys
 import re
 
 
-SITE_URL = "https://yudabitrends.github.io"
+SITE_URL = "https://yuda-bi.com"
 DOCS_DIR = Path(__file__).resolve().parents[1] / "docs"
 
 CRITICAL_PAGES = {
