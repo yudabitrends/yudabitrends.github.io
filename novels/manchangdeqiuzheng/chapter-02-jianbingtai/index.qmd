@@ -2,7 +2,7 @@
 title: "第二章：简并态"
 description: "《漫长的求证》第二章《简并态》：实验班、水房电话与一条看不见的尺子，让两个人之间的距离第一次有了清晰的轮廓。"
 lang: zh-CN
-image: "https://yudabitrends.github.io/files/novels/%E6%BC%AB%E9%95%BF%E7%9A%84%E6%B1%82%E8%AF%81.jpg"
+image: "https://yuda-bi.com/files/novels/%E6%BC%AB%E9%95%BF%E7%9A%84%E6%B1%82%E8%AF%81.jpg"
 image-alt: "《漫长的求证》封面"
 open-graph:
   locale: zh_CN

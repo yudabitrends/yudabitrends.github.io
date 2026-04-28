@@ -12,11 +12,11 @@ include-in-header:
         "@context": "https://schema.org",
         "@type": "ScholarlyArticle",
         "headline": "Spectral Methods in Brain Network Analysis",
-        "author": {"@type": "Person", "name": "Yuda Bi", "url": "https://yudabitrends.github.io"},
+        "author": {"@type": "Person", "name": "Yuda Bi", "url": "https://yuda-bi.com"},
         "datePublished": "2026-04-07",
         "description": "Notes on how graph Laplacian spectra reveal community structure in functional brain networks, with key derivations.",
         "keywords": ["spectral methods", "brain networks", "graph Laplacian", "functional connectivity"],
-        "url": "https://yudabitrends.github.io/notes/2026-04-spectral-brain-networks/"
+        "url": "https://yuda-bi.com/notes/2026-04-spectral-brain-networks/"
       }
       </script>
       <meta name="citation_title" content="Spectral Methods in Brain Network Analysis">

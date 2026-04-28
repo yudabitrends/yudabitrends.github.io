@@ -13,12 +13,12 @@ include-in-header:
         "@context": "https://schema.org",
         "@type": "ScholarlyArticle",
         "headline": "Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization",
-        "author": {"@type": "Person", "name": "Yuda Bi", "url": "https://yudabitrends.github.io"},
+        "author": {"@type": "Person", "name": "Yuda Bi", "url": "https://yuda-bi.com"},
         "datePublished": "2026-04-07",
         "description": "Gray matter explains only ~6% of functional connectivity variance — yet aligns with 45% of its directional subspace.",
         "keywords": ["structure-function coupling", "gray matter", "functional connectivity", "neuroscience"],
-        "image": "https://yudabitrends.github.io/notes/2026-04-sfcoupling/featured.png",
-        "url": "https://yudabitrends.github.io/notes/2026-04-sfcoupling/"
+        "image": "https://yuda-bi.com/notes/2026-04-sfcoupling/featured.png",
+        "url": "https://yuda-bi.com/notes/2026-04-sfcoupling/"
       }
       </script>
       <meta name="citation_title" content="Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization">

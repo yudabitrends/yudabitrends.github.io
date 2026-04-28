@@ -2,7 +2,7 @@
 title: "小说"
 description: "Yuda Bi 的小说作品页，收录《漫长的求证》和《被剪枝的世界》，以中文印刷出版风格呈现。"
 lang: zh-CN
-image: "https://yudabitrends.github.io/files/novels/%E6%BC%AB%E9%95%BF%E7%9A%84%E6%B1%82%E8%AF%81.jpg"
+image: "https://yuda-bi.com/files/novels/%E6%BC%AB%E9%95%BF%E7%9A%84%E6%B1%82%E8%AF%81.jpg"
 image-alt: "《漫长的求证》封面"
 open-graph:
   locale: zh_CN
