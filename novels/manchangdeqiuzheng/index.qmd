@@ -80,7 +80,7 @@ css: ../../novels.css
 [简并态](chapter-02-jianbingtai/)
 :::
 ::: {.chapter-teaser}
-实验班、水房电话与"简并态"的一句解释，让两个人之间的距离第一次有了清晰的轮廓。
+实验班、水房电话与“简并态”的一句解释，让两个人之间的距离第一次有了清晰的轮廓。
 :::
 :::
 :::
@@ -209,7 +209,7 @@ css: ../../novels.css
 [基线](chapter-10-jixian/)
 :::
 ::: {.chapter-teaser}
-第一次组会被一句"What's your baseline?"拦在半空；Kevin 抽屉里露出半截写着 Phase Transitions 的旧本子。
+第一次组会被一句“What's your baseline?”拦在半空；Kevin 抽屉里露出半截写着 Phase Transitions 的旧本子。
 :::
 :::
 :::
@@ -324,7 +324,7 @@ css: ../../novels.css
 
 ::: {.novels-footer}
 ::: {.novels-footer-inner}
-"章名并排搁着，前后遥遥照应，草蛇灰线，伏脉千里。"
+“章名并排搁着，前后遥遥照应，草蛇灰线，伏脉千里。”
 :::
 :::
 

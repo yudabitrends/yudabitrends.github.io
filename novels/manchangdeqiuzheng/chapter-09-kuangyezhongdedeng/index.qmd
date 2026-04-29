@@ -43,13 +43,13 @@ css: ../../../novels.css
 
 另一个教授写：*Your background is interesting, but I do not think it is the right fit for my group.*
 
-"interesting" 这个词他现在已经看明白了。它多数时候是一种带着距离的礼貌——像商店里店员看见你试了一件并不打算卖给你的衣服，会说颜色很特别。
+“interesting” 这个词他现在已经看明白了。它多数时候是一种带着距离的礼貌——像商店里店员看见你试了一件并不打算卖给你的衣服，会说颜色很特别。
 
 还有更多邮件根本没有回。
 
 陆沉一开始还会给自己找解释。教授忙，学期中，会议季，收件箱堆满了。到了后来，他连解释都懒得找。沉默本身就是一种回答。只是这种回答没有日期，没有签名，没有哪一句话可以单独拎出来恨。
 
-那天晚上，他把最后一封邮件发出去，电脑右下角跳出"sent"的提示，像一粒很小的石子掉进井里，听不见回声。他把电脑合上，往后一倒，靠在床头，看着天花板。
+那天晚上，他把最后一封邮件发出去，电脑右下角跳出“sent”的提示，像一粒很小的石子掉进井里，听不见回声。他把电脑合上，往后一倒，靠在床头，看着天花板。
 
 天花板上有一块水渍，形状像一只展开翅膀的鸟。
 
@@ -73,17 +73,17 @@ css: ../../../novels.css
 
 发完之后，他把屏幕亮度调暗了一格，没指望立刻回——国内是凌晨。可那之后的三天，他每隔几个小时就回去刷一次。第一天没回。第二天没回。第三天晚上，他承认了。这封邮件不会有回信。
 
-承认这件事的时候，他甚至没有立刻难过。只是有一种很冷的清醒：原来一个人走到某个位置，连"我不行"这种话都不再有人替他接住。
+承认这件事的时候，他甚至没有立刻难过。只是有一种很冷的清醒：原来一个人走到某个位置，连“我不行”这种话都不再有人替他接住。
 
 知秋以前是会接的。
 
-她接的方式不太友好——多半是先瞪你一眼，再骂一句"那就先去睡觉，明天醒了再说"。可你从来不必怕她真的转身就走。她骂归骂，第二天清晨七点会准时打电话过来，问昨天那道题想没想通。
+她接的方式不太友好——多半是先瞪你一眼，再骂一句“那就先去睡觉，明天醒了再说”。可你从来不必怕她真的转身就走。她骂归骂，第二天清晨七点会准时打电话过来，问昨天那道题想没想通。
 
 这间公寓里没有那个早晨七点的电话。
 
 那几天他刷邮箱刷得手指酸。有一回手指误滑，进到了相册里。
 
-最上面那张是上个周末他自己拍的一盘失败的番茄炒蛋——番茄出了水，蛋糊在锅边，颜色发暗。再往下，是夏天刚来美国时他在系馆门口的自拍：新双肩包还没褪色，胸卡刚发，他站在门口那块 "Welcome New Students" 易拉宝边上，笑得有点用力，但确实在笑。
+最上面那张是上个周末他自己拍的一盘失败的番茄炒蛋——番茄出了水，蛋糊在锅边，颜色发暗。再往下，是夏天刚来美国时他在系馆门口的自拍：新双肩包还没褪色，胸卡刚发，他站在门口那块 “Welcome New Students” 易拉宝边上，笑得有点用力，但确实在笑。
 
 陆沉看了一秒，把手机屏幕熄掉，扣回桌上。
 
@@ -93,7 +93,7 @@ css: ../../../novels.css
 
 发件人是 `r.whitmore@...`
 
-陆沉先愣了一下。他对这个名字有印象，不是因为熟。恰恰是因为太老。Whitmore是系里统计物理方向的老教授，网页做得很旧，配色还是十几年前学校统一模板的蓝灰色，页面上没有花哨的实验室合照，也没有"Join Us"的按钮，只有几篇早年的代表论文，和一张很小的、分辨率不高的头像照。陆沉查资料时看过这页，但只看了几分钟。这样的实验室通常不热。也正因为不热，才会出现在他最后一轮发信的名单里。
+陆沉先愣了一下。他对这个名字有印象，不是因为熟。恰恰是因为太老。Whitmore是系里统计物理方向的老教授，网页做得很旧，配色还是十几年前学校统一模板的蓝灰色，页面上没有花哨的实验室合照，也没有“Join Us”的按钮，只有几篇早年的代表论文，和一张很小的、分辨率不高的头像照。陆沉查资料时看过这页，但只看了几分钟。这样的实验室通常不热。也正因为不热，才会出现在他最后一轮发信的名单里。
 
 他站在楼道里把邮件点开。
 
@@ -102,11 +102,11 @@ css: ../../../novels.css
 > Dear Mr. Lu, I read your statement of purpose with interest. You write about interpretability as if it were something that matters. Most students these days don't. Come see me Thursday at 3pm.
 > —R.W.
 
-楼道里有人提着洗好的衣服往上走，洗衣液和柔顺剂的味道一起飘过来。那人跟他擦肩时说了句"sorry"，陆沉往旁边让了一点，眼睛还停在那几行字上。
+楼道里有人提着洗好的衣服往上走，洗衣液和柔顺剂的味道一起飘过来。那人跟他擦肩时说了句“sorry”，陆沉往旁边让了一点，眼睛还停在那几行字上。
 
 他把邮件从头到尾又看了一遍。
 
-不是怕看错内容，是怕自己把语气看得太好了。可那几行字确实在那里。没有模板，没有"capacity"，没有"not the right fit"。只有一句"as if it were something that matters"。
+不是怕看错内容，是怕自己把语气看得太好了。可那几行字确实在那里。没有模板，没有“capacity”，没有“not the right fit”。只有一句“as if it were something that matters”。
 
 周四下午三点前十分钟，陆沉到了物理楼。
 
@@ -114,7 +114,7 @@ css: ../../../novels.css
 
 Whitmore的办公室门虚掩着。
 
-陆沉抬手敲了两下，里面先传来一阵纸张翻动的声音，接着是一个不高、却很清楚的声音："Come in."
+陆沉抬手敲了两下，里面先传来一阵纸张翻动的声音，接着是一个不高、却很清楚的声音：“Come in.”
 
 他推门进去。
 
@@ -128,73 +128,73 @@ Whitmore的办公室门虚掩着。
 
 Whitmore本人坐在桌后，衬衫领口有点松，领带往左偏了一些。他正低头翻一份打印稿，听见门关上的声音，才把纸放下，抬头看了陆沉一眼。
 
-"Mr. Lu?"
+“Mr. Lu?”
 
-"Yes."
+“Yes.”
 
-"Sit."
+“Sit.”
 
 屋里只有一把空椅子，椅背上搭着一件深灰色毛衣。Whitmore伸手把毛衣拎起来，随手放到旁边纸箱上。陆沉坐下的时候，椅子轻轻响了一声。
 
 Whitmore没有先问他哪个学校、绩点多少、有没有推荐人。他连简历都没拿起来，开口第一句就是：
 
-"Tell me. What's the difference between fitting and understanding?"
+“Tell me. What's the difference between fitting and understanding?”
 
 问题来得很快，像石子直接打到水面上，连让人弯腰捡的过程都省了。陆沉愣了半秒，才把背挺直一点。
 
-"Fitting是你能复述一个故事。"他说，"Understanding是你能预测下一章。"
+“Fitting是你能复述一个故事。”他说，“Understanding是你能预测下一章。”
 
 Whitmore没说话。
 
 陆沉停了一下，又补了一句：
 
-"即使作者改了大纲。"
+“即使作者改了大纲。”
 
 Whitmore的眼睛很浅，盯人时不凶，却很硬，像在看一句话里面有没有掺水。他听完这两句，没有夸，也没点头，只往后靠了靠，手指在桌上敲了一下。
 
-"All right,"他说，"Then tell me why Onsager in 1944 knew where to go when he solved the two-dimensional Ising model."
+“All right,”他说，“Then tell me why Onsager in 1944 knew where to go when he solved the two-dimensional Ising model.”
 
 陆沉张了张嘴，又停住。
 
-他当然知道这个问题的分量，却答不上来。不是没看过Ising模型，也不是完全没读过那段历史。他只是没有把它想透到能说出"为什么偏偏是那个方向"的程度。这个问题不像考试题，背一个过程就能过去。它逼的是你有没有真的摸到那个人脑子里的那一下转向。
+他当然知道这个问题的分量，却答不上来。不是没看过Ising模型，也不是完全没读过那段历史。他只是没有把它想透到能说出“为什么偏偏是那个方向”的程度。这个问题不像考试题，背一个过程就能过去。它逼的是你有没有真的摸到那个人脑子里的那一下转向。
 
 Whitmore等着。
 
 办公室很安静。咖啡机好像刚刚加热过，内部发出一点很轻的咔哒声。走廊上有人拖着箱子经过，轮子压在地砖缝上，声音一顿一顿。陆沉看着Whitmore，知道自己现在最容易犯的错就是硬撑，捡几个名词拼起来，把不知道装成知道。那是他最讨厌别人做的事。也是他最不想让自己在这里做的事。
 
-他说："I don't know."
+他说：“I don't know.”
 
 Whitmore的脸上没有任何失望的表情。
 
 陆沉吸了口气，接着说：
 
-"But I want to."
+“But I want to.”
 
 这回Whitmore看了他久一点。
 
-"Good,"他说，"The ones who pretend to know are the ones I can't teach."
+“Good,”他说，“The ones who pretend to know are the ones I can't teach.”
 
 他说完，把桌上一支快没水的铅笔拿起来，在一张废纸边缘划了两下。铅笔芯断了。Whitmore低头看了一眼，把断掉那截捏起来，扔进垃圾桶。这个动作里有一点烦，烦得很轻，像他这辈子已经做过太多遍。
 
-"Why finance?"他又问。
+“Why finance?”他又问。
 
-这个问题比刚才那两个更像面试。陆沉却反而松了一点。他想了想，说："因为大多数人现在只关心能不能预测，没人愿意多问一句系统到底在发生什么。市场是个最坏的地方，所以如果一个方法在那里还能解释，它可能才是真的有骨头。"
+这个问题比刚才那两个更像面试。陆沉却反而松了一点。他想了想，说：“因为大多数人现在只关心能不能预测，没人愿意多问一句系统到底在发生什么。市场是个最坏的地方，所以如果一个方法在那里还能解释，它可能才是真的有骨头。”
 
-Whitmore听完，低头去找眼镜，找了两秒，才发现眼镜就架在自己头顶。他把眼镜拿下来，戴好，像是懒得为这种事尴尬。然后他说："Markets are noisy because people are noisy. Be careful not to confuse noise with excuse."
+Whitmore听完，低头去找眼镜，找了两秒，才发现眼镜就架在自己头顶。他把眼镜拿下来，戴好，像是懒得为这种事尴尬。然后他说：“Markets are noisy because people are noisy. Be careful not to confuse noise with excuse.”
 
-"I know."
+“I know.”
 
-"No,"Whitmore说，"You don't. Not yet."
+“No,”Whitmore说，“You don't. Not yet.”
 
-这句话并不客气。可它也不是打击。更像一块石头被人不轻不重地压上去，压住一句话的尾巴，不让它飞走。
+这句话并不客气。可它也不是打击。是有人把一只手按在你那一句过快的回答上，让它先停一停。
 
 后面二十多分钟，他们说得断断续续。
 
-Whitmore问他怎么看黑箱模型。问他为什么在个人陈述里把"解释"写得像一种道德要求。问他是不是准备好接受很多时候没有人会在乎一套解释是否优雅，只在乎它能不能涨点。陆沉不是每个问题都答得好。有两个问题他明显答拧了，Whitmore直接打断，说："That's rhetoric." 还有一次他想把自己的出身解释成某种视角优势，Whitmore摆了下手，说："Hardship is not a method."
+Whitmore问他怎么看黑箱模型。问他为什么在个人陈述里把“解释”写得像一种道德要求。问他是不是准备好接受很多时候没有人会在乎一套解释是否优雅，只在乎它能不能涨点。陆沉不是每个问题都答得好。有两个问题他明显答拧了，Whitmore直接打断，说：“That's rhetoric.” 还有一次他想把自己的出身解释成某种视角优势，Whitmore摆了下手，说：“Hardship is not a method.”
 
 陆沉听见这句，脸上微微热了一下。
 
-不是难堪，是被戳中了。他知道自己这段时间太容易把"我经历过什么"拿来替代"我到底看见了什么"。不是故意的。只是人被拒得多了，总会想从伤口里掏出一点能证明自己的东西。
+不是难堪，是被戳中了。他知道自己这段时间太容易把“我经历过什么”拿来替代“我到底看见了什么”。不是故意的。只是人被拒得多了，总会想从伤口里掏出一点能证明自己的东西。
 
 谈话到后来，Whitmore忽然站了起来。
 
@@ -206,25 +206,25 @@ Whitmore拿起那支红色白板笔，拧了两下笔帽，像在确认里面还
 
 写到 `ti` 的时候，笔突然断了一下。
 
-Whitmore停住，低头看了一眼笔尖，又接着补上后半截。红色比刚才更浅了，中间有一小段几乎看不见，像一句话走到一半忽然老了一下。
+Whitmore 停住，低头看了一眼笔尖，又接着补上后半截。红色比刚才更浅了，中间有一小段几乎看不见，写到一半就断了一下，又接上。
 
 陆沉坐在椅子上，没有问这个动作是什么意思。
 
-Whitmore写完，把笔放回去，转过身来，像是刚才只是顺手修了一件屋里早该修的小东西。然后他说："I don't have much money. And I don't run a fashionable lab."
+Whitmore写完，把笔放回去，转过身来，像是刚才只是顺手修了一件屋里早该修的小东西。然后他说：“I don't have much money. And I don't run a fashionable lab.”
 
 陆沉没出声。
 
-"Most students want papers quickly. Or jobs quickly. Or both." Whitmore看了他一眼，"If you work with me, it will be slow. Sometimes embarrassingly slow."
+“Most students want papers quickly. Or jobs quickly. Or both.” Whitmore看了他一眼，“If you work with me, it will be slow. Sometimes embarrassingly slow.”
 
-他说"embarrassingly"的时候嘴角动了一下，那个动作不像在嘲笑时代，更像在替自己先打一个折扣。
+他说“embarrassingly”的时候嘴角动了一下，那个动作不像在嘲笑时代，更像在替自己先打一个折扣。
 
-"I can give you a desk,"他说，"not certainty."
+“I can give you a desk,”他说，“not certainty.”
 
 屋里静了一秒。
 
-陆沉反应过来以后，没有立刻说谢谢。他先是愣住，像这句话来得太轻了，反而一时接不住。过了两秒，他才站起来，说："I understand."
+陆沉反应过来以后，没有立刻说谢谢。他先是愣住，像这句话来得太轻了，反而一时接不住。过了两秒，他才站起来，说：“I understand.”
 
-Whitmore摇了摇头："No. You understand later. For now, just show up on Monday."
+Whitmore摇了摇头：“No. You understand later. For now, just show up on Monday.”
 
 他说完，从桌上一堆旧信封里抽出一个，在背面写了房间号，又写了一个时间。字很潦草，像边想别的事边写的。写完以后把信封递给陆沉。信封一角已经起毛，像在抽屉里放了很多年。
 
