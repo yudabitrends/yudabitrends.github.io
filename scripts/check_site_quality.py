@@ -28,7 +28,12 @@ CRITICAL_PAGES = {
     "novels.html": {
         "lang": "zh-CN",
         "title": "小说 – Yuda Bi",
-        "description": "Yuda Bi 的小说作品页，收录《漫长的求证》和《被剪枝的世界》，以中文印刷出版风格呈现。",
+        "description": "Yuda Bi 的小说作品页，收录《档案 2036-CJW》《漫长的求证》《被剪枝的世界》三部作品，以中文印刷出版风格呈现。",
+    },
+    "novels/dangan2036cjw/index.html": {
+        "lang": "zh-CN",
+        "title": "档案 2036-CJW – Yuda Bi",
+        "description": "中篇小说《档案 2036-CJW》章节目录页：一份被封存一百年的档案，一封写给死者的信。",
     },
     "novels/manchangdeqiuzheng/index.html": {
         "lang": "zh-CN",

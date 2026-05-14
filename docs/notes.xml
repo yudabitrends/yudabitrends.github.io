@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
-      xmlns:media="http://search.yahoo.com/mrss/" 
-      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
-      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+<rss  xmlns:atom="http://www.w3.org/2005/Atom"
+      xmlns:media="http://search.yahoo.com/mrss/"
+      xmlns:content="http://purl.org/rss/1.0/modules/content/"
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
       version="2.0">
 <channel>
 <title>Yuda Bi — Research Notes</title>
-<link>https://yudabitrends.github.io/notes.html</link>
-<atom:link href="https://yudabitrends.github.io/notes.xml" rel="self" type="application/rss+xml"/>
+<link>https://yuda-bi.com/notes.html</link>
+<atom:link href="https://yuda-bi.com/notes.xml" rel="self" type="application/rss+xml"/>
 <description>Technical notes on statistical physics, information geometry, spectral methods, and theoretical neuroscience.</description>
 <language>en</language>
 <generator>quarto-1.9.36</generator>
@@ -15,8 +15,8 @@
 <item>
   <title>Spectral Methods in Brain Network Analysis</title>
   <dc:creator>Yuda Bi</dc:creator>
-  <link>https://yudabitrends.github.io/notes/2026-04-spectral-brain-networks/</link>
-  <description><![CDATA[ 
+  <link>https://yuda-bi.com/notes/2026-04-spectral-brain-networks/</link>
+  <description><![CDATA[
 
 
 
@@ -60,21 +60,21 @@
   <category>spectral methods</category>
   <category>brain networks</category>
   <category>graph theory</category>
-  <guid>https://yudabitrends.github.io/notes/2026-04-spectral-brain-networks/</guid>
+  <guid>https://yuda-bi.com/notes/2026-04-spectral-brain-networks/</guid>
   <pubDate>Mon, 06 Apr 2026 16:00:00 GMT</pubDate>
 </item>
 <item>
   <title>SpecRNA-QA: Why Spectral Graph Features See What Local Metrics Miss</title>
   <dc:creator>Yuda Bi</dc:creator>
-  <link>https://yudabitrends.github.io/notes/2026-04-specrnaq/</link>
-  <description><![CDATA[ 
+  <link>https://yuda-bi.com/notes/2026-04-specrnaq/</link>
+  <description><![CDATA[
 
 
 
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://yudabitrends.github.io/notes/2026-04-specrnaq/featured.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<p><img src="https://yuda-bi.com/notes/2026-04-specrnaq/featured.png" class="img-fluid figure-img" style="width:90.0%"></p>
 <figcaption>RNA 3D structure quality visualization: C4’ deviation from best model (blue = 0 Å, red = 50 Å). Structures with correct local geometry but misplaced domains show large red regions — exactly the failure mode that spectral methods detect.</figcaption>
 </figure>
 </div>
@@ -200,15 +200,15 @@ font-style: inherit;">--output</span> scores.csv</span></code></pre></div></div>
   <category>RNA structure</category>
   <category>bioinformatics</category>
   <category>graph theory</category>
-  <guid>https://yudabitrends.github.io/notes/2026-04-specrnaq/</guid>
+  <guid>https://yuda-bi.com/notes/2026-04-specrnaq/</guid>
   <pubDate>Mon, 06 Apr 2026 16:00:00 GMT</pubDate>
-  <media:content url="https://yudabitrends.github.io/notes/2026-04-specrnaq/featured.png" medium="image" type="image/png" height="111" width="144"/>
+  <media:content url="https://yuda-bi.com/notes/2026-04-specrnaq/featured.png" medium="image" type="image/png" height="111" width="144"/>
 </item>
 <item>
   <title>The Geometry of Invisible Forces: A Quartic Detection Theory</title>
   <dc:creator>Yuda Bi</dc:creator>
-  <link>https://yudabitrends.github.io/notes/2026-04-quartic-detection-theory/</link>
-  <description><![CDATA[ 
+  <link>https://yuda-bi.com/notes/2026-04-quartic-detection-theory/</link>
+  <description><![CDATA[
 
 
 
@@ -359,21 +359,21 @@ font-style: inherit;">--output</span> scores.csv</span></code></pre></div></div>
   <category>information geometry</category>
   <category>hidden variables</category>
   <category>spectral methods</category>
-  <guid>https://yudabitrends.github.io/notes/2026-04-quartic-detection-theory/</guid>
+  <guid>https://yuda-bi.com/notes/2026-04-quartic-detection-theory/</guid>
   <pubDate>Mon, 06 Apr 2026 16:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Structure Sets the Stage: How Gray Matter Geometry Constrains Functional Brain Organization</title>
   <dc:creator>Yuda Bi</dc:creator>
-  <link>https://yudabitrends.github.io/notes/2026-04-sfcoupling/</link>
-  <description><![CDATA[ 
+  <link>https://yuda-bi.com/notes/2026-04-sfcoupling/</link>
+  <description><![CDATA[
 
 
 
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://yudabitrends.github.io/notes/2026-04-sfcoupling/featured.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p><img src="https://yuda-bi.com/notes/2026-04-sfcoupling/featured.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <figcaption><strong>Spectral fingerprint of structure-function coupling.</strong> (a) Singular value spectrum of the GM→FNC coefficient matrix showing rapid spectral decay — the coupling is low-rank. (b) Principal angle cosines between GM-selected and FNC-dominant subspaces: near-perfect alignment in ~3 dimensions, then rapid falloff. (c) The signature gap: subspace overlap reaches 0.45 while variance explained (<img src="https://latex.codecogs.com/png.latex?R%5E2">) stays at ~0.06.</figcaption>
 </figure>
 </div>
@@ -455,7 +455,7 @@ font-style: inherit;">--output</span> scores.csv</span></code></pre></div></div>
 <h2 class="anchored" data-anchor-id="what-the-coupling-modes-look-like">What the Coupling Modes Look Like</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://yudabitrends.github.io/files/sfcoupling-fig7.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<p><img src="https://yuda-bi.com/files/sfcoupling-fig7.png" class="img-fluid figure-img" style="width:90.0%"></p>
 <figcaption><strong>Structure-function coupling modes.</strong> Each row shows one SVD mode: left panel shows GM loadings on a dorsal glass brain (node size = loading magnitude, color = network domain), right panel shows the corresponding FNC loading matrix (domain-sorted). Mode 1 (36.5% of coupled variance) captures a global sensorimotor-cognitive axis; Mode 2 (9.2%) isolates default mode and visual interactions; Mode 3 (7.9%) captures cerebellar-cortical coupling.</figcaption>
 </figure>
 </div>
@@ -572,9 +572,9 @@ font-style: inherit;">--output</span> scores.csv</span></code></pre></div></div>
   <category>structure-function coupling</category>
   <category>spectral methods</category>
   <category>linear algebra</category>
-  <guid>https://yudabitrends.github.io/notes/2026-04-sfcoupling/</guid>
+  <guid>https://yuda-bi.com/notes/2026-04-sfcoupling/</guid>
   <pubDate>Mon, 06 Apr 2026 16:00:00 GMT</pubDate>
-  <media:content url="https://yudabitrends.github.io/notes/2026-04-sfcoupling/featured.png" medium="image" type="image/png" height="45" width="144"/>
+  <media:content url="https://yuda-bi.com/notes/2026-04-sfcoupling/featured.png" medium="image" type="image/png" height="45" width="144"/>
 </item>
 </channel>
 </rss>
