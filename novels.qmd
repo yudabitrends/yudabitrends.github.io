@@ -75,7 +75,7 @@ css: novels.css
 ::: {.novel-info}
 
 ::: {.novel-badge}
-长篇小说 &middot; 三部十六章
+长篇小说 &middot; 三部十八章
 :::
 
 ## [漫长的求证](novels/manchangdeqiuzheng/) {.novel-title}

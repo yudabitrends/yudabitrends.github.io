@@ -22,7 +22,7 @@ css: ../../novels.css
 ![漫长的求证](../../files/novels/漫长的求证.jpg){.cover-img}
 :::
 ::: {.novel-detail-header}
-[长篇小说 &middot; 三部十六章]{.novels-label-en}
+[长篇小说 &middot; 三部十八章]{.novels-label-en}
 
 # 漫长的求证 {.novel-detail-title}
 
@@ -43,7 +43,7 @@ css: ../../novels.css
 ::: {.novel-toc-section}
 
 ::: {.novel-progress-note}
-全书十六章正文已上线，可按章节顺序进入阅读。
+全书十八章正文已上线，第八章分为「薄冰·一」「薄冰·二」两节，可按章节顺序进入阅读。
 :::
 
 ::: {.novel-part}
@@ -80,7 +80,7 @@ css: ../../novels.css
 [简并态](chapter-02-jianbingtai/)
 :::
 ::: {.chapter-teaser}
-实验班、水房电话与“简并态”的一句解释，让两个人之间的距离第一次有了清晰的轮廓。
+实验班、水房电话与「简并态」的一句解释，让两个人之间的距离第一次有了清晰的轮廓。
 :::
 :::
 :::
@@ -153,7 +153,7 @@ css: ../../novels.css
 [信号与噪声](chapter-06-xinhaoyuzaosheng/)
 :::
 ::: {.chapter-teaser}
-异国超市自助结账机、第一次 Zoom 面试、桌角四道月牙形小坑——他被礼貌地拨回属于自己的那一格。
+刚到美国那几天，眼睛先记住的是包装；申请邮件石沉大海以后，他才听清那句很轻的话。
 :::
 :::
 :::
@@ -167,21 +167,35 @@ css: ../../novels.css
 [先验](chapter-07-xianyan/)
 :::
 ::: {.chapter-teaser}
-从赵启维的合影墙到周教授办公室那盘薄荷糖，三种华人面孔同一种逻辑，把他一次次温柔地放回更低的位置。
+数学系的两门课、贝叶斯更新与「prior」一词；他第一次开始怀疑自己一路相信的方法。
 :::
 :::
 :::
 
-::: {.novel-chapter .chapter-available data-href="chapter-08-baobing/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
+::: {.novel-chapter .chapter-available data-href="chapter-08a-baobing-linjiayin/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
-八
+八·一
 :::
 ::: {.chapter-entry}
 ::: {.chapter-title}
-[薄冰](chapter-08-baobing/)
+[薄冰·一（林嘉音）](chapter-08a-baobing-linjiayin/)
 :::
 ::: {.chapter-teaser}
-异国冬天里三段越来越薄的关系，最后一颗番茄被切开，籽排成一个近乎对称的安静图案。
+异乡的第一段感情：林嘉音、东亚学生的小圈子、那一个没办法继续讲下去的夜晚。
+:::
+:::
+:::
+
+::: {.novel-chapter .chapter-available data-href="chapter-08b-baobing-sarah/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
+::: {.chapter-number}
+八·二
+:::
+::: {.chapter-entry}
+::: {.chapter-title}
+[薄冰·二（萨拉 + 约会软件）](chapter-08b-baobing-sarah/)
+:::
+::: {.chapter-teaser}
+萨拉学亚洲研究，把每个声调记成便利贴；后来是约会软件，三段感情一段比一段薄。
 :::
 :::
 :::
@@ -195,7 +209,7 @@ css: ../../novels.css
 [旷野中的灯](chapter-09-kuangyezhongdedeng/)
 :::
 ::: {.chapter-teaser}
-一封不带 capacity、也不带 not the right fit 的短回信，把他从一长串模板拒绝里拽起来。
+被两位教授拒绝、又从周教授办公室空着手出来以后，他翻到了名单上最后那一个名字。
 :::
 :::
 :::
@@ -209,7 +223,7 @@ css: ../../novels.css
 [基线](chapter-10-jixian/)
 :::
 ::: {.chapter-teaser}
-第一次组会被一句“What's your baseline?”拦在半空；Kevin 抽屉里露出半截写着 Phase Transitions 的旧本子。
+怀特摩实验室、Kevin 的甜甜圈、第一次跑 baseline——「先跑一个基线」的字面意思。
 :::
 :::
 :::
@@ -223,7 +237,7 @@ css: ../../novels.css
 [暗物质](chapter-11-anwuzhi/)
 :::
 ::: {.chapter-teaser}
-三次失败把他一寸寸往下拽。一个雪夜，Whitmore 也坐到地上，讲起七十年代末那篇等了三十年的旧论文。
+进入实验室半年，他开始明白科研里最重的东西往往看不见——那些已经花掉却不产生结果的时间。
 :::
 :::
 :::
@@ -301,16 +315,44 @@ css: ../../novels.css
 :::
 :::
 
-::: {.novel-chapter .chapter-available data-href="chapter-16-yuantou/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
+::: {.novel-chapter .chapter-available data-href="chapter-16-yuxiang/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
 ::: {.chapter-number}
 十六
 :::
 ::: {.chapter-entry}
 ::: {.chapter-title}
-[源头](chapter-16-yuantou/)
+[余响](chapter-16-yuxiang/)
 :::
 ::: {.chapter-teaser}
-回县城，去黎家，去墓地。最后一段从一个外人的视角写下：很多年以后，我在一所大学走廊里第一次见到陆沉。
+论文发表之后那些慢慢浮上来的回声：同行的来信、邀请、争议；他第一次需要决定一个人之外的事。
+:::
+:::
+:::
+
+::: {.novel-chapter .chapter-available data-href="chapter-17-guren-huiguo/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
+::: {.chapter-number}
+十七
+:::
+::: {.chapter-entry}
+::: {.chapter-title}
+[故人（回国）](chapter-17-guren-huiguo/)
+:::
+::: {.chapter-teaser}
+多年以后他第一次回国，回到县城。台阶还在，王婆馄饨摊不在了；他去黎家，又去了墓地。
+:::
+:::
+:::
+
+::: {.novel-chapter .chapter-available data-href="chapter-18-yuantou/" role="link" tabindex="0" onclick="window.location.href=this.dataset.href" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href=this.dataset.href;}"}
+::: {.chapter-number}
+十八
+:::
+::: {.chapter-entry}
+::: {.chapter-title}
+[源头](chapter-18-yuantou/)
+:::
+::: {.chapter-teaser}
+回县城那一程的末了，故事从一个外人的视角写下：很多年以后，我在一所大学走廊里第一次见到陆沉。
 :::
 :::
 :::
@@ -324,7 +366,7 @@ css: ../../novels.css
 
 ::: {.novels-footer}
 ::: {.novels-footer-inner}
-“章名并排搁着，前后遥遥照应，草蛇灰线，伏脉千里。”
+"章名并排搁着，前后遥遥照应，草蛇灰线，伏脉千里。"
 :::
 :::
 
