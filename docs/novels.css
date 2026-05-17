@@ -1,8 +1,8 @@
 @font-face {
   font-family: "Novel Songti";
   src:
-    url("files/fonts/novel-songti-subset.woff2?v=20260517b") format("woff2"),
-    url("files/fonts/novel-songti-subset.woff?v=20260517b") format("woff");
+    url("files/fonts/novel-songti-subset.woff2?v=20260518") format("woff2"),
+    url("files/fonts/novel-songti-subset.woff?v=20260518") format("woff");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -11,8 +11,8 @@
 @font-face {
   font-family: "Novel Kaiti";
   src:
-    url("files/fonts/novel-kaiti-subset.woff2?v=20260517b") format("woff2"),
-    url("files/fonts/novel-kaiti-subset.woff?v=20260517b") format("woff");
+    url("files/fonts/novel-kaiti-subset.woff2?v=20260518") format("woff2"),
+    url("files/fonts/novel-kaiti-subset.woff?v=20260518") format("woff");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
