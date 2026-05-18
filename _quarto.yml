@@ -3,6 +3,7 @@ project:
   output-dir: docs
   resources:
     - CNAME
+    - files/**
 
 website:
   title: "Yuda Bi"
