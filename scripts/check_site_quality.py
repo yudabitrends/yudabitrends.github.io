@@ -18,7 +18,7 @@ CRITICAL_PAGES = {
     "index.html": {
         "lang": "en",
         "title": "Yuda Bi",
-        "description": "Yuda Bi works on statistical theory for partly observed systems: independent component analysis and blind source separation, and heat and dissipation inference in stochastic thermodynamics.",
+        "description": "Yuda Bi works on independent component analysis and statistical learning theory, statistical physics, and applications in computational neuroscience.",
     },
 }
 

@@ -1,13 +1,19 @@
 /* Yuda Bi — homepage
-   A single white column set in Times New Roman. Formulas are typeset with
-   LaTeX (newtx, a Times math) by scripts/build_math.sh and served as SVG. */
+   A single white column set in Times New Roman; each paper sits in a framed
+   card. Formulas are typeset with LaTeX (newtx, a Times math) by
+   scripts/build_math.sh and served as SVG. */
 
 :root {
-  --ink: #1a1a1a;
-  --muted: #5a5a5a;
-  --faint: #8a8a8a;
-  --rule: #dcdcdc;
-  --tint: #f6f6f6;
+  --ink: #111;
+  --text: #1a1a1a;
+  --muted: #3f3f3f;
+  --faint: #6b6b6b;
+  --rule: #d9d9d9;
+  --frame: #d2d9e3;      /* card borders */
+  --frame-soft: #e4e8ee; /* panels inside a card */
+  --head: #f4f6f9;       /* card header */
+  --panel: #fafbfc;      /* formula panel */
+  --accent: #1f4e8c;
   --link: #1f4e8c;
   --measure: 46rem;
 }
@@ -22,7 +28,7 @@ html {
 body {
   margin: 0;
   background: #fff;
-  color: var(--ink);
+  color: var(--text);
   font-family: "Times New Roman", Times, "Liberation Serif", "Nimbus Roman",
     "TeX Gyre Termes", serif;
   font-size: 1.0625rem;   /* 17px */
@@ -38,6 +44,8 @@ body {
 img { display: block; max-width: 100%; height: auto; }
 
 p { margin: 0 0 0.85em; }
+
+strong, b { font-weight: 700; color: var(--ink); }
 
 a { color: var(--link); text-decoration: none; }
 a:hover { text-decoration: underline; text-underline-offset: 0.15em; }
@@ -76,8 +84,9 @@ sub { top: 0.25em; }
 }
 h1 {
   font-size: 2rem;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.15;
+  color: var(--ink);
   margin: 0 0 0.4rem;
 }
 .affil { color: var(--muted); margin-bottom: 0.5rem; }
@@ -89,10 +98,18 @@ h1 {
   display: inline-block;
   padding: 0 0.5em;
 }
-.portrait img { width: 100%; aspect-ratio: 1; object-fit: cover; }
-.portrait { margin: 0; }
+.portrait { width: 8.5rem; margin: 0; }
+.portrait img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 1px solid var(--frame);
+  border-radius: 4px;
+}
 
 .bio { margin-top: 1.6rem; }
+.interests { margin: 0 0 0.9rem; padding-left: 1.3rem; }
+.interests li + li { margin-top: 0.3rem; }
 
 /* ---------- Sections ---------- */
 
@@ -100,15 +117,16 @@ h2 {
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.3;
+  color: var(--ink);
   margin: 2.6rem 0 1rem;
   padding-bottom: 0.35rem;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 2px solid var(--accent);
 }
 
 h3.group {
   font-size: 1.0625rem;
-  font-weight: 400;
-  font-style: italic;
+  font-weight: 700;
+  color: var(--ink);
   margin: 1.2rem 0 0.4rem;
 }
 
@@ -119,19 +137,36 @@ h3.group {
 .toc li { margin-bottom: 0.35rem; padding-left: 0.2rem; }
 .toc .venue { color: var(--muted); }
 
-/* ---------- Papers ---------- */
+/* ---------- Papers: framed cards ---------- */
 
-.paper { margin-top: 2.4rem; scroll-margin-top: 1rem; }
-.paper + .paper { padding-top: 2.4rem; border-top: 1px solid var(--rule); }
+.paper {
+  margin-top: 1.5rem;
+  background: #fff;
+  border: 1px solid var(--frame);
+  border-top: 3px solid var(--accent);
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(16, 32, 64, 0.05), 0 10px 22px -16px rgba(16, 32, 64, 0.3);
+  overflow: hidden;
+  scroll-margin-top: 1rem;
+}
+h2 + .paper { margin-top: 1.25rem; }
+
+.paper-head {
+  background: var(--head);
+  border-bottom: 1px solid var(--frame);
+  padding: 1.1rem 1.5rem 1rem;
+}
+.paper-body { padding: 0.25rem 1.5rem 1.5rem; }
 
 .paper h3 {
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.3;
+  color: var(--ink);
   margin: 0 0 0.45rem;
 }
 .byline { margin-bottom: 0.15rem; }
-.byline .me { font-weight: 700; }
+.byline .me { font-weight: 700; color: var(--ink); }
 .venue-line { color: var(--muted); margin-bottom: 0; }
 .venue-line a:not(:last-child)::after {
   content: "\00b7";
@@ -141,24 +176,34 @@ h3.group {
 }
 .note { color: var(--muted); font-size: 0.9375rem; margin: 0.1rem 0 0; }
 
-/* Displayed formulas */
-.display { margin: 1.5rem 0 1.4rem; }
+/* Displayed formulas, on a light panel */
+.display {
+  margin: 1.25rem 0 0.4rem;
+  padding: 1.1rem 1.25rem 1rem;
+  background: var(--panel);
+  border: 1px solid var(--frame-soft);
+  border-radius: 4px;
+}
 .display picture, .display > img { display: block; }
 .display img { margin: 0 auto; }
 .display .gloss {
   max-width: 38rem;
-  margin: 0.8rem auto 0;
+  margin: 0.75rem auto 0;
   text-align: center;
   font-size: 0.9688rem;
   color: var(--muted);
 }
 .display .gloss + picture,
-.display .gloss + img { margin-top: 1.3rem; }
+.display .gloss + img { margin-top: 1.2rem; padding-top: 1.1rem; border-top: 1px solid var(--frame-soft); }
 
 .paper h4 {
   font-size: 1.0625rem;
   font-weight: 700;
-  margin: 1.4rem 0 0.4rem;
+  line-height: 1.25;
+  color: var(--ink);
+  margin: 1.35rem 0 0.45rem;
+  padding-left: 0.55rem;
+  border-left: 3px solid var(--accent);
 }
 
 .results { margin: 0; padding-left: 1.3rem; }
@@ -189,12 +234,16 @@ td .pred { color: var(--muted); }
 td sup { font-size: 0.7em; }
 .table-note { color: var(--muted); font-size: 0.9375rem; margin-top: 0.6rem; }
 
-/* Figures */
-.figure { margin: 1.6rem 0 0; }
+/* Figures, in a thin frame */
+.figure {
+  margin: 1.5rem 0 0;
+  padding: 0.9rem 0.9rem 0.8rem;
+  border: 1px solid var(--frame-soft);
+  border-radius: 4px;
+}
 .fig-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .fig-scroll a { display: block; }
-.figure figcaption { margin-top: 0.6rem; font-size: 0.9375rem; color: var(--muted); }
-.figure figcaption b { color: var(--ink); font-weight: 700; }
+.figure figcaption { margin-top: 0.7rem; font-size: 0.9375rem; color: var(--muted); }
 .swipe-hint { display: none; }
 
 /* ---------- Footer ---------- */
@@ -212,15 +261,21 @@ td sup { font-size: 0.7em; }
 
 @media (max-width: 640px) {
   body { font-size: 1rem; }
-  .page { padding: 2rem 1.15rem 2.5rem; }
+  .page { padding: 2rem 1rem 2.5rem; }
   .intro { grid-template-columns: minmax(0, 1fr) 5.5rem; column-gap: 1rem; }
+  .portrait { width: 5.5rem; }
   h1 { font-size: 1.75rem; }
+  .paper-head { padding: 0.9rem 1rem 0.85rem; }
+  .paper-body { padding: 0.1rem 1rem 1.1rem; }
   .paper h3 { font-size: 1.125rem; }
+  .display { padding: 0.9rem 0.6rem 0.85rem; }
+  .figure { padding: 0.6rem; }
   .fig-scroll img { width: 40rem; max-width: none; }
   .swipe-hint { display: block; font-size: 0.875rem; color: var(--faint); margin: 0.3rem 0 0; }
 }
 
 @media print {
+  .paper { box-shadow: none; break-inside: avoid-page; }
   .swipe-hint { display: none !important; }
   .fig-scroll img { width: 100% !important; }
   a { color: inherit; }
