@@ -18,32 +18,7 @@ CRITICAL_PAGES = {
     "index.html": {
         "lang": "en",
         "title": "Yuda Bi",
-        "description": "Academic homepage of Yuda Bi, featuring research in statistical physics, information geometry, theoretical neuroscience, and spectral methods.",
-    },
-    "publications.html": {
-        "lang": "en",
-        "title": "Publications – Yuda Bi",
-        "description": "Peer-reviewed publications by Yuda Bi on statistical physics, information geometry, spectral graph theory, and theoretical neuroscience.",
-    },
-    "novels.html": {
-        "lang": "zh-CN",
-        "title": "小说 – Yuda Bi",
-        "description": "Yuda Bi 的小说作品页，收录《档案 2036-CJW》《漫长的求证》《被剪枝的世界》三部作品，以中文印刷出版风格呈现。",
-    },
-    "novels/dangan2036cjw/index.html": {
-        "lang": "zh-CN",
-        "title": "档案 2036-CJW – Yuda Bi",
-        "description": "中篇小说《档案 2036-CJW》章节目录页：一份被封存一百年的档案，一封写给死者的信。",
-    },
-    "novels/manchangdeqiuzheng/index.html": {
-        "lang": "zh-CN",
-        "title": "漫长的求证 – Yuda Bi",
-        "description": "长篇小说《漫长的求证》章节目录页，关于县城、物理、异乡与漫长求索。",
-    },
-    "novels/beijianzhideshijie/index.html": {
-        "lang": "zh-CN",
-        "title": "被剪枝的世界 – Yuda Bi",
-        "description": "长篇小说《被剪枝的世界》章节目录页，关于系统、记录重写与不被覆盖的真实。",
+        "description": "Yuda Bi studies the statistical theory of independent component analysis: kurtosis contrast laws, overcomplete ICA, normalization mismatch, and certified comparison of ICA estimates.",
     },
 }
 
