@@ -25,7 +25,7 @@
   <meta name="twitter:image:alt" content="Yuda Bi: ICA and statistical learning theory, statistical physics, computational neuroscience">
 
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/site.css?v=20261025c">
+  <link rel="stylesheet" href="assets/site.css?v=20261025d">
 
   <script type="application/ld+json">
   {
@@ -62,56 +62,72 @@
 <div class="page">
 
 <header class="intro" id="top">
-  <div>
+  <img class="portrait" src="assets/avatar.jpg" width="120" height="120" alt="Portrait of Yuda Bi">
+  <div class="intro-text">
     <h1>Yuda Bi</h1>
-    <p class="affil">TReNDS Center &middot; Georgia State University, Georgia Tech, and Emory University &middot; Atlanta</p>
-    <p class="links">
-      <a href="mailto:ybi3@gsu.edu">Email</a><a href="https://scholar.google.com/citations?user=yclnpogAAAAJ&amp;hl=en">Google Scholar</a><a href="https://github.com/yudabitrends">GitHub</a><a href="https://orcid.org/0000-0003-0385-8363">ORCID</a><a href="https://www.linkedin.com/in/yudabi/">LinkedIn</a>
-    </p>
+    <p class="affil">Ph.D. in Computer Science &middot; TReNDS Center, Atlanta</p>
+    <ul class="links" aria-label="Contact and profiles">
+      <li><a href="mailto:ybi3@gsu.edu">Email</a></li>
+      <li><a href="https://scholar.google.com/citations?user=yclnpogAAAAJ&amp;hl=en">Google Scholar</a></li>
+      <li><a href="https://github.com/yudabitrends">GitHub</a></li>
+      <li><a href="https://orcid.org/0000-0003-0385-8363">ORCID</a></li>
+      <li><a href="https://www.linkedin.com/in/yudabi/">LinkedIn</a></li>
+    </ul>
   </div>
-  <figure class="portrait">
-    <img src="assets/avatar.jpg" width="136" height="136" alt="Portrait of Yuda Bi">
-  </figure>
 </header>
 
-<p class="bio">My research has three directions:</p>
-<ul class="interests">
-  <li><strong>Independent component analysis (ICA) and statistical learning theory:</strong> what limits blind source separation, what common estimation pipelines quietly cost, and how to certify an estimate when the true sources are never observed.</li>
-  <li><strong>Statistical physics:</strong> how much heat and dissipation can be inferred from stochastic records when part of the dynamics is hidden.</li>
-  <li><strong>Applications in computational neuroscience:</strong> ICA and related models for brain imaging data such as fMRI, building on my earlier work in multimodal neuroimaging.</li>
-</ul>
-<p>I am at the <a href="https://trendscenter.org/">TReNDS Center</a>, a joint center of Georgia State University, Georgia Tech, and Emory University in Atlanta. I received my Ph.D. in Computer Science from Georgia State in 2025, advised by Vince D. Calhoun.</p>
+<p class="bio">I am at the <a href="https://trendscenter.org/">TReNDS Center</a>, a joint center of Georgia State University, Georgia Tech, and Emory University in Atlanta. I received my Ph.D. in Computer Science from Georgia State in 2025, advised by Vince D. Calhoun. My research has three directions:</p>
+
+<ol class="directions" aria-label="Research directions">
+  <li>
+    <span class="dir-num">01</span>
+    <strong class="dir-title">ICA and statistical learning theory</strong>
+    <p>What limits blind source separation, what common estimation pipelines quietly cost, and how to certify an estimate when the true sources are never observed.</p>
+  </li>
+  <li>
+    <span class="dir-num">02</span>
+    <strong class="dir-title">Statistical physics</strong>
+    <p>How much heat and dissipation can be inferred from stochastic records when part of the dynamics is hidden.</p>
+  </li>
+  <li>
+    <span class="dir-num">03</span>
+    <strong class="dir-title">Computational neuroscience</strong>
+    <p>Applications of ICA and related models to brain imaging data such as fMRI, building on my earlier work in multimodal neuroimaging.</p>
+  </li>
+</ol>
 
 <main>
 
 <h2>Papers</h2>
 
-<h3 class="group">ICA and statistical learning theory</h3>
-<ol class="toc">
-  <li><a href="#kurtosis-law">A 1/<var>R</var> Law for Kurtosis Contrast in Balanced Mixtures</a> <span class="venue">&mdash; IEEE Signal Processing Letters, 2026</span></li>
-  <li><a href="#zeros">Zeros That Survive Mixing: Hardness and Immunity in Overcomplete ICA</a> <span class="venue">&mdash; submitted to IEEE Signal Processing Letters</span></li>
-  <li><a href="#normalization">Normalization Mismatch in ICA and Its Orthogonalized Remedy</a> <span class="venue">&mdash; submitted to IEEE Transactions on Signal Processing</span></li>
-  <li><a href="#certificates">Sharp Two-Sided Residual Certificates for Comparing ICA Estimates Without the Sources</a> <span class="venue">&mdash; under review</span></li>
-</ol>
-
-<h3 class="group">Statistical physics</h3>
-<ol class="toc" start="5">
-  <li><a href="#heat-threshold">Heat Constraints from Exponential Correlations and a Sharp Two-Temperature Threshold</a> <span class="venue">&mdash; submitted, 2026</span></li>
-  <li><a href="#two-probes">Two Probes Recover the Bath Heat That Neither Reveals Alone</a> <span class="venue">&mdash; submitted, 2026</span></li>
-</ol>
+<nav class="toc-card" aria-label="Papers">
+  <p class="toc-group">ICA and statistical learning theory</p>
+  <ol class="toc">
+    <li><a href="#kurtosis-law"><span class="toc-num">1</span><span class="toc-title">A 1/<var>R</var> Law for Kurtosis Contrast in Balanced Mixtures</span><span class="tag tag-pub">IEEE SPL 2026</span></a></li>
+    <li><a href="#zeros"><span class="toc-num">2</span><span class="toc-title">Zeros That Survive Mixing: Hardness and Immunity in Overcomplete ICA</span><span class="tag">Submitted &middot; IEEE SPL</span></a></li>
+    <li><a href="#normalization"><span class="toc-num">3</span><span class="toc-title">Normalization Mismatch in ICA and Its Orthogonalized Remedy</span><span class="tag">Submitted &middot; IEEE TSP</span></a></li>
+    <li><a href="#certificates"><span class="toc-num">4</span><span class="toc-title">Sharp Two-Sided Residual Certificates for Comparing ICA Estimates Without the Sources</span><span class="tag">Under review</span></a></li>
+  </ol>
+  <p class="toc-group">Statistical physics</p>
+  <ol class="toc" start="5">
+    <li><a href="#heat-threshold"><span class="toc-num">5</span><span class="toc-title">Heat Constraints from Exponential Correlations and a Sharp Two-Temperature Threshold</span><span class="tag">Submitted &middot; 2026</span></a></li>
+    <li><a href="#two-probes"><span class="toc-num">6</span><span class="toc-title">Two Probes Recover the Bath Heat That Neither Reveals Alone</span><span class="tag">Submitted &middot; 2026</span></a></li>
+  </ol>
+</nav>
 
 <h2>ICA and statistical learning theory</h2>
 
 <!-- ============== 1. A 1/R Law for Kurtosis Contrast in Balanced Mixtures ============== -->
 <article class="paper" id="kurtosis-law">
   <header class="paper-head">
-  <h3>1. A 1/<var>R</var> Law for Kurtosis Contrast in Balanced Mixtures</h3>
+  <h3><span class="num">1</span><span>A 1/<var>R</var> Law for Kurtosis Contrast in Balanced Mixtures</span></h3>
   <p class="byline"><span class="me">Yuda Bi</span>, Wenjun Xiao, Linhao Bai, Vince D. Calhoun</p>
-  <p class="venue-line"><i>IEEE Signal Processing Letters</i>, 2026 &nbsp;<a href="https://doi.org/10.1109/LSP.2026.3742750">DOI</a><a href="https://arxiv.org/abs/2602.22334">arXiv</a></p>
+  <p class="venue-line"><span class="tag tag-pub">Published</span><i>IEEE Signal Processing Letters</i>, 2026 &nbsp;<a href="https://doi.org/10.1109/LSP.2026.3742750">DOI</a><a href="https://arxiv.org/abs/2602.22334">arXiv</a></p>
   </header>
 
   <div class="paper-body">
   <div class="display">
+    <p class="display-label">Central result</p>
     <img src="assets/math/kurtosis-law.svg" width="261" height="47" alt="Absolute excess kurtosis of y is at most kappa max over R eff, where R eff is one over the sum over j of w j to the fourth">
     <p class="gloss">For any standardized projection, the magnitude of the excess kurtosis is at most the largest source-kurtosis magnitude divided by the effective width of the mixture, its participation ratio. Under balanced mixing the bound is order-tight.</p>
   </div>
@@ -139,20 +155,22 @@
     <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
     <figcaption><b>Fig. 1.</b> Synthetic validation. (a) Symmetric-FastICA unmixing error grows as the kurtosis gap &Delta;<var>&kappa;</var> shrinks, for 5&#8239;&times;&#8239;5 and 20&#8239;&times;&#8239;20 mixtures. (b) Balanced mixtures follow the 1/<var>R</var> law (fit <var>c</var>&nbsp;=&nbsp;1.57, <var>R</var><sup>2</sup>&nbsp;=&nbsp;0.994); unbalanced weights decay more slowly; the inset shows the <span class="nowrap"><var>&sigma;</var><sub>0</sub>/&radic;<var>T</var></span> estimator-noise crossover. (c) Purification with <var>m</var>&nbsp;=&nbsp;5 restores a contrast that does not depend on <var>R</var>. &copy; 2026 IEEE.</figcaption>
   </figure>
+    <p class="to-top"><a href="#top">Back to top &uarr;</a></p>
   </div>
 </article>
 
 <!-- ============== 2. Zeros That Survive Mixing ============== -->
 <article class="paper" id="zeros">
   <header class="paper-head">
-  <h3>2. Zeros That Survive Mixing: Hardness and Immunity in Overcomplete ICA</h3>
+  <h3><span class="num">2</span><span>Zeros That Survive Mixing: Hardness and Immunity in Overcomplete ICA</span></h3>
   <p class="byline">Wenjun Xiao*, <span class="me">Yuda Bi</span>*&dagger;, Hanxin Chen, Sihan Jia, Vince D. Calhoun</p>
-  <p class="venue-line">Submitted to <i>IEEE Signal Processing Letters</i>, 2026</p>
+  <p class="venue-line"><span class="tag">Submitted</span><i>IEEE Signal Processing Letters</i>, 2026</p>
   <p class="note">* Equal contribution. &dagger; Corresponding author.</p>
   </header>
 
   <div class="paper-body">
   <div class="display">
+    <p class="display-label">Central identity</p>
     <img src="assets/math/zeros-law.svg" width="155" height="51" alt="Phi x of omega equals the product from j equals 1 to q of chi j of a j transpose omega">
     <p class="gloss">With independent sources, the characteristic function of the observations is the product of the source characteristic functions along the mixing columns. The product damps, and it cannot erase zeros.</p>
   </div>
@@ -201,20 +219,22 @@
     <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
     <figcaption><b>Fig. 1.</b> (a) The modulus of the empirical characteristic function (log scale) for a binary target at 17&deg; among Gaussian, PAM-4, and impulsive interferers (<var>n</var>&nbsp;=&nbsp;2&#8239;&times;&#8239;10<sup>4</sup>): the zero lines of the target (dashed) and of the PAM-4 interferer (dotted) survive the other factors. (b) The aliasing barrier: exact total variation (filled) and squared Hellinger distance (open) between the configurations rotated by 0 and <var>&pi;</var>/(2<var>q</var>), for Gram&ndash;Charlier laws <var>&phi;</var><sub><var>a</var></sub> with <var>a</var>&nbsp;=&nbsp;1, 2, 4, fall exponentially in <var>q</var>. (c) RMSE against <var>n</var> with three mixed interferers: CFZ tracks the prediction of Proposition&nbsp;1, just above the oracle Cram&eacute;r&ndash;Rao bound, while SB-G, SB-T, and the kurtosis contrast level off and SB-GMM tracks CFZ.</figcaption>
   </figure>
+    <p class="to-top"><a href="#top">Back to top &uarr;</a></p>
   </div>
 </article>
 
 <!-- ============== 3. Normalization Mismatch in ICA ============== -->
 <article class="paper" id="normalization">
   <header class="paper-head">
-  <h3>3. Normalization Mismatch in ICA and Its Orthogonalized Remedy</h3>
+  <h3><span class="num">3</span><span>Normalization Mismatch in ICA and Its Orthogonalized Remedy</span></h3>
   <p class="byline">Jingling Yang*, <span class="me">Yuda Bi</span>*&dagger;, Linhao Bai, Vince D. Calhoun</p>
-  <p class="venue-line">Submitted to <i>IEEE Transactions on Signal Processing</i>, 2026</p>
+  <p class="venue-line"><span class="tag">Submitted</span><i>IEEE Transactions on Signal Processing</i>, 2026</p>
   <p class="note">* Equal contribution. &dagger; Corresponding author.</p>
   </header>
 
   <div class="paper-body">
   <div class="display">
+    <p class="display-label">Central result</p>
     <picture>
       <source media="(max-width: 480px)" srcset="assets/math/normalization-law-narrow.svg" width="189" height="171">
       <img src="assets/math/normalization-law.svg" width="383" height="52" alt="rho g squared times tau g N squared equals v g N times the squared norm of A, the score exposure, plus gamma g squared N times the squared norm of A minus W, the scale channel, plus eta g squared N times the squared norm of A minus U, the location channel">
@@ -279,20 +299,22 @@
     <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
     <figcaption><b>Fig. 1.</b> (a) A protocol gives the records three roles: <var>A</var> scores, <var>W</var> scales, <var>U</var> centers. (b) The one-unit price of common protocols for log-cosh on a shifted-exponential target, split into score exposure, scale channel, and location channel, in units of the common-sample variance; after orthogonalization only the score exposure remains. (c) Symmetric fits on the real signals with whitening on a random 10%: pairs of opposite curvature sign carry the cost.</figcaption>
   </figure>
+    <p class="to-top"><a href="#top">Back to top &uarr;</a></p>
   </div>
 </article>
 
 <!-- ============== 4. Sharp Two-Sided Residual Certificates ============== -->
 <article class="paper" id="certificates">
   <header class="paper-head">
-  <h3>4. Sharp Two-Sided Residual Certificates for Comparing ICA Estimates Without the Sources</h3>
+  <h3><span class="num">4</span><span>Sharp Two-Sided Residual Certificates for Comparing ICA Estimates Without the Sources</span></h3>
   <p class="byline"><span class="me">Yuda Bi</span>, Hanxin Chen, Sihan Jia, Zhaoxing Wei&dagger;</p>
-  <p class="venue-line">Under review, 2026</p>
+  <p class="venue-line"><span class="tag">Under review</span>2026</p>
   <p class="note">&dagger; Corresponding author.</p>
   </header>
 
   <div class="paper-body">
   <div class="display">
+    <p class="display-label">Central result</p>
     <img src="assets/math/certificates-law.svg" width="194" height="42" alt="r of B over root two Gamma is at most D of B, which is at most K of eta times r of B over gamma">
     <p class="gloss">For an orthogonal fourth-cumulant model, the off-diagonal residual <var>r</var> of a candidate brackets its distance <var>D</var> to the sources: from below with an optimal constant, and, for a candidate known to lie within distance <var>D&#772;</var>&nbsp;&lt; &radic;2 of them, from above with a coefficient <var>K</var>(<var>&eta;</var>) that tends to the optimal local value <span class="nowrap">1/&radic;2</span>. With equal-magnitude cumulants the two sides meet near the sources.</p>
   </div>
@@ -338,6 +360,7 @@
     <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
     <figcaption><b>Fig. 1.</b> Sharp geometry. (a) Lower bound over true error for noiseless equal-magnitude rotations at angle 10<sup>&minus;4</sup>: the new bound stays within 2&#8239;&times;&#8239;10<sup>&minus;8</sup> of one, while the legacy bound decays as <span class="nowrap">1/&radic;<var>d</var></span>. (b) Upper bound over error at <var>d</var>&nbsp;=&nbsp;8 as the rotation angle shrinks: the new bound tends to 1, the legacy bound to &radic;2. (c) Certified share of the 3,360 exact-tensor comparison pairs.</figcaption>
   </figure>
+    <p class="to-top"><a href="#top">Back to top &uarr;</a></p>
   </div>
 </article>
 
@@ -346,13 +369,14 @@
 <!-- ============== 5. Heat constraints from exponential correlations ============== -->
 <article class="paper" id="heat-threshold">
   <header class="paper-head">
-  <h3>5. Heat Constraints from Exponential Correlations and a Sharp Two-Temperature Threshold</h3>
+  <h3><span class="num">5</span><span>Heat Constraints from Exponential Correlations and a Sharp Two-Temperature Threshold</span></h3>
   <p class="byline"><span class="me">Yuda Bi</span>, Chenyu Zhang, Vince D. Calhoun</p>
-  <p class="venue-line">Submitted, 2026. Companion to <a href="#two-probes">paper 6</a>.</p>
+  <p class="venue-line"><span class="tag">Submitted</span>2026 &middot; companion to <a href="#two-probes">paper 6</a></p>
   </header>
 
   <div class="paper-body">
   <div class="display">
+    <p class="display-label">Central result</p>
     <img src="assets/math/heat-law.svg" width="240" height="43" alt="sigma is at least q squared over 2 q plus Delta C over D X, where q equals Q X over k B T X">
     <p class="gloss">The total entropy production rate &sigma; of a stationary diffusion observed through one coordinate <var>X</var> is bounded below by the heat <var>Q</var><sub><var>X</var></sub> exchanged with the observed bath and the curvature defect &Delta;<sub><var>C</var></sub>: the zero-lag curvature of the autocorrelation minus that of an Ornstein&ndash;Uhlenbeck process with the same variance and diffusion. The bound is sharp for every allowed value of heat and curvature defect.</p>
     <picture>
@@ -388,19 +412,21 @@
     <p class="swipe-hint">Swipe sideways for both panels, or tap to open the full figure.</p>
     <figcaption><b>Fig. 3.</b> Sharp threshold at zero curvature defect and its singular limit, for independent baths, conservative forces, no external work, and one hidden temperature. (a) At positive heat and zero curvature defect, <span class="nowrap">1&nbsp;&lt; <var>R</var><sub><var>T</var></sub>&nbsp;&le; 2</span> is excluded; every <span class="nowrap"><var>R</var><sub><var>T</var></sub>&nbsp;&gt; 2</span> is realized at fixed <var>a</var>, <var>D</var><sub><var>X</var></sub>, <var>q</var>. (b) For <span class="nowrap"><var>a</var>&nbsp;=&nbsp;<var>D</var><sub><var>X</var></sub>&nbsp;=&nbsp;<var>q</var>&nbsp;=&nbsp;1</span>, the bare hidden rate <span class="nowrap"><var>B</var>/<var>a</var>&nbsp;=&nbsp;(<var>R</var><sub><var>T</var></sub>&nbsp;+&nbsp;1)/(<var>R</var><sub><var>T</var></sub>&nbsp;&minus;&nbsp;2)</span> diverges at the open endpoint.</figcaption>
   </figure>
+    <p class="to-top"><a href="#top">Back to top &uarr;</a></p>
   </div>
 </article>
 
 <!-- ============== 6. Two probes recover the bath heat ============== -->
 <article class="paper" id="two-probes">
   <header class="paper-head">
-  <h3>6. Two Probes Recover the Bath Heat That Neither Reveals Alone</h3>
+  <h3><span class="num">6</span><span>Two Probes Recover the Bath Heat That Neither Reveals Alone</span></h3>
   <p class="byline"><span class="me">Yuda Bi</span>, Vince D. Calhoun</p>
-  <p class="venue-line">Submitted, 2026. Companion to <a href="#heat-threshold">paper 5</a>.</p>
+  <p class="venue-line"><span class="tag">Submitted</span>2026 &middot; companion to <a href="#heat-threshold">paper 5</a></p>
   </header>
 
   <div class="paper-body">
   <div class="display">
+    <p class="display-label">Central result</p>
     <img src="assets/math/probes-law.svg" width="98" height="42" alt="Q dot i over k B T i equals alpha i minus beta">
     <p class="gloss">At cancellation, the heat each probe delivers to its bath, in thermal units, is its mechanical response rate <var>&alpha;</var><sub><var>i</var></sub> minus the relaxation rate <var>&beta;</var> of the shared force (the Harada&ndash;Sasa relation), with no calibration of the drive amplitude.</p>
     <img src="assets/math/probes-tails.svg" width="353" height="21" alt="r k equals R plus times a 1 to the k minus 1, r minus k equals R minus times a 2 to the k minus 1, with a i equal to e to the minus alpha i Delta">
@@ -450,13 +476,14 @@
     <p class="swipe-hint">Swipe sideways for both panels, or tap to open the full figure.</p>
     <figcaption><b>Fig. 3.</b> Exact bath heat, a kinetic lower bound, and observed irreversibility are distinct. (a) Equal-response cancellation family, <var>&beta;</var>&nbsp;=&nbsp;0.5, <span class="nowrap"><var>&alpha;</var><sub>1</sub>&nbsp;=&nbsp;<var>&alpha;</var><sub>2</sub>&nbsp;=&nbsp;<var>&alpha;</var></span>: the summed bath entropy flow is <span class="nowrap">2(<var>&alpha;</var>&nbsp;&minus;&nbsp;<var>&beta;</var>)</span>, the time-symmetric kinetic bound <var>B</var><sub>12</sub> lies below it, and the observed &Pi;<sub>12</sub> is exactly zero. (b) Fixed <span class="nowrap">(<var>&alpha;</var><sub>1</sub>, <var>&alpha;</var><sub>2</sub>, <var>&beta;</var>)&nbsp;=&nbsp;(1,&nbsp;2,&nbsp;0.5)</span> with drive coupling <var>&lambda;</var>: bath heat is quadratic in <var>&lambda;</var>, while observed information and irreversibility start at fourth order.</figcaption>
   </figure>
+    <p class="to-top"><a href="#top">Back to top &uarr;</a></p>
   </div>
 </article>
 
 </main>
 
 <footer class="site-footer">
-  <p>Yuda Bi &middot; Figures are reproduced from the papers. Updated October 2026.</p>
+  <p>&copy; 2026 Yuda Bi &middot; Figures are reproduced from the papers &middot; Updated October 2026</p>
 </footer>
 
 </div>
