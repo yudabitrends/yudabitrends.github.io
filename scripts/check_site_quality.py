@@ -18,7 +18,7 @@ CRITICAL_PAGES = {
     "index.html": {
         "lang": "en",
         "title": "Yuda Bi",
-        "description": "Yuda Bi studies the statistical theory of independent component analysis: kurtosis contrast laws, overcomplete ICA, normalization mismatch, and certified comparison of ICA estimates.",
+        "description": "Yuda Bi works on statistical theory for partly observed systems: independent component analysis and blind source separation, and heat and dissipation inference in stochastic thermodynamics.",
     },
 }
 

@@ -4,9 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Yuda Bi</title>
-  <meta name="description" content="Yuda Bi studies the statistical theory of independent component analysis: kurtosis contrast laws, overcomplete ICA, normalization mismatch, and certified comparison of ICA estimates.">
+  <meta name="description" content="Yuda Bi works on statistical theory for partly observed systems: independent component analysis and blind source separation, and heat and dissipation inference in stochastic thermodynamics.">
   <meta name="author" content="Yuda Bi">
-  <meta name="theme-color" content="#0f1b2d">
   <link rel="canonical" href="https://yuda-bi.com/">
 
   <meta property="og:type" content="website">
@@ -14,19 +13,18 @@
   <meta property="og:site_name" content="Yuda Bi">
   <meta property="og:locale" content="en_US">
   <meta property="og:title" content="Yuda Bi">
-  <meta property="og:description" content="Yuda Bi studies the statistical theory of independent component analysis: kurtosis contrast laws, overcomplete ICA, normalization mismatch, and certified comparison of ICA estimates.">
+  <meta property="og:description" content="Yuda Bi works on statistical theory for partly observed systems: independent component analysis and blind source separation, and heat and dissipation inference in stochastic thermodynamics.">
   <meta property="og:image" content="https://yuda-bi.com/assets/og-card.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Yuda Bi, with the central formulas of four papers on independent component analysis">
+  <meta property="og:image:alt" content="Yuda Bi: independent component analysis and stochastic thermodynamics">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Yuda Bi">
-  <meta name="twitter:description" content="Yuda Bi studies the statistical theory of independent component analysis: kurtosis contrast laws, overcomplete ICA, normalization mismatch, and certified comparison of ICA estimates.">
+  <meta name="twitter:description" content="Yuda Bi works on statistical theory for partly observed systems: independent component analysis and blind source separation, and heat and dissipation inference in stochastic thermodynamics.">
   <meta name="twitter:image" content="https://yuda-bi.com/assets/og-card.png">
-  <meta name="twitter:image:alt" content="Yuda Bi, with the central formulas of four papers on independent component analysis">
+  <meta name="twitter:image:alt" content="Yuda Bi: independent component analysis and stochastic thermodynamics">
 
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="assets/fonts/pagella-regular.woff" as="font" type="font/woff" crossorigin>
   <link rel="stylesheet" href="assets/site.css">
 
   <script type="application/ld+json">
@@ -47,7 +45,8 @@
       "Independent component analysis",
       "Blind source separation",
       "Statistical signal processing",
-      "Higher-order statistics"
+      "Stochastic thermodynamics",
+      "Nonequilibrium statistical physics"
     ],
     "sameAs": [
       "https://scholar.google.com/citations?user=yclnpogAAAAJ",
@@ -59,527 +58,377 @@
   </script>
 </head>
 <body>
+<div class="page">
 
-<a class="skip-link" href="#papers">Skip to the papers</a>
-
-<!-- ============================== Navigation ============================== -->
-<nav class="site-nav page" aria-label="Sections">
-  <div class="wide">
-    <a class="wordmark" href="#top">Yuda Bi</a>
-    <ol>
-      <li><a href="#kurtosis-law"><span class="num">I</span><span class="label">Kurtosis law</span></a></li>
-      <li><a href="#zeros"><span class="num">II</span><span class="label">Overcomplete ICA</span></a></li>
-      <li><a href="#normalization"><span class="num">III</span><span class="label">Normalization</span></a></li>
-      <li><a href="#certificates"><span class="num">IV</span><span class="label">Certificates</span></a></li>
-    </ol>
+<header class="intro" id="top">
+  <div>
+    <h1>Yuda Bi</h1>
+    <p class="affil">TReNDS Center &middot; Georgia State University, Georgia Tech, and Emory University &middot; Atlanta</p>
+    <p class="links">
+      <a href="mailto:ybi3@gsu.edu">Email</a><a href="https://scholar.google.com/citations?user=yclnpogAAAAJ&amp;hl=en">Google Scholar</a><a href="https://github.com/yudabitrends">GitHub</a><a href="https://orcid.org/0000-0003-0385-8363">ORCID</a><a href="https://www.linkedin.com/in/yudabi/">LinkedIn</a>
+    </p>
   </div>
-</nav>
-
-<!-- ============================== Masthead ============================== -->
-<header class="masthead page" id="top">
-  <div class="masthead-inner wide">
-    <div class="masthead-text">
-      <p class="kicker">Independent component analysis &middot; Blind source separation</p>
-      <h1>Yuda Bi</h1>
-      <hr class="rule">
-      <p class="lead">I work on the statistical theory of independent component analysis (ICA) and blind source separation: what limits separation, what common estimation pipelines quietly cost, and how to certify an estimate when the true sources are never observed.</p>
-      <p class="bio">I am at the <a href="https://trendscenter.org/">TReNDS Center</a>, a joint center of Georgia State University, Georgia Tech, and Emory University in Atlanta. I received my Ph.D. in Computer Science from Georgia State in 2025, advised by Vince D. Calhoun.</p>
-      <ul class="contact" aria-label="Contact and profiles">
-        <li><a href="mailto:ybi3@gsu.edu">ybi3@gsu.edu</a></li>
-        <li><a href="https://scholar.google.com/citations?user=yclnpogAAAAJ&amp;hl=en">Google Scholar</a></li>
-        <li><a href="https://github.com/yudabitrends">GitHub</a></li>
-        <li><a href="https://orcid.org/0000-0003-0385-8363">ORCID</a></li>
-        <li><a href="https://www.linkedin.com/in/yudabi/">LinkedIn</a></li>
-      </ul>
-    </div>
-    <figure class="portrait">
-      <img src="assets/avatar.jpg" width="480" height="480" alt="Portrait of Yuda Bi">
-    </figure>
-  </div>
+  <figure class="portrait">
+    <img src="assets/avatar.jpg" width="480" height="480" alt="Portrait of Yuda Bi">
+  </figure>
 </header>
 
-<!-- ============================== Paper cards ============================== -->
-<section class="index page" id="papers" aria-labelledby="papers-label">
-  <div class="wide">
-    <div class="index-head">
-      <h2 class="kicker" id="papers-label">Four papers</h2>
-      <p>Each is summarized in detail below: the question, the results, and the evidence.</p>
-    </div>
-    <ol class="cards">
-      <li class="card">
-        <a href="#kurtosis-law">
-          <span class="card-top"><span class="numeral">I</span><span class="badge published">Published</span></span>
-          <span class="card-math"><img src="assets/math/p1-index.svg" width="120" height="47" alt=""></span>
-          <span class="card-title">A 1/<var>R</var> Law for Kurtosis Contrast in Balanced Mixtures</span>
-          <span class="card-venue">IEEE Signal Processing Letters, 2026</span>
-          <span class="card-cta">Read the summary</span>
-        </a>
-      </li>
-      <li class="card">
-        <a href="#zeros">
-          <span class="card-top"><span class="numeral">II</span><span class="badge">Submitted</span></span>
-          <span class="card-math"><img src="assets/math/p3-index.svg" width="186" height="66" alt=""></span>
-          <span class="card-title">Zeros That Survive Mixing: Hardness and Immunity in Overcomplete ICA</span>
-          <span class="card-venue">Submitted to IEEE Signal Processing Letters</span>
-          <span class="card-cta">Read the summary</span>
-        </a>
-      </li>
-      <li class="card">
-        <a href="#normalization">
-          <span class="card-top"><span class="numeral">III</span><span class="badge">Submitted</span></span>
-          <span class="card-math"><img src="assets/math/p4-index.svg" width="238" height="32" alt=""></span>
-          <span class="card-title">Normalization Mismatch in ICA and Its Orthogonalized Remedy</span>
-          <span class="card-venue">Submitted to IEEE Transactions on Signal Processing</span>
-          <span class="card-cta">Read the summary</span>
-        </a>
-      </li>
-      <li class="card">
-        <a href="#certificates">
-          <span class="card-top"><span class="numeral">IV</span><span class="badge">Under review</span></span>
-          <span class="card-math"><img src="assets/math/p2-index.svg" width="231" height="54" alt=""></span>
-          <span class="card-title">Sharp Two-Sided Residual Certificates for Comparing ICA Estimates Without the Sources</span>
-          <span class="card-venue">Under review</span>
-          <span class="card-cta">Read the summary</span>
-        </a>
-      </li>
-    </ol>
-  </div>
-</section>
+<p class="bio">I work on statistical theory for systems that are only partly observed. In independent component analysis (ICA) and blind source separation, I study what limits separation, what common estimation pipelines quietly cost, and how to certify an estimate when the true sources are never observed. In stochastic thermodynamics, I study how much heat and dissipation can be inferred when the dynamics behind a record are hidden.</p>
+<p>I am at the <a href="https://trendscenter.org/">TReNDS Center</a>, a joint center of Georgia State University, Georgia Tech, and Emory University in Atlanta. I received my Ph.D. in Computer Science from Georgia State in 2025, advised by Vince D. Calhoun.</p>
 
 <main>
 
-<!-- ============== I. A 1/R Law for Kurtosis Contrast in Balanced Mixtures ============== -->
-<article class="paper" id="kurtosis-law" aria-labelledby="kurtosis-law-title">
-  <div class="paper-head page">
-    <div class="title-block">
-      <p class="numeral" aria-hidden="true">I</p>
-      <div>
-        <p class="kicker"><span class="badge published">Published</span> IEEE Signal Processing Letters &middot; 2026</p>
-        <h2 id="kurtosis-law-title">A 1/<var>R</var> Law for Kurtosis Contrast in Balanced Mixtures</h2>
-        <p class="authors"><span class="me">Yuda Bi</span>, Wenjun Xiao, Linhao Bai, Vince D. Calhoun</p>
-        <div class="actions">
-          <a class="btn" href="https://doi.org/10.1109/LSP.2026.3742750">DOI</a>
-          <a class="btn" href="https://arxiv.org/abs/2602.22334">arXiv</a>
-        </div>
-        <ul class="tags" aria-label="Index terms">
-          <li>Independent component analysis</li>
-          <li>Kurtosis</li>
-          <li>Redundancy</li>
-          <li>Source separation</li>
-        </ul>
-      </div>
-    </div>
+<h2>Papers</h2>
 
-    <div class="law wide">
-      <p class="law-label">Central result</p>
-      <picture>
-        <source media="(max-width: 640px)" srcset="assets/math/p1-law-narrow.svg" width="227" height="176">
-        <img src="assets/math/p1-law.svg" width="486" height="90" alt="Absolute excess kurtosis of y is at most kappa max over R eff, where R eff is one over the sum over j of w j to the fourth">
-      </picture>
-      <p class="gloss">For any standardized projection, the magnitude of the excess kurtosis is at most the largest source-kurtosis magnitude divided by the effective width of the mixture, its participation ratio. Under balanced mixing the bound is order-tight.</p>
-    </div>
+<h3 class="group">Independent component analysis</h3>
+<ol class="toc">
+  <li><a href="#kurtosis-law">A 1/<var>R</var> Law for Kurtosis Contrast in Balanced Mixtures</a> <span class="venue">&mdash; IEEE Signal Processing Letters, 2026</span></li>
+  <li><a href="#zeros">Zeros That Survive Mixing: Hardness and Immunity in Overcomplete ICA</a> <span class="venue">&mdash; submitted to IEEE Signal Processing Letters</span></li>
+  <li><a href="#normalization">Normalization Mismatch in ICA and Its Orthogonalized Remedy</a> <span class="venue">&mdash; submitted to IEEE Transactions on Signal Processing</span></li>
+  <li><a href="#certificates">Sharp Two-Sided Residual Certificates for Comparing ICA Estimates Without the Sources</a> <span class="venue">&mdash; under review</span></li>
+</ol>
 
-    <ul class="stats wide" aria-label="Key figures">
-      <li><span class="stat-num">1/<var>R</var></span><span class="stat-label">Order-tight decay of kurtosis contrast in balanced mixtures of width <var>R</var></span></li>
-      <li><span class="stat-num">4&times;</span><span class="stat-label">More data needed to double the tolerable mixture width</span></li>
-      <li><span class="stat-num">0.994</span><span class="stat-label"><var>R</var><sup>2</sup> of the fit 1.57/<var>R</var> on balanced Student-<var>t</var> mixtures</span></li>
-      <li><span class="stat-num">0.03<span class="to">&rarr;</span>0.52</span><span class="stat-label">Contrast at <var>R</var>&nbsp;=&nbsp;200: full mixture, then purified to <var>m</var>&nbsp;=&nbsp;5 sources</span></li>
-    </ul>
+<h3 class="group">Stochastic thermodynamics</h3>
+<ol class="toc" start="5">
+  <li><a href="#heat-threshold">Heat Constraints from Exponential Correlations and a Sharp Two-Temperature Threshold</a> <span class="venue">&mdash; submitted, 2026</span></li>
+  <li><a href="#two-probes">Two Probes Recover the Bath Heat That Neither Reveals Alone</a> <span class="venue">&mdash; submitted, 2026</span></li>
+</ol>
+
+<h2>Independent component analysis</h2>
+
+<!-- ============== 1. A 1/R Law for Kurtosis Contrast in Balanced Mixtures ============== -->
+<article class="paper" id="kurtosis-law">
+  <h3>1. A 1/<var>R</var> Law for Kurtosis Contrast in Balanced Mixtures</h3>
+  <p class="byline"><span class="me">Yuda Bi</span>, Wenjun Xiao, Linhao Bai, Vince D. Calhoun</p>
+  <p class="venue-line"><i>IEEE Signal Processing Letters</i>, 2026 &nbsp;<a href="https://doi.org/10.1109/LSP.2026.3742750">DOI</a><a href="https://arxiv.org/abs/2602.22334">arXiv</a></p>
+
+  <div class="display">
+    <img src="assets/math/kurtosis-law.svg" width="261" height="47" alt="Absolute excess kurtosis of y is at most kappa max over R eff, where R eff is one over the sum over j of w j to the fourth">
+    <p class="gloss">For any standardized projection, the magnitude of the excess kurtosis is at most the largest source-kurtosis magnitude divided by the effective width of the mixture, its participation ratio. Under balanced mixing the bound is order-tight.</p>
   </div>
 
-  <div class="paper-body page">
-    <section class="block grid">
-      <div class="margin"><h3 class="margin-label">The question</h3></div>
-      <div class="main">
-        <p>Excess kurtosis, the standardized fourth cumulant, is a central contrast of ICA and the basis of FastICA&rsquo;s kurtosis-type nonlinearity, and it is known to fade as mixtures widen: the central limit theorem pushes wide projections toward Gaussianity. Earlier analyses took contrast strength as given. This letter measures how much contrast survives, at the population level, when a projection spreads its weight over many sources. That is the regime of high-model-order group ICA in neuroimaging, where more samples cannot restore contrast that the mixture itself has removed.</p>
-      </div>
-    </section>
+  <h4>The question</h4>
+  <p>Excess kurtosis, the standardized fourth cumulant, is a central contrast of ICA and the basis of FastICA&rsquo;s kurtosis-type nonlinearity, and it is known to fade as mixtures widen: the central limit theorem pushes wide projections toward Gaussianity. Earlier analyses took contrast strength as given. This letter measures how much contrast survives, at the population level, when a projection spreads its weight over many sources. That is the regime of high-model-order group ICA in neuroimaging, where more samples cannot restore contrast that the mixture itself has removed.</p>
 
-    <section class="block grid">
-      <div class="margin"><h3 class="margin-label">Results</h3></div>
-      <div class="main">
-        <ul class="results">
-          <li><strong>Theorem 1</strong> <span class="thm-name">(Sharp redundancy bound).</span> For any standardized projection <span class="nowrap"><var>y</var>&nbsp;=&nbsp;&Sigma;<sub><var>j</var></sub>&#8239;<var>w</var><sub><var>j</var></sub><var>s</var><sub><var>j</var></sub></span>, <span class="nowrap">|<var>&kappa;</var>(<var>y</var>)|</span>&nbsp;&le; <var>&kappa;</var><sub>max</sub> &Sigma;<sub><var>j</var></sub> <var>w</var><span class="ss"><sup>4</sup><sub><var>j</var></sub></span>&nbsp;=&nbsp;<var>&kappa;</var><sub>max</sub>/<var>R</var><sub>eff</sub> (Corollary&nbsp;1). Under balanced mixing (<span class="nowrap">max<sub><var>j</var></sub> <var>w</var><span class="ss"><sup>2</sup><sub><var>j</var></sub></span>&nbsp;&le; <var>c</var><sub>b</sub>/<var>R</var></span>) this is at most <var>c</var><sub>b</sub><var>&kappa;</var><sub>max</sub>/<var>R</var>, and equal weights with equal kurtoses attain <span class="nowrap">|<var>&kappa;</var><sub>0</sub>|</span>/<var>R</var> exactly. Proposition&nbsp;1 shows that balance is generic inside well-conditioned blocks, with <var>c</var><sub>b</sub> growing at most logarithmically in <var>R</var>.</li>
-          <li><strong>Corollary 2</strong> <span class="thm-name">(Necessary model-order screening condition).</span> The contrast of a balanced projection can exceed the estimation noise floor <span class="nowrap"><var>&sigma;</var><sub>0</sub>/&radic;<var>T</var></span> only if <span class="nowrap"><var>R</var>&nbsp;&lt; <var>c</var><sub>b</sub><var>&kappa;</var><sub>max</sub>&radic;<var>T</var>&#8239;/&#8239;<var>&sigma;</var><sub>0</sub></span>, so doubling the tolerable width takes four times the data. The letter gives a coarse recipe that estimates this ceiling from data and flags hopeless model orders.</li>
-          <li><strong>Theorem 2</strong> <span class="thm-name">(Purification lower bound).</span> Keeping <var>m</var>&nbsp;&#8810; <var>R</var> sources of one kurtosis sign and renormalizing their weights gives <span class="nowrap">|<var>&kappa;</var>(<var>y</var><sub>pur</sub>)|</span>&nbsp;&ge; <var>&kappa;</var><sub>min</sub>/<var>m</var>, with <var>&kappa;</var><sub>min</sub> the smallest kurtosis magnitude among the kept sources, whatever <var>R</var> is. A data-driven version picks the subset from a preliminary separation, without an oracle.</li>
-        </ul>
-      </div>
-    </section>
+  <h4>Results</h4>
+  <ul class="results">
+    <li><b>Theorem 1</b> <span class="thm-name">(Sharp redundancy bound).</span> For any standardized projection <span class="nowrap"><var>y</var>&nbsp;=&nbsp;&Sigma;<sub><var>j</var></sub>&#8239;<var>w</var><sub><var>j</var></sub><var>s</var><sub><var>j</var></sub></span>, <span class="nowrap">|<var>&kappa;</var>(<var>y</var>)|</span>&nbsp;&le; <var>&kappa;</var><sub>max</sub> &Sigma;<sub><var>j</var></sub> <var>w</var><span class="ss"><sup>4</sup><sub><var>j</var></sub></span>&nbsp;=&nbsp;<var>&kappa;</var><sub>max</sub>/<var>R</var><sub>eff</sub> (Corollary&nbsp;1). Under balanced mixing (<span class="nowrap">max<sub><var>j</var></sub> <var>w</var><span class="ss"><sup>2</sup><sub><var>j</var></sub></span>&nbsp;&le; <var>c</var><sub>b</sub>/<var>R</var></span>) this is at most <var>c</var><sub>b</sub><var>&kappa;</var><sub>max</sub>/<var>R</var>, and equal weights with equal kurtoses attain <span class="nowrap">|<var>&kappa;</var><sub>0</sub>|</span>/<var>R</var> exactly. Proposition&nbsp;1 shows that balance is generic inside well-conditioned blocks, with <var>c</var><sub>b</sub> growing at most logarithmically in <var>R</var>.</li>
+    <li><b>Corollary 2</b> <span class="thm-name">(Necessary model-order screening condition).</span> The contrast of a balanced projection can exceed the estimation noise floor <span class="nowrap"><var>&sigma;</var><sub>0</sub>/&radic;<var>T</var></span> only if <span class="nowrap"><var>R</var>&nbsp;&lt; <var>c</var><sub>b</sub><var>&kappa;</var><sub>max</sub>&radic;<var>T</var>&#8239;/&#8239;<var>&sigma;</var><sub>0</sub></span>, so doubling the tolerable width takes four times the data. The letter gives a coarse recipe that estimates this ceiling from data and flags hopeless model orders.</li>
+    <li><b>Theorem 2</b> <span class="thm-name">(Purification lower bound).</span> Keeping <var>m</var>&nbsp;&#8810; <var>R</var> sources of one kurtosis sign and renormalizing their weights gives <span class="nowrap">|<var>&kappa;</var>(<var>y</var><sub>pur</sub>)|</span>&nbsp;&ge; <var>&kappa;</var><sub>min</sub>/<var>m</var>, with <var>&kappa;</var><sub>min</sub> the smallest kurtosis magnitude among the kept sources, whatever <var>R</var> is. A data-driven version picks the subset from a preliminary separation, without an oracle.</li>
+  </ul>
 
-    <section class="block grid">
-      <div class="margin"><h3 class="margin-label">Evidence</h3></div>
-      <div class="main">
-        <p>Balanced mixtures of Student-<var>t</var> sources follow <span class="nowrap">|<var>&kappa;&#770;</var>(<var>y</var>)|</span>&nbsp;&asymp;&nbsp;1.57/<var>R</var> (<var>R</var><sup>2</sup>&nbsp;=&nbsp;0.994), and the estimator noise crosses the population contrast near <var>T</var>&nbsp;&asymp;&nbsp;3&#8239;&times;&#8239;10<sup>4</sup>, as the screen predicts. Keeping <var>m</var>&nbsp;=&nbsp;5 sign-consistent sources holds the contrast near 0.52 (oracle) and 0.59 (data-driven) from <var>R</var>&nbsp;=&nbsp;20 to 200, while the full mixture falls from about 0.10 to 0.03.</p>
-        <p>On resting-state fMRI from COBRE (<var>n</var>&nbsp;=&nbsp;155), the per-subject kurtosis gap between the leading and the typical component time courses shrinks from model order 53 to 100 (paired one-sided Wilcoxon test, <var>p</var>&nbsp;=&nbsp;1.74&#8239;&times;&#8239;10<sup>&minus;27</sup>). The letter presents this as a supportive sanity check rather than a controlled test, since changing the model order also changes the signal subspace.</p>
-      </div>
-    </section>
+  <h4>Evidence</h4>
+  <p>Balanced mixtures of Student-<var>t</var> sources follow <span class="nowrap">|<var>&kappa;&#770;</var>(<var>y</var>)|</span>&nbsp;&asymp;&nbsp;1.57/<var>R</var> (<var>R</var><sup>2</sup>&nbsp;=&nbsp;0.994), and the estimator noise crosses the population contrast near <var>T</var>&nbsp;&asymp;&nbsp;3&#8239;&times;&#8239;10<sup>4</sup>, as the screen predicts. Keeping <var>m</var>&nbsp;=&nbsp;5 sign-consistent sources holds the contrast near 0.52 (oracle) and 0.59 (data-driven) from <var>R</var>&nbsp;=&nbsp;20 to 200, while the full mixture falls from about 0.10 to 0.03.</p>
+  <p>On resting-state fMRI from COBRE (<var>n</var>&nbsp;=&nbsp;155), the per-subject kurtosis gap between the leading and the typical component time courses shrinks from model order 53 to 100 (paired one-sided Wilcoxon test, <var>p</var>&nbsp;=&nbsp;1.74&#8239;&times;&#8239;10<sup>&minus;27</sup>). The letter presents this as a supportive sanity check rather than a controlled test, since changing the model order also changes the signal subspace.</p>
 
-    <figure class="plate wide">
-      <div class="plate-frame">
-        <div class="plate-scroll">
-          <a href="assets/fig/kurtosis-1r-law.png" aria-label="Open Figure 1 of the 1/R law paper at full size">
-            <img src="assets/fig/kurtosis-1r-law.png" width="1971" height="551" loading="lazy" decoding="async" alt="Three panels: unmixing error against the inverse kurtosis gap for 5 by 5 and 20 by 20 mixtures; absolute kurtosis against mixture width R, with balanced mixtures on a 1/R curve and unbalanced ones decaying more slowly; and kurtosis after purification, flat across R from 20 to 200 while the full mixture collapses.">
-          </a>
-        </div>
-        <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
-      </div>
-      <figcaption class="grid">
-        <span class="margin margin-label">Figure 1</span>
-        <span class="main">Synthetic validation. (a) Symmetric-FastICA unmixing error grows as the kurtosis gap &Delta;<var>&kappa;</var> shrinks, for 5&#8239;&times;&#8239;5 and 20&#8239;&times;&#8239;20 mixtures. (b) Balanced mixtures follow the 1/<var>R</var> law (fit <var>c</var>&nbsp;=&nbsp;1.57, <var>R</var><sup>2</sup>&nbsp;=&nbsp;0.994); unbalanced weights decay more slowly; the inset shows the <span class="nowrap"><var>&sigma;</var><sub>0</sub>/&radic;<var>T</var></span> estimator-noise crossover. (c) Purification with <var>m</var>&nbsp;=&nbsp;5 restores a contrast that does not depend on <var>R</var>. &copy; 2026 IEEE.</span>
-      </figcaption>
-    </figure>
-  </div>
+  <figure class="figure">
+    <div class="fig-scroll">
+      <a href="assets/fig/kurtosis-1r-law.png" aria-label="Open the figure at full size">
+        <img src="assets/fig/kurtosis-1r-law.png" width="1971" height="551" loading="lazy" decoding="async" alt="Three panels: unmixing error against the inverse kurtosis gap for 5 by 5 and 20 by 20 mixtures; absolute kurtosis against mixture width R, with balanced mixtures on a 1/R curve and unbalanced ones decaying more slowly; and kurtosis after purification, flat across R from 20 to 200 while the full mixture collapses.">
+      </a>
+    </div>
+    <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
+    <figcaption><b>Fig. 1.</b> Synthetic validation. (a) Symmetric-FastICA unmixing error grows as the kurtosis gap &Delta;<var>&kappa;</var> shrinks, for 5&#8239;&times;&#8239;5 and 20&#8239;&times;&#8239;20 mixtures. (b) Balanced mixtures follow the 1/<var>R</var> law (fit <var>c</var>&nbsp;=&nbsp;1.57, <var>R</var><sup>2</sup>&nbsp;=&nbsp;0.994); unbalanced weights decay more slowly; the inset shows the <span class="nowrap"><var>&sigma;</var><sub>0</sub>/&radic;<var>T</var></span> estimator-noise crossover. (c) Purification with <var>m</var>&nbsp;=&nbsp;5 restores a contrast that does not depend on <var>R</var>. &copy; 2026 IEEE.</figcaption>
+  </figure>
 </article>
 
-<!-- ============== II. Zeros That Survive Mixing ============== -->
-<article class="paper" id="zeros" aria-labelledby="zeros-title">
-  <div class="paper-head page">
-    <div class="title-block">
-      <p class="numeral" aria-hidden="true">II</p>
-      <div>
-        <p class="kicker"><span class="badge">Submitted</span> IEEE Signal Processing Letters &middot; 2026</p>
-        <h2 id="zeros-title">Zeros That Survive Mixing: Hardness and Immunity in Overcomplete ICA</h2>
-        <p class="authors">Wenjun Xiao*, <span class="me">Yuda Bi</span>*&dagger;, Hanxin Chen, Sihan Jia, Vince D. Calhoun</p>
-        <p class="author-note">* Equal contribution. &dagger; Corresponding author.</p>
-        <ul class="tags" aria-label="Index terms">
-          <li>Characteristic function</li>
-          <li>Interference</li>
-          <li>Robust estimation</li>
-          <li>Sample complexity</li>
-          <li>Underdetermined blind source separation</li>
-        </ul>
-      </div>
-    </div>
+<!-- ============== 2. Zeros That Survive Mixing ============== -->
+<article class="paper" id="zeros">
+  <h3>2. Zeros That Survive Mixing: Hardness and Immunity in Overcomplete ICA</h3>
+  <p class="byline">Wenjun Xiao*, <span class="me">Yuda Bi</span>*&dagger;, Hanxin Chen, Sihan Jia, Vince D. Calhoun</p>
+  <p class="venue-line">Submitted to <i>IEEE Signal Processing Letters</i>, 2026</p>
+  <p class="note">* Equal contribution. &dagger; Corresponding author.</p>
 
-    <div class="law wide">
-      <p class="law-label">Central identity</p>
-      <img class="formula" src="assets/math/p3-law.svg" width="289" height="97" alt="Phi x of omega equals the product from j equals 1 to q of chi j of a j transpose omega">
-      <p class="gloss">With independent sources, the characteristic function of the observations is the product of the source characteristic functions along the mixing columns. The product damps, and it cannot erase zeros.</p>
-    </div>
-
-    <ul class="stats wide" aria-label="Key figures">
-      <li><span class="stat-num">e<sup>&Theta;(<var>q</var>)</sup></span><span class="stat-label">Samples needed to resolve <var>q</var> equally spaced directions, for any estimator</span></li>
-      <li><span class="stat-num">6&#8239;&times;&#8239;10<sup>7</sup></span><span class="stat-label">Samples needed already at <var>q</var>&nbsp;=&nbsp;10 sources</span></li>
-      <li><span class="stat-num">&gt;&#8239;90<span class="unit">%</span></span><span class="stat-label">Information kept by the immune estimator, binary symbols at 10&nbsp;dB</span></li>
-      <li><span class="stat-num">0.15&deg;<span class="to">&ndash;</span>0.40&deg;</span><span class="stat-label">Direction error of CFZ across seven interference settings</span></li>
-    </ul>
+  <div class="display">
+    <img src="assets/math/zeros-law.svg" width="155" height="51" alt="Phi x of omega equals the product from j equals 1 to q of chi j of a j transpose omega">
+    <p class="gloss">With independent sources, the characteristic function of the observations is the product of the source characteristic functions along the mixing columns. The product damps, and it cannot erase zeros.</p>
   </div>
 
-  <div class="paper-body page">
-    <section class="block grid">
-      <div class="margin"><h3 class="margin-label">The question</h3></div>
-      <div class="main">
-        <p>In overcomplete ICA, <var>p</var> sensors observe <var>q</var> &gt; <var>p</var> independent sources. Pairwise non-collinear mixing directions are still identifiable for non-Gaussian sources, but two questions were open. How many samples does the problem need, for any estimator? And can the direction of one source of interest be estimated without modeling the others? The letter answers both from the product identity above.</p>
-      </div>
-    </section>
+  <h4>The question</h4>
+  <p>In overcomplete ICA, <var>p</var> sensors observe <var>q</var> &gt; <var>p</var> independent sources. Pairwise non-collinear mixing directions are still identifiable for non-Gaussian sources, but two questions were open. How many samples does the problem need, for any estimator? And can the direction of one source of interest be estimated without modeling the others? The letter answers both from the product identity above.</p>
 
-    <section class="block grid">
-      <div class="margin"><h3 class="margin-label">Results</h3></div>
-      <div class="main">
-        <ul class="results">
-          <li><strong>Theorem 1</strong> <span class="thm-name">(Aliasing barrier).</span> With two sensors and <var>q</var> equally spaced sources sharing a smooth symmetric law (Gram&ndash;Charlier laws, or binary symbols in Gaussian noise), a rotation by <var>&pi;</var>/(2<var>q</var>) leaves every cumulant of order below 2<var>q</var> unchanged and moves the observation law exponentially little in total variation. Resolving the directions therefore takes e<sup>&Theta;(<var>q</var>)</sup> samples, necessary for every estimator and sufficient for a family of sources; for the Gram&ndash;Charlier law <var>&phi;</var><sub>4</sub>, <span class="nowrap">1.5288<var>q</var> &minus; <var>O</var>(log <var>q</var>)</span>&nbsp;&le; <span class="nowrap">log <var>n</var><sup>*</sup>(<var>q</var>)</span>&nbsp;&le; <span class="nowrap">2.3689<var>q</var> + <var>O</var>(1)</span>. Already at <var>q</var>&nbsp;=&nbsp;10 the squared Hellinger distance is 4.1&#8239;&times;&#8239;10<sup>&minus;9</sup>, so at least 6&#8239;&times;&#8239;10<sup>7</sup> samples are needed.</li>
-          <li><strong>Theorem 2</strong> <span class="thm-name">(Immunity).</span> If the characteristic function of a target source has a real zero, as for equiprobable binary or pulse-amplitude symbols, complex-exponential moment conditions on its mixing direction are exactly unbiased, whatever the number, strength, laws, and mutual dependence of the other sources, provided they are independent of the target. Each such source leaves zero lines in the observed characteristic function that no other source can remove (Corollary&nbsp;1); the zero-line estimator CFZ locates the target&rsquo;s line within a prior window that contains no other source with such zeros.</li>
-          <li><strong>Propositions 1 and 2</strong> <span class="thm-name">(Moments are immune, variance is not; Price of local immunity).</span> Immunity covers the moments, not the variance: for complex-exponential (Fourier) moments, each added interferer multiplies the Jacobian of the moment conditions by a factor of modulus at most one. Locally, an estimator that must stay unbiased against arbitrary weak interference keeps a computable share of the information: zero for Gaussian and Laplace sources, above 90% for binary symbols in Gaussian noise at 10&nbsp;dB.</li>
-        </ul>
-      </div>
-    </section>
+  <h4>Results</h4>
+  <ul class="results">
+    <li><b>Theorem 1</b> <span class="thm-name">(Aliasing barrier).</span> With two sensors and <var>q</var> equally spaced sources sharing a smooth symmetric law (Gram&ndash;Charlier laws, or binary symbols in Gaussian noise), a rotation by <var>&pi;</var>/(2<var>q</var>) leaves every cumulant of order below 2<var>q</var> unchanged and moves the observation law exponentially little in total variation. Resolving the directions therefore takes e<sup>&Theta;(<var>q</var>)</sup> samples, necessary for every estimator and sufficient for a family of sources; for the Gram&ndash;Charlier law <var>&phi;</var><sub>4</sub>, <span class="nowrap">1.5288<var>q</var> &minus; <var>O</var>(log <var>q</var>)</span>&nbsp;&le; <span class="nowrap">log <var>n</var><sup>*</sup>(<var>q</var>)</span>&nbsp;&le; <span class="nowrap">2.3689<var>q</var> + <var>O</var>(1)</span>. Already at <var>q</var>&nbsp;=&nbsp;10 the squared Hellinger distance is 4.1&#8239;&times;&#8239;10<sup>&minus;9</sup>, so at least 6&#8239;&times;&#8239;10<sup>7</sup> samples are needed.</li>
+    <li><b>Theorem 2</b> <span class="thm-name">(Immunity).</span> If the characteristic function of a target source has a real zero, as for equiprobable binary or pulse-amplitude symbols, complex-exponential moment conditions on its mixing direction are exactly unbiased, whatever the number, strength, laws, and mutual dependence of the other sources, provided they are independent of the target. Each such source leaves zero lines in the observed characteristic function that no other source can remove (Corollary&nbsp;1); the zero-line estimator CFZ locates the target&rsquo;s line within a prior window that contains no other source with such zeros.</li>
+    <li><b>Propositions 1 and 2</b> <span class="thm-name">(Moments are immune, variance is not; Price of local immunity).</span> Immunity covers the moments, not the variance: for complex-exponential (Fourier) moments, each added interferer multiplies the Jacobian of the moment conditions by a factor of modulus at most one. Locally, an estimator that must stay unbiased against arbitrary weak interference keeps a computable share of the information: zero for Gaussian and Laplace sources, above 90% for binary symbols in Gaussian noise at 10&nbsp;dB.</li>
+  </ul>
 
-    <section class="block grid">
-      <div class="margin"><h3 class="margin-label">Evidence</h3></div>
-      <div class="main">
-        <p>The simulations estimate the direction of a binary target at 17&deg;, seen by a two-axis vector sensor at 10&nbsp;dB among Gaussian, four-level PAM, impulsive (Bernoulli&ndash;Gaussian), and heavy-tailed Student-<var>t</var> interferers. At <var>n</var>&nbsp;=&nbsp;10<sup>5</sup> snapshots the RMSE of CFZ is 0.15&deg;&ndash;0.40&deg; across seven settings, its standard deviation within 10% of the prediction of Proposition&nbsp;1, with no error above 3&deg;.</p>
-        <p>Baselines with a fixed interference model level off instead: semi-blind likelihood with a Gaussian model (SB-G) and a kurtosis contrast under mixed or heavy-tailed interference, and a Student-<var>t</var> model (SB-T) under mixed interference at the lower power, with errors of up to 8.4&deg;. A Gaussian-mixture likelihood matches or beats CFZ at one to two orders of magnitude more computation: where a model is adequate, likelihood is the more efficient route; immunity is what remains when none is.</p>
+  <h4>Evidence</h4>
+  <p>The simulations estimate the direction of a binary target at 17&deg;, seen by a two-axis vector sensor at 10&nbsp;dB among Gaussian, four-level PAM, impulsive (Bernoulli&ndash;Gaussian), and heavy-tailed Student-<var>t</var> interferers. At <var>n</var>&nbsp;=&nbsp;10<sup>5</sup> snapshots the RMSE of CFZ is 0.15&deg;&ndash;0.40&deg; across seven settings, its standard deviation within 10% of the prediction of Proposition&nbsp;1, with no error above 3&deg;.</p>
+  <p>Baselines with a fixed interference model level off instead: semi-blind likelihood with a Gaussian model (SB-G) and a kurtosis contrast under mixed or heavy-tailed interference, and a Student-<var>t</var> model (SB-T) under mixed interference at the lower power, with errors of up to 8.4&deg;. A Gaussian-mixture likelihood matches or beats CFZ at one to two orders of magnitude more computation: where a model is adequate, likelihood is the more efficient route; immunity is what remains when none is.</p>
 
-        <details class="table">
-          <summary>Table II of the paper: direction error at <var>n</var>&nbsp;=&nbsp;10<sup>5</sup></summary>
-          <div class="table-scroll">
-            <table>
-              <thead>
-                <tr><th scope="col">Setting</th><th scope="col">CRB</th><th scope="col">CFZ [Prop.&nbsp;1]</th><th scope="col">SB-G</th><th scope="col">SB-T</th><th scope="col">SB-GMM</th><th scope="col">KURT</th></tr>
-              </thead>
-              <tbody>
-                <tr><th scope="row">G3 (.5)</th><td>0.22</td><td>0.282 <span class="pred">[0.298]</span></td><td>0.28</td><td>0.32</td><td>0.28</td><td>0.33</td></tr>
-                <tr><th scope="row">A3 (.5)</th><td>0.20</td><td>0.336 <span class="pred">[0.353]</span></td><td>0.26</td><td>0.41</td><td>0.30</td><td>0.37</td></tr>
-                <tr><th scope="row">M3 (.5)</th><td>0.14</td><td>0.204 <span class="pred">[0.226]</span></td><td>5.5&dagger;</td><td>0.21</td><td>0.18</td><td>8.4&dagger;</td></tr>
-                <tr><th scope="row">M3 (.25)</th><td>0.12</td><td>0.147 <span class="pred">[0.148]</span></td><td>1.4&dagger;</td><td>0.56&dagger;</td><td>0.13</td><td>7.1&dagger;</td></tr>
-                <tr><th scope="row">M6 (.25)</th><td>0.18</td><td>0.254 <span class="pred">[0.237]</span></td><td>2.7&dagger;</td><td>0.40&dagger;</td><td>0.25</td><td>6.9&dagger;</td></tr>
-                <tr><th scope="row">M9 (.25)</th><td>0.25</td><td>0.396 <span class="pred">[0.379]</span></td><td>3.6&dagger;</td><td>1.5&dagger;</td><td>0.37</td><td>6.3&dagger;</td></tr>
-                <tr><th scope="row">H3 (.25)</th><td>0.22</td><td>0.302 <span class="pred">[0.312]</span></td><td>6.4&dagger;</td><td>0.29</td><td>0.28</td><td>6.3&dagger;</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="table-note">Root-mean-square direction error in degrees, with the CFZ standard deviation predicted by Proposition&nbsp;1 in brackets. Interference is Gaussian (G), PAM-4 (A), mixed (M), or heavy-tailed (H); the digit is the number of interferers and the number in parentheses their power. &dagger;&#8239;Absolute bias above a third of the RMSE and three standard errors, or more than 5% of absolute errors above 3&deg;.</p>
-        </details>
-      </div>
-    </section>
+  <details class="table">
+    <summary>Table II of the paper: direction error at <var>n</var>&nbsp;=&nbsp;10<sup>5</sup></summary>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th scope="col">Setting</th><th scope="col">CRB</th><th scope="col">CFZ [Prop.&nbsp;1]</th><th scope="col">SB-G</th><th scope="col">SB-T</th><th scope="col">SB-GMM</th><th scope="col">KURT</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">G3 (.5)</th><td>0.22</td><td>0.282 <span class="pred">[0.298]</span></td><td>0.28</td><td>0.32</td><td>0.28</td><td>0.33</td></tr>
+          <tr><th scope="row">A3 (.5)</th><td>0.20</td><td>0.336 <span class="pred">[0.353]</span></td><td>0.26</td><td>0.41</td><td>0.30</td><td>0.37</td></tr>
+          <tr><th scope="row">M3 (.5)</th><td>0.14</td><td>0.204 <span class="pred">[0.226]</span></td><td>5.5&dagger;</td><td>0.21</td><td>0.18</td><td>8.4&dagger;</td></tr>
+          <tr><th scope="row">M3 (.25)</th><td>0.12</td><td>0.147 <span class="pred">[0.148]</span></td><td>1.4&dagger;</td><td>0.56&dagger;</td><td>0.13</td><td>7.1&dagger;</td></tr>
+          <tr><th scope="row">M6 (.25)</th><td>0.18</td><td>0.254 <span class="pred">[0.237]</span></td><td>2.7&dagger;</td><td>0.40&dagger;</td><td>0.25</td><td>6.9&dagger;</td></tr>
+          <tr><th scope="row">M9 (.25)</th><td>0.25</td><td>0.396 <span class="pred">[0.379]</span></td><td>3.6&dagger;</td><td>1.5&dagger;</td><td>0.37</td><td>6.3&dagger;</td></tr>
+          <tr><th scope="row">H3 (.25)</th><td>0.22</td><td>0.302 <span class="pred">[0.312]</span></td><td>6.4&dagger;</td><td>0.29</td><td>0.28</td><td>6.3&dagger;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Root-mean-square direction error in degrees, with the CFZ standard deviation predicted by Proposition&nbsp;1 in brackets. Interference is Gaussian (G), PAM-4 (A), mixed (M), or heavy-tailed (H); the digit is the number of interferers and the number in parentheses their power. &dagger;&#8239;Absolute bias above a third of the RMSE and three standard errors, or more than 5% of absolute errors above 3&deg;.</p>
+  </details>
 
-    <figure class="plate wide">
-      <div class="plate-frame">
-        <div class="plate-scroll">
-          <a href="assets/fig/zeros-overcomplete.png" aria-label="Open Figure 1 of the overcomplete ICA paper at full size">
-            <img src="assets/fig/zeros-overcomplete.png" width="1922" height="605" loading="lazy" decoding="async" alt="Three panels: a heat map of the log modulus of the empirical characteristic function with straight zero lines of the target and of a PAM-4 interferer; total variation and squared Hellinger distance falling exponentially with the number of sources; and RMSE against snapshots, where CFZ follows the prediction and the Cramér–Rao bound while the Gaussian, Student-t and kurtosis baselines level off.">
-          </a>
-        </div>
-        <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
-      </div>
-      <figcaption class="grid">
-        <span class="margin margin-label">Figure 1</span>
-        <span class="main">(a) The modulus of the empirical characteristic function (log scale) for a binary target at 17&deg; among Gaussian, PAM-4, and impulsive interferers (<var>n</var>&nbsp;=&nbsp;2&#8239;&times;&#8239;10<sup>4</sup>): the zero lines of the target (dashed) and of the PAM-4 interferer (dotted) survive the other factors. (b) The aliasing barrier: exact total variation (filled) and squared Hellinger distance (open) between the configurations rotated by 0 and <var>&pi;</var>/(2<var>q</var>), for Gram&ndash;Charlier laws <var>&phi;</var><sub><var>a</var></sub> with <var>a</var>&nbsp;=&nbsp;1, 2, 4, fall exponentially in <var>q</var>. (c) RMSE against <var>n</var> with three mixed interferers: CFZ tracks the prediction of Proposition&nbsp;1, just above the oracle Cram&eacute;r&ndash;Rao bound, while SB-G, SB-T, and the kurtosis contrast level off and SB-GMM tracks CFZ.</span>
-      </figcaption>
-    </figure>
-  </div>
+  <figure class="figure">
+    <div class="fig-scroll">
+      <a href="assets/fig/zeros-overcomplete.png" aria-label="Open the figure at full size">
+        <img src="assets/fig/zeros-overcomplete.png" width="1922" height="605" loading="lazy" decoding="async" alt="Three panels: a heat map of the log modulus of the empirical characteristic function with straight zero lines of the target and of a PAM-4 interferer; total variation and squared Hellinger distance falling exponentially with the number of sources; and RMSE against snapshots, where CFZ follows the prediction and the Cramér–Rao bound while the Gaussian, Student-t and kurtosis baselines level off.">
+      </a>
+    </div>
+    <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
+    <figcaption><b>Fig. 1.</b> (a) The modulus of the empirical characteristic function (log scale) for a binary target at 17&deg; among Gaussian, PAM-4, and impulsive interferers (<var>n</var>&nbsp;=&nbsp;2&#8239;&times;&#8239;10<sup>4</sup>): the zero lines of the target (dashed) and of the PAM-4 interferer (dotted) survive the other factors. (b) The aliasing barrier: exact total variation (filled) and squared Hellinger distance (open) between the configurations rotated by 0 and <var>&pi;</var>/(2<var>q</var>), for Gram&ndash;Charlier laws <var>&phi;</var><sub><var>a</var></sub> with <var>a</var>&nbsp;=&nbsp;1, 2, 4, fall exponentially in <var>q</var>. (c) RMSE against <var>n</var> with three mixed interferers: CFZ tracks the prediction of Proposition&nbsp;1, just above the oracle Cram&eacute;r&ndash;Rao bound, while SB-G, SB-T, and the kurtosis contrast level off and SB-GMM tracks CFZ.</figcaption>
+  </figure>
 </article>
 
-<!-- ============== III. Normalization Mismatch in ICA ============== -->
-<article class="paper" id="normalization" aria-labelledby="normalization-title">
-  <div class="paper-head page">
-    <div class="title-block">
-      <p class="numeral" aria-hidden="true">III</p>
-      <div>
-        <p class="kicker"><span class="badge">Submitted</span> IEEE Transactions on Signal Processing &middot; 2026</p>
-        <h2 id="normalization-title">Normalization Mismatch in ICA and Its Orthogonalized Remedy</h2>
-        <p class="authors">Jingling Yang*, <span class="me">Yuda Bi</span>*&dagger;, Linhao Bai, Vince D. Calhoun</p>
-        <p class="author-note">* Equal contribution. &dagger; Corresponding author.</p>
-        <ul class="tags" aria-label="Index terms">
-          <li>Cross-fitting</li>
-          <li>Effective sample size</li>
-          <li>Influence functions</li>
-          <li>Online ICA</li>
-          <li>Orthogonal scores</li>
-          <li>Symmetric FastICA</li>
-        </ul>
-      </div>
-    </div>
+<!-- ============== 3. Normalization Mismatch in ICA ============== -->
+<article class="paper" id="normalization">
+  <h3>3. Normalization Mismatch in ICA and Its Orthogonalized Remedy</h3>
+  <p class="byline">Jingling Yang*, <span class="me">Yuda Bi</span>*&dagger;, Linhao Bai, Vince D. Calhoun</p>
+  <p class="venue-line">Submitted to <i>IEEE Transactions on Signal Processing</i>, 2026</p>
+  <p class="note">* Equal contribution. &dagger; Corresponding author.</p>
 
-    <div class="law wide">
-      <p class="law-label">Central result</p>
-      <picture>
-        <source media="(max-width: 640px)" srcset="assets/math/p4-law-narrow.svg" width="354" height="293">
-        <img src="assets/math/p4-law.svg" width="743" height="95" alt="rho g squared times tau g N squared equals v g N times the squared norm of A, the score exposure, plus gamma g squared N times the squared norm of A minus W, the scale channel, plus eta g squared N times the squared norm of A minus U, the location channel">
-      </picture>
-      <p class="gloss">The exact first-order cost of a protocol that scores records with weights <var>A</var>, scales with <var>W</var>, and centers with <var>U</var>. The last two terms are paid only when the normalizing records differ from the scored ones.</p>
-      <div class="second">
-        <img class="formula" src="assets/math/p4-remedy.svg" width="353" height="40" alt="G kappa theta of y equals G of y minus kappa y minus one half theta y squared">
-        <p class="gloss">The orthogonalized contrast. With <var>&kappa;</var> and <var>&#977;</var> estimated consistently from the normalizing records alone, it closes the scale and location channels and leaves matched-role fits unchanged.</p>
-      </div>
-    </div>
-
-    <ul class="stats wide" aria-label="Key figures">
-      <li><span class="stat-num">728&times;</span><span class="stat-label">Largest variance of a plain one-unit refit on real signals, in units of the common-sample variance</span></li>
-      <li><span class="stat-num">1.01<span class="to">&ndash;</span>1.09&times;</span><span class="stat-label">The same refits after orthogonalization (10% reference whitening), against a predicted 1</span></li>
-      <li><span class="stat-num">6<span class="to">&ndash;</span>14&times;</span><span class="stat-label">Loss reduction for symmetric fits across three protocols</span></li>
-      <li><span class="stat-num">5 <span class="to">&rarr;</span> 100</span><span class="stat-label">Runs of 100 meeting the stopping test with tanh, before and after a four-line FastICA patch</span></li>
-    </ul>
+  <div class="display">
+    <picture>
+      <source media="(max-width: 480px)" srcset="assets/math/normalization-law-narrow.svg" width="189" height="171">
+      <img src="assets/math/normalization-law.svg" width="383" height="52" alt="rho g squared times tau g N squared equals v g N times the squared norm of A, the score exposure, plus gamma g squared N times the squared norm of A minus W, the scale channel, plus eta g squared N times the squared norm of A minus U, the location channel">
+    </picture>
+    <p class="gloss">The exact first-order cost of a protocol that scores records with weights <var>A</var>, scales with <var>W</var>, and centers with <var>U</var>. The last two terms are paid only when the normalizing records differ from the scored ones.</p>
+    <img src="assets/math/normalization-remedy.svg" width="205" height="22" alt="G kappa theta of y equals G of y minus kappa y minus one half theta y squared">
+    <p class="gloss">The orthogonalized contrast. With <var>&kappa;</var> and <var>&#977;</var> estimated consistently from the normalizing records alone, it closes the scale and location channels and leaves matched-role fits unchanged.</p>
   </div>
 
-  <div class="paper-body page">
-    <section class="block grid">
-      <div class="margin"><h3 class="margin-label">The question</h3></div>
-      <div class="main">
-        <p>Some pipelines normalize an ICA criterion with statistics from records other than the ones that score it. FastICA&rsquo;s <i>sampleSize</i> option scores a random fraction of the records while centering and whitening on all of them; real-time EEG pipelines keep the sphere of a calibration run; cross-fitting and reliability analyses refit on split or resampled records. The paper asks what this normalization mismatch costs, exactly, for one-unit and for symmetric fits; whether the cost can be removed without abandoning the protocol; and what agreement among differently normalized fits says about accuracy.</p>
-      </div>
-    </section>
+  <h4>The question</h4>
+  <p>Some pipelines normalize an ICA criterion with statistics from records other than the ones that score it. FastICA&rsquo;s <i>sampleSize</i> option scores a random fraction of the records while centering and whitening on all of them; real-time EEG pipelines keep the sphere of a calibration run; cross-fitting and reliability analyses refit on split or resampled records. The paper asks what this normalization mismatch costs, exactly, for one-unit and for symmetric fits; whether the cost can be removed without abandoning the protocol; and what agreement among differently normalized fits says about accuracy.</p>
 
-    <section class="block grid">
-      <div class="margin"><h3 class="margin-label">Results</h3></div>
-      <div class="main">
-        <ul class="results">
-          <li><strong>Theorem 1</strong> <span class="thm-name">(Local three-role influence law).</span> Normalization is not orthogonal at first order, unlike the source density and smooth score parameters (Remark&nbsp;1). For a one-unit fit with arbitrary scoring, scale, and centering weights, the influence function splits into score exposure, a scale channel, and a location channel, which gives the exact first-order cost above. Equal-size cross-fitting costs nothing; 10&ndash;20% reference or calibration normalizers cost up to hundreds of times the common-sample variance for log-cosh on sub-Gaussian targets.</li>
-          <li><strong>Theorem 3</strong> <span class="thm-name">(Symmetric fits under mismatch).</span> For symmetric FastICA the law is pairwise. A pair pays through the difference of its sign-corrected scale weights, large for opposite curvature signs under log-cosh, and through the whitening&rsquo;s own effective sample size, even when the roles match.</li>
-          <li><strong>Theorems 2 and 4</strong> <span class="thm-name">(Orthogonalized contrast; Orthogonalized symmetric contrast).</span> Subtracting consistently estimated linear and quadratic terms removes the mismatch channels for one-unit and symmetric fits and leaves matched-role fits unchanged. What remains is the price of scoring fewer records and, for symmetric fits, the whitening&rsquo;s effective sample size. Balanced reuse of the records reaches the common-sample law without any source moments (Corollary&nbsp;2).</li>
-          <li><strong>Corollaries 3, 4, and 6</strong> <span class="thm-name">(Two-point targets; Exponential windows; Asymptotic localized confidence cone).</span> For two-point targets such as BPSK, mismatch changes the rate from exact recovery to <var>N</var><sup>&minus;1/2</sup>. With exponentially weighted roles, the whitening memory should be the longer one. No remedy reduces the common sampling error, so agreement among differently normalized fits on the same scored records is blind to it; the paper gives an observable confidence cone to report instead.</li>
-        </ul>
-      </div>
-    </section>
+  <h4>Results</h4>
+  <ul class="results">
+    <li><b>Theorem 1</b> <span class="thm-name">(Local three-role influence law).</span> Normalization is not orthogonal at first order, unlike the source density and smooth score parameters (Remark&nbsp;1). For a one-unit fit with arbitrary scoring, scale, and centering weights, the influence function splits into score exposure, a scale channel, and a location channel, which gives the exact first-order cost above. Equal-size cross-fitting costs nothing; 10&ndash;20% reference or calibration normalizers cost up to hundreds of times the common-sample variance for log-cosh on sub-Gaussian targets.</li>
+    <li><b>Theorem 3</b> <span class="thm-name">(Symmetric fits under mismatch).</span> For symmetric FastICA the law is pairwise. A pair pays through the difference of its sign-corrected scale weights, large for opposite curvature signs under log-cosh, and through the whitening&rsquo;s own effective sample size, even when the roles match.</li>
+    <li><b>Theorems 2 and 4</b> <span class="thm-name">(Orthogonalized contrast; Orthogonalized symmetric contrast).</span> Subtracting consistently estimated linear and quadratic terms removes the mismatch channels for one-unit and symmetric fits and leaves matched-role fits unchanged. What remains is the price of scoring fewer records and, for symmetric fits, the whitening&rsquo;s effective sample size. Balanced reuse of the records reaches the common-sample law without any source moments (Corollary&nbsp;2).</li>
+    <li><b>Corollaries 3, 4, and 6</b> <span class="thm-name">(Two-point targets; Exponential windows; Asymptotic localized confidence cone).</span> For two-point targets such as BPSK, mismatch changes the rate from exact recovery to <var>N</var><sup>&minus;1/2</sup>. With exponentially weighted roles, the whitening memory should be the longer one. No remedy reduces the common sampling error, so agreement among differently normalized fits on the same scored records is blind to it; the paper gives an observable confidence cone to report instead.</li>
+  </ul>
 
-    <section class="block grid">
-      <div class="margin"><h3 class="margin-label">Evidence</h3></div>
-      <div class="main">
-        <p>Five real signals (an electrocardiogram from the MIT-BIH Arrhythmia Database, two natural images, and the horizontal gradients of two more) are mixed by known random matrices. Under 10% reference or 20% calibration whitening, plain one-unit refits pay 9.9 to 728 times the common-sample variance and plain symmetric fits 22 to 71 times their common-sample loss, in line with the first-order predictions. Orthogonalized one-unit refits pay 1.01&ndash;1.09 and 1.23&ndash;1.37 times it, against the predicted 1 and 1.25. Across the reference, calibration, and subsample protocols, the symmetric remedy cuts every loss by 6 to 14 times.</p>
-        <p>In a line-by-line port of the FastICA <i>sampleSize</i> code path with a 10% subsample, the default deflation mode returned no component in any of 100 runs, and the redrawn-subset symmetric iteration with tanh met its stopping test in only 5 of 100. Patching four lines with the orthogonalized nonlinearity brought the tanh losses to the predicted floor and its stopping rate to 100 of 100. With pow3, the package&rsquo;s default nonlinearity, the patch also brings the fixed-subset losses close to the floor, but the redrawn iteration stops in only 13 of 100 runs.</p>
+  <h4>Evidence</h4>
+  <p>Five real signals (an electrocardiogram from the MIT-BIH Arrhythmia Database, two natural images, and the horizontal gradients of two more) are mixed by known random matrices. Under 10% reference or 20% calibration whitening, plain one-unit refits pay 9.9 to 728 times the common-sample variance and plain symmetric fits 22 to 71 times their common-sample loss, in line with the first-order predictions. Orthogonalized one-unit refits pay 1.01&ndash;1.09 and 1.23&ndash;1.37 times it, against the predicted 1 and 1.25. Across the reference, calibration, and subsample protocols, the symmetric remedy cuts every loss by 6 to 14 times.</p>
+  <p>In a line-by-line port of the FastICA <i>sampleSize</i> code path with a 10% subsample, the default deflation mode returned no component in any of 100 runs, and the redrawn-subset symmetric iteration with tanh met its stopping test in only 5 of 100. Patching four lines with the orthogonalized nonlinearity brought the tanh losses to the predicted floor and its stopping rate to 100 of 100. With pow3, the package&rsquo;s default nonlinearity, the patch also brings the fixed-subset losses close to the floor, but the redrawn iteration stops in only 13 of 100 runs.</p>
 
-        <details class="table">
-          <summary>Table II of the paper: one-unit refits on real signals</summary>
-          <div class="table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col" rowspan="2">Signal</th>
-                  <th scope="col" rowspan="2">Kurtosis <var>&mu;</var><sub>4</sub></th>
-                  <th scope="col" rowspan="2"><var>c</var><sub><var>g</var></sub>/<var>v</var><sub><var>g</var></sub></th>
-                  <th scope="colgroup" colspan="2" class="group">Reference, 10%</th>
-                  <th scope="colgroup" colspan="2" class="group">Calibration, 20%</th>
-                </tr>
-                <tr>
-                  <th scope="col">plain [prediction]</th>
-                  <th scope="col">orth.</th>
-                  <th scope="col">plain [prediction]</th>
-                  <th scope="col">orth.</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><th scope="row">ECG</th><td>10.0</td><td>4.6</td><td>48.8<sup>298</sup> <span class="pred">[42.2]</span></td><td>1.04</td><td>30.7 <span class="pred">[29.9]</span></td><td>1.31</td></tr>
-                <tr><th scope="row">Image (china)</th><td>1.5</td><td>59.2</td><td>728.1 <span class="pred">[533.6]</span></td><td>1.03</td><td>451.8 <span class="pred">[371.1]</span></td><td>1.26</td></tr>
-                <tr><th scope="row">Image (face)</th><td>2.2</td><td>25.5</td><td>201.3<sup>253</sup> <span class="pred">[230.6]</span></td><td>1.06</td><td>147.8<sup>274</sup> <span class="pred">[160.7]</span></td><td>1.37</td></tr>
-                <tr><th scope="row">Gradient (ascent)</th><td>19.6</td><td>2.9</td><td>28.6 <span class="pred">[27.1]</span></td><td>1.09</td><td>19.3 <span class="pred">[19.4]</span></td><td>1.28</td></tr>
-                <tr><th scope="row">Gradient (flower)</th><td>58.0</td><td>1.3</td><td>14.2 <span class="pred">[12.9]</span></td><td>1.01</td><td>9.93 <span class="pred">[9.5]</span></td><td>1.23</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="table-note">Mean loss in units of the common-sample variance (<var>d</var>&nbsp;=&nbsp;5, <var>N</var>&nbsp;=&nbsp;40&#8239;000, 300 replications, log-cosh, independently resampled records), with the first-order prediction for plain refits in brackets; orthogonalized refits are predicted at 1 and 1.25. Reference: a random 10% normalizes and all records are scored. Calibration: the first 20% normalizes and the rest are scored. Superscripts give the number of returned roots when fewer than 300.</p>
-        </details>
-      </div>
-    </section>
+  <details class="table">
+    <summary>Table II of the paper: one-unit refits on real signals</summary>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col" rowspan="2">Signal</th>
+            <th scope="col" rowspan="2">Kurtosis <var>&mu;</var><sub>4</sub></th>
+            <th scope="col" rowspan="2"><var>c</var><sub><var>g</var></sub>/<var>v</var><sub><var>g</var></sub></th>
+            <th scope="colgroup" colspan="2" class="group">Reference, 10%</th>
+            <th scope="colgroup" colspan="2" class="group">Calibration, 20%</th>
+          </tr>
+          <tr>
+            <th scope="col">plain [prediction]</th>
+            <th scope="col">orth.</th>
+            <th scope="col">plain [prediction]</th>
+            <th scope="col">orth.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">ECG</th><td>10.0</td><td>4.6</td><td>48.8<sup>298</sup> <span class="pred">[42.2]</span></td><td>1.04</td><td>30.7 <span class="pred">[29.9]</span></td><td>1.31</td></tr>
+          <tr><th scope="row">Image (china)</th><td>1.5</td><td>59.2</td><td>728.1 <span class="pred">[533.6]</span></td><td>1.03</td><td>451.8 <span class="pred">[371.1]</span></td><td>1.26</td></tr>
+          <tr><th scope="row">Image (face)</th><td>2.2</td><td>25.5</td><td>201.3<sup>253</sup> <span class="pred">[230.6]</span></td><td>1.06</td><td>147.8<sup>274</sup> <span class="pred">[160.7]</span></td><td>1.37</td></tr>
+          <tr><th scope="row">Gradient (ascent)</th><td>19.6</td><td>2.9</td><td>28.6 <span class="pred">[27.1]</span></td><td>1.09</td><td>19.3 <span class="pred">[19.4]</span></td><td>1.28</td></tr>
+          <tr><th scope="row">Gradient (flower)</th><td>58.0</td><td>1.3</td><td>14.2 <span class="pred">[12.9]</span></td><td>1.01</td><td>9.93 <span class="pred">[9.5]</span></td><td>1.23</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Mean loss in units of the common-sample variance (<var>d</var>&nbsp;=&nbsp;5, <var>N</var>&nbsp;=&nbsp;40&#8239;000, 300 replications, log-cosh, independently resampled records), with the first-order prediction for plain refits in brackets; orthogonalized refits are predicted at 1 and 1.25. Reference: a random 10% normalizes and all records are scored. Calibration: the first 20% normalizes and the rest are scored. Superscripts give the number of returned roots when fewer than 300.</p>
+  </details>
 
-    <figure class="plate wide">
-      <div class="plate-frame">
-        <div class="plate-scroll">
-          <a href="assets/fig/normalization-mismatch.png" aria-label="Open Figure 1 of the normalization mismatch paper at full size">
-            <img src="assets/fig/normalization-mismatch.png" width="2061" height="574" loading="lazy" decoding="async" alt="Three panels: weight profiles of the scoring, scaling and centering roles over the records for several protocols; stacked bars of the one-unit price split into score exposure, scale channel and location channel, with the much lower level after orthogonalization; and a heat map of pairwise costs among five real signals, largest for pairs of opposite curvature sign.">
-          </a>
-        </div>
-        <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
-      </div>
-      <figcaption class="grid">
-        <span class="margin margin-label">Figure 1</span>
-        <span class="main">(a) A protocol gives the records three roles: <var>A</var> scores, <var>W</var> scales, <var>U</var> centers. (b) The one-unit price of common protocols for log-cosh on a shifted-exponential target, split into score exposure, scale channel, and location channel, in units of the common-sample variance; after orthogonalization only the score exposure remains. (c) Symmetric fits on the real signals with whitening on a random 10%: pairs of opposite curvature sign carry the cost.</span>
-      </figcaption>
-    </figure>
-  </div>
+  <figure class="figure">
+    <div class="fig-scroll">
+      <a href="assets/fig/normalization-mismatch.png" aria-label="Open the figure at full size">
+        <img src="assets/fig/normalization-mismatch.png" width="2061" height="574" loading="lazy" decoding="async" alt="Three panels: weight profiles of the scoring, scaling and centering roles over the records for several protocols; stacked bars of the one-unit price split into score exposure, scale channel and location channel, with the much lower level after orthogonalization; and a heat map of pairwise costs among five real signals, largest for pairs of opposite curvature sign.">
+      </a>
+    </div>
+    <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
+    <figcaption><b>Fig. 1.</b> (a) A protocol gives the records three roles: <var>A</var> scores, <var>W</var> scales, <var>U</var> centers. (b) The one-unit price of common protocols for log-cosh on a shifted-exponential target, split into score exposure, scale channel, and location channel, in units of the common-sample variance; after orthogonalization only the score exposure remains. (c) Symmetric fits on the real signals with whitening on a random 10%: pairs of opposite curvature sign carry the cost.</figcaption>
+  </figure>
 </article>
 
-<!-- ============== IV. Sharp Two-Sided Residual Certificates ============== -->
-<article class="paper" id="certificates" aria-labelledby="certificates-title">
-  <div class="paper-head page">
-    <div class="title-block">
-      <p class="numeral" aria-hidden="true">IV</p>
-      <div>
-        <p class="kicker"><span class="badge">Under review</span> 2026</p>
-        <h2 id="certificates-title">Sharp Two-Sided Residual Certificates for Comparing ICA Estimates Without the Sources</h2>
-        <p class="authors"><span class="me">Yuda Bi</span>, Hanxin Chen, Sihan Jia, Zhaoxing Wei&dagger;</p>
-        <p class="author-note">&dagger; Corresponding author.</p>
-        <ul class="tags" aria-label="Index terms">
-          <li>Blind source separation</li>
-          <li>Cumulant tensors</li>
-          <li>A posteriori error bounds</li>
-          <li>Model selection</li>
-        </ul>
-      </div>
-    </div>
+<!-- ============== 4. Sharp Two-Sided Residual Certificates ============== -->
+<article class="paper" id="certificates">
+  <h3>4. Sharp Two-Sided Residual Certificates for Comparing ICA Estimates Without the Sources</h3>
+  <p class="byline"><span class="me">Yuda Bi</span>, Hanxin Chen, Sihan Jia, Zhaoxing Wei&dagger;</p>
+  <p class="venue-line">Under review, 2026</p>
+  <p class="note">&dagger; Corresponding author.</p>
 
-    <div class="law wide">
-      <p class="law-label">Central result</p>
-      <img class="formula" src="assets/math/p2-law.svg" width="371" height="79" alt="r of B over root two Gamma is at most D of B, which is at most K of eta times r of B over gamma">
-      <p class="gloss">For an orthogonal fourth-cumulant model, the off-diagonal residual <var>r</var> of a candidate brackets its distance <var>D</var> to the sources: from below with an optimal constant, and, for a candidate known to lie within distance <var>D&#772;</var>&nbsp;&lt; &radic;2 of them, from above with a coefficient <var>K</var>(<var>&eta;</var>) that tends to the optimal local value <span class="nowrap">1/&radic;2</span>. With equal-magnitude cumulants the two sides meet near the sources.</p>
-    </div>
-
-    <ul class="stats wide" aria-label="Key figures">
-      <li><span class="stat-num">22.6<span class="to">&rarr;</span>45.0<span class="unit">%</span></span><span class="stat-label">Certified share of candidates truly closer than their reference</span></li>
-      <li><span class="stat-num">0</span><span class="stat-label">False verdicts in the paired sweep and the exact-tensor comparisons</span></li>
-      <li><span class="stat-num">8.55<span class="to">&rarr;</span>6.06</span><span class="stat-label">Median looseness <var>C</var>/<var>D</var> of the upper bound</span></li>
-      <li><span class="stat-num">132<span class="to">&rarr;</span>1,253</span><span class="stat-label">Certified pairs among 3,360 exact-tensor comparisons</span></li>
-    </ul>
+  <div class="display">
+    <img src="assets/math/certificates-law.svg" width="194" height="42" alt="r of B over root two Gamma is at most D of B, which is at most K of eta times r of B over gamma">
+    <p class="gloss">For an orthogonal fourth-cumulant model, the off-diagonal residual <var>r</var> of a candidate brackets its distance <var>D</var> to the sources: from below with an optimal constant, and, for a candidate known to lie within distance <var>D&#772;</var>&nbsp;&lt; &radic;2 of them, from above with a coefficient <var>K</var>(<var>&eta;</var>) that tends to the optimal local value <span class="nowrap">1/&radic;2</span>. With equal-magnitude cumulants the two sides meet near the sources.</p>
   </div>
 
-  <div class="paper-body page">
-    <section class="block grid">
-      <div class="margin"><h3 class="margin-label">The question</h3></div>
-      <div class="main">
-        <p>An ICA run returns a demixing matrix but no measure of its accuracy. Since the sources are unknown, the natural source-free diagnostic is how well the estimate diagonalizes an observed statistic; for the fourth-order cumulant tensor, that is the off-diagonal residual. Upper bounds turn the residual into an error bar for one estimate, but deciding which of two estimates is closer to the sources also needs a computable lower bound. The question is practical in template-guided pipelines, where a guided estimate matches its template better than a data-only fit by construction, which says nothing about its distance to the sources.</p>
-      </div>
-    </section>
+  <h4>The question</h4>
+  <p>An ICA run returns a demixing matrix but no measure of its accuracy. Since the sources are unknown, the natural source-free diagnostic is how well the estimate diagonalizes an observed statistic; for the fourth-order cumulant tensor, that is the off-diagonal residual. Upper bounds turn the residual into an error bar for one estimate, but deciding which of two estimates is closer to the sources also needs a computable lower bound. The question is practical in template-guided pipelines, where a guided estimate matches its template better than a data-only fit by construction, which says nothing about its distance to the sources.</p>
 
-    <section class="block grid">
-      <div class="margin"><h3 class="margin-label">Results</h3></div>
-      <div class="main">
-        <ul class="results">
-          <li><strong>Theorem 1</strong> <span class="thm-name">(Optimal global reverse bound).</span> For every orthogonal candidate <var>B</var> and cumulants of any sign, <var>r</var>(<var>B</var>)&nbsp;&le; &radic;2&#8239;&Gamma;&#8239;<var>D</var>(<var>B</var>), where <var>D</var> is the distance to the signed-permutation orbit of the sources and &Gamma; the root-sum-square of the two largest cumulant magnitudes. No smaller constant holds for all candidates (whenever the cumulant tensor is nonzero), and the bound improves on the column-wise constant by a factor of up to &radic;<var>d</var>.</li>
-          <li><strong>Theorem 2</strong> <span class="thm-name">(Finite, locally sharp upper bound).</span> If <var>&gamma;</var>&nbsp;&gt; 0 and the candidate is known to satisfy <span class="nowrap"><var>D</var>(<var>B</var>)&nbsp;&le; <var>D&#772;</var>&nbsp;&lt; &radic;2</span>, then <span class="nowrap"><var>D</var>(<var>B</var>)&nbsp;&le; <var>K</var>(<var>&eta;</var>)&#8239;<var>r</var>(<var>B</var>)/<var>&gamma;</var></span> with <span class="nowrap"><var>&eta;</var>&nbsp;=&nbsp;1&nbsp;&minus;&nbsp;<var>D&#772;</var><sup>2</sup>/2</span>; the coefficient decreases to the optimal local value <span class="nowrap">1/&radic;2</span> as <var>D&#772;</var>&nbsp;&rarr;&nbsp;0.</li>
-          <li><strong>Theorem 3</strong> <span class="thm-name">(Observable bracket).</span> A spectral estimate of &Gamma; from the <var>d</var><sup>2</sup>&#8239;&times;&#8239;<var>d</var><sup>2</sup> unfolding of the observed tensor makes both sides computable under a valid tensor-error radius <var>&delta;</var>, giving <var>L</var>(<var>B</var>)&nbsp;&le; <var>D</var>(<var>B</var>)&nbsp;&le; <var>C</var>(<var>B</var>). With an exact tensor (<var>&delta;</var>&nbsp;=&nbsp;0) the bracket is asymptotically exact near the source orbit for equal-magnitude cumulants (Corollary&nbsp;1), and <var>C</var>(<var>B</var>)&nbsp;&lt; <var>L</var>(<var>V</var>) certifies that <var>B</var> is closer to the sources than <var>V</var>.</li>
-        </ul>
-      </div>
-    </section>
+  <h4>Results</h4>
+  <ul class="results">
+    <li><b>Theorem 1</b> <span class="thm-name">(Optimal global reverse bound).</span> For every orthogonal candidate <var>B</var> and cumulants of any sign, <var>r</var>(<var>B</var>)&nbsp;&le; &radic;2&#8239;&Gamma;&#8239;<var>D</var>(<var>B</var>), where <var>D</var> is the distance to the signed-permutation orbit of the sources and &Gamma; the root-sum-square of the two largest cumulant magnitudes. No smaller constant holds for all candidates (whenever the cumulant tensor is nonzero), and the bound improves on the column-wise constant by a factor of up to &radic;<var>d</var>.</li>
+    <li><b>Theorem 2</b> <span class="thm-name">(Finite, locally sharp upper bound).</span> If <var>&gamma;</var>&nbsp;&gt; 0 and the candidate is known to satisfy <span class="nowrap"><var>D</var>(<var>B</var>)&nbsp;&le; <var>D&#772;</var>&nbsp;&lt; &radic;2</span>, then <span class="nowrap"><var>D</var>(<var>B</var>)&nbsp;&le; <var>K</var>(<var>&eta;</var>)&#8239;<var>r</var>(<var>B</var>)/<var>&gamma;</var></span> with <span class="nowrap"><var>&eta;</var>&nbsp;=&nbsp;1&nbsp;&minus;&nbsp;<var>D&#772;</var><sup>2</sup>/2</span>; the coefficient decreases to the optimal local value <span class="nowrap">1/&radic;2</span> as <var>D&#772;</var>&nbsp;&rarr;&nbsp;0.</li>
+    <li><b>Theorem 3</b> <span class="thm-name">(Observable bracket).</span> A spectral estimate of &Gamma; from the <var>d</var><sup>2</sup>&#8239;&times;&#8239;<var>d</var><sup>2</sup> unfolding of the observed tensor makes both sides computable under a valid tensor-error radius <var>&delta;</var>, giving <var>L</var>(<var>B</var>)&nbsp;&le; <var>D</var>(<var>B</var>)&nbsp;&le; <var>C</var>(<var>B</var>). With an exact tensor (<var>&delta;</var>&nbsp;=&nbsp;0) the bracket is asymptotically exact near the source orbit for equal-magnitude cumulants (Corollary&nbsp;1), and <var>C</var>(<var>B</var>)&nbsp;&lt; <var>L</var>(<var>V</var>) certifies that <var>B</var> is closer to the sources than <var>V</var>.</li>
+  </ul>
 
-    <section class="block grid">
-      <div class="margin"><h3 class="margin-label">Evidence</h3></div>
-      <div class="main">
-        <p>In a paired ablation with the same tensors, radii, and candidates, the new bounds raise the certified share of candidates truly closer than their reference from 22.6% to 45.0%, with no false verdicts. Median looseness <var>C</var>/<var>D</var> falls from 8.55 to 6.06, and across 3,360 exact-tensor comparisons the certified count rises from 132 to 1,253, again with no false claims.</p>
-        <p>The paper is explicit about the limits. Certifying more comparisons does not by itself lower the error of the returned estimate; no guided estimate can be certified closer to the sources than a residual-minimizing data-only fit; and all experiments are synthetic, with validation on real fMRI data left to future work.</p>
+  <h4>Evidence</h4>
+  <p>In a paired ablation with the same tensors, radii, and candidates, the new bounds raise the certified share of candidates truly closer than their reference from 22.6% to 45.0%, with no false verdicts. Median looseness <var>C</var>/<var>D</var> falls from 8.55 to 6.06, and across 3,360 exact-tensor comparisons the certified count rises from 132 to 1,253, again with no false claims.</p>
+  <p>The paper is explicit about the limits. Certifying more comparisons does not by itself lower the error of the returned estimate; no guided estimate can be certified closer to the sources than a residual-minimizing data-only fit; and all experiments are synthetic, with validation on real fMRI data left to future work.</p>
 
-        <details class="table">
-          <summary>Table 1 of the paper: fixed-candidate ablation</summary>
-          <div class="table-scroll">
-            <table>
-              <thead>
-                <tr><th scope="col">Variant</th><th scope="col">E1 <var>C</var>/<var>D</var></th><th scope="col">E3 claims</th><th scope="col">Sensitivity (%)</th><th scope="col">Final/base</th></tr>
-              </thead>
-              <tbody>
-                <tr><th scope="row">Legacy bounds</th><td>8.55</td><td>120</td><td>22.6</td><td>1.000</td></tr>
-                <tr><th scope="row">New lower bound</th><td>8.55</td><td>205</td><td>38.6</td><td>1.000</td></tr>
-                <tr><th scope="row">New upper bound</th><td>6.06</td><td>130</td><td>24.5</td><td>0.910</td></tr>
-                <tr><th scope="row">Both</th><td>6.06</td><td>239</td><td>45.0</td><td>0.910</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="table-note">E1 looseness <var>C</var>/<var>D</var> and E3 final/base error are medians; claims count <var>C</var>&nbsp;&lt; <var>L</var> before the decision rule; sensitivity is the certified share of the 531 E3 candidates that are truly better than their reference. Final/base uses the tolerance <var>&tau;</var>/<var>G</var><sub><var>d</var></sub>&nbsp;=&nbsp;0.01.</p>
-        </details>
-      </div>
-    </section>
+  <details class="table">
+    <summary>Table 1 of the paper: fixed-candidate ablation</summary>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th scope="col">Variant</th><th scope="col">E1 <var>C</var>/<var>D</var></th><th scope="col">E3 claims</th><th scope="col">Sensitivity (%)</th><th scope="col">Final/base</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Legacy bounds</th><td>8.55</td><td>120</td><td>22.6</td><td>1.000</td></tr>
+          <tr><th scope="row">New lower bound</th><td>8.55</td><td>205</td><td>38.6</td><td>1.000</td></tr>
+          <tr><th scope="row">New upper bound</th><td>6.06</td><td>130</td><td>24.5</td><td>0.910</td></tr>
+          <tr><th scope="row">Both</th><td>6.06</td><td>239</td><td>45.0</td><td>0.910</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">E1 looseness <var>C</var>/<var>D</var> and E3 final/base error are medians; claims count <var>C</var>&nbsp;&lt; <var>L</var> before the decision rule; sensitivity is the certified share of the 531 E3 candidates that are truly better than their reference. Final/base uses the tolerance <var>&tau;</var>/<var>G</var><sub><var>d</var></sub>&nbsp;=&nbsp;0.01.</p>
+  </details>
 
-    <figure class="plate wide">
-      <div class="plate-frame">
-        <div class="plate-scroll">
-          <a href="assets/fig/residual-certificates.png" aria-label="Open Figure 1 of the residual certificates paper at full size">
-            <img src="assets/fig/residual-certificates.png" width="1967" height="421" loading="lazy" decoding="async" alt="Three panels: the ratio of the lower bound to the true error, flat at one for the new bound and decaying as one over root d for the legacy bound; the ratio of the upper bound to the error, tending to one for the new bound and to root two for the legacy bound; and bars of the certified share of comparison pairs, 3.9% for the legacy bounds, 16.5% with the new lower bound, 10.5% with the new upper bound, and 37.3% with both.">
-          </a>
-        </div>
-        <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
-      </div>
-      <figcaption class="grid">
-        <span class="margin margin-label">Figure 1</span>
-        <span class="main">Sharp geometry. (a) Lower bound over true error for noiseless equal-magnitude rotations at angle 10<sup>&minus;4</sup>: the new bound stays within 2&#8239;&times;&#8239;10<sup>&minus;8</sup> of one, while the legacy bound decays as <span class="nowrap">1/&radic;<var>d</var></span>. (b) Upper bound over error at <var>d</var>&nbsp;=&nbsp;8 as the rotation angle shrinks: the new bound tends to 1, the legacy bound to &radic;2. (c) Certified share of the 3,360 exact-tensor comparison pairs.</span>
-      </figcaption>
-    </figure>
+  <figure class="figure">
+    <div class="fig-scroll">
+      <a href="assets/fig/residual-certificates.png" aria-label="Open the figure at full size">
+        <img src="assets/fig/residual-certificates.png" width="1967" height="421" loading="lazy" decoding="async" alt="Three panels: the ratio of the lower bound to the true error, flat at one for the new bound and decaying as one over root d for the legacy bound; the ratio of the upper bound to the error, tending to one for the new bound and to root two for the legacy bound; and bars of the certified share of comparison pairs, 3.9% for the legacy bounds, 16.5% with the new lower bound, 10.5% with the new upper bound, and 37.3% with both.">
+      </a>
+    </div>
+    <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
+    <figcaption><b>Fig. 1.</b> Sharp geometry. (a) Lower bound over true error for noiseless equal-magnitude rotations at angle 10<sup>&minus;4</sup>: the new bound stays within 2&#8239;&times;&#8239;10<sup>&minus;8</sup> of one, while the legacy bound decays as <span class="nowrap">1/&radic;<var>d</var></span>. (b) Upper bound over error at <var>d</var>&nbsp;=&nbsp;8 as the rotation angle shrinks: the new bound tends to 1, the legacy bound to &radic;2. (c) Certified share of the 3,360 exact-tensor comparison pairs.</figcaption>
+  </figure>
+</article>
+
+<h2>Stochastic thermodynamics</h2>
+
+<!-- ============== 5. Heat constraints from exponential correlations ============== -->
+<article class="paper" id="heat-threshold">
+  <h3>5. Heat Constraints from Exponential Correlations and a Sharp Two-Temperature Threshold</h3>
+  <p class="byline"><span class="me">Yuda Bi</span>, Chenyu Zhang, Vince D. Calhoun</p>
+  <p class="venue-line">Submitted, 2026. Companion to <a href="#two-probes">paper 6</a>.</p>
+
+  <div class="display">
+    <img src="assets/math/heat-law.svg" width="240" height="43" alt="sigma is at least q squared over 2 q plus Delta C over D X, where q equals Q X over k B T X">
+    <p class="gloss">The total entropy production rate &sigma; of a stationary diffusion observed through one coordinate <var>X</var> is bounded below by the heat <var>Q</var><sub><var>X</var></sub> exchanged with the observed bath and the curvature defect &Delta;<sub><var>C</var></sub>: the zero-lag curvature of the autocorrelation minus that of an Ornstein&ndash;Uhlenbeck process with the same variance and diffusion. The bound is sharp for every allowed value of heat and curvature defect.</p>
+    <picture>
+      <source media="(max-width: 480px)" srcset="assets/math/heat-threshold-narrow.svg" width="192" height="68">
+      <img src="assets/math/heat-threshold.svg" width="398" height="38" alt="If Delta C equals 0 and Q X is positive, then sigma exceeds Q X over 2 k B T X; with conservative forces and one hidden temperature, T H exceeds 2 T X">
+    </picture>
+    <p class="gloss">Every exponential autocorrelation has &Delta;<sub><var>C</var></sub>&nbsp;=&nbsp;0, and positive heat then bounds the entropy production from below. The threshold <var>T</var><sub><var>H</var></sub>&nbsp;&gt; 2<var>T</var><sub><var>X</var></sub> additionally assumes conservative forces, no external work, and one common hidden temperature: the hidden environment must be more than twice as hot as the observed bath.</p>
   </div>
+
+  <h4>The question</h4>
+  <p>A stationary coordinate whose autocorrelation is a single exponential looks like an equilibrium Ornstein&ndash;Uhlenbeck (OU) process: an equilibrium OU model reproduces the complete Gaussian OU path law even when the hidden dynamics dissipates. A dissipation bound that uses only such a record must therefore allow zero, and bounds built on short-time correlations, correlation times, or cross-correlation asymmetry all vanish for an exact Gaussian OU record. The paper asks what thermodynamics survives inside this blind spot once the heat exchanged with the observed bath is measured independently.</p>
+
+  <h4>Results</h4>
+  <ul class="results">
+    <li><b>Curvature bound</b> <span class="thm-name">(Eq.&nbsp;10).</span> For stationary overdamped diffusions with constant diffusion, independent observed and hidden noises, even coordinates, nonlinear forces, and any finite number of hidden coordinates, <span class="nowrap"><var>&sigma;</var>&nbsp;&ge; <var>q</var><sup>2</sup>/(2<var>q</var> + &Delta;<sub><var>C</var></sub>/<var>D</var><sub><var>X</var></sub>)</span> with <span class="nowrap"><var>q</var>&nbsp;=&nbsp;<var>Q</var><sub><var>X</var></sub>/(<var>k</var><sub>B</sub><var>T</var><sub><var>X</var></sub>)</span>, whenever the denominator is positive. It is the short-time thermodynamic uncertainty relation for the current weighted by the deviation of the observed drift from its variance-matched OU drift, which is optimal among combinations of drift and displacement; the variance sum rule gives its variance. The bound is strict at nonzero heat and a sharp infimum for every allowed heat and curvature defect.</li>
+    <li><b>Zero curvature defect</b> <span class="thm-name">(Eq.&nbsp;11).</span> At &Delta;<sub><var>C</var></sub>&nbsp;=&nbsp;0, which every exponential autocorrelation satisfies, heat can flow only into the observed bath, and positive heat gives <span class="nowrap"><var>&sigma;</var>&nbsp;&gt; <var>Q</var><sub><var>X</var></sub>/(2<var>k</var><sub>B</sub><var>T</var><sub><var>X</var></sub>)</span>. Neither Gaussianity nor a Markov observation law is needed.</li>
+    <li><b>Two-temperature threshold</b> <span class="thm-name">(Eqs.&nbsp;12&ndash;14).</span> With conservative forces, constant positive mobilities, no external work, and one common hidden temperature, <span class="nowrap"><var>&sigma;</var>&nbsp;=&nbsp;<var>q</var>(1&nbsp;&minus;&nbsp;<var>T</var><sub><var>X</var></sub>/<var>T</var><sub><var>H</var></sub>)</span>, so at &Delta;<sub><var>C</var></sub>&nbsp;=&nbsp;0 and <var>Q</var><sub><var>X</var></sub>&nbsp;&gt; 0, <span class="nowrap"><var>T</var><sub><var>H</var></sub>&nbsp;&gt; 2<var>T</var><sub><var>X</var></sub></span>: the coordinate with the exponential record is the colder one, whatever the nonlinear forces and however many hidden coordinates there are. With several hidden baths that all supply heat, the heat-weighted harmonic mean of their temperatures replaces <var>T</var><sub><var>H</var></sub>; the hottest bath is constrained, the coldest is not.</li>
+    <li><b>Reciprocal models and finite bandwidth</b> <span class="thm-name">(Eqs.&nbsp;16&ndash;20).</span> A reciprocal two-coordinate model realizes every <span class="nowrap"><var>T</var><sub><var>H</var></sub>/<var>T</var><sub><var>X</var></sub>&nbsp;&gt; 2</span> at fixed observed law and heat, approaching the threshold only as its hidden relaxation rate diverges. In linear conservative networks of any size with one hidden temperature, an exactly exponential record with positive heat couples to exactly two relaxation modes, so a cap &Lambda;<sub>max</sub> on the relaxation rates raises the threshold to <span class="nowrap">2 + (2<var>a</var> + <var>q</var>)/(&Lambda;<sub>max</sub> &minus; <var>a</var> &minus; <var>q</var>)</span>.</li>
+    <li><b>What response and finite data add</b> <span class="thm-name">(Eqs.&nbsp;22&ndash;27).</span> At &Delta;<sub><var>C</var></sub>&nbsp;=&nbsp;0 the heat is <span class="nowrap"><var>q</var>&nbsp;=&nbsp;&minus;<var>G</var>&prime;(0<sup>+</sup>)&nbsp;&minus;&nbsp;<var>a</var></span>, the initial slope of the response to a small displacement, which the passive record does not contain. Conversely, a five-dimensional OU diffusion whose sampled covariance is exactly exponential at every lag can have a curvature defect of either sign and any size, so certifying &Delta;<sub><var>C</var></sub>&nbsp;=&nbsp;0 requires a bandwidth or model assumption.</li>
+  </ul>
+
+  <h4>Evidence</h4>
+  <p>A harmonically trapped particle driven by a programmed OU force makes the blind spot concrete. At the tuned stiffness the position spectrum is exactly that of an OU process at the force rate <var>&beta;</var>, so the variance and corner-frequency calibrations agree with each other while both underestimate the stiffness; yet the probe delivers heat <span class="nowrap"><var>Q</var><sub><var>X</var></sub>&nbsp;=&nbsp;<var>k</var><sub>B</sub><var>T</var><sub><var>X</var></sub>(<var>&alpha;</var>&nbsp;&minus;&nbsp;<var>&beta;</var>)&nbsp;&gt; 0</span> to its bath. With the drive treated as an even coordinate, the entropy production equals this heat in units of <var>k</var><sub>B</sub><var>T</var><sub><var>X</var></sub>, and the sharp lower limit is half of it.</p>
+  <p>The heat must be measured independently, for example through a calibrated response measurement, and the paper quantifies how well conditioned that is. In a simulation that gives the estimator the exact two-coordinate model (<var>q</var>&nbsp;=&nbsp;2, <var>&sigma;</var>&nbsp;=&nbsp;5/3), with 250 passive/driven pairs per frequency of 65,537 exactly sampled points each, the single-frequency inverse returns a physical solution in 99.2% of trials at <var>&omega;</var>&nbsp;=&nbsp;4 but recovers the heat within 25% in only 66.8% of them; at <var>&omega;</var>&nbsp;=&nbsp;0.05 and 64 these fractions fall to 55.6% and 32.0%. The simulation contains intrinsic fluctuations only; sensor noise and calibration error would add to them. Near the tuned stiffness, the statistical evidence against an OU law vanishes quadratically in the detuning while the heat stays finite.</p>
+  <p>For an experimental test the paper proposes a temperature scan in coupled thermal RC circuits. With a fixed drift (<var>&alpha;</var>&nbsp;=&nbsp;2/<var>&tau;</var>, <var>&beta;</var>&nbsp;=&nbsp;5/<var>&tau;</var>, <var>g</var>&nbsp;=&nbsp;<var>m</var>&nbsp;=&nbsp;2/<var>&tau;</var>), the cold coordinate becomes exactly exponential at <span class="nowrap"><var>T</var><sub><var>Y</var></sub>/<var>T</var><sub><var>X</var></sub>&nbsp;=&nbsp;11/4</span> while heat keeps flowing; with 1&nbsp;M&Omega; resistors and <var>&tau;</var>&nbsp;=&nbsp;10&nbsp;ms the capacitors are 5&nbsp;nF and 10/3&nbsp;nF. No experiment is reported.</p>
+
+  <figure class="figure">
+    <div class="fig-scroll">
+      <a href="assets/fig/heat-threshold.png" aria-label="Open the figure at full size">
+        <img src="assets/fig/heat-threshold.png" width="2115" height="785" loading="lazy" decoding="async" alt="Two panels: the ratio of entropy production to heat rate against the temperature ratio, rising from an unattained endpoint of one half at ratio two, with ratios between one and two excluded; and the hidden relaxation rate needed at fixed observed law and heat, diverging as the temperature ratio approaches two.">
+      </a>
+    </div>
+    <p class="swipe-hint">Swipe sideways for both panels, or tap to open the full figure.</p>
+    <figcaption><b>Fig. 3.</b> Sharp threshold at zero curvature defect and its singular limit, for independent baths, conservative forces, no external work, and one hidden temperature. (a) At positive heat and zero curvature defect, <span class="nowrap">1&nbsp;&lt; <var>R</var><sub><var>T</var></sub>&nbsp;&le; 2</span> is excluded; every <span class="nowrap"><var>R</var><sub><var>T</var></sub>&nbsp;&gt; 2</span> is realized at fixed <var>a</var>, <var>D</var><sub><var>X</var></sub>, <var>q</var>. (b) For <span class="nowrap"><var>a</var>&nbsp;=&nbsp;<var>D</var><sub><var>X</var></sub>&nbsp;=&nbsp;<var>q</var>&nbsp;=&nbsp;1</span>, the bare hidden rate <span class="nowrap"><var>B</var>/<var>a</var>&nbsp;=&nbsp;(<var>R</var><sub><var>T</var></sub>&nbsp;+&nbsp;1)/(<var>R</var><sub><var>T</var></sub>&nbsp;&minus;&nbsp;2)</span> diverges at the open endpoint.</figcaption>
+  </figure>
+</article>
+
+<!-- ============== 6. Two probes recover the bath heat ============== -->
+<article class="paper" id="two-probes">
+  <h3>6. Two Probes Recover the Bath Heat That Neither Reveals Alone</h3>
+  <p class="byline"><span class="me">Yuda Bi</span>, Vince D. Calhoun</p>
+  <p class="venue-line">Submitted, 2026. Companion to <a href="#heat-threshold">paper 5</a>.</p>
+
+  <div class="display">
+    <img src="assets/math/probes-law.svg" width="98" height="42" alt="Q dot i over k B T i equals alpha i minus beta">
+    <p class="gloss">At cancellation, the heat each probe delivers to its bath, in thermal units, is its mechanical response rate <var>&alpha;</var><sub><var>i</var></sub> minus the relaxation rate <var>&beta;</var> of the shared force (the Harada&ndash;Sasa relation), with no calibration of the drive amplitude.</p>
+    <img src="assets/math/probes-tails.svg" width="353" height="21" alt="r k equals R plus times a 1 to the k minus 1, r minus k equals R minus times a 2 to the k minus 1, with a i equal to e to the minus alpha i Delta">
+    <p class="gloss">At double cancellation, filtering both records with the same first-order filter, which removes the relaxation of the force, leaves cross-covariance tails (lags <var>k</var>&nbsp;&ge; 1) that decay at the two response rates, one on each side of zero lag.</p>
+  </div>
+
+  <h4>The question</h4>
+  <p>Two harmonically trapped probes, each in its own thermal bath, are driven by one persistent, unobserved OU force. The drive can be tuned so that each position record has exactly the statistics of an equilibrium particle, which defeats every single-channel method; at equal response rates the joint record is also exactly time reversible, which defeats every method based on the arrow of time. The paper asks which response rates and probe&ndash;bath heat rates can still be identified from the two passive records.</p>
+
+  <h4>Results</h4>
+  <ul class="results">
+    <li><b>Two-probe sampled inverse</b> <span class="thm-name">(Eqs.&nbsp;8&ndash;11).</span> At double cancellation (both probes tuned, nonzero drive couplings), each sampled record is a first-order autoregression with coefficient <span class="nowrap"><var>b</var>&nbsp;=&nbsp;e<sup>&minus;<var>&beta;</var>&Delta;</sup></span>. Filtering both records with <span class="nowrap"><var>e</var><sub><var>n</var></sub>&nbsp;=&nbsp;<var>X</var>(<var>n</var>&Delta;)&nbsp;&minus;&nbsp;<var>b</var>&#8239;<var>X</var>((<var>n</var>&minus;1)&Delta;)</span> gives cross-covariance tails proportional to <var>a</var><span class="ss"><sup><var>k</var>&minus;1</sup><sub>1</sub></span> at positive lags and <var>a</var><span class="ss"><sup><var>k</var>&minus;1</sup><sub>2</sub></span> at negative lags, so consecutive lag ratios determine both response rates, equal responses included. The amplitudes and the zero-lag value are given in closed form.</li>
+    <li><b>Heat without a time arrow</b> <span class="thm-name">(Eqs.&nbsp;14&ndash;21).</span> The Harada&ndash;Sasa relation converts each recovered rate into heat. At equal responses the summed heat in thermal units, <span class="nowrap">2(<var>&alpha;</var>&nbsp;&minus;&nbsp;<var>&beta;</var>)</span>, is positive while the observed path irreversibility &Pi;<sub>12</sub> is exactly zero: the relative coordinate rejects the common force and relaxes at the response rate. Time-symmetric kinetic bounds are positive in this reversible pair but bound rather than attribute the heat (at <span class="nowrap">(<var>&alpha;</var>, <var>&beta;</var>)&nbsp;=&nbsp;(3,&nbsp;1)</span> the bound is 1.6 and the summed heat rate 4), and near equal response &Pi;<sub>12</sub> vanishes quadratically while the heat stays finite.</li>
+    <li><b>Fisher information</b> <span class="thm-name">(Eqs.&nbsp;23&ndash;26).</span> In the ideal continuous experiment with known diffusion, and with all other parameters estimated jointly, the information one probe carries about its own response rate vanishes quadratically with the weight of the response mode in its covariance, whereas the joint information matrix of the two probes is positive definite at every cancellation point with nonzero forcing, including equal responses. At <span class="nowrap">(<var>&alpha;</var><sub>1</sub>, <var>&alpha;</var><sub>2</sub>, <var>&beta;</var>)&nbsp;=&nbsp;(1,&nbsp;2,&nbsp;0.5)</span> the joint values per unit time are 0.3582 and 0.01425, against zero for each probe alone. As the forcing vanishes at equal response, with heat rate <var>h</var>, the relative variance of an individual bath heat scales, to leading order, as <span class="nowrap">2<var>&beta;</var><sup>3</sup>/(<var>h</var><sup>4</sup><var>T</var><sub>obs</sub>)</span> and that of the summed heat as <span class="nowrap">3<var>&beta;</var>/(<var>h</var><sup>2</sup><var>T</var><sub>obs</sub>)</span>, for record duration <var>T</var><sub>obs</sub>.</li>
+    <li><b>Why bath independence is needed</b> <span class="thm-name">(Appendix&nbsp;C&nbsp;4).</span> With correlated probe noise and a partly shared drive, a fine-tuned family keeps the complete two-channel law while its response rate varies, so the response disappears from the data. An independent response measurement, switching off the drive at unchanged stiffness, or calibrating the drive intensity resolves it.</li>
+  </ul>
+
+  <h4>Evidence</h4>
+  <p>Exact-sample likelihood fits on synthetic records, which are given neither cancellation nor the drive amplitude, measure finite-record precision. Across nine designs of 100 stationary pairs (<var>N</var>&nbsp;=&nbsp;2000, rates (1,&nbsp;2,&nbsp;0.5)), neither the cancellation-constrained covariance fit nor the general Kalman likelihood dominates; all 900 fits pass the interval-validity checks, and nominal 90% intervals for the response rates cover 83&ndash;94%, the low end not significant after a Holm adjustment.</p>
+  <p>At equal responses (1,&nbsp;1), with unknown and unequal diffusivities and means, 120 records give heat-rate RMSE of 0.12 and 0.15 for true rates of 0.5, and the heat intervals cover 109 and 107 of 120. Across this and a near-equal design (rates 0.95 and 1.05), the median interval widths are 90&ndash;94% of the fitted heat: at this duration the heat is identified, not yet precise.</p>
+  <p>The paper proposes a two-trap optical test: spheres of radius 0.5&nbsp;&micro;m at 300&nbsp;K with <var>&alpha;</var><sub>1</sub>&nbsp;=&nbsp;100&nbsp;s<sup>&minus;1</sup>, <var>&alpha;</var><sub>2</sub>&nbsp;=&nbsp;200&nbsp;s<sup>&minus;1</sup>, and <var>&beta;</var>&nbsp;=&nbsp;50&nbsp;s<sup>&minus;1</sup>, rms forces of 0.0765 and 0.1711&nbsp;pN, and bath heat rates of 50 and 150&nbsp;<var>k</var><sub>B</sub><var>T</var>&nbsp;s<sup>&minus;1</sup>. For an equal-response configuration (<var>&alpha;</var>&nbsp;=&nbsp;100&nbsp;s<sup>&minus;1</sup>, <var>&beta;</var>&nbsp;=&nbsp;50&nbsp;s<sup>&minus;1</sup>, 5&nbsp;ms sampling), a local asymptotic budget for ideal sampling asks for at least about 19&nbsp;s of data to reach 20% precision on an individual bath heat, and about 22&nbsp;min at weak forcing (6&nbsp;s and 62&nbsp;s for the summed heat); these durations are necessary, not sufficient. All numerical results use synthetic data; no experiment is reported.</p>
+
+  <details class="table">
+    <summary>Table I of the paper: paired recovery at cancellation</summary>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th scope="col">&Delta;</th><th scope="col"><var>T</var><sub>obs</sub></th><th scope="col">Cancellation covariance fit</th><th scope="col">General Kalman likelihood</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">0.1</th><td>200</td><td>(0.173, 0.845)</td><td>(0.124, 0.708)</td></tr>
+          <tr><th scope="row">0.5</th><td>1000</td><td>(0.085, 0.309)</td><td>(0.060, 0.345)</td></tr>
+          <tr><th scope="row">1</th><td>2000</td><td>(0.059, 0.234)</td><td>(0.056, 0.267)</td></tr>
+          <tr><th scope="row">2</th><td>4000</td><td>(0.062, 0.373)</td><td>(0.088, 0.496)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Unconditional RMSE of the response rates (<var>&alpha;</var><sub>1</sub>, <var>&alpha;</var><sub>2</sub>), in inverse time, from 100 stationary pairs per row with <var>N</var>&nbsp;=&nbsp;2000 exact transitions and (<var>&alpha;</var><sub>1</sub>, <var>&alpha;</var><sub>2</sub>, <var>&beta;</var>)&nbsp;=&nbsp;(1,&nbsp;2,&nbsp;0.5). The covariance fit imposes cancellation; the Kalman likelihood estimates all seven covariance parameters and profiles both means without that constraint.</p>
+  </details>
+
+  <figure class="figure">
+    <div class="fig-scroll">
+      <a href="assets/fig/two-probe-heat.png" aria-label="Open the figure at full size">
+        <img src="assets/fig/two-probe-heat.png" width="2105" height="830" loading="lazy" decoding="async" alt="Two panels: along the equal-response family, bath entropy flow grows linearly with the response rate, the kinetic lower bound lies below it, pair information is smaller still, and observed irreversibility is zero; and against the force coupling, bath entropy flow grows as the square of the coupling while pair information and observed irreversibility grow as its fourth power.">
+      </a>
+    </div>
+    <p class="swipe-hint">Swipe sideways for both panels, or tap to open the full figure.</p>
+    <figcaption><b>Fig. 3.</b> Exact bath heat, a kinetic lower bound, and observed irreversibility are distinct. (a) Equal-response cancellation family, <var>&beta;</var>&nbsp;=&nbsp;0.5, <span class="nowrap"><var>&alpha;</var><sub>1</sub>&nbsp;=&nbsp;<var>&alpha;</var><sub>2</sub>&nbsp;=&nbsp;<var>&alpha;</var></span>: the summed bath entropy flow is <span class="nowrap">2(<var>&alpha;</var>&nbsp;&minus;&nbsp;<var>&beta;</var>)</span>, the time-symmetric kinetic bound <var>B</var><sub>12</sub> lies below it, and the observed &Pi;<sub>12</sub> is exactly zero. (b) Fixed <span class="nowrap">(<var>&alpha;</var><sub>1</sub>, <var>&alpha;</var><sub>2</sub>, <var>&beta;</var>)&nbsp;=&nbsp;(1,&nbsp;2,&nbsp;0.5)</span> with drive coupling <var>&lambda;</var>: bath heat is quadratic in <var>&lambda;</var>, while observed information and irreversibility start at fourth order.</figcaption>
+  </figure>
 </article>
 
 </main>
 
-<footer class="site-footer page">
-  <div class="footer-inner wide">
-    <div>
-      <p class="footer-name">Yuda Bi</p>
-      <p>TReNDS Center &middot; Georgia State University, Georgia Tech, and Emory University &middot; Atlanta</p>
-    </div>
-    <ul class="footer-links" aria-label="Contact and profiles">
-      <li><a href="mailto:ybi3@gsu.edu">Email</a></li>
-      <li><a href="https://scholar.google.com/citations?user=yclnpogAAAAJ&amp;hl=en">Scholar</a></li>
-      <li><a href="https://github.com/yudabitrends">GitHub</a></li>
-      <li><a href="https://orcid.org/0000-0003-0385-8363">ORCID</a></li>
-      <li><a href="https://www.linkedin.com/in/yudabi/">LinkedIn</a></li>
-    </ul>
-    <p class="footer-fine">Figures are reproduced from the papers. Updated October 2026.</p>
-  </div>
+<footer class="site-footer">
+  <p>Yuda Bi &middot; Figures are reproduced from the papers. Updated October 2026.</p>
 </footer>
 
-<script>
-  // Highlight the paper currently in view in the navigation bar.
-  (function () {
-    var links = document.querySelectorAll('.site-nav ol a');
-    if (!('IntersectionObserver' in window) || !links.length) return;
-    var byId = {};
-    links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        links.forEach(function (a) { a.removeAttribute('aria-current'); });
-        var link = byId[entry.target.id];
-        if (link) link.setAttribute('aria-current', 'true');
-      });
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    document.querySelectorAll('#top, #papers, article.paper').forEach(function (el) { observer.observe(el); });
-  })();
-</script>
-
+</div>
 </body>
 </html>
