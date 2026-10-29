@@ -25,7 +25,7 @@
   <meta name="twitter:image:alt" content="Yuda Bi: ICA and statistical learning theory, statistical physics, computational neuroscience">
 
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/site.css?v=20261025d">
+  <link rel="stylesheet" href="assets/site.css?v=20261029a">
 
   <script type="application/ld+json">
   {
@@ -75,6 +75,11 @@
     </ul>
   </div>
 </header>
+
+<blockquote class="motto">
+  <p>&ldquo;Even in the darkest of times we have the right to expect some illumination.&rdquo;</p>
+  <cite>Hannah Arendt, <i>Men in Dark Times</i> (1968)</cite>
+</blockquote>
 
 <p class="bio">I am at the <a href="https://trendscenter.org/">TReNDS Center</a>, a joint center of Georgia State University, Georgia Tech, and Emory University in Atlanta. I received my Ph.D. in Computer Science from Georgia State in 2025, advised by Vince D. Calhoun. My research has three directions:</p>
 
@@ -484,8 +489,23 @@
 
 <footer class="site-footer">
   <p>&copy; 2026 Yuda Bi &middot; Figures are reproduced from the papers &middot; Updated October 2026</p>
+  <p class="visit" id="visit" hidden>Visitors since October 2026: <span class="count" id="visit-count">&hellip;</span></p>
 </footer>
 
 </div>
+
+<!-- Visits: GoatCounter — no cookies, no personal data. Replace "yuda-bi" with your own site code. -->
+<script data-goatcounter="https://yuda-bi.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script>
+(function () {
+  var line = document.getElementById('visit');
+  var out = document.getElementById('visit-count');
+  if (!line || !out) return;
+  fetch('https://yuda-bi.goatcounter.com/counter/TOTAL.json', { mode: 'cors' })
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error(r.status)); })
+    .then(function (d) { if (d && d.count) { out.textContent = d.count; line.hidden = false; } })
+    .catch(function () { /* not signed up yet, or blocked by an ad blocker: keep the line hidden */ });
+})();
+</script>
 </body>
 </html>

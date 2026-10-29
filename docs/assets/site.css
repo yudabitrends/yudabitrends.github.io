@@ -15,8 +15,8 @@
   --panel: #fafbfc;      /* formula panel */
   --accent: #1f4e8c;
   --link: #1f4e8c;
-  --shadow: 0 1px 2px rgba(16, 32, 64, 0.05), 0 10px 22px -16px rgba(16, 32, 64, 0.3);
-  --measure: 46rem;
+  --shadow: 0 1px 2px rgba(16, 32, 64, 0.04), 0 8px 20px -18px rgba(16, 32, 64, 0.28);
+  --measure: 40rem;   /* ~78 characters per line in Times at 17px */
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -115,8 +115,8 @@ sub { top: 0.25em; }
   border-radius: 50%;
   object-fit: cover;
   object-position: 50% 30%;
-  border: 1px solid var(--frame);
-  box-shadow: 0 0 0 4px #fff, 0 0 0 5px var(--frame-soft), 0 8px 20px -10px rgba(16, 32, 64, 0.45);
+  border: 1px solid var(--frame-soft);
+  box-shadow: 0 6px 16px -10px rgba(16, 32, 64, 0.4);
 }
 .intro-text { min-width: 0; }
 h1 {
@@ -147,7 +147,33 @@ h1 {
 }
 .links a:hover { text-decoration: none; background: var(--head); border-color: var(--accent); }
 
-.bio { margin: 2rem 0 0; }
+/* Epigraph under the name */
+.motto {
+  margin: 1.9rem 0 0;
+  padding-left: 1.15rem;
+  border-left: 2px solid var(--accent);
+  max-width: 34rem;
+}
+.motto p {
+  margin: 0;
+  font-size: 1.125rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+.motto cite {
+  display: block;
+  margin-top: 0.55rem;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.bio { margin: 1.5rem 0 0; }
 
 /* Research directions */
 .directions {
@@ -159,7 +185,7 @@ h1 {
   gap: 0.9rem;
 }
 .directions li {
-  padding: 0.85rem 1rem 1rem;
+  padding: 0.85rem 0.95rem 1rem;
   border: 1px solid var(--frame);
   border-top: 3px solid var(--accent);
   border-radius: 6px;
@@ -173,7 +199,7 @@ h1 {
   font-size: 1.0625rem;
   line-height: 1.3;
 }
-.directions p { margin: 0; font-size: 0.9375rem; line-height: 1.5; color: var(--muted); }
+.directions p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--muted); }
 
 /* ---------- Sections ---------- */
 
@@ -186,6 +212,7 @@ h2 {
   margin: 2.9rem 0 1.15rem;
   padding-bottom: 0.45rem;
   border-bottom: 1px solid var(--rule);
+  scroll-margin-top: 1.5rem;
 }
 h2::after {
   content: "";
@@ -233,9 +260,13 @@ h2::after {
   border-radius: 6px;
   box-shadow: var(--shadow);
   overflow: hidden;
-  scroll-margin-top: 1rem;
+  scroll-margin-top: 1.5rem;
 }
 h2 + .paper { margin-top: 1.25rem; }
+.paper:target {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(31, 78, 140, 0.12), var(--shadow);
+}
 
 .paper-head {
   background: var(--head);
@@ -349,12 +380,15 @@ td .pred { color: var(--muted); }
 td sup { font-size: 0.7em; }
 .table-note { color: var(--muted); font-size: 0.9375rem; margin-top: 0.6rem; }
 
-/* Figures, in a thin frame */
+/* Figures: bled to the edges of the card so the panels keep their width */
 .figure {
-  margin: 1.5rem 0 0;
+  margin: 1.5rem -1.5rem 0;
   padding: 0.9rem 0.9rem 0.8rem;
-  border: 1px solid var(--frame-soft);
-  border-radius: 4px;
+  border-top: 1px solid var(--frame-soft);
+  border-bottom: 1px solid var(--frame-soft);
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
 }
 .fig-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .fig-scroll a { display: block; }
@@ -376,6 +410,14 @@ td sup { font-size: 0.7em; }
   text-align: center;
 }
 .site-footer p { margin: 0; }
+[hidden] { display: none !important; }
+
+/* Visitor count (GoatCounter, filled in on load) */
+.visit { margin-top: 0.35rem; }
+.visit .count {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
 
 /* ---------- Small screens ---------- */
 
@@ -400,7 +442,7 @@ td sup { font-size: 0.7em; }
   .paper h3 { font-size: 1.125rem; gap: 0.5rem; }
   .paper h3 .num { width: 1.45rem; height: 1.45rem; font-size: 0.8125rem; }
   .display { padding: 0.85rem 0.6rem 0.9rem; }
-  .figure { padding: 0.6rem; }
+  .figure { margin-inline: -1rem; padding: 0.6rem; }
   .fig-scroll img { width: 40rem; max-width: none; }
   .swipe-hint { display: block; font-size: 0.875rem; color: var(--faint); margin: 0.3rem 0 0; }
 }
@@ -408,7 +450,7 @@ td sup { font-size: 0.7em; }
 @media print {
   .paper, .toc-card, .directions li { box-shadow: none; }
   .paper { break-inside: avoid-page; }
-  .to-top, .swipe-hint { display: none !important; }
+  .to-top, .swipe-hint, .visit { display: none !important; }
   .fig-scroll img { width: 100% !important; }
   a { color: inherit; }
 }
