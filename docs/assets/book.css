@@ -238,9 +238,16 @@ h1 { font-size: 2.15rem; line-height: 1.15; color: var(--ink); margin: 0 0 0.8re
 /* position:relative keeps KaTeX's visually hidden MathML (position:absolute) inside the
    nearest scroll container; otherwise math in a wide table widens the whole page on phones */
 .katex { font-size: 1.08em; position: relative; }
-.eq { margin: 1rem 0; overflow-x: auto; overflow-y: hidden; padding: 0.1rem 0; }
+.eq { margin: 1rem 0; overflow-x: auto; overflow-y: hidden; padding: 0.1rem 0.2rem; }
 .eq .katex-display { margin: 0.2rem 0; }
 .eq .katex-display > .katex { white-space: nowrap; }
+/* Equation numbers: KaTeX pins \tag to the right edge with position:absolute, so on a
+   narrow screen a wide formula runs underneath its number. As a flex row the number sits
+   at the right margin when there is room and after the formula (inside the horizontal
+   scroll) when there is not. */
+.eq .katex-display > .katex > .katex-html { display: flex; align-items: baseline; }
+.eq .katex-display > .katex > .katex-html > .base:first-child { margin-left: auto; }
+.eq .katex-display > .katex > .katex-html > .tag { position: static; margin-left: auto; padding-left: 1.2em; }
 .math-error { color: #b42318; background: #fef3f2; padding: 0 0.2rem; }
 
 /* theorem-like boxes */
