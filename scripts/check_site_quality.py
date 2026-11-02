@@ -18,7 +18,7 @@ CRITICAL_PAGES = {
     "index.html": {
         "lang": "en",
         "title": "Yuda Bi",
-        "description": "Yuda Bi works on independent component analysis and statistical learning theory, statistical physics, and applications in computational neuroscience.",
+        "description": "Yuda Bi studies what indirect observations can reveal about hidden structure, in latent-variable models such as ICA, partially observed stochastic dynamics, and brain-imaging analysis.",
     },
 }
 

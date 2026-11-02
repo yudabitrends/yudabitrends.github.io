@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Yuda Bi</title>
-  <meta name="description" content="Yuda Bi works on independent component analysis and statistical learning theory, statistical physics, and applications in computational neuroscience.">
+  <meta name="description" content="Yuda Bi studies what indirect observations can reveal about hidden structure, in latent-variable models such as ICA, partially observed stochastic dynamics, and brain-imaging analysis.">
   <meta name="author" content="Yuda Bi">
   <link rel="canonical" href="https://yuda-bi.com/">
 
@@ -13,19 +13,19 @@
   <meta property="og:site_name" content="Yuda Bi">
   <meta property="og:locale" content="en_US">
   <meta property="og:title" content="Yuda Bi">
-  <meta property="og:description" content="Yuda Bi works on independent component analysis and statistical learning theory, statistical physics, and applications in computational neuroscience.">
+  <meta property="og:description" content="Yuda Bi studies what indirect observations can reveal about hidden structure, in latent-variable models such as ICA, partially observed stochastic dynamics, and brain-imaging analysis.">
   <meta property="og:image" content="https://yuda-bi.com/assets/og-card.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Yuda Bi: ICA and statistical learning theory, statistical physics, computational neuroscience">
+  <meta property="og:image:alt" content="Yuda Bi: what indirect observations can reveal about hidden structure">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Yuda Bi">
-  <meta name="twitter:description" content="Yuda Bi works on independent component analysis and statistical learning theory, statistical physics, and applications in computational neuroscience.">
+  <meta name="twitter:description" content="Yuda Bi studies what indirect observations can reveal about hidden structure, in latent-variable models such as ICA, partially observed stochastic dynamics, and brain-imaging analysis.">
   <meta name="twitter:image" content="https://yuda-bi.com/assets/og-card.png">
-  <meta name="twitter:image:alt" content="Yuda Bi: ICA and statistical learning theory, statistical physics, computational neuroscience">
+  <meta name="twitter:image:alt" content="Yuda Bi: what indirect observations can reveal about hidden structure">
 
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/site.css?v=20261102a">
+  <link rel="stylesheet" href="assets/site.css?v=20261103a">
 
   <script type="application/ld+json">
   {
@@ -42,12 +42,13 @@
     },
     "alumniOf": { "@type": "CollegeOrUniversity", "name": "Georgia State University" },
     "knowsAbout": [
+      "Statistical inference",
+      "Identifiability",
+      "Latent-variable models",
       "Independent component analysis",
       "Blind source separation",
-      "Statistical learning theory",
-      "Statistical physics",
       "Stochastic thermodynamics",
-      "Computational neuroscience"
+      "Neuroimaging"
     ],
     "sameAs": [
       "https://scholar.google.com/citations?user=yclnpogAAAAJ",
@@ -81,58 +82,53 @@
   <cite>Hannah Arendt, <i>Men in Dark Times</i> (1968)</cite>
 </blockquote>
 
-<p class="bio">I am at the <a href="https://trendscenter.org/">TReNDS Center</a>, a joint center of Georgia State University, Georgia Tech, and Emory University in Atlanta. I received my Ph.D. in Computer Science from Georgia State in 2025, advised by Vince D. Calhoun. My research has three directions:</p>
+<p class="bio">I am at the <a href="https://trendscenter.org/">TReNDS Center</a>, a joint center of Georgia State University, Georgia Tech, and Emory University in Atlanta. I received my Ph.D. in Computer Science from Georgia State in 2025, advised by Vince D. Calhoun.</p>
+
+<p class="thesis">I study <strong class="thesis-lead">what indirect observations can reveal about hidden structure</strong>: what an observation process <b>preserves</b> and what it <b>erases</b>, what can be <b>identified</b> at all and at what sample cost, what routine analysis choices <b>cost</b>, and when a result can be <b>certified</b> without ground truth. I work on these questions in three settings:</p>
 
 <ol class="directions" aria-label="Research directions">
   <li>
     <span class="dir-num">01</span>
-    <strong class="dir-title">ICA and statistical learning theory</strong>
-    <p>What limits blind source separation, what common estimation pipelines quietly cost, and how to certify an estimate when the true sources are never observed.</p>
+    <strong class="dir-title">Latent-variable models</strong>
+    <p>Mixtures of independent sources (ICA) as the main model: how much signal a mixture leaves, <b>what no estimator can recover</b>, what normalization choices cost, and how to certify an estimate without the sources.</p>
   </li>
   <li>
     <span class="dir-num">02</span>
-    <strong class="dir-title">Statistical physics</strong>
-    <p>How much heat and dissipation can be inferred from stochastic records when part of the dynamics is hidden.</p>
+    <strong class="dir-title">Partially observed dynamics</strong>
+    <p>Stochastic thermodynamics with hidden degrees of freedom: how much heat and dissipation a partial record can reveal, and <b>which added measurement makes them identifiable</b>.</p>
   </li>
   <li>
     <span class="dir-num">03</span>
-    <strong class="dir-title">Computational neuroscience</strong>
-    <p>Applications of ICA and related models to brain imaging data such as fMRI, building on my earlier work in multimodal neuroimaging.</p>
+    <strong class="dir-title">Inference in brain imaging</strong>
+    <p>What template-based fMRI connectivity analyses <b>can and cannot establish</b>, from diagnostics that are blind by construction to robustness checks that cannot tell topography from coupling.</p>
   </li>
 </ol>
-
-<a class="book-promo" href="ica/">
-  <span class="promo-kicker">Open book &middot; English / 中文</span>
-  <span class="promo-title">Independent Component Analysis: From Foundations to Frontiers</span>
-  <span class="promo-desc">A bilingual course on ICA in fifteen chapters, from the mixing model and identifiability through contrasts, algorithms and the Cram&eacute;r&ndash;Rao bound to overcomplete and nonlinear ICA and ICA for fMRI, with exercises and solutions.</span>
-  <span class="promo-cta">Read the book &rarr;</span>
-</a>
 
 <main>
 
 <h2>Papers</h2>
 
 <nav class="toc-card" aria-label="Papers">
-  <p class="toc-group">ICA and statistical learning theory</p>
+  <p class="toc-group">Latent-variable models</p>
   <ol class="toc">
     <li><a href="#kurtosis-law"><span class="toc-num">1</span><span class="toc-title">A 1/<var>R</var> Law for Kurtosis Contrast in Balanced Mixtures</span><span class="tag tag-pub">IEEE SPL 2026</span></a></li>
     <li><a href="#zeros"><span class="toc-num">2</span><span class="toc-title">Zeros That Survive Mixing: Hardness and Immunity in Overcomplete ICA</span><span class="tag">Submitted &middot; IEEE SPL</span></a></li>
     <li><a href="#normalization"><span class="toc-num">3</span><span class="toc-title">Normalization Mismatch in ICA and Its Orthogonalized Remedy</span><span class="tag">Submitted &middot; IEEE TSP</span></a></li>
     <li><a href="#certificates"><span class="toc-num">4</span><span class="toc-title">Sharp Two-Sided Residual Certificates for Comparing ICA Estimates Without the Sources</span><span class="tag">Under review</span></a></li>
   </ol>
-  <p class="toc-group">Statistical physics</p>
+  <p class="toc-group">Partially observed dynamics</p>
   <ol class="toc" start="5">
     <li><a href="#heat-threshold"><span class="toc-num">5</span><span class="toc-title">Heat Constraints from Exponential Correlations and a Sharp Two-Temperature Threshold</span><span class="tag">Submitted &middot; 2026</span></a></li>
     <li><a href="#two-probes"><span class="toc-num">6</span><span class="toc-title">Two Probes Recover the Bath Heat That Neither Reveals Alone</span><span class="tag">Submitted &middot; 2026</span></a></li>
   </ol>
-  <p class="toc-group">Computational neuroscience</p>
+  <p class="toc-group">Inference in brain imaging</p>
   <ol class="toc" start="7">
     <li><a href="#template-mismatch"><span class="toc-num">7</span><span class="toc-title">A Study&rsquo;s Own Dual-Regression Maps Cannot Identify Template Mismatch</span><span class="tag">Submitted &middot; ISBI 2027</span></a></li>
     <li><a href="#topography-coupling"><span class="toc-num">8</span><span class="toc-title">Persistence Under Robustness Checks Cannot Tell Topography from Coupling in Connectivity Group Differences</span><span class="tag">Submitted &middot; ISBI 2027</span></a></li>
   </ol>
 </nav>
 
-<h2>ICA and statistical learning theory</h2>
+<h2>Latent-variable models</h2>
 
 <!-- ============== 1. A 1/R Law for Kurtosis Contrast in Balanced Mixtures ============== -->
 <article class="paper" id="kurtosis-law">
@@ -381,7 +377,7 @@
   </div>
 </article>
 
-<h2>Statistical physics</h2>
+<h2>Partially observed dynamics</h2>
 
 <!-- ============== 5. Heat constraints from exponential correlations ============== -->
 <article class="paper" id="heat-threshold">
@@ -497,7 +493,7 @@
   </div>
 </article>
 
-<h2>Computational neuroscience</h2>
+<h2>Inference in brain imaging</h2>
 
 <!-- ============== 7. A Study's Own Dual-Regression Maps Cannot Identify Template Mismatch ============== -->
 <article class="paper" id="template-mismatch">
@@ -651,6 +647,15 @@
     <p class="to-top"><a href="#top">Back to top &uarr;</a></p>
   </div>
 </article>
+
+<h2 id="teaching">Teaching</h2>
+
+<a class="book-promo" href="ica/">
+  <span class="promo-kicker">Open book &middot; English / 中文</span>
+  <span class="promo-title">Independent Component Analysis: From Foundations to Frontiers</span>
+  <span class="promo-desc">A bilingual course on ICA in fifteen chapters, from the mixing model and identifiability through contrasts, algorithms and the Cram&eacute;r&ndash;Rao bound to overcomplete and nonlinear ICA and ICA for fMRI, with exercises and solutions.</span>
+  <span class="promo-cta">Read the book &rarr;</span>
+</a>
 
 </main>
 
