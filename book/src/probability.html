@@ -1,0 +1,513 @@
+<!-- Chapter 2. Independence, cumulants and entropy. Source format: book/AUTHORING.md -->
+
+<h2 id="sec-probability-overview"><span lang="en">From uncorrelated to independent</span><span lang="zh-CN">从不相关到独立</span></h2>
+
+<p lang="en">Panel (c) of <a class="ref" data-ref="fig-scatter"></a> shows a mixture of two uniform sources after whitening. The two coordinates are uncorrelated and have unit variance, yet they are plainly not independent: the cloud is a tilted square, so the range of values open to one coordinate depends on the value of the other. The covariance cannot see this dependence. ICA therefore needs a notion stronger than correlation, together with quantities that detect dependence and non-Gaussianity beyond second order.</p>
+<p lang="zh-CN"><a class="ref" data-ref="fig-scatter"></a>（c）是两个均匀分布源的混合经白化后的样子。两个坐标互不相关、方差为一，却显然并不独立：点云是一个倾斜的正方形，一个坐标能取哪些值，取决于另一个坐标的值。协方差看不到这种依赖。因此 ICA 需要比相关性更强的概念，也需要能在二阶之外检测依赖性与非高斯性的量。</p>
+
+<p lang="en">This chapter assembles those tools. After independence and its characterization by characteristic functions, cumulants and kurtosis measure dependence and non-Gaussianity algebraically (<a class="ref" data-ref="sec-cumulants"></a> and <a class="ref" data-ref="sec-kurtosis-skewness"></a>), and entropy, mutual information and negentropy measure them information-theoretically (<a class="ref" data-ref="sec-entropy"></a> and <a class="ref" data-ref="sec-mutual-information"></a>). The two viewpoints lead to the two families of contrast functions used later: cumulant-based contrasts (<a class="ref" data-ref="kurtosis"></a> and <a class="ref" data-ref="jade-sobi"></a>), and information-theoretic contrasts and the likelihood (<a class="ref" data-ref="likelihood"></a>).</p>
+<p lang="zh-CN">本章汇集这些工具。在讨论独立性及其特征函数刻画之后，累积量与峭度从代数角度度量依赖性与非高斯性（<a class="ref" data-ref="sec-cumulants"></a>与<a class="ref" data-ref="sec-kurtosis-skewness"></a>），熵、互信息与负熵则从信息论角度度量同样的东西（<a class="ref" data-ref="sec-entropy"></a>与<a class="ref" data-ref="sec-mutual-information"></a>）。这两种视角对应后文的两类对比函数：基于累积量的对比函数（<a class="ref" data-ref="kurtosis"></a>与<a class="ref" data-ref="jade-sobi"></a>），以及信息论对比函数与似然（<a class="ref" data-ref="likelihood"></a>）。</p>
+
+<p lang="en"><b>Conventions.</b> All random variables are real-valued and defined on one probability space. Whenever we write a density we assume that it exists, and we write an expectation only when it is finite. Logarithms are natural, so entropies are measured in nats. The material is standard: McCullagh (1987) treats cumulants in depth, Cover and Thomas (2006) treat information theory, and Comon (1994) and Hyvärinen, Karhunen and Oja (2001) present these tools in the context of ICA.</p>
+<p lang="zh-CN"><b>约定。</b>所有随机变量都取实值，并定义在同一个概率空间上。凡写出密度，即假定密度存在；凡写出期望，即假定它有限。对数一律取自然对数，因此熵的单位是奈特（nat）。本章内容都是标准的：McCullagh（1987）深入讨论了累积量，Cover 与 Thomas（2006）系统讲述了信息论，Comon（1994）以及 Hyvärinen、Karhunen 与 Oja（2001）则在 ICA 的背景下介绍了这些工具。</p>
+
+<h2 id="sec-independence"><span lang="en">Independence</span><span lang="zh-CN">独立性</span></h2>
+
+<p lang="en">Two random quantities are independent when knowing the value of one tells us nothing about the other. The definition applies to scalars and vectors alike; independence between groups of variables appears later, for the Gaussian subspace in <a class="ref" data-ref="identifiability"></a> and for independent vector analysis in <a class="ref" data-ref="group-ica"></a>.</p>
+<p lang="zh-CN">两个随机量独立，是指知道其中一个的取值，对另一个不提供任何信息。这一定义对标量和向量同样适用；变量组之间的独立性在后文还会出现，例如<a class="ref" data-ref="identifiability"></a>中的高斯子空间，以及<a class="ref" data-ref="group-ica"></a>中的独立向量分析。</p>
+
+<div class="env" data-kind="definition" id="def-independence" data-en="independence" data-zh="独立性">
+  <p lang="en">Random vectors $\by_1, \dots, \by_k$, with $\by_i \in \R^{d_i}$, are (mutually) <em>independent</em> if $P(\by_1 \in B_1, \dots, \by_k \in B_k) = \prod_{i=1}^k P(\by_i \in B_i)$ for all Borel sets $B_i \subseteq \R^{d_i}$. The components of $\by = (y_1, \dots, y_n)^\top$ are independent when the scalars $y_1, \dots, y_n$ are; equivalently, the joint distribution function factorizes, $F_{\by}(\bu) = \prod_{i=1}^n F_{y_i}(u_i)$ for all $\bu \in \R^n$.</p>
+  <p lang="zh-CN">设随机向量 $\by_i \in \R^{d_i}$，$i = 1, \dots, k$。若对所有 Borel 集 $B_i \subseteq \R^{d_i}$ 都有 $P(\by_1 \in B_1, \dots, \by_k \in B_k) = \prod_{i=1}^k P(\by_i \in B_i)$，则称 $\by_1, \dots, \by_k$（相互）<em>独立</em>。向量 $\by = (y_1, \dots, y_n)^\top$ 的分量独立，是指标量 $y_1, \dots, y_n$ 相互独立；等价地，联合分布函数可以分解为 $F_{\by}(\bu) = \prod_{i=1}^n F_{y_i}(u_i)$，对所有 $\bu \in \R^n$ 成立。</p>
+</div>
+
+<p lang="en">The following equivalent forms are used throughout the book.</p>
+<p lang="zh-CN">下面几种等价形式在全书中反复使用。</p>
+
+<div class="env" data-kind="proposition" id="prop-independence-forms" data-en="equivalent forms of independence" data-zh="独立性的等价形式">
+  <p lang="en">For random vectors $\by_1$ and $\by_2$ the following statements are equivalent:</p>
+  <p lang="zh-CN">对随机向量 $\by_1$ 与 $\by_2$，以下陈述等价：</p>
+  <ol lang="en">
+    <li>$\by_1$ and $\by_2$ are independent;</li>
+    <li>$\E[g(\by_1)\,h(\by_2)] = \E[g(\by_1)]\,\E[h(\by_2)]$ for all bounded measurable functions $g$ and $h$;</li>
+    <li>(when $(\by_1, \by_2)$ has a density $p$ with marginal densities $p_1$ and $p_2$): $p(\bu_1, \bu_2) = p_1(\bu_1)\,p_2(\bu_2)$ for almost every $(\bu_1, \bu_2)$.</li>
+  </ol>
+  <ol lang="zh-CN">
+    <li>$\by_1$ 与 $\by_2$ 独立；</li>
+    <li>对一切有界可测函数 $g$ 与 $h$，$\E[g(\by_1)\,h(\by_2)] = \E[g(\by_1)]\,\E[h(\by_2)]$；</li>
+    <li>（当 $(\by_1, \by_2)$ 有密度 $p$、边缘密度为 $p_1$ 与 $p_2$ 时）：对几乎所有 $(\bu_1, \bu_2)$，$p(\bu_1, \bu_2) = p_1(\bu_1)\,p_2(\bu_2)$。</li>
+  </ol>
+  <p lang="en">Statement 2 extends to all $g$ and $h$ for which $\E|g(\by_1)|$ and $\E|h(\by_2)|$ are finite.</p>
+  <p lang="zh-CN">陈述 2 可以推广到一切使 $\E|g(\by_1)|$ 与 $\E|h(\by_2)|$ 有限的 $g$ 与 $h$。</p>
+</div>
+<div class="proof">
+  <p lang="en">1 ⇒ 2. For indicator functions $g = 1_{B_1}$ and $h = 1_{B_2}$, statement 2 is the definition. By linearity it holds for simple functions (finite linear combinations of indicators); every bounded measurable function is a uniform limit of simple functions, so it holds for all bounded $g$ and $h$. Monotone convergence, applied to the positive and negative parts, extends it to integrable functions. 2 ⇒ 1: take indicators. 3 ⇒ 1: integrate the factorized density over $B_1 \times B_2$. 1 ⇒ 3: by statement 1, the function $p_1(\bu_1)p_2(\bu_2)$ integrates over every product set $B_1 \times B_2$ to $P(\by_1 \in B_1)\,P(\by_2 \in B_2) = P(\by_1 \in B_1, \by_2 \in B_2)$. A probability measure on $\R^{d_1 + d_2}$ is determined by its values on product sets, so $p_1p_2$ is a density of the joint distribution, and two densities of the same distribution agree almost everywhere.</p>
+  <p lang="zh-CN">1 ⇒ 2：当 $g = 1_{B_1}$、$h = 1_{B_2}$ 为示性函数时，陈述 2 就是定义本身。由线性性，它对简单函数（示性函数的有限线性组合）成立；任何有界可测函数都是简单函数的一致极限，所以它对一切有界的 $g$、$h$ 成立。再对正部与负部分别使用单调收敛定理，即可推广到可积函数。2 ⇒ 1：取示性函数即可。3 ⇒ 1：把分解后的密度在 $B_1 \times B_2$ 上积分即得定义。1 ⇒ 3：由陈述 1，函数 $p_1(\bu_1)p_2(\bu_2)$ 在任一乘积集 $B_1 \times B_2$ 上的积分等于 $P(\by_1 \in B_1)\,P(\by_2 \in B_2) = P(\by_1 \in B_1, \by_2 \in B_2)$。$\R^{d_1 + d_2}$ 上的概率测度由它在乘积集上的取值唯一确定，所以 $p_1p_2$ 是联合分布的一个密度；而同一分布的两个密度几乎处处相等。</p>
+</div>
+
+<p lang="en">Statement 2 is the form that ICA algorithms use. Independence makes every function of $\by_1$ uncorrelated with every function of $\by_2$, $\Cov(g(\by_1), h(\by_2)) = 0$, and estimating equations such as $\E[g(y_i)\,y_j] = 0$ in <a class="ref" data-ref="likelihood"></a> test special cases of this. Directly from the definition, functions of independent vectors are again independent: if $\by_1$ and $\by_2$ are independent, so are $f_1(\by_1)$ and $f_2(\by_2)$ for any measurable $f_1$ and $f_2$, because $\{f_i(\by_i) \in B_i\} = \{\by_i \in f_i^{-1}(B_i)\}$. The proof of <a class="ref" data-ref="prop-indeterminacy"></a> used this fact.</p>
+<p lang="zh-CN">ICA 算法用的正是陈述 2。独立性使 $\by_1$ 的任何函数都与 $\by_2$ 的任何函数不相关，即 $\Cov(g(\by_1), h(\by_2)) = 0$；<a class="ref" data-ref="likelihood"></a>中的估计方程，例如 $\E[g(y_i)\,y_j] = 0$，检验的就是它的特例。由定义直接可知，独立向量的函数仍然独立：若 $\by_1$ 与 $\by_2$ 独立，则对任意可测函数 $f_1$、$f_2$，$f_1(\by_1)$ 与 $f_2(\by_2)$ 也独立，因为 $\{f_i(\by_i) \in B_i\} = \{\by_i \in f_i^{-1}(B_i)\}$。<a class="ref" data-ref="prop-indeterminacy"></a>的证明就用到了这一点。</p>
+
+<h3><span lang="en">Pairwise and mutual independence</span><span lang="zh-CN">两两独立与相互独立</span></h3>
+
+<p lang="en">Mutual independence of $n$ variables is stronger than independence of every pair. Let $y_1$ and $y_2$ be independent with $P(y_i = 1) = P(y_i = -1) = \tfrac12$, and let $y_3 = y_1y_2$. Every pair is independent (for instance $P(y_1 = a, y_3 = b) = P(y_1 = a, y_2 = ab) = \tfrac14$ for all signs $a$ and $b$), but $y_3$ is a function of $(y_1, y_2)$, and $P(y_1 = y_2 = y_3 = 1) = \tfrac14 \ne \tfrac18$. In general, then, pairwise checks are not enough. Linear mixtures of independent sources are an exception: by Comon's theorem (<a class="ref" data-ref="thm-comon"></a>), if $\bs$ has independent, non-degenerate components with finite variances, at most one of them Gaussian, and $\bP$ is invertible, then pairwise independence of the components of $\by = \bP\bs$ already forces $\bP = \bPi\bD$, so the outputs are mutually independent.</p>
+<p lang="zh-CN">$n$ 个变量相互独立，比它们两两独立要强。设 $y_1$ 与 $y_2$ 独立，$P(y_i = 1) = P(y_i = -1) = \tfrac12$，并令 $y_3 = y_1y_2$。任意两个变量都独立（例如对任意符号 $a$、$b$，$P(y_1 = a, y_3 = b) = P(y_1 = a, y_2 = ab) = \tfrac14$），但 $y_3$ 是 $(y_1, y_2)$ 的函数，且 $P(y_1 = y_2 = y_3 = 1) = \tfrac14 \ne \tfrac18$。所以一般来说，只检验两两独立是不够的。独立源的线性混合是一个例外：由 Comon 定理（<a class="ref" data-ref="thm-comon"></a>），若 $\bs$ 的分量独立、非退化、方差有限且至多一个是高斯的，$\bP$ 可逆，那么 $\by = \bP\bs$ 的分量两两独立就已经迫使 $\bP = \bPi\bD$，从而输出相互独立。</p>
+
+<h3><span lang="en">Uncorrelated is weaker than independent</span><span lang="zh-CN">不相关弱于独立</span></h3>
+
+<p lang="en">Random variables $y_1$ and $y_2$ with finite variances are <em>uncorrelated</em> if $\Cov(y_1, y_2) = \E[y_1y_2] - \E[y_1]\,\E[y_2] = 0$. Independence implies uncorrelatedness: take $g$ and $h$ to be the identity in <a class="ref" data-ref="prop-independence-forms"></a>. The converse fails, as the following example and <a class="ref" data-ref="ex-uncorrelated-dependent"></a> show.</p>
+<p lang="zh-CN">若方差有限的随机变量 $y_1$、$y_2$ 满足 $\Cov(y_1, y_2) = \E[y_1y_2] - \E[y_1]\,\E[y_2] = 0$，则称二者<em>不相关</em>。独立蕴含不相关：在<a class="ref" data-ref="prop-independence-forms"></a>中取 $g$、$h$ 为恒等函数即可。反之则不成立，下面的例子和<a class="ref" data-ref="ex-uncorrelated-dependent"></a>都说明了这一点。</p>
+
+<div class="env" data-kind="example" id="exm-rotated-uniform" data-en="white but dependent" data-zh="白但不独立">
+  <p lang="en">Let $s_1$ and $s_2$ be independent and uniform on $[-\sqrt3, \sqrt3]$, so that they have zero mean, unit variance and $\E[s_i^4] = 9/5$. Rotate them by 45°: $z_1 = (s_1 - s_2)/\sqrt2$ and $z_2 = (s_1 + s_2)/\sqrt2$. Then $\E[z_1z_2] = (\E[s_1^2] - \E[s_2^2])/2 = 0$ and $\E[z_1^2] = \E[z_2^2] = 1$, so the vector $\bz$ is <em>white</em>: its components are uncorrelated with unit variance. With $g(u) = h(u) = u^2$, however,</p>
+  <p lang="zh-CN">设 $s_1$、$s_2$ 独立，都服从 $[-\sqrt3, \sqrt3]$ 上的均匀分布，于是它们均值为零、方差为一，且 $\E[s_i^4] = 9/5$。把它们旋转 45°：$z_1 = (s_1 - s_2)/\sqrt2$，$z_2 = (s_1 + s_2)/\sqrt2$。则 $\E[z_1z_2] = (\E[s_1^2] - \E[s_2^2])/2 = 0$，且 $\E[z_1^2] = \E[z_2^2] = 1$，所以向量 $\bz$ 是<em>白</em>的：各分量不相关且方差为一。然而取 $g(u) = h(u) = u^2$，有</p>
+  <div class="eq">$$\E[z_1^2z_2^2] = \tfrac14\,\E\bigl[(s_1^2 - s_2^2)^2\bigr] = \tfrac14\bigl(2\,\E[s_1^4] - 2\bigr) = \tfrac25 \;\ne\; 1 = \E[z_1^2]\,\E[z_2^2],$$</div>
+  <p lang="en">so $z_1$ and $z_2$ are dependent. Geometrically, $\bz$ is uniform on a square rotated by 45°, and the larger $|z_1|$ is, the narrower the range of $z_2$.</p>
+  <p lang="zh-CN">所以 $z_1$ 与 $z_2$ 并不独立。从几何上看，$\bz$ 在一个旋转了 45° 的正方形上均匀分布，$|z_1|$ 越大，$z_2$ 的取值范围就越窄。</p>
+</div>
+
+<p lang="en">For jointly Gaussian vectors the two notions coincide (<a class="ref" data-ref="prop-gaussian-uncorrelated"></a> below). Gaussian marginals are not enough: <a class="ref" data-ref="ex-sign-flip"></a> constructs two uncorrelated standard Gaussian variables that are dependent.</p>
+<p lang="zh-CN">对联合高斯向量而言，这两个概念是一回事（见下文<a class="ref" data-ref="prop-gaussian-uncorrelated"></a>）。仅有高斯的边缘分布是不够的：<a class="ref" data-ref="ex-sign-flip"></a>构造了两个不相关、却不独立的标准高斯变量。</p>
+
+<h2 id="sec-charfun"><span lang="en">Characteristic functions</span><span lang="zh-CN">特征函数</span></h2>
+
+<p lang="en">A density need not exist and moments need not be finite, but every distribution has a characteristic function. It turns independence into factorization and sums of independent variables into products, and its logarithm defines the cumulants of the next section.</p>
+<p lang="zh-CN">密度不一定存在，矩也不一定有限，但每个分布都有特征函数。特征函数把独立性变成乘积分解，把独立变量之和变成乘积；它的对数还定义了下一节的累积量。</p>
+
+<div class="env" data-kind="definition" id="def-charfun" data-en="characteristic function" data-zh="特征函数">
+  <p lang="en">The <em>characteristic function</em> of a random vector $\by \in \R^d$ is $\varphi_{\by}(\bomega) = \E[\exp(i\,\bomega^\top\by)]$, $\bomega \in \R^d$.</p>
+  <p lang="zh-CN">随机向量 $\by \in \R^d$ 的<em>特征函数</em>定义为 $\varphi_{\by}(\bomega) = \E[\exp(i\,\bomega^\top\by)]$，$\bomega \in \R^d$。</p>
+</div>
+
+<p lang="en">Because $|e^{i\bomega^\top\by}| = 1$, the expectation always exists. Moreover $\varphi_{\by}(\bzero) = 1$, $|\varphi_{\by}| \le 1$, $\varphi_{\by}$ is uniformly continuous, and $\varphi_{\by}(-\bomega) = \overline{\varphi_{\by}(\bomega)}$. Three further facts are used repeatedly; the first is the uniqueness theorem for characteristic functions (Billingsley, 1995; Lukacs, 1970), the others follow from the definition.</p>
+<p lang="zh-CN">由于 $|e^{i\bomega^\top\by}| = 1$，这个期望总是存在。此外，$\varphi_{\by}(\bzero) = 1$，$|\varphi_{\by}| \le 1$，$\varphi_{\by}$ 一致连续，且 $\varphi_{\by}(-\bomega) = \overline{\varphi_{\by}(\bomega)}$。以下三个事实会反复用到：第一个是特征函数的唯一性定理（Billingsley, 1995; Lukacs, 1970），其余两个可由定义直接推出。</p>
+<ul lang="en">
+  <li><b>Uniqueness.</b> Two random vectors have the same distribution if and only if they have the same characteristic function.</li>
+  <li><b>Affine maps.</b> For $\bM \in \R^{k \times d}$ and $\bb \in \R^k$, $\varphi_{\bM\by + \bb}(\bomega) = e^{i\bomega^\top\bb}\,\varphi_{\by}(\bM^\top\bomega)$. Since $\varphi_{-\by}(\bomega) = \overline{\varphi_{\by}(\bomega)}$, uniqueness shows that $\varphi_{\by}$ is real exactly when $\by$ and $-\by$ have the same distribution.</li>
+  <li><b>Examples.</b> $\Ncal(\mu, \sigma^2)$: $e^{i\mu\omega - \sigma^2\omega^2/2}$; uniform on $[-a, a]$: $\sin(a\omega)/(a\omega)$; Laplace with density $e^{-|y|/b}/(2b)$: $1/(1 + b^2\omega^2)$; exponential with rate $\lambda$: $\lambda/(\lambda - i\omega)$; symmetric binary $\pm 1$: $\cos\omega$.</li>
+</ul>
+<ul lang="zh-CN">
+  <li><b>唯一性。</b>两个随机向量同分布，当且仅当它们的特征函数相同。</li>
+  <li><b>仿射变换。</b>对 $\bM \in \R^{k \times d}$ 与 $\bb \in \R^k$，有 $\varphi_{\bM\by + \bb}(\bomega) = e^{i\bomega^\top\bb}\,\varphi_{\by}(\bM^\top\bomega)$。由于 $\varphi_{-\by}(\bomega) = \overline{\varphi_{\by}(\bomega)}$，由唯一性可知：$\varphi_{\by}$ 取实值，当且仅当 $\by$ 与 $-\by$ 同分布。</li>
+  <li><b>例子。</b>$\Ncal(\mu, \sigma^2)$：$e^{i\mu\omega - \sigma^2\omega^2/2}$；$[-a, a]$ 上的均匀分布：$\sin(a\omega)/(a\omega)$；密度为 $e^{-|y|/b}/(2b)$ 的拉普拉斯分布：$1/(1 + b^2\omega^2)$；速率为 $\lambda$ 的指数分布：$\lambda/(\lambda - i\omega)$；对称二值分布 $\pm 1$：$\cos\omega$。</li>
+</ul>
+
+<p lang="en">A random vector $\by$ is (jointly) <em>Gaussian</em> if every linear combination $\ba^\top\by$ is Gaussian, possibly degenerate (constant). If $\by$ has mean $\bmu$ and covariance $\bSigma$, possibly singular, then $\bomega^\top\by \sim \Ncal(\bomega^\top\bmu,\ \bomega^\top\bSigma\bomega)$, and evaluating the scalar characteristic function at $1$ gives</p>
+<p lang="zh-CN">若随机向量 $\by$ 的每个线性组合 $\ba^\top\by$ 都服从高斯分布（允许退化为常数），则称 $\by$ 是（联合）<em>高斯</em>的。设 $\by$ 的均值为 $\bmu$、协方差为 $\bSigma$（可以奇异），则 $\bomega^\top\by \sim \Ncal(\bomega^\top\bmu,\ \bomega^\top\bSigma\bomega)$，在 $1$ 处计算这个标量的特征函数，得到</p>
+
+<div class="eq" id="eq-gaussian-charfun">$$\varphi_{\by}(\bomega) = \exp\bigl(i\,\bomega^\top\bmu - \tfrac12\,\bomega^\top\bSigma\,\bomega\bigr).$$</div>
+
+<div class="env" data-kind="proposition" id="prop-charfun-independence" data-en="independence and characteristic functions" data-zh="独立性与特征函数">
+  <p lang="en">(a) Random vectors $\by_1, \dots, \by_k$ are independent if and only if the characteristic function of $(\by_1, \dots, \by_k)$ factorizes: $\varphi_{(\by_1, \dots, \by_k)}(\bomega_1, \dots, \bomega_k) = \prod_{i=1}^k \varphi_{\by_i}(\bomega_i)$ for all $\bomega_1, \dots, \bomega_k$. (b) If $\by_1, \dots, \by_k$ are independent and have the same dimension, then $\varphi_{\by_1 + \dots + \by_k}(\bomega) = \prod_{i=1}^k \varphi_{\by_i}(\bomega)$.</p>
+  <p lang="zh-CN">（a）随机向量 $\by_1, \dots, \by_k$ 独立，当且仅当 $(\by_1, \dots, \by_k)$ 的特征函数可以分解：对所有 $\bomega_1, \dots, \bomega_k$，$\varphi_{(\by_1, \dots, \by_k)}(\bomega_1, \dots, \bomega_k) = \prod_{i=1}^k \varphi_{\by_i}(\bomega_i)$。（b）若 $\by_1, \dots, \by_k$ 独立且维数相同，则 $\varphi_{\by_1 + \dots + \by_k}(\bomega) = \prod_{i=1}^k \varphi_{\by_i}(\bomega)$。</p>
+</div>
+<div class="proof">
+  <p lang="en">(a) If the vectors are independent, the expectation of $\prod_i e^{i\bomega_i^\top\by_i}$ equals the product of the expectations, by <a class="ref" data-ref="prop-independence-forms"></a> applied to real and imaginary parts and by induction on $k$. Conversely, suppose that the characteristic function factorizes. Let $\tilde\by_1, \dots, \tilde\by_k$ be independent, each $\tilde\by_i$ distributed as $\by_i$. By the first part, $(\tilde\by_1, \dots, \tilde\by_k)$ has characteristic function $\prod_i \varphi_{\by_i}(\bomega_i)$, the same as $(\by_1, \dots, \by_k)$. By uniqueness the two vectors have the same distribution, so the $\by_i$ are independent. (b) Write $e^{i\bomega^\top(\by_1 + \dots + \by_k)} = \prod_i e^{i\bomega^\top\by_i}$, take expectations and use (a) with $\bomega_1 = \dots = \bomega_k = \bomega$.</p>
+  <p lang="zh-CN">（a）若这些向量独立，对实部与虚部分别应用<a class="ref" data-ref="prop-independence-forms"></a>并对 $k$ 归纳，可知 $\prod_i e^{i\bomega_i^\top\by_i}$ 的期望等于各因子期望之积。反之，设特征函数可以分解。取相互独立的 $\tilde\by_1, \dots, \tilde\by_k$，使每个 $\tilde\by_i$ 与 $\by_i$ 同分布。由前半部分，$(\tilde\by_1, \dots, \tilde\by_k)$ 的特征函数为 $\prod_i \varphi_{\by_i}(\bomega_i)$，与 $(\by_1, \dots, \by_k)$ 的特征函数相同；由唯一性定理，两个向量同分布，所以各 $\by_i$ 相互独立。（b）写出 $e^{i\bomega^\top(\by_1 + \dots + \by_k)} = \prod_i e^{i\bomega^\top\by_i}$，取期望，并在（a）中令 $\bomega_1 = \dots = \bomega_k = \bomega$ 即可。</p>
+</div>
+
+<div class="env" data-kind="proposition" id="prop-gaussian-uncorrelated" data-en="Gaussian vectors" data-zh="高斯向量">
+  <p lang="en">Let $(\by_1, \by_2)$ be jointly Gaussian. Then $\by_1$ and $\by_2$ are independent if and only if their cross-covariance $\E[(\by_1 - \E\by_1)(\by_2 - \E\by_2)^\top]$ is zero. In particular, the components of a Gaussian vector are independent if and only if they are uncorrelated.</p>
+  <p lang="zh-CN">设 $(\by_1, \by_2)$ 是联合高斯向量。则 $\by_1$ 与 $\by_2$ 独立，当且仅当它们的互协方差 $\E[(\by_1 - \E\by_1)(\by_2 - \E\by_2)^\top]$ 为零。特别地，高斯向量的各分量独立，当且仅当它们互不相关。</p>
+</div>
+<div class="proof">
+  <p lang="en">Independence always gives zero cross-covariance. Conversely, if the covariance is block diagonal, with diagonal blocks $\bSigma_{11} = \Cov(\by_1)$ and $\bSigma_{22} = \Cov(\by_2)$, then by <a class="ref" data-ref="eq-gaussian-charfun"></a> the characteristic function of $(\by_1, \by_2)$ is $\exp(i\bomega_1^\top\bmu_1 - \tfrac12\bomega_1^\top\bSigma_{11}\bomega_1)\,\exp(i\bomega_2^\top\bmu_2 - \tfrac12\bomega_2^\top\bSigma_{22}\bomega_2)$. Each factor is the characteristic function of the corresponding marginal, which is again Gaussian, so <a class="ref" data-ref="prop-charfun-independence"></a>(a) gives independence. No invertibility of $\bSigma$ is needed.</p>
+  <p lang="zh-CN">独立总蕴含互协方差为零。反之，若协方差是分块对角的，对角块为 $\bSigma_{11} = \Cov(\by_1)$ 与 $\bSigma_{22} = \Cov(\by_2)$，则由 <a class="ref" data-ref="eq-gaussian-charfun"></a>，$(\by_1, \by_2)$ 的特征函数等于 $\exp(i\bomega_1^\top\bmu_1 - \tfrac12\bomega_1^\top\bSigma_{11}\bomega_1)\,\exp(i\bomega_2^\top\bmu_2 - \tfrac12\bomega_2^\top\bSigma_{22}\bomega_2)$。每个因子都是相应边缘分布（仍为高斯分布）的特征函数，于是由<a class="ref" data-ref="prop-charfun-independence"></a>（a）得到独立性。这里不需要 $\bSigma$ 可逆。</p>
+</div>
+
+<p lang="en">For Gaussian data, decorrelation therefore already achieves independence, and since a rotation of independent standard Gaussian components leaves them independent, nothing more can be learned (<a class="ref" data-ref="ex-gaussian-rotation"></a>). For non-Gaussian data, independence is a much stronger requirement than decorrelation, and ICA exploits exactly this gap. Part (b) of <a class="ref" data-ref="prop-charfun-independence"></a> also shows why the logarithm of the characteristic function is the natural object for sums of independent variables: it turns their product into a sum.</p>
+<p lang="zh-CN">因此，对高斯数据而言，去相关就已经实现了独立；又因为独立的标准高斯分量经任意旋转后仍然独立，所以无法再学到更多东西（<a class="ref" data-ref="ex-gaussian-rotation"></a>）。对非高斯数据，独立是比去相关强得多的要求，ICA 利用的正是这一差距。<a class="ref" data-ref="prop-charfun-independence"></a>的（b）还说明，对独立变量之和而言，特征函数的对数是最自然的对象：取对数把乘积变成了和。</p>
+
+<h2 id="sec-cumulants"><span lang="en">Moments and cumulants</span><span lang="zh-CN">矩与累积量</span></h2>
+
+<p lang="en">If $\E|y|^k &lt; \infty$, the characteristic function of a scalar $y$ is $k$ times continuously differentiable, with $\varphi_y^{(j)}(0) = i^j\,\E[y^j]$ for $j \le k$, so that $\varphi_y(\omega) = \sum_{j=0}^{k} \E[y^j]\,(i\omega)^j/j! + o(|\omega|^k)$ as $\omega \to 0$. Moments are the Taylor coefficients of $\varphi_y$. Cumulants are the Taylor coefficients of its logarithm, which is well defined near $\omega = 0$ because $\varphi_y(0) = 1$ and $\varphi_y$ is continuous.</p>
+<p lang="zh-CN">若 $\E|y|^k &lt; \infty$，则标量 $y$ 的特征函数 $k$ 次连续可微，且对 $j \le k$ 有 $\varphi_y^{(j)}(0) = i^j\,\E[y^j]$，于是当 $\omega \to 0$ 时 $\varphi_y(\omega) = \sum_{j=0}^{k} \E[y^j]\,(i\omega)^j/j! + o(|\omega|^k)$。矩是 $\varphi_y$ 的 Taylor 系数，累积量则是其对数的 Taylor 系数。由于 $\varphi_y(0) = 1$ 且 $\varphi_y$ 连续，这个对数在 $\omega = 0$ 附近有定义。</p>
+
+<div class="env" data-kind="definition" id="def-cumulant" data-en="cumulants" data-zh="累积量">
+  <p lang="en">Let $v_1, \dots, v_j$ be random variables, not necessarily distinct, with finite moments of order $j$, and let $\bv = (v_1, \dots, v_j)^\top$. Their (joint) <em>cumulant</em> is</p>
+  <p lang="zh-CN">设随机变量 $v_1, \dots, v_j$（不必互不相同）的 $j$ 阶矩有限，记 $\bv = (v_1, \dots, v_j)^\top$。它们的（联合）<em>累积量</em>定义为</p>
+  <div class="eq">$$\cum(v_1, \dots, v_j) = (-i)^j\, \frac{\partial^j \log\varphi_{\bv}(\bomega)}{\partial\omega_1 \cdots \partial\omega_j}\bigg|_{\bomega = \bzero}.$$</div>
+  <p lang="en">The cumulant of order $j$ of a single variable is $\kappa_j(y) = \cum(y, \dots, y)$, with $j$ arguments. Equivalently, if $\E|y|^k &lt; \infty$, then $\log\varphi_y(\omega) = \sum_{j=1}^{k} \kappa_j(y)\,(i\omega)^j/j! + o(|\omega|^k)$ as $\omega \to 0$. The function $\log\varphi$ is called the <em>second characteristic function</em>.</p>
+  <p lang="zh-CN">单个变量的 $j$ 阶累积量是 $\kappa_j(y) = \cum(y, \dots, y)$（共 $j$ 个自变量）。等价地，若 $\E|y|^k &lt; \infty$，则当 $\omega \to 0$ 时 $\log\varphi_y(\omega) = \sum_{j=1}^{k} \kappa_j(y)\,(i\omega)^j/j! + o(|\omega|^k)$。函数 $\log\varphi$ 称为<em>第二特征函数</em>。</p>
+</div>
+
+<p lang="en">The first four cumulants of a scalar with mean $\mu$ are</p>
+<p lang="zh-CN">均值为 $\mu$ 的标量的前四阶累积量为</p>
+
+<div class="eq">$$\begin{aligned} \kappa_1 &amp;= \E[y], &amp; \kappa_2 &amp;= \E[(y - \mu)^2] = \Var(y), \\ \kappa_3 &amp;= \E[(y - \mu)^3], &amp; \kappa_4 &amp;= \E[(y - \mu)^4] - 3\Var(y)^2. \end{aligned}$$</div>
+
+<p lang="en">In terms of the raw moments $m_j = \E[y^j]$, $\kappa_3 = m_3 - 3m_2m_1 + 2m_1^3$ and $\kappa_4 = m_4 - 4m_3m_1 - 3m_2^2 + 12m_2m_1^2 - 6m_1^4$. For zero mean the derivation takes one line. Write $\varphi_y(\omega) = 1 + u$ with $u = -\sigma^2\omega^2/2 - i\,m_3\omega^3/6 + m_4\omega^4/24 + o(\omega^4)$. Then $\log(1 + u) = u - u^2/2 + O(u^3)$, where $u^2 = \sigma^4\omega^4/4 + o(\omega^4)$ and $u^3 = o(\omega^4)$, so $\log\varphi_y(\omega) = -\sigma^2\omega^2/2 - i\,m_3\omega^3/6 + (m_4 - 3\sigma^4)\,\omega^4/24 + o(\omega^4)$. Matching coefficients with $\sum_j \kappa_j (i\omega)^j/j!$ gives $\kappa_2 = \sigma^2$, $\kappa_3 = m_3$ and $\kappa_4 = m_4 - 3\sigma^4$.</p>
+<p lang="zh-CN">用原点矩 $m_j = \E[y^j]$ 表示，$\kappa_3 = m_3 - 3m_2m_1 + 2m_1^3$，$\kappa_4 = m_4 - 4m_3m_1 - 3m_2^2 + 12m_2m_1^2 - 6m_1^4$。均值为零时，推导只需一行。记 $\varphi_y(\omega) = 1 + u$，其中 $u = -\sigma^2\omega^2/2 - i\,m_3\omega^3/6 + m_4\omega^4/24 + o(\omega^4)$。于是 $\log(1 + u) = u - u^2/2 + O(u^3)$，而 $u^2 = \sigma^4\omega^4/4 + o(\omega^4)$、$u^3 = o(\omega^4)$，所以 $\log\varphi_y(\omega) = -\sigma^2\omega^2/2 - i\,m_3\omega^3/6 + (m_4 - 3\sigma^4)\,\omega^4/24 + o(\omega^4)$。与 $\sum_j \kappa_j (i\omega)^j/j!$ 比较系数，得 $\kappa_2 = \sigma^2$，$\kappa_3 = m_3$，$\kappa_4 = m_4 - 3\sigma^4$。</p>
+
+<p lang="en">For zero-mean variables, the cumulants of order two and three are moments, $\cum(x_i, x_j) = \E[x_ix_j]$ and $\cum(x_i, x_j, x_k) = \E[x_ix_jx_k]$, while the fourth-order cumulant subtracts from the fourth moment the three ways of pairing the indices (<a class="ref" data-ref="ex-cum4"></a>):</p>
+<p lang="zh-CN">对零均值变量，二阶与三阶累积量就是矩：$\cum(x_i, x_j) = \E[x_ix_j]$，$\cum(x_i, x_j, x_k) = \E[x_ix_jx_k]$；而四阶累积量要从四阶矩中减去把四个下标两两配对的三种方式（<a class="ref" data-ref="ex-cum4"></a>）：</p>
+
+<div class="eq" id="eq-cum4">$$\begin{aligned} \cum(x_i, x_j, x_k, x_l) = \E[x_ix_jx_kx_l] &- \E[x_ix_j]\,\E[x_kx_l] \\ &- \E[x_ix_k]\,\E[x_jx_l] - \E[x_ix_l]\,\E[x_jx_k]. \end{aligned}$$</div>
+
+<p lang="en">For $i = j = k = l$ this is $\kappa_4 = \E[x^4] - 3(\E[x^2])^2$ again. The properties that make cumulants useful are collected below.</p>
+<p lang="zh-CN">当 $i = j = k = l$ 时，它又回到 $\kappa_4 = \E[x^4] - 3(\E[x^2])^2$。累积量之所以有用，靠的是下面这些性质。</p>
+
+<div class="env" data-kind="proposition" id="prop-cumulant-properties" data-en="properties of cumulants" data-zh="累积量的性质">
+  <p lang="en">Assume that all moments that appear are finite. Then:</p>
+  <p lang="zh-CN">设出现的各阶矩都有限，则：</p>
+  <ol lang="en">
+    <li><b>Symmetry.</b> $\cum(v_1, \dots, v_j)$ is invariant under permutations of its arguments.</li>
+    <li><b>Multilinearity.</b> For constants $m_{rp}$, $\cum\bigl(\sum_p m_{1p}x_p, \dots, \sum_p m_{jp}x_p\bigr) = \sum_{p_1, \dots, p_j} m_{1p_1}\cdots m_{jp_j}\,\cum(x_{p_1}, \dots, x_{p_j})$.</li>
+    <li><b>Shift invariance.</b> For $j \ge 2$ and a constant $c$, $\cum(v_1 + c, v_2, \dots, v_j) = \cum(v_1, v_2, \dots, v_j)$.</li>
+    <li><b>Additivity.</b> If the vectors $(u_1, \dots, u_j)$ and $(v_1, \dots, v_j)$ are independent, then $\cum(u_1 + v_1, \dots, u_j + v_j) = \cum(u_1, \dots, u_j) + \cum(v_1, \dots, v_j)$. In particular $\kappa_j(y_1 + y_2) = \kappa_j(y_1) + \kappa_j(y_2)$ for independent $y_1$ and $y_2$.</li>
+    <li><b>Independent groups.</b> If the arguments $v_1, \dots, v_j$ can be split into two nonempty groups that are independent of each other, then $\cum(v_1, \dots, v_j) = 0$.</li>
+    <li><b>Gaussian variables.</b> If $(v_1, \dots, v_j)$ is jointly Gaussian and $j \ge 3$, then $\cum(v_1, \dots, v_j) = 0$.</li>
+  </ol>
+  <ol lang="zh-CN">
+    <li><b>对称性。</b>$\cum(v_1, \dots, v_j)$ 在自变量的任意置换下不变。</li>
+    <li><b>多重线性。</b>对常数 $m_{rp}$，$\cum\bigl(\sum_p m_{1p}x_p, \dots, \sum_p m_{jp}x_p\bigr) = \sum_{p_1, \dots, p_j} m_{1p_1}\cdots m_{jp_j}\,\cum(x_{p_1}, \dots, x_{p_j})$。</li>
+    <li><b>平移不变性。</b>当 $j \ge 2$ 且 $c$ 为常数时，$\cum(v_1 + c, v_2, \dots, v_j) = \cum(v_1, v_2, \dots, v_j)$。</li>
+    <li><b>可加性。</b>若向量 $(u_1, \dots, u_j)$ 与 $(v_1, \dots, v_j)$ 独立，则 $\cum(u_1 + v_1, \dots, u_j + v_j) = \cum(u_1, \dots, u_j) + \cum(v_1, \dots, v_j)$。特别地，对独立的 $y_1$ 与 $y_2$，$\kappa_j(y_1 + y_2) = \kappa_j(y_1) + \kappa_j(y_2)$。</li>
+    <li><b>独立分组。</b>若自变量 $v_1, \dots, v_j$ 能分成两个非空且相互独立的组，则 $\cum(v_1, \dots, v_j) = 0$。</li>
+    <li><b>高斯变量。</b>若 $(v_1, \dots, v_j)$ 是联合高斯的且 $j \ge 3$，则 $\cum(v_1, \dots, v_j) = 0$。</li>
+  </ol>
+</div>
+<div class="proof">
+  <p lang="en">Write $\Phi_{\bv} = \log\varphi_{\bv}$. (1) Permuting the arguments permutes the coordinates of $\bomega$, and mixed partial derivatives do not depend on the order of differentiation. (2) Let $\bM$ be the matrix with entries $m_{rp}$ and $\bx = (x_1, \dots, x_d)^\top$. By the rule for affine maps, $\Phi_{\bM\bx}(\bomega) = \Phi_{\bx}(\bM^\top\bomega)$, and by the chain rule each derivative $\partial/\partial\omega_r$ becomes $\sum_p m_{rp}\,\partial/\partial\eta_p$ applied to $\Phi_{\bx}(\boldsymbol{\eta})$ at $\boldsymbol{\eta} = \bM^\top\bomega$. Applying $\partial^j/\partial\omega_1\cdots\partial\omega_j$ at $\bomega = \bzero$ gives the formula. (3) $\Phi_{\bv + \mathbf{c}}(\bomega) = i\,\bomega^\top\mathbf{c} + \Phi_{\bv}(\bomega)$, and the linear term disappears after two or more derivatives. (4) By <a class="ref" data-ref="prop-charfun-independence"></a>(b), $\Phi_{\bu + \bv} = \Phi_{\bu} + \Phi_{\bv}$. (5) By (1) we may assume that the first $r$ arguments form one group. Then <a class="ref" data-ref="prop-charfun-independence"></a>(a) gives $\Phi_{\bv}(\bomega) = \Phi_{1}(\omega_1, \dots, \omega_r) + \Phi_{2}(\omega_{r+1}, \dots, \omega_j)$, and each term is annihilated by differentiation with respect to a variable of the other group. (6) By <a class="ref" data-ref="eq-gaussian-charfun"></a>, $\Phi_{\bv}$ is a polynomial of degree at most two.</p>
+  <p lang="zh-CN">记 $\Phi_{\bv} = \log\varphi_{\bv}$。（1）置换自变量相当于置换 $\bomega$ 的坐标，而混合偏导数与求导次序无关。（2）设 $\bM$ 是以 $m_{rp}$ 为元素的矩阵，$\bx = (x_1, \dots, x_d)^\top$。由仿射变换的规则，$\Phi_{\bM\bx}(\bomega) = \Phi_{\bx}(\bM^\top\bomega)$；由链式法则，每个 $\partial/\partial\omega_r$ 都变成作用在 $\Phi_{\bx}(\boldsymbol{\eta})$ 上（取值于 $\boldsymbol{\eta} = \bM^\top\bomega$）的 $\sum_p m_{rp}\,\partial/\partial\eta_p$。在 $\bomega = \bzero$ 处作用 $\partial^j/\partial\omega_1\cdots\partial\omega_j$ 即得公式。（3）$\Phi_{\bv + \mathbf{c}}(\bomega) = i\,\bomega^\top\mathbf{c} + \Phi_{\bv}(\bomega)$，线性项在求两次及以上导数后消失。（4）由<a class="ref" data-ref="prop-charfun-independence"></a>（b），$\Phi_{\bu + \bv} = \Phi_{\bu} + \Phi_{\bv}$。（5）由（1），不妨设前 $r$ 个自变量构成一组。由<a class="ref" data-ref="prop-charfun-independence"></a>（a），$\Phi_{\bv}(\bomega) = \Phi_{1}(\omega_1, \dots, \omega_r) + \Phi_{2}(\omega_{r+1}, \dots, \omega_j)$，每一项只要对另一组中的某个变量求导就会变成零。（6）由 <a class="ref" data-ref="eq-gaussian-charfun"></a>，$\Phi_{\bv}$ 是次数不超过二的多项式。</p>
+</div>
+
+<p lang="en">Property 5 is the algebraic signature of independence. If $\bs$ has independent components, every cross-cumulant of $\bs$, that is, every cumulant involving at least two different components, vanishes: the cumulants of $\bs$ are diagonal. Property 2 then gives the cumulants of a mixture. For $\bx = \bA\bs$ with independent sources whose fourth cumulants are $\kappa_p = \kurt(s_p)$ (here, as in the rest of the book, the subscript of $\kappa_p$ indexes a source, not the order of a cumulant),</p>
+<p lang="zh-CN">性质 5 是独立性在代数上的标志。若 $\bs$ 的分量独立，则 $\bs$ 的每个交叉累积量（即至少涉及两个不同分量的累积量）都为零：$\bs$ 的累积量是“对角”的。再由性质 2 即可得到混合的累积量。对 $\bx = \bA\bs$，若各源独立且四阶累积量为 $\kappa_p = \kurt(s_p)$（这里与全书其他地方一样，$\kappa_p$ 的下标表示第几个源，而不是累积量的阶数），则</p>
+
+<div class="eq" id="eq-cumulant-mixture">$$\cum(x_i, x_j, x_k, x_l) = \sum_{p, q, r, t} a_{ip}a_{jq}a_{kr}a_{lt}\,\cum(s_p, s_q, s_r, s_t) = \sum_{p=1}^{n} a_{ip}\,a_{jp}\,a_{kp}\,a_{lp}\,\kappa_p,$$</div>
+
+<p lang="en">because only the terms with $p = q = r = t$ survive. The fourth-order cumulant tensor of the observations is thus a sum of $n$ rank-one terms, one per source, each built from a column of $\bA$. <a class="ref" data-ref="jade-sobi"></a> builds the JADE algorithm on this structure, and <a class="ref" data-ref="sec-kronecker-tensors"></a> describes such tensors.</p>
+<p lang="zh-CN">因为只有 $p = q = r = t$ 的项保留下来。可见观测的四阶累积量张量是 $n$ 个秩一项之和，每个源贡献一项，由 $\bA$ 的一列构成。<a class="ref" data-ref="jade-sobi"></a>的 JADE 算法正是建立在这一结构之上，<a class="ref" data-ref="sec-kronecker-tensors"></a>则介绍了这类张量。</p>
+
+<p lang="en">Return to <a class="ref" data-ref="exm-rotated-uniform"></a>: there $\bz = \bA\bs$ with $\bA = \tfrac{1}{\sqrt2}\bigl(\begin{smallmatrix} 1 &amp; -1 \\ 1 &amp; 1 \end{smallmatrix}\bigr)$, and the source kurtoses are $\kurt(s_1) = \kurt(s_2) = -6/5$ (<a class="ref" data-ref="tab-kurtosis"></a>). By <a class="ref" data-ref="eq-cumulant-mixture"></a>, $\cum(z_1, z_1, z_2, z_2) = \sum_p a_{1p}^2a_{2p}^2\kurt(s_p) = \tfrac14\kurt(s_1) + \tfrac14\kurt(s_2) = -0.6$, whereas $\cum(s_1, s_1, s_2, s_2) = 0$. The covariance of $\bz$ is the identity, but a fourth-order cross-cumulant exposes the dependence. With <a class="ref" data-ref="eq-cum4"></a> the same number reads $\E[z_1^2z_2^2] - \E[z_1^2]\,\E[z_2^2] - 2(\E[z_1z_2])^2 = \tfrac25 - 1 - 0$.</p>
+<p lang="zh-CN">回到<a class="ref" data-ref="exm-rotated-uniform"></a>：那里 $\bz = \bA\bs$，$\bA = \tfrac{1}{\sqrt2}\bigl(\begin{smallmatrix} 1 &amp; -1 \\ 1 &amp; 1 \end{smallmatrix}\bigr)$，源的峭度为 $\kurt(s_1) = \kurt(s_2) = -6/5$（<a class="ref" data-ref="tab-kurtosis"></a>）。由 <a class="ref" data-ref="eq-cumulant-mixture"></a>，$\cum(z_1, z_1, z_2, z_2) = \sum_p a_{1p}^2a_{2p}^2\kurt(s_p) = \tfrac14\kurt(s_1) + \tfrac14\kurt(s_2) = -0.6$，而 $\cum(s_1, s_1, s_2, s_2) = 0$。$\bz$ 的协方差是单位阵，但一个四阶交叉累积量就暴露了依赖性。用 <a class="ref" data-ref="eq-cum4"></a> 计算，同一个数是 $\E[z_1^2z_2^2] - \E[z_1^2]\,\E[z_2^2] - 2(\E[z_1z_2])^2 = \tfrac25 - 1 - 0$。</p>
+
+<p lang="en">Property 6 says that Gaussian variables have no cumulants beyond order two. A classical theorem shows that this property nearly characterizes the Gaussian.</p>
+<p lang="zh-CN">性质 6 说明高斯变量没有二阶以上的累积量。一个经典定理表明，这一性质几乎刻画了高斯分布。</p>
+
+<div class="env" data-kind="theorem" id="thm-marcinkiewicz" data-en="Marcinkiewicz" data-zh="Marcinkiewicz">
+  <p lang="en">If the characteristic function of a random variable has the form $\varphi(\omega) = \exp(P(\omega))$ for all real $\omega$, where $P$ is a polynomial, then $P$ has degree at most 2, and the variable is Gaussian or constant.</p>
+  <p lang="zh-CN">若某随机变量的特征函数对所有实数 $\omega$ 都具有形式 $\varphi(\omega) = \exp(P(\omega))$，其中 $P$ 是多项式，则 $P$ 的次数不超过 2，从而该变量是高斯的或为常数。</p>
+</div>
+
+<p lang="en">The theorem is due to Marcinkiewicz (1939); a proof can be found in Lukacs (1970). We use two consequences. First, a random variable with moments of all orders whose cumulants of order three and higher all vanish is Gaussian: its moments then coincide with those of a Gaussian, and the Gaussian distribution is determined by its moments. Second, no non-Gaussian variable has only finitely many nonzero cumulants: if it had, its moment-generating function would be entire and equal to $\exp(P(t))$ for a polynomial $P$, so $\varphi(\omega) = \exp(P(i\omega))$ and the theorem would apply. Cumulants of order three and higher are therefore measures of non-Gaussianity, and the theorem is a step in the proof of the Darmois–Skitovich theorem in <a class="ref" data-ref="identifiability"></a>. In practice only low orders are used, because the variance of a sample cumulant grows quickly with its order (<a class="ref" data-ref="sec-kurtosis-robustness"></a>).</p>
+<p lang="zh-CN">这一定理属于 Marcinkiewicz（1939），证明可见 Lukacs（1970）。我们用到它的两个推论。其一，若一个随机变量的各阶矩都存在，且三阶及以上的累积量全为零，则它是高斯的：此时它的各阶矩与某个高斯分布的矩相同，而高斯分布由其各阶矩唯一确定。其二，任何非高斯变量都不可能只有有限个非零累积量：否则它的矩母函数是整函数，且等于 $\exp(P(t))$（$P$ 为多项式），于是 $\varphi(\omega) = \exp(P(i\omega))$，与定理矛盾。因此，三阶及以上的累积量可以作为非高斯性的度量；在<a class="ref" data-ref="identifiability"></a>中，这一定理也是证明 Darmois–Skitovich 定理的一步。实践中只用低阶累积量，因为样本累积量的方差随阶数迅速增大（<a class="ref" data-ref="sec-kurtosis-robustness"></a>）。</p>
+
+<h2 id="sec-kurtosis-skewness"><span lang="en">Skewness and kurtosis</span><span lang="zh-CN">偏度与峭度</span></h2>
+
+<p lang="en">The normalized third and fourth cumulants are the simplest numbers that describe the shape of a distribution beyond its location and scale. The fourth, kurtosis, is the most widely used statistic in ICA.</p>
+<p lang="zh-CN">归一化的三阶与四阶累积量，是在位置与尺度之外描述分布形状的最简单的数。其中四阶的峭度是 ICA 中用得最多的统计量。</p>
+
+<div class="env" data-kind="definition" id="def-kurtosis" data-en="skewness and kurtosis" data-zh="偏度与峭度">
+  <p lang="en">Let $y$ have a finite fourth moment, mean $\mu$ and variance $\sigma^2 &gt; 0$. Its <em>kurtosis</em> is the fourth cumulant, $\kurt(y) = \kappa_4(y) = \E[(y - \mu)^4] - 3\sigma^4$; for zero-mean $y$, $\kurt(y) = \E[y^4] - 3(\E[y^2])^2$. Its <em>normalized kurtosis</em> is $\kurt(y)/\sigma^4$, and its <em>skewness</em> is $\kappa_3(y)/\sigma^3 = \E[(y - \mu)^3]/\sigma^3$. The variable is called <em>sub-Gaussian</em> if $\kurt(y) &lt; 0$ and <em>super-Gaussian</em> if $\kurt(y) &gt; 0$.</p>
+  <p lang="zh-CN">设 $y$ 的四阶矩有限，均值为 $\mu$，方差为 $\sigma^2 &gt; 0$。它的<em>峭度</em>是四阶累积量 $\kurt(y) = \kappa_4(y) = \E[(y - \mu)^4] - 3\sigma^4$；当 $y$ 均值为零时，$\kurt(y) = \E[y^4] - 3(\E[y^2])^2$。$\kurt(y)/\sigma^4$ 称为<em>归一化峭度</em>，$\kappa_3(y)/\sigma^3 = \E[(y - \mu)^3]/\sigma^3$ 称为<em>偏度</em>。若 $\kurt(y) &lt; 0$，称该变量为<em>亚高斯</em>的；若 $\kurt(y) &gt; 0$，称其为<em>超高斯</em>的。</p>
+</div>
+
+<p lang="en">Statisticians call the normalized kurtosis the <em>excess kurtosis</em>; the moment ratio $\E[(y - \mu)^4]/\sigma^4$ (Pearson's $\beta_2$), which many statistics texts call simply the kurtosis, equals the normalized kurtosis plus 3. For unit-variance variables, $\kurt(y)$ and the normalized kurtosis coincide, and for unit-variance sources we write $\kappa_i = \kurt(s_i)$. In probability theory “sub-Gaussian” also describes tails that decay at least as fast as Gaussian tails; in ICA it refers only to the sign of the kurtosis.</p>
+<p lang="zh-CN">统计学中把归一化峭度称为<em>超额峰度</em>；许多统计教材则把矩比值 $\E[(y - \mu)^4]/\sigma^4$（Pearson 的 $\beta_2$）直接称为峰度，它等于归一化峭度加 3。对单位方差的变量，$\kurt(y)$ 与归一化峭度相同；对单位方差的源，记 $\kappa_i = \kurt(s_i)$。在概率论中，“亚高斯”还用来指尾部衰减至少与高斯尾部一样快的分布；在 ICA 中，它只指峭度的符号。</p>
+
+<p lang="en">The sign of the kurtosis does not determine the shape of a density, but typical cases look as follows. Super-Gaussian variables usually have heavier tails than a Gaussian of the same variance, and often a sharper peak; kurtosis measures the tails rather than the peak (Westfall, 2014). The standard examples are sparse signals, which are mostly close to zero and occasionally large: speech (Gazor &amp; Zhang, 2003), the outputs of edge filters applied to natural images (Bell &amp; Sejnowski, 1997), and the spatial maps of fMRI networks (<a class="ref" data-ref="fmri-ica"></a>). Sub-Gaussian variables are usually flatter, with light tails, and often bounded or multimodal: a uniform variable, a sinusoid with random phase, a binary communication symbol. There are exceptions: a variable equal to $\pm 1$ with probability $0.49$ each and to $\pm 5$ with probability $0.01$ each is bimodal, yet its normalized kurtosis is $+3.15$. <a class="ref" data-ref="fig-densities"></a> compares three typical unit-variance densities.</p>
+<p lang="zh-CN">峭度的符号并不决定密度的形状，但典型的情形如下。超高斯变量通常比同方差的高斯变量尾部更重，峰也常常更尖；峭度刻画的是尾部而不是峰（Westfall, 2014）。标准的例子是稀疏信号，它们大多数时候接近零，偶尔取很大的值：语音（Gazor &amp; Zhang, 2003）、自然图像经边缘滤波器后的输出（Bell &amp; Sejnowski, 1997），以及 fMRI 网络的空间图（<a class="ref" data-ref="fmri-ica"></a>）。亚高斯变量通常更平坦、尾部更轻，常常有界或呈多峰形状，例如均匀分布变量、随机相位的正弦波、二值通信符号。例外也是有的：以各 $0.49$ 的概率取 $\pm 1$、以各 $0.01$ 的概率取 $\pm 5$ 的变量是双峰的，其归一化峭度却为 $+3.15$。<a class="ref" data-ref="fig-densities"></a> 比较了三个典型的单位方差密度。</p>
+
+<figure id="fig-densities">
+  <img src="fig/ch02-densities.svg" width="620" height="253" alt="Left: densities of the unit-variance uniform, Gaussian and Laplace distributions, labelled by their kurtosis -1.2, 0 and 3. Right: the same densities on a logarithmic scale; the Laplace log-density is a tent, the Gaussian a parabola, the uniform a flat segment.">
+  <figcaption><span lang="en">Unit-variance densities with negative, zero and positive kurtosis: uniform ($\kappa = -1.2$), Gaussian ($\kappa = 0$) and Laplace ($\kappa = 3$). (a) Densities. (b) Log-densities: the Laplace tails decay linearly and the Gaussian tails quadratically, while the uniform density vanishes outside $[-\sqrt3, \sqrt3]$.</span><span lang="zh-CN">峭度为负、零、正的单位方差密度：均匀分布（$\kappa = -1.2$）、高斯分布（$\kappa = 0$）与拉普拉斯分布（$\kappa = 3$）。（a）密度。（b）对数密度：拉普拉斯分布的尾部线性衰减，高斯分布的尾部按二次衰减，而均匀分布的密度在 $[-\sqrt3, \sqrt3]$ 之外为零。</span></figcaption>
+</figure>
+
+<div class="env" data-kind="proposition" id="prop-kurtosis-properties" data-en="properties of kurtosis" data-zh="峭度的性质">
+  <p lang="en">Let $y$, $y_1$ and $y_2$ have finite fourth moments, and let $\sigma^2 = \Var(y) &gt; 0$.</p>
+  <p lang="zh-CN">设 $y$、$y_1$、$y_2$ 的四阶矩有限，$\sigma^2 = \Var(y) &gt; 0$。</p>
+  <ol lang="en">
+    <li>$\kurt(\alpha y + c) = \alpha^4\kurt(y)$ for constants $\alpha$ and $c$; hence the normalized kurtosis is invariant under affine maps with $\alpha \ne 0$.</li>
+    <li>If $y_1$ and $y_2$ are independent, $\kurt(y_1 + y_2) = \kurt(y_1) + \kurt(y_2)$. Consequently, for independent unit-variance sources, $\kurt\bigl(\sum_i q_is_i\bigr) = \sum_i q_i^4\,\kappa_i$.</li>
+    <li>$\kurt(y) \ge -2\sigma^4$, with equality if and only if $y$ takes the two values $\mu \pm \sigma$ with probability $\tfrac12$ each.</li>
+  </ol>
+  <ol lang="zh-CN">
+    <li>对常数 $\alpha$、$c$，$\kurt(\alpha y + c) = \alpha^4\kurt(y)$；因此当 $\alpha \ne 0$ 时，归一化峭度在仿射变换下不变。</li>
+    <li>若 $y_1$ 与 $y_2$ 独立，则 $\kurt(y_1 + y_2) = \kurt(y_1) + \kurt(y_2)$。于是对相互独立的单位方差源，$\kurt\bigl(\sum_i q_is_i\bigr) = \sum_i q_i^4\,\kappa_i$。</li>
+    <li>$\kurt(y) \ge -2\sigma^4$，等号成立当且仅当 $y$ 以各 $\tfrac12$ 的概率取 $\mu \pm \sigma$ 两个值。</li>
+  </ol>
+</div>
+<div class="proof">
+  <p lang="en">(1) and (2) follow from multilinearity, shift invariance and additivity in <a class="ref" data-ref="prop-cumulant-properties"></a>. (3) By Jensen's inequality for the convex function $u \mapsto u^2$, $\E[(y - \mu)^4] = \E\bigl[((y - \mu)^2)^2\bigr] \ge \bigl(\E[(y - \mu)^2]\bigr)^2 = \sigma^4$, so $\kurt(y) \ge \sigma^4 - 3\sigma^4$. Since $u \mapsto u^2$ is strictly convex, equality holds if and only if $(y - \mu)^2$ is almost surely constant, that is, $y = \mu \pm \sigma$; the condition $\E[y] = \mu$ then forces the two values to have probability $\tfrac12$.</p>
+  <p lang="zh-CN">（1）与（2）由<a class="ref" data-ref="prop-cumulant-properties"></a>中的多重线性、平移不变性与可加性得到。（3）对凸函数 $u \mapsto u^2$ 用 Jensen 不等式，$\E[(y - \mu)^4] = \E\bigl[((y - \mu)^2)^2\bigr] \ge \bigl(\E[(y - \mu)^2]\bigr)^2 = \sigma^4$，所以 $\kurt(y) \ge \sigma^4 - 3\sigma^4$。由于 $u \mapsto u^2$ 严格凸，等号成立当且仅当 $(y - \mu)^2$ 几乎必然为常数，即 $y = \mu \pm \sigma$；再由 $\E[y] = \mu$ 可知两个值的概率都是 $\tfrac12$。</p>
+</div>
+
+<p lang="en">There is no upper bound: the normalized kurtosis of the Student $t$ distribution, $6/(\nu - 4)$, grows without limit as $\nu$ decreases to 4. Property 2 is the identity behind <a class="ref" data-ref="kurtosis"></a> (<a class="ref" data-ref="prop-kurtosis-sum"></a>): a unit-variance mixture $\sum_i q_is_i$ with $\|\bq\| = 1$ has a kurtosis that combines the source kurtoses with weights $q_i^4$, whose sum $\sum_i q_i^4 \le \bigl(\sum_i q_i^2\bigr)^2 = 1$ equals one only when $\bq$ has a single nonzero entry. <a class="ref" data-ref="tab-kurtosis"></a> lists the values for common distributions.</p>
+<p lang="zh-CN">峭度没有上界：Student $t$ 分布的归一化峭度为 $6/(\nu - 4)$，当 $\nu$ 下降到 4 时趋于无穷。性质 2 是<a class="ref" data-ref="kurtosis"></a>（<a class="ref" data-ref="prop-kurtosis-sum"></a>）的基础：对 $\|\bq\| = 1$，单位方差的混合 $\sum_i q_is_i$ 的峭度是各源峭度以 $q_i^4$ 为权重的组合，而 $\sum_i q_i^4 \le \bigl(\sum_i q_i^2\bigr)^2 = 1$，仅当 $\bq$ 只有一个非零元时取等号。<a class="ref" data-ref="tab-kurtosis"></a>列出了常见分布的取值。</p>
+
+<figure class="table" id="tab-kurtosis">
+  <figcaption><span lang="en">Variance, skewness and normalized kurtosis of common distributions. The unit-variance versions use $a = \sqrt3$ (uniform), $b = 1/\sqrt2$ (Laplace) and $\lambda = 1$ (exponential).</span><span lang="zh-CN">常见分布的方差、偏度与归一化峭度。单位方差的版本取 $a = \sqrt3$（均匀分布）、$b = 1/\sqrt2$（拉普拉斯分布）、$\lambda = 1$（指数分布）。</span></figcaption>
+  <div>
+    <table>
+      <thead>
+        <tr><th><span lang="en">Distribution</span><span lang="zh-CN">分布</span></th><th><span lang="en">Density or law</span><span lang="zh-CN">密度或分布律</span></th><th><span lang="en">Variance</span><span lang="zh-CN">方差</span></th><th><span lang="en">Skewness</span><span lang="zh-CN">偏度</span></th><th><span lang="en">Normalized kurtosis</span><span lang="zh-CN">归一化峭度</span></th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span lang="en">uniform on $[-a, a]$</span><span lang="zh-CN">$[-a, a]$ 上的均匀分布</span></td><td>$\frac{1}{2a}$ <span lang="en">on $[-a, a]$</span><span lang="zh-CN">（在 $[-a, a]$ 上）</span></td><td>$a^2/3$</td><td>$0$</td><td>$-6/5$</td></tr>
+        <tr><td><span lang="en">symmetric binary</span><span lang="zh-CN">对称二值分布</span></td><td>$P(y = \pm 1) = \tfrac12$</td><td>$1$</td><td>$0$</td><td>$-2$</td></tr>
+        <tr><td><span lang="en">sinusoid, random phase</span><span lang="zh-CN">随机相位正弦波</span></td><td><span lang="en">$\sqrt2\sin\theta$, $\theta$ uniform on $[0, 2\pi)$</span><span lang="zh-CN">$\sqrt2\sin\theta$，$\theta$ 在 $[0, 2\pi)$ 上均匀</span></td><td>$1$</td><td>$0$</td><td>$-3/2$</td></tr>
+        <tr><td><span lang="en">Gaussian</span><span lang="zh-CN">高斯分布</span></td><td>$\frac{1}{\sqrt{2\pi}\,\sigma}\,e^{-y^2/(2\sigma^2)}$</td><td>$\sigma^2$</td><td>$0$</td><td>$0$</td></tr>
+        <tr><td><span lang="en">Laplace</span><span lang="zh-CN">拉普拉斯分布</span></td><td>$\frac{1}{2b}\,e^{-|y|/b}$</td><td>$2b^2$</td><td>$0$</td><td>$3$</td></tr>
+        <tr><td><span lang="en">exponential</span><span lang="zh-CN">指数分布</span></td><td>$\lambda e^{-\lambda y}$, $y \ge 0$</td><td>$1/\lambda^2$</td><td>$2$</td><td>$6$</td></tr>
+        <tr><td><span lang="en">Student $t$, $\nu &gt; 4$</span><span lang="zh-CN">Student $t$，$\nu &gt; 4$</span></td><td>$\propto (1 + y^2/\nu)^{-(\nu + 1)/2}$</td><td>$\nu/(\nu - 2)$</td><td>$0$</td><td>$6/(\nu - 4)$</td></tr>
+      </tbody>
+    </table>
+  </div>
+</figure>
+
+<p lang="en">The following script draws a million samples from six of these laws, scaled to unit variance, estimates their kurtosis, and then checks the cumulant computation for the rotated uniform pair of <a class="ref" data-ref="exm-rotated-uniform"></a>.</p>
+<p lang="zh-CN">下面的脚本从其中六个分布（缩放到单位方差）各抽取一百万个样本，估计它们的峭度，然后检验<a class="ref" data-ref="exm-rotated-uniform"></a>中旋转后的均匀分布对的累积量计算。</p>
+
+<pre class="code"><code>import numpy as np
+
+rng = np.random.default_rng(0)
+T = 1_000_000
+
+def kurt(y):                           # fourth cumulant of a sample
+    y = y - y.mean()
+    return np.mean(y**4) - 3 * np.mean(y**2)**2
+
+def cum22(y1, y2):                     # cum(y1, y1, y2, y2) of a sample
+    y1, y2 = y1 - y1.mean(), y2 - y2.mean()
+    return (np.mean(y1**2 * y2**2) - np.mean(y1**2) * np.mean(y2**2)
+            - 2 * np.mean(y1 * y2)**2)
+
+samples = {                            # unit-variance draws, as in the table
+    "uniform":     rng.uniform(-np.sqrt(3), np.sqrt(3), T),
+    "laplace":     rng.laplace(0.0, 1 / np.sqrt(2), T),
+    "gaussian":    rng.standard_normal(T),
+    "binary":      rng.choice([-1.0, 1.0], T),
+    "exponential": rng.exponential(1.0, T),
+    "student-t10": rng.standard_t(10, T) / np.sqrt(10 / 8),
+}
+for name, y in samples.items():
+    print(f"{name:12s} kurt = {kurt(y):+.3f}")
+
+# two uniform sources rotated by 45 degrees: white but dependent
+s1, s2 = rng.uniform(-np.sqrt(3), np.sqrt(3), (2, T))
+z1, z2 = (s1 - s2) / np.sqrt(2), (s1 + s2) / np.sqrt(2)
+print(f"E[z1 z2]            = {np.mean(z1 * z2):+.3f}")
+print(f"cum(z1, z1, z2, z2) = {cum22(z1, z2):+.3f}")
+print(f"cum(s1, s1, s2, s2) = {cum22(s1, s2):+.3f}")</code></pre>
+
+<p lang="en">The estimated kurtoses are $-1.203$, $+3.002$, $+0.004$, $-2.000$, $+5.881$ and $+1.016$ (the true value for $\nu = 10$ is $6/6 = 1$). Only the exponential estimate is visibly off, by about one standard error: the variance of the sample kurtosis involves the eighth moment, and the delta method (<a class="ref" data-ref="sec-asymptotics"></a>) puts the standard error at about $0.11$ here. The last three lines print $+0.000$, $-0.602$ and $+0.000$: the rotated pair is uncorrelated but has the predicted cross-cumulant $-0.6$, and the independent pair has none.</p>
+<p lang="zh-CN">估计出的峭度依次为 $-1.203$、$+3.002$、$+0.004$、$-2.000$、$+5.881$ 与 $+1.016$（$\nu = 10$ 时真值为 $6/6 = 1$）。只有指数分布的估计有明显偏差，约为一个标准误：样本峭度的方差涉及八阶矩，按 delta 方法（<a class="ref" data-ref="sec-asymptotics"></a>）计算，这里的标准误约为 $0.11$。最后三行输出 $+0.000$、$-0.602$ 与 $+0.000$：旋转后的一对变量不相关，却具有预言中的交叉累积量 $-0.6$，而独立的一对则没有。</p>
+
+<h2 id="sec-entropy"><span lang="en">Differential entropy</span><span lang="zh-CN">微分熵</span></h2>
+
+<p lang="en">Cumulants summarize a distribution by a few numbers; entropy summarizes it through its whole density. For a discrete variable, Shannon's entropy (Shannon, 1948) measures the average uncertainty of an outcome. Its continuous counterpart is differential entropy (Cover &amp; Thomas, 2006).</p>
+<p lang="zh-CN">累积量用几个数概括一个分布，熵则通过整个密度来概括它。对离散变量，Shannon 熵（Shannon, 1948）度量一次结果的平均不确定性；它在连续情形下的对应物是微分熵（Cover &amp; Thomas, 2006）。</p>
+
+<div class="env" data-kind="definition" id="def-entropy" data-en="differential entropy" data-zh="微分熵">
+  <p lang="en">Let $\by \in \R^d$ have density $p$. Its <em>differential entropy</em> is $H(\by) = -\int p(\bu)\log p(\bu)\,d\bu = -\E[\log p(\by)]$, whenever the integral exists. For several random vectors, $H(\by_1, \dots, \by_k)$ is the entropy of the stacked vector.</p>
+  <p lang="zh-CN">设 $\by \in \R^d$ 有密度 $p$。它的<em>微分熵</em>定义为 $H(\by) = -\int p(\bu)\log p(\bu)\,d\bu = -\E[\log p(\by)]$（只要该积分存在）。对多个随机向量，$H(\by_1, \dots, \by_k)$ 指把它们堆叠成一个向量后的熵。</p>
+</div>
+
+<p lang="en">Three examples follow directly from the definition. A uniform density on an interval of length $L$ has $H = \log L$; for the unit-variance uniform law, $L = 2\sqrt3$ and $H = \log(2\sqrt3) \approx 1.2425$. For $\Ncal(\mu, \sigma^2)$, $-\log p(y) = \tfrac12\log(2\pi\sigma^2) + (y - \mu)^2/(2\sigma^2)$, whose expectation gives $H = \tfrac12\log(2\pi e\sigma^2)$, or $1.4189$ at unit variance; in the same way a Gaussian vector with covariance $\bSigma$ has $H = \tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr)$. For the Laplace density $e^{-|y|/b}/(2b)$, $-\log p(y) = \log(2b) + |y|/b$ and $\E|y| = b$, so $H = 1 + \log(2b)$, or $1 + \tfrac12\log 2 \approx 1.3466$ at unit variance.</p>
+<p lang="zh-CN">由定义可以直接算出三个例子。长度为 $L$ 的区间上的均匀密度，$H = \log L$；单位方差的均匀分布 $L = 2\sqrt3$，$H = \log(2\sqrt3) \approx 1.2425$。对 $\Ncal(\mu, \sigma^2)$，$-\log p(y) = \tfrac12\log(2\pi\sigma^2) + (y - \mu)^2/(2\sigma^2)$，取期望得 $H = \tfrac12\log(2\pi e\sigma^2)$，单位方差时为 $1.4189$；同理，协方差为 $\bSigma$ 的高斯向量有 $H = \tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr)$。对拉普拉斯密度 $e^{-|y|/b}/(2b)$，$-\log p(y) = \log(2b) + |y|/b$，且 $\E|y| = b$，所以 $H = 1 + \log(2b)$，单位方差时为 $1 + \tfrac12\log 2 \approx 1.3466$。</p>
+
+<p lang="en">Differential entropy differs from discrete entropy in two ways. It can be negative (the uniform density on $[0, \tfrac12]$ has entropy $-\log 2$), and it depends on scale: $H(\alpha y) = H(y) + \log|\alpha|$. Both facts are special cases of the next proposition. The quantities that ICA uses, mutual information and negentropy, are combinations of entropies in which these changes cancel.</p>
+<p lang="zh-CN">微分熵与离散熵有两点不同。它可以为负（$[0, \tfrac12]$ 上的均匀密度的熵为 $-\log 2$），而且依赖于尺度：$H(\alpha y) = H(y) + \log|\alpha|$。这两点都是下一命题的特例。ICA 所用的量，即互信息与负熵，都是若干熵的组合，在组合中这些变化恰好相互抵消。</p>
+
+<div class="env" data-kind="proposition" id="prop-entropy-linear" data-en="entropy under linear maps" data-zh="线性变换下的熵">
+  <p lang="en">Let $\by \in \R^d$ have a density and finite entropy, let $\bA \in \R^{d \times d}$ be invertible and $\bb \in \R^d$. Then $H(\bA\by + \bb) = H(\by) + \log|\det\bA|$. More generally, if $\mathbf{f}$ is a continuously differentiable bijection of $\R^d$ onto an open set whose Jacobian matrix $\bJ_{\mathbf{f}}$ is nonsingular everywhere, then $H(\mathbf{f}(\by)) = H(\by) + \E\bigl[\log|\det\bJ_{\mathbf{f}}(\by)|\bigr]$ whenever the right-hand side is finite.</p>
+  <p lang="zh-CN">设 $\by \in \R^d$ 有密度且熵有限，$\bA \in \R^{d \times d}$ 可逆，$\bb \in \R^d$。则 $H(\bA\by + \bb) = H(\by) + \log|\det\bA|$。更一般地，若 $\mathbf{f}$ 是从 $\R^d$ 到某个开集的连续可微双射，且其 Jacobi 矩阵 $\bJ_{\mathbf{f}}$ 处处非奇异，则只要右端有限，就有 $H(\mathbf{f}(\by)) = H(\by) + \E\bigl[\log|\det\bJ_{\mathbf{f}}(\by)|\bigr]$。</p>
+</div>
+<div class="proof">
+  <p lang="en">By the change-of-variables formula, $\mathbf{f}(\by)$ has the density $p_{\mathbf{f}(\by)}(\mathbf{f}(\bu)) = p_{\by}(\bu)/|\det\bJ_{\mathbf{f}}(\bu)|$. Hence $H(\mathbf{f}(\by)) = -\E\bigl[\log p_{\mathbf{f}(\by)}(\mathbf{f}(\by))\bigr] = -\E[\log p_{\by}(\by)] + \E\bigl[\log|\det\bJ_{\mathbf{f}}(\by)|\bigr]$. For $\mathbf{f}(\bu) = \bA\bu + \bb$ the Jacobian is the constant matrix $\bA$.</p>
+  <p lang="zh-CN">由变量替换公式，$\mathbf{f}(\by)$ 的密度满足 $p_{\mathbf{f}(\by)}(\mathbf{f}(\bu)) = p_{\by}(\bu)/|\det\bJ_{\mathbf{f}}(\bu)|$。因此 $H(\mathbf{f}(\by)) = -\E\bigl[\log p_{\mathbf{f}(\by)}(\mathbf{f}(\by))\bigr] = -\E[\log p_{\by}(\by)] + \E\bigl[\log|\det\bJ_{\mathbf{f}}(\by)|\bigr]$。当 $\mathbf{f}(\bu) = \bA\bu + \bb$ 时，Jacobi 矩阵就是常数矩阵 $\bA$。</p>
+</div>
+
+<p lang="en">Two consequences recur in later chapters. Orthogonal transformations preserve entropy, $H(\bQ\by) = H(\by)$, because $|\det\bQ| = 1$: rotating whitened data does not change their joint entropy. And for $\by = \bW\bx$ with $\bW$ invertible, $H(\by) = H(\bx) + \log|\det\bW|$; this is how the term $\log|\det\bW|$ enters the likelihood of ICA in <a class="ref" data-ref="likelihood"></a>.</p>
+<p lang="zh-CN">有两个推论会在后面各章反复出现。正交变换保持熵不变，$H(\bQ\by) = H(\by)$，因为 $|\det\bQ| = 1$：旋转白化后的数据不改变它们的联合熵。另外，对可逆的 $\bW$ 与 $\by = \bW\bx$，有 $H(\by) = H(\bx) + \log|\det\bW|$；<a class="ref" data-ref="likelihood"></a>中 ICA 似然里的 $\log|\det\bW|$ 项正是这样来的。</p>
+
+<h2 id="sec-mutual-information"><span lang="en">Divergence, mutual information and negentropy</span><span lang="zh-CN">散度、互信息与负熵</span></h2>
+
+<p lang="en">Entropy by itself measures neither independence nor non-Gaussianity, but two divergences built from it do. Both rest on one inequality.</p>
+<p lang="zh-CN">熵本身既不度量独立性，也不度量非高斯性；但由熵构造的两个散度可以。二者都建立在同一个不等式之上。</p>
+
+<div class="env" data-kind="definition" id="def-kl" data-en="Kullback–Leibler divergence" data-zh="KL 散度">
+  <p lang="en">For densities $p$ and $q$ on $\R^d$, the <em>Kullback–Leibler divergence</em> is $D(p\,\|\,q) = \int p(\bu)\log\bigl(p(\bu)/q(\bu)\bigr)\,d\bu$, taken to be $+\infty$ if $P(q(\by) = 0) &gt; 0$ for $\by \sim p$.</p>
+  <p lang="zh-CN">对 $\R^d$ 上的密度 $p$ 与 $q$，<em>KL 散度</em>（Kullback–Leibler 散度）定义为 $D(p\,\|\,q) = \int p(\bu)\log\bigl(p(\bu)/q(\bu)\bigr)\,d\bu$；若对 $\by \sim p$ 有 $P(q(\by) = 0) &gt; 0$，则规定其为 $+\infty$。</p>
+</div>
+
+<div class="env" data-kind="lemma" id="lem-gibbs" data-en="Gibbs' inequality" data-zh="Gibbs 不等式">
+  <p lang="en">$D(p\,\|\,q) \ge 0$, with equality if and only if $p = q$ almost everywhere.</p>
+  <p lang="zh-CN">$D(p\,\|\,q) \ge 0$，等号成立当且仅当 $p = q$ 几乎处处成立。</p>
+</div>
+<div class="proof">
+  <p lang="en">We may assume $D(p\,\|\,q) &lt; \infty$. Let $\by \sim p$. By Jensen's inequality for the concave logarithm, $-D(p\,\|\,q) = \E\bigl[\log(q(\by)/p(\by))\bigr] \le \log\E\bigl[q(\by)/p(\by)\bigr] = \log\int_{\{p &gt; 0\}} q(\bu)\,d\bu \le \log 1 = 0$. Since the logarithm is strictly concave, equality in the first step requires $q/p$ to be constant on $\{p &gt; 0\}$, and equality in the second requires $\int_{\{p &gt; 0\}} q = 1$; together they give $q = p$ almost everywhere.</p>
+  <p lang="zh-CN">不妨设 $D(p\,\|\,q) &lt; \infty$。令 $\by \sim p$。对凹函数 $\log$ 用 Jensen 不等式，$-D(p\,\|\,q) = \E\bigl[\log(q(\by)/p(\by))\bigr] \le \log\E\bigl[q(\by)/p(\by)\bigr] = \log\int_{\{p &gt; 0\}} q(\bu)\,d\bu \le \log 1 = 0$。由于对数严格凹，第一步取等号要求 $q/p$ 在 $\{p &gt; 0\}$ 上为常数，第二步取等号要求 $\int_{\{p &gt; 0\}} q = 1$；二者合起来即得 $q = p$ 几乎处处成立。</p>
+</div>
+
+<p lang="en">The divergence was introduced by Kullback and Leibler (1951). It is not symmetric, and it is not a metric. It is invariant under reparametrization: if both densities are transformed by the same map $\mathbf{f}$ as in <a class="ref" data-ref="prop-entropy-linear"></a>, the Jacobian factors cancel in the ratio $p/q$. Its first use here is a classical extremal property of the Gaussian.</p>
+<p lang="zh-CN">这一散度由 Kullback 与 Leibler（1951）提出。它不对称，也不是度量。它在重新参数化下不变：若两个密度经过同一个映射 $\mathbf{f}$（如<a class="ref" data-ref="prop-entropy-linear"></a>中）变换，Jacobi 因子在比值 $p/q$ 中相互抵消。它在这里的第一个用途，是证明高斯分布的一个经典极值性质。</p>
+
+<div class="env" data-kind="proposition" id="prop-gaussian-maxent" data-en="the Gaussian maximizes entropy" data-zh="高斯分布的熵最大">
+  <p lang="en">Let $\by \in \R^d$ have density $p$, finite entropy, mean $\bmu$ and nonsingular covariance $\bSigma$, and let $p_{\mathrm{G}}$ be the density of $\Ncal(\bmu, \bSigma)$. Then</p>
+  <p lang="zh-CN">设 $\by \in \R^d$ 有密度 $p$，熵有限，均值为 $\bmu$，协方差 $\bSigma$ 非奇异，并记 $p_{\mathrm{G}}$ 为 $\Ncal(\bmu, \bSigma)$ 的密度。则</p>
+  <div class="eq">$$D(p\,\|\,p_{\mathrm{G}}) = \tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr) - H(\by) \;\ge\; 0 .$$</div>
+  <p lang="en">Hence $H(\by) \le \tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr)$, the entropy of $\Ncal(\bmu, \bSigma)$, with equality if and only if $\by$ is Gaussian.</p>
+  <p lang="zh-CN">因此 $H(\by) \le \tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr)$，即 $\Ncal(\bmu, \bSigma)$ 的熵；等号成立当且仅当 $\by$ 是高斯的。</p>
+</div>
+<div class="proof">
+  <p lang="en">We have $-\log p_{\mathrm{G}}(\bu) = \tfrac12\log\bigl((2\pi)^d\det\bSigma\bigr) + \tfrac12(\bu - \bmu)^\top\bSigma^{-1}(\bu - \bmu)$. Its expectation under $p$ depends only on the mean and covariance of $\by$: since $\E[(\by - \bmu)^\top\bSigma^{-1}(\by - \bmu)] = \tr(\bSigma^{-1}\bSigma) = d$, it equals $\tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr)$, the same value as for a Gaussian $\by$. Therefore $D(p\,\|\,p_{\mathrm{G}}) = -H(\by) + \E[-\log p_{\mathrm{G}}(\by)] = \tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr) - H(\by)$, which is nonnegative by <a class="ref" data-ref="lem-gibbs"></a> and zero only when $p = p_{\mathrm{G}}$ almost everywhere.</p>
+  <p lang="zh-CN">我们有 $-\log p_{\mathrm{G}}(\bu) = \tfrac12\log\bigl((2\pi)^d\det\bSigma\bigr) + \tfrac12(\bu - \bmu)^\top\bSigma^{-1}(\bu - \bmu)$。它在 $p$ 下的期望只依赖于 $\by$ 的均值与协方差：由于 $\E[(\by - \bmu)^\top\bSigma^{-1}(\by - \bmu)] = \tr(\bSigma^{-1}\bSigma) = d$，这个期望等于 $\tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr)$，与 $\by$ 为高斯时的值相同。因此 $D(p\,\|\,p_{\mathrm{G}}) = -H(\by) + \E[-\log p_{\mathrm{G}}(\by)] = \tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr) - H(\by)$；由<a class="ref" data-ref="lem-gibbs"></a>，它非负，且仅当 $p = p_{\mathrm{G}}$ 几乎处处成立时为零。</p>
+</div>
+
+<p lang="en">Among all distributions with a given covariance, the Gaussian is the most disordered. This is the information-theoretic side of the intuition in <a class="ref" data-ref="sec-first-look"></a>: mixing independent signals makes them more Gaussian, so a measure of distance from the Gaussian can guide separation.</p>
+<p lang="zh-CN">在协方差给定的所有分布中，高斯分布最“无序”。这是<a class="ref" data-ref="sec-first-look"></a>中那条直觉在信息论上的一面：混合独立信号会使它们更接近高斯，所以与高斯分布之间的“距离”可以用来指导分离。</p>
+
+<div class="env" data-kind="definition" id="def-mutual-information" data-en="mutual information" data-zh="互信息">
+  <p lang="en">Let $\by = (\by_1, \dots, \by_k)$ have joint density $p_{\by}$ and marginal densities $p_{\by_i}$. The <em>mutual information</em> of $\by_1, \dots, \by_k$ is the divergence of the joint density from the product of its marginals,</p>
+  <p lang="zh-CN">设 $\by = (\by_1, \dots, \by_k)$ 的联合密度为 $p_{\by}$，边缘密度为 $p_{\by_i}$。$\by_1, \dots, \by_k$ 的<em>互信息</em>定义为联合密度相对于边缘密度之积的散度：</p>
+  <div class="eq" id="eq-mutual-information">$$I(\by_1, \dots, \by_k) = D\Bigl(p_{\by}\,\Big\|\,\prod_{i=1}^k p_{\by_i}\Bigr) = \sum_{i=1}^k H(\by_i) - H(\by),$$</div>
+  <p lang="en">where the second expression holds when all entropies are finite. For the scalar components of $\by \in \R^n$ we write $I(\by) = I(y_1, \dots, y_n)$.</p>
+  <p lang="zh-CN">其中第二个等号在各熵有限时成立。对 $\by \in \R^n$ 的标量分量，记 $I(\by) = I(y_1, \dots, y_n)$。</p>
+</div>
+
+<p lang="en">The second expression follows by taking the expectation of $\log p_{\by}(\by) - \sum_i \log p_{\by_i}(\by_i)$. Mutual information measures exactly what ICA wants to remove.</p>
+<p lang="zh-CN">对 $\log p_{\by}(\by) - \sum_i \log p_{\by_i}(\by_i)$ 取期望即得第二个表达式。互信息度量的恰好是 ICA 想要消除的东西。</p>
+
+<div class="env" data-kind="proposition" id="prop-mi-properties" data-en="properties of mutual information" data-zh="互信息的性质">
+  <p lang="en">(a) $I(\by) \ge 0$, with equality if and only if the components of $\by$ are independent. (b) If $f_1, \dots, f_n$ are continuously differentiable bijections of $\R$ onto open intervals with nonvanishing derivatives, then $I(f_1(y_1), \dots, f_n(y_n)) = I(y_1, \dots, y_n)$. In particular, mutual information does not change when the components are rescaled, change sign or are permuted.</p>
+  <p lang="zh-CN">（a）$I(\by) \ge 0$，等号成立当且仅当 $\by$ 的各分量独立。（b）若 $f_1, \dots, f_n$ 都是从 $\R$ 到某个开区间的连续可微双射，且导数处处不为零，则 $I(f_1(y_1), \dots, f_n(y_n)) = I(y_1, \dots, y_n)$。特别地，对各分量作缩放、改变符号或重新排列，互信息都不变。</p>
+</div>
+<div class="proof">
+  <p lang="en">(a) follows from <a class="ref" data-ref="lem-gibbs"></a> and statement 3 of <a class="ref" data-ref="prop-independence-forms"></a>. (b) Assume the entropies are finite. The Jacobian of $\bu \mapsto (f_1(u_1), \dots, f_n(u_n))$ is diagonal, so by <a class="ref" data-ref="prop-entropy-linear"></a> the joint entropy changes by $\sum_i \E[\log|f_i'(y_i)|]$, while each marginal entropy $H(f_i(y_i))$ changes by $\E[\log|f_i'(y_i)|]$. The changes cancel in $\sum_i H(y_i) - H(\by)$, and a permutation only reorders the sum. (Without finite entropies, use the invariance of the divergence under reparametrization.)</p>
+  <p lang="zh-CN">（a）由<a class="ref" data-ref="lem-gibbs"></a>与<a class="ref" data-ref="prop-independence-forms"></a>的陈述 3 得到。（b）设各熵有限。映射 $\bu \mapsto (f_1(u_1), \dots, f_n(u_n))$ 的 Jacobi 矩阵是对角的，所以由<a class="ref" data-ref="prop-entropy-linear"></a>，联合熵改变 $\sum_i \E[\log|f_i'(y_i)|]$，而每个边缘熵 $H(f_i(y_i))$ 改变 $\E[\log|f_i'(y_i)|]$。这些改变在 $\sum_i H(y_i) - H(\by)$ 中相互抵消，而置换只是重新排列求和的次序。（若熵不有限，可改用散度在重新参数化下的不变性。）</p>
+</div>
+
+<p lang="en">For $\by = \bW\bx$ with $\bW$ invertible, <a class="ref" data-ref="prop-entropy-linear"></a> turns <a class="ref" data-ref="eq-mutual-information"></a> into</p>
+<p lang="zh-CN">对可逆的 $\bW$ 与 $\by = \bW\bx$，由<a class="ref" data-ref="prop-entropy-linear"></a>，<a class="ref" data-ref="eq-mutual-information"></a> 变为</p>
+
+<div class="eq">$$I(\by) = \sum_{i=1}^n H(y_i) - H(\bx) - \log|\det\bW|,$$</div>
+
+<p lang="en">the starting point of <a class="ref" data-ref="likelihood"></a> (<a class="ref" data-ref="eq-mi-outputs"></a>). The entropy $H(\bx)$ does not depend on $\bW$, so minimizing the mutual information of the outputs involves only the marginal entropies and $\log|\det\bW|$.</p>
+<p lang="zh-CN">这是<a class="ref" data-ref="likelihood"></a>的出发点（<a class="ref" data-ref="eq-mi-outputs"></a>）。熵 $H(\bx)$ 与 $\bW$ 无关，所以最小化输出的互信息只涉及各边缘熵与 $\log|\det\bW|$。</p>
+
+<div class="env" data-kind="definition" id="def-negentropy" data-en="negentropy" data-zh="负熵">
+  <p lang="en">Let $\by \in \R^d$ have a density, finite entropy and nonsingular covariance $\bSigma$, and let $\by_{\mathrm{G}}$ be a Gaussian vector with the same mean and covariance. The <em>negentropy</em> of $\by$ is $J(\by) = H(\by_{\mathrm{G}}) - H(\by) = \tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr) - H(\by)$. For a scalar, $J(y) = \tfrac12\log\bigl(2\pi e\Var(y)\bigr) - H(y)$.</p>
+  <p lang="zh-CN">设 $\by \in \R^d$ 有密度，熵有限，协方差 $\bSigma$ 非奇异，并设 $\by_{\mathrm{G}}$ 是与 $\by$ 均值、协方差都相同的高斯向量。$\by$ 的<em>负熵</em>定义为 $J(\by) = H(\by_{\mathrm{G}}) - H(\by) = \tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr) - H(\by)$。对标量，$J(y) = \tfrac12\log\bigl(2\pi e\Var(y)\bigr) - H(y)$。</p>
+</div>
+
+<div class="env" data-kind="proposition" id="prop-negentropy-properties" data-en="properties of negentropy" data-zh="负熵的性质">
+  <p lang="en">(a) $J(\by) \ge 0$, with equality if and only if $\by$ is Gaussian. (b) $J(\by) = D(p_{\by}\,\|\,p_{\mathrm{G}})$, where $p_{\mathrm{G}}$ is the Gaussian density with the same mean and covariance. (c) $J(\bA\by + \bb) = J(\by)$ for every invertible $\bA$ and every $\bb$.</p>
+  <p lang="zh-CN">（a）$J(\by) \ge 0$，等号成立当且仅当 $\by$ 是高斯的。（b）$J(\by) = D(p_{\by}\,\|\,p_{\mathrm{G}})$，其中 $p_{\mathrm{G}}$ 是均值、协方差与 $\by$ 相同的高斯密度。（c）对任意可逆的 $\bA$ 与任意 $\bb$，$J(\bA\by + \bb) = J(\by)$。</p>
+</div>
+<div class="proof">
+  <p lang="en">(a) and (b) restate <a class="ref" data-ref="prop-gaussian-maxent"></a>. (c) The vector $\bA\by + \bb$ has covariance $\bA\bSigma\bA^\top$, and the Gaussian vector with its mean and covariance is $\bA\by_{\mathrm{G}} + \bb$. By <a class="ref" data-ref="prop-entropy-linear"></a>, $H(\bA\by + \bb)$ and $H(\bA\by_{\mathrm{G}} + \bb)$ both exceed the original entropies by $\log|\det\bA|$, so their difference is unchanged.</p>
+  <p lang="zh-CN">（a）与（b）就是<a class="ref" data-ref="prop-gaussian-maxent"></a>。（c）向量 $\bA\by + \bb$ 的协方差为 $\bA\bSigma\bA^\top$，与它均值、协方差相同的高斯向量是 $\bA\by_{\mathrm{G}} + \bb$。由<a class="ref" data-ref="prop-entropy-linear"></a>，$H(\bA\by + \bb)$ 与 $H(\bA\by_{\mathrm{G}} + \bb)$ 都比原来的熵大 $\log|\det\bA|$，所以二者之差不变。</p>
+</div>
+
+<p lang="en">Negentropy is the information-theoretic measure of non-Gaussianity: unlike entropy it does not depend on scale, and unlike kurtosis it uses the whole density. From the entropies of <a class="ref" data-ref="sec-entropy"></a>, $J = \tfrac12\log(\pi e/6) \approx 0.1765$ for the uniform law and $J = \tfrac12\log(\pi e) - 1 \approx 0.0724$ for the Laplace law, whatever the variance. The two measures need not agree: the Laplace law has the larger absolute kurtosis (3 against 1.2) but the smaller negentropy.</p>
+<p lang="zh-CN">负熵是非高斯性的信息论度量：与熵不同，它不依赖于尺度；与峭度不同，它利用了整个密度。由<a class="ref" data-ref="sec-entropy"></a>中的熵可得：无论方差多大，均匀分布的 $J = \tfrac12\log(\pi e/6) \approx 0.1765$，拉普拉斯分布的 $J = \tfrac12\log(\pi e) - 1 \approx 0.0724$。两种度量的结论不必一致：拉普拉斯分布的峭度绝对值更大（3 对 1.2），负熵却更小。</p>
+
+<p lang="en">The two information measures are linked. For any $\by$ with nonsingular covariance $\bC$,</p>
+<p lang="zh-CN">这两个信息论量之间有联系。对任何协方差 $\bC$ 非奇异的 $\by$，</p>
+
+<div class="eq" id="eq-mi-negentropy">$$I(\by) = J(\by) - \sum_{i=1}^n J(y_i) + \frac12\log\frac{\prod_{i=1}^n C_{ii}}{\det\bC}$$</div>
+
+<p lang="en">(<a class="ref" data-ref="ex-mi-negentropy"></a>). If $\by = \bU\bz$ with $\bz$ white and $\bU$ orthogonal, the last term vanishes and $J(\by) = J(\bz)$ does not depend on $\bU$, so minimizing the mutual information of the outputs is the same as maximizing the sum of their negentropies. <a class="ref" data-ref="likelihood"></a> develops this equivalence (<a class="ref" data-ref="prop-mi-negentropy"></a>), connects it with maximum likelihood, and replaces negentropy, which requires a density, by approximations that can be estimated from samples (<a class="ref" data-ref="sec-negentropy-approx"></a>).</p>
+<p lang="zh-CN">（<a class="ref" data-ref="ex-mi-negentropy"></a>）。若 $\by = \bU\bz$，其中 $\bz$ 是白的、$\bU$ 正交，则最后一项为零，且 $J(\by) = J(\bz)$ 与 $\bU$ 无关，所以最小化输出的互信息等价于最大化它们的负熵之和。<a class="ref" data-ref="likelihood"></a>会展开这一等价关系（<a class="ref" data-ref="prop-mi-negentropy"></a>），把它与最大似然联系起来，并用可以从样本估计的近似来代替需要密度的负熵（<a class="ref" data-ref="sec-negentropy-approx"></a>）。</p>
+
+<div class="keypoints">
+  <p class="kp-title" lang="en">Key points</p>
+  <p class="kp-title" lang="zh-CN">本章要点</p>
+  <ul lang="en">
+    <li>Independence means that the joint distribution factorizes; equivalently, $\E[g(\by_1)h(\by_2)] = \E[g(\by_1)]\,\E[h(\by_2)]$ for all bounded $g$ and $h$, or the characteristic function factorizes. Uncorrelatedness is the linear special case and is much weaker, except for jointly Gaussian vectors.</li>
+    <li>Cumulants are the Taylor coefficients of the logarithm of the characteristic function. They are symmetric and multilinear, add up over independent summands, vanish when their arguments split into independent groups, and vanish beyond order two for Gaussian variables.</li>
+    <li>For $\bx = \bA\bs$ with independent sources, $\cum(x_i, x_j, x_k, x_l) = \sum_p a_{ip}a_{jp}a_{kp}a_{lp}\,\kappa_p$: fourth-order statistics see the individual columns of $\bA$, which the covariance cannot.</li>
+    <li>Kurtosis, $\kurt(y) = \E[y^4] - 3(\E[y^2])^2$ for zero-mean $y$, is the fourth cumulant. Its sign separates sub-Gaussian from super-Gaussian variables, and the normalized kurtosis is at least $-2$.</li>
+    <li>Differential entropy changes by $\log|\det\bA|$ under $\by \mapsto \bA\by$, and at fixed covariance it is largest for the Gaussian.</li>
+    <li>Mutual information $I(\by) = \sum_i H(y_i) - H(\by) \ge 0$ vanishes exactly when the components are independent; negentropy $J \ge 0$ vanishes exactly for Gaussian vectors and is invariant under invertible linear maps.</li>
+  </ul>
+  <ul lang="zh-CN">
+    <li>独立意味着联合分布可以分解；等价地，对一切有界的 $g$ 与 $h$ 有 $\E[g(\by_1)h(\by_2)] = \E[g(\by_1)]\,\E[h(\by_2)]$，或者特征函数可以分解。不相关只是其中的线性特例，要弱得多；联合高斯向量是例外。</li>
+    <li>累积量是特征函数对数的 Taylor 系数。它们对称、多重线性，对独立的加项可加；当自变量能分成相互独立的两组时为零；对高斯变量，二阶以上的累积量全为零。</li>
+    <li>对源独立的 $\bx = \bA\bs$，$\cum(x_i, x_j, x_k, x_l) = \sum_p a_{ip}a_{jp}a_{kp}a_{lp}\,\kappa_p$：四阶统计量能看到 $\bA$ 的每一列，而协方差做不到。</li>
+    <li>峭度（对零均值的 $y$，$\kurt(y) = \E[y^4] - 3(\E[y^2])^2$）是四阶累积量。它的符号区分亚高斯与超高斯变量，归一化峭度不小于 $-2$。</li>
+    <li>在 $\by \mapsto \bA\by$ 下，微分熵改变 $\log|\det\bA|$；在协方差固定时，高斯分布的熵最大。</li>
+    <li>互信息 $I(\by) = \sum_i H(y_i) - H(\by) \ge 0$，当且仅当各分量独立时为零；负熵 $J \ge 0$，当且仅当向量是高斯的时为零，并在可逆线性变换下不变。</li>
+  </ul>
+</div>
+
+<h2 id="sec-probability-exercises"><span lang="en">Exercises</span><span lang="zh-CN">习题</span></h2>
+
+<div class="exercise" id="ex-uniform-kurtosis" data-level="basic">
+  <p lang="en">Compute the normalized kurtosis of the uniform distribution on $[-a, a]$ and of the sinusoid $y = \sqrt2\sin\theta$ with $\theta$ uniform on $[0, 2\pi)$, and check the entries of <a class="ref" data-ref="tab-kurtosis"></a>.</p>
+  <p lang="zh-CN">计算 $[-a, a]$ 上均匀分布的归一化峭度，以及 $\theta$ 在 $[0, 2\pi)$ 上均匀时正弦波 $y = \sqrt2\sin\theta$ 的归一化峭度，并核对<a class="ref" data-ref="tab-kurtosis"></a>中的数值。</p>
+  <details class="solution">
+    <p lang="en">Uniform: $\E[y^2] = \frac{1}{2a}\int_{-a}^{a} u^2\,du = a^2/3$ and $\E[y^4] = a^4/5$, so $\kurt(y) = a^4/5 - 3a^4/9 = -2a^4/15$, and dividing by $(a^2/3)^2 = a^4/9$ gives $-18/15 = -6/5$. Sinusoid: $\E[\sin^2\theta] = \tfrac12$, so $\E[y^2] = 1$; since $\sin^4\theta = (3 - 4\cos 2\theta + \cos 4\theta)/8$, $\E[\sin^4\theta] = 3/8$ and $\E[y^4] = 4 \cdot 3/8 = 3/2$. Hence $\kurt(y) = 3/2 - 3 = -3/2$. Both laws are symmetric, so their skewness is zero.</p>
+    <p lang="zh-CN">均匀分布：$\E[y^2] = \frac{1}{2a}\int_{-a}^{a} u^2\,du = a^2/3$，$\E[y^4] = a^4/5$，所以 $\kurt(y) = a^4/5 - 3a^4/9 = -2a^4/15$，再除以 $(a^2/3)^2 = a^4/9$ 得 $-18/15 = -6/5$。正弦波：$\E[\sin^2\theta] = \tfrac12$，所以 $\E[y^2] = 1$；由 $\sin^4\theta = (3 - 4\cos 2\theta + \cos 4\theta)/8$ 得 $\E[\sin^4\theta] = 3/8$，于是 $\E[y^4] = 4 \cdot 3/8 = 3/2$，$\kurt(y) = 3/2 - 3 = -3/2$。两个分布都是对称的，所以偏度为零。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-sign-flip" data-level="basic">
+  <p lang="en">Let $x \sim \Ncal(0, 1)$, let $\varepsilon$ be independent of $x$ with $P(\varepsilon = 1) = P(\varepsilon = -1) = \tfrac12$, and set $y = \varepsilon x$. Show that $y \sim \Ncal(0, 1)$ and $\Cov(x, y) = 0$, but that $x$ and $y$ are dependent. Why does this not contradict <a class="ref" data-ref="prop-gaussian-uncorrelated"></a>?</p>
+  <p lang="zh-CN">设 $x \sim \Ncal(0, 1)$，$\varepsilon$ 与 $x$ 独立且 $P(\varepsilon = 1) = P(\varepsilon = -1) = \tfrac12$，令 $y = \varepsilon x$。证明 $y \sim \Ncal(0, 1)$ 且 $\Cov(x, y) = 0$，但 $x$ 与 $y$ 不独立。为什么这与<a class="ref" data-ref="prop-gaussian-uncorrelated"></a>不矛盾？</p>
+  <details class="solution">
+    <p lang="en">By symmetry of $x$, $P(y \le u) = \tfrac12 P(x \le u) + \tfrac12 P(-x \le u) = P(x \le u)$, so $y \sim \Ncal(0, 1)$. Also $\Cov(x, y) = \E[\varepsilon x^2] = \E[\varepsilon]\,\E[x^2] = 0$. But $|y| = |x|$, so $P(|x| \le 1, |y| \le 1) = P(|x| \le 1) \approx 0.683$, while $P(|x| \le 1)\,P(|y| \le 1) \approx 0.683^2 \approx 0.466$: the variables are dependent. There is no contradiction because $(x, y)$ is not jointly Gaussian: $x + y = (1 + \varepsilon)x$ equals 0 with probability $\tfrac12$ and is otherwise distributed as $2x$, which is neither Gaussian nor constant.</p>
+    <p lang="zh-CN">由 $x$ 的对称性，$P(y \le u) = \tfrac12 P(x \le u) + \tfrac12 P(-x \le u) = P(x \le u)$，所以 $y \sim \Ncal(0, 1)$。又 $\Cov(x, y) = \E[\varepsilon x^2] = \E[\varepsilon]\,\E[x^2] = 0$。但 $|y| = |x|$，所以 $P(|x| \le 1, |y| \le 1) = P(|x| \le 1) \approx 0.683$，而 $P(|x| \le 1)\,P(|y| \le 1) \approx 0.683^2 \approx 0.466$，两个变量并不独立。这与命题不矛盾，因为 $(x, y)$ 不是联合高斯的：$x + y = (1 + \varepsilon)x$ 以概率 $\tfrac12$ 等于 0，否则与 $2x$ 同分布，这样的变量既不是高斯的也不是常数。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-exponential-cumulants" data-level="intermediate">
+  <p lang="en">Let $y$ be exponential with rate $\lambda$. Using $\varphi_y(\omega) = \lambda/(\lambda - i\omega)$, show that $\kappa_j(y) = (j - 1)!/\lambda^j$ for all $j \ge 1$. Deduce that the skewness is 2 and the normalized kurtosis is 6 for every $\lambda$, and check $\kappa_3$ and $\kappa_4$ against the raw-moment formulas of <a class="ref" data-ref="sec-cumulants"></a>, using $\E[y^j] = j!/\lambda^j$.</p>
+  <p lang="zh-CN">设 $y$ 服从速率为 $\lambda$ 的指数分布。利用 $\varphi_y(\omega) = \lambda/(\lambda - i\omega)$，证明对所有 $j \ge 1$ 有 $\kappa_j(y) = (j - 1)!/\lambda^j$。由此说明对任意 $\lambda$，偏度为 2、归一化峭度为 6；并利用 $\E[y^j] = j!/\lambda^j$，用<a class="ref" data-ref="sec-cumulants"></a>中的原点矩公式核对 $\kappa_3$ 与 $\kappa_4$。</p>
+  <details class="solution">
+    <p lang="en">For $|\omega| &lt; \lambda$, $\log\varphi_y(\omega) = -\log(1 - i\omega/\lambda) = \sum_{j \ge 1} \frac{1}{j}\bigl(\frac{i\omega}{\lambda}\bigr)^j = \sum_{j \ge 1} \frac{(j - 1)!}{\lambda^j}\,\frac{(i\omega)^j}{j!}$, so $\kappa_j = (j-1)!/\lambda^j$. Then $\Var(y) = \kappa_2 = 1/\lambda^2$, the skewness is $\kappa_3/\kappa_2^{3/2} = (2/\lambda^3)\lambda^3 = 2$, and the normalized kurtosis is $\kappa_4/\kappa_2^2 = (6/\lambda^4)\lambda^4 = 6$. With $\lambda = 1$ the raw moments are $m_j = j!$, and the formulas give $\kappa_3 = 6 - 3 \cdot 2 \cdot 1 + 2 = 2$ and $\kappa_4 = 24 - 4 \cdot 6 - 3 \cdot 4 + 12 \cdot 2 - 6 = 6$, as they should; other values of $\lambda$ only rescale $y$.</p>
+    <p lang="zh-CN">当 $|\omega| &lt; \lambda$ 时，$\log\varphi_y(\omega) = -\log(1 - i\omega/\lambda) = \sum_{j \ge 1} \frac{1}{j}\bigl(\frac{i\omega}{\lambda}\bigr)^j = \sum_{j \ge 1} \frac{(j - 1)!}{\lambda^j}\,\frac{(i\omega)^j}{j!}$，所以 $\kappa_j = (j-1)!/\lambda^j$。于是 $\Var(y) = \kappa_2 = 1/\lambda^2$，偏度为 $\kappa_3/\kappa_2^{3/2} = (2/\lambda^3)\lambda^3 = 2$，归一化峭度为 $\kappa_4/\kappa_2^2 = (6/\lambda^4)\lambda^4 = 6$。取 $\lambda = 1$，原点矩为 $m_j = j!$，代入公式得 $\kappa_3 = 6 - 3 \cdot 2 \cdot 1 + 2 = 2$，$\kappa_4 = 24 - 4 \cdot 6 - 3 \cdot 4 + 12 \cdot 2 - 6 = 6$，与上面一致；其他 $\lambda$ 只是对 $y$ 作缩放。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-negentropy-values" data-level="intermediate">
+  <p lang="en">Derive the negentropies $J = \tfrac12\log(\pi e/6)$ of the uniform law and $J = \tfrac12\log(\pi e) - 1$ of the Laplace law, and explain why they do not depend on the variance. Which of the two laws is “more non-Gaussian” according to kurtosis, and which according to negentropy?</p>
+  <p lang="zh-CN">推导均匀分布的负熵 $J = \tfrac12\log(\pi e/6)$ 与拉普拉斯分布的负熵 $J = \tfrac12\log(\pi e) - 1$，并说明它们为什么与方差无关。按峭度，两个分布中哪一个“更非高斯”？按负熵呢？</p>
+  <details class="solution">
+    <p lang="en">By <a class="ref" data-ref="prop-negentropy-properties"></a>(c), $J(\alpha y) = J(y)$, so we may take unit variance. Uniform on $[-\sqrt3, \sqrt3]$: $H = \log(2\sqrt3) = \tfrac12\log 12$, so $J = \tfrac12\log(2\pi e) - \tfrac12\log 12 = \tfrac12\log(\pi e/6) \approx 0.1765$. Laplace with $b = 1/\sqrt2$: $H = 1 + \log(2b) = 1 + \tfrac12\log 2$, so $J = \tfrac12\log(2\pi e) - 1 - \tfrac12\log 2 = \tfrac12\log(\pi e) - 1 \approx 0.0724$. By absolute normalized kurtosis the Laplace law is further from the Gaussian (3 against 1.2); by negentropy the uniform law is (0.1765 against 0.0724). Kurtosis is dominated by the tails, negentropy weighs the whole density, and the bounded support of the uniform law makes its density very different from a Gaussian one.</p>
+    <p lang="zh-CN">由<a class="ref" data-ref="prop-negentropy-properties"></a>（c），$J(\alpha y) = J(y)$，所以可以取单位方差。$[-\sqrt3, \sqrt3]$ 上的均匀分布：$H = \log(2\sqrt3) = \tfrac12\log 12$，所以 $J = \tfrac12\log(2\pi e) - \tfrac12\log 12 = \tfrac12\log(\pi e/6) \approx 0.1765$。$b = 1/\sqrt2$ 的拉普拉斯分布：$H = 1 + \log(2b) = 1 + \tfrac12\log 2$，所以 $J = \tfrac12\log(2\pi e) - 1 - \tfrac12\log 2 = \tfrac12\log(\pi e) - 1 \approx 0.0724$。按归一化峭度的绝对值，拉普拉斯分布离高斯更远（3 对 1.2）；按负熵则是均匀分布离高斯更远（0.1765 对 0.0724）。峭度主要由尾部决定，负熵则考虑整个密度；均匀分布的支撑有界，使它的密度与高斯密度相差很大。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-cum4" data-level="advanced">
+  <p lang="en">Derive <a class="ref" data-ref="eq-cum4"></a> from <a class="ref" data-ref="def-cumulant"></a>: for zero-mean $x_1, \dots, x_4$ with finite fourth moments, expand $\log\varphi_{\bx}(\bomega)$ to fourth order and identify the coefficient of $\omega_1\omega_2\omega_3\omega_4$. Then use the formula to check directly that $\cum(y_1, y_1, y_2, y_2) = 0$ when $y_1$ and $y_2$ are independent with zero mean.</p>
+  <p lang="zh-CN">由<a class="ref" data-ref="def-cumulant"></a>推导 <a class="ref" data-ref="eq-cum4"></a>：对四阶矩有限的零均值变量 $x_1, \dots, x_4$，把 $\log\varphi_{\bx}(\bomega)$ 展开到四阶，找出 $\omega_1\omega_2\omega_3\omega_4$ 的系数。再用这个公式直接验证：当 $y_1$ 与 $y_2$ 独立且均值为零时，$\cum(y_1, y_1, y_2, y_2) = 0$。</p>
+  <details class="solution">
+    <p lang="en">Let $c_{ab} = \E[x_ax_b]$, $m_{abc} = \E[x_ax_bx_c]$ and $m_{abcd} = \E[x_ax_bx_cx_d]$. Expanding the exponential to fourth order (no first-order term, because the means vanish), $\varphi_{\bx}(\bomega) = 1 + u$ with</p>
+    <p lang="zh-CN">记 $c_{ab} = \E[x_ax_b]$，$m_{abc} = \E[x_ax_bx_c]$，$m_{abcd} = \E[x_ax_bx_cx_d]$。把指数函数展开到四阶（由于均值为零，没有一阶项），得 $\varphi_{\bx}(\bomega) = 1 + u$，其中</p>
+    <div class="eq">$$u = -\frac12\sum_{a,b} c_{ab}\,\omega_a\omega_b - \frac{i}{6}\sum_{a,b,c} m_{abc}\,\omega_a\omega_b\omega_c + \frac{1}{24}\sum_{a,b,c,d} m_{abcd}\,\omega_a\omega_b\omega_c\omega_d + o(\|\bomega\|^4).$$</div>
+    <p lang="en">Then $\log(1 + u) = u - u^2/2 + O(|u|^3)$, where $u^3 = O(\|\bomega\|^6)$ and, up to $o(\|\bomega\|^4)$, $u^2 = \tfrac14 S^2$ with $S = \sum_{a,b} c_{ab}\omega_a\omega_b$. Since $\cum(x_1, x_2, x_3, x_4)$ is the fourth mixed derivative at $\bzero$ (the factor $(-i)^4$ equals 1), it is the coefficient of $\omega_1\omega_2\omega_3\omega_4$ in this expansion. In $u$, the 24 orderings of $(1, 2, 3, 4)$ in the quartic sum contribute $\tfrac{1}{24} \cdot 24\,m_{1234} = m_{1234}$. In $S^2$, the monomial $\omega_1\omega_2\omega_3\omega_4$ arises from products of two terms of $S$ whose index pairs split $\{1, 2, 3, 4\}$; there are three such splits, each term of $S$ with $a \ne b$ appears twice ($c_{ab} = c_{ba}$), and the two factors can be taken in either order, so the coefficient is $8(c_{12}c_{34} + c_{13}c_{24} + c_{14}c_{23})$. With the factor $-\tfrac12 \cdot \tfrac14$, the coefficient in $\log\varphi_{\bx}$ is $m_{1234} - c_{12}c_{34} - c_{13}c_{24} - c_{14}c_{23}$, which is <a class="ref" data-ref="eq-cum4"></a>. For independent zero-mean $y_1$ and $y_2$, the formula gives $\cum(y_1, y_1, y_2, y_2) = \E[y_1^2y_2^2] - \E[y_1^2]\,\E[y_2^2] - 2(\E[y_1y_2])^2 = \E[y_1^2]\,\E[y_2^2] - \E[y_1^2]\,\E[y_2^2] - 0 = 0$.</p>
+    <p lang="zh-CN">于是 $\log(1 + u) = u - u^2/2 + O(|u|^3)$，其中 $u^3 = O(\|\bomega\|^6)$，并且在相差 $o(\|\bomega\|^4)$ 的意义下 $u^2 = \tfrac14 S^2$，$S = \sum_{a,b} c_{ab}\omega_a\omega_b$。由于 $\cum(x_1, x_2, x_3, x_4)$ 是 $\bzero$ 处的四阶混合偏导数（因子 $(-i)^4$ 等于 1），它就是这个展开式中 $\omega_1\omega_2\omega_3\omega_4$ 的系数。在 $u$ 中，四次求和里 $(1, 2, 3, 4)$ 的 24 种排列贡献 $\tfrac{1}{24} \cdot 24\,m_{1234} = m_{1234}$。在 $S^2$ 中，单项式 $\omega_1\omega_2\omega_3\omega_4$ 来自 $S$ 的两项之积，且两项的下标对恰好把 $\{1, 2, 3, 4\}$ 分成两组；这样的分法有三种，$S$ 中每个 $a \ne b$ 的项出现两次（$c_{ab} = c_{ba}$），两个因子的先后又有两种，所以系数为 $8(c_{12}c_{34} + c_{13}c_{24} + c_{14}c_{23})$。乘上因子 $-\tfrac12 \cdot \tfrac14$，$\log\varphi_{\bx}$ 中的系数为 $m_{1234} - c_{12}c_{34} - c_{13}c_{24} - c_{14}c_{23}$，这正是 <a class="ref" data-ref="eq-cum4"></a>。对独立的零均值变量 $y_1$、$y_2$，公式给出 $\cum(y_1, y_1, y_2, y_2) = \E[y_1^2y_2^2] - \E[y_1^2]\,\E[y_2^2] - 2(\E[y_1y_2])^2 = \E[y_1^2]\,\E[y_2^2] - \E[y_1^2]\,\E[y_2^2] - 0 = 0$。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-mi-negentropy" data-level="advanced">
+  <p lang="en">Prove <a class="ref" data-ref="eq-mi-negentropy"></a>. Deduce that if $\bz$ is white and $\by = \bU\bz$ with $\bU$ orthogonal, then $I(\by) = J(\bz) - \sum_i J(y_i)$, and that the separating rotations are exactly the maximizers of $\sum_i J(y_i)$ whenever $\bz = \tilde\bA\bs$ with $\tilde\bA$ orthogonal and independent sources, at most one of them Gaussian.</p>
+  <p lang="zh-CN">证明 <a class="ref" data-ref="eq-mi-negentropy"></a>。由此推出：若 $\bz$ 是白的，$\by = \bU\bz$ 且 $\bU$ 正交，则 $I(\by) = J(\bz) - \sum_i J(y_i)$；并且当 $\bz = \tilde\bA\bs$（$\tilde\bA$ 正交，源独立且至多一个是高斯的）时，使 $\sum_i J(y_i)$ 最大的旋转恰好就是能实现分离的旋转。</p>
+  <details class="solution">
+    <p lang="en">By the definition of negentropy, $H(y_i) = \tfrac12\log(2\pi e\,C_{ii}) - J(y_i)$ and $H(\by) = \tfrac12\log\bigl((2\pi e)^n\det\bC\bigr) - J(\by)$. Substituting into $I(\by) = \sum_i H(y_i) - H(\by)$, the terms $\tfrac12\log(2\pi e)$ cancel ($n$ of them on each side) and we obtain $I(\by) = J(\by) - \sum_i J(y_i) + \tfrac12\bigl(\sum_i\log C_{ii} - \log\det\bC\bigr)$, which is <a class="ref" data-ref="eq-mi-negentropy"></a>. If $\by = \bU\bz$ with $\bz$ white, then $\bC = \bU\bI\bU^\top = \bI$, so the last term is $\tfrac12\log(1/1) = 0$, and $J(\by) = J(\bz)$ by <a class="ref" data-ref="prop-negentropy-properties"></a>(c). Hence $I(\by) = J(\bz) - \sum_i J(y_i)$, where $J(\bz)$ does not depend on $\bU$. Since $I(\by) \ge 0$ with equality exactly for independent outputs (<a class="ref" data-ref="prop-mi-properties"></a>), $\sum_i J(y_i) \le J(\bz)$ for every $\bU$, with equality exactly when the outputs are independent. A separating rotation, $\bU\tilde\bA = \bPi\bD$, makes them independent and therefore attains the maximum. Conversely, any maximizer has independent outputs, and when at most one source is Gaussian, Comon's theorem (<a class="ref" data-ref="thm-comon"></a>) shows that it separates.</p>
+    <p lang="zh-CN">由负熵的定义，$H(y_i) = \tfrac12\log(2\pi e\,C_{ii}) - J(y_i)$，$H(\by) = \tfrac12\log\bigl((2\pi e)^n\det\bC\bigr) - J(\by)$。代入 $I(\by) = \sum_i H(y_i) - H(\by)$，两边各 $n$ 个 $\tfrac12\log(2\pi e)$ 相互抵消，得到 $I(\by) = J(\by) - \sum_i J(y_i) + \tfrac12\bigl(\sum_i\log C_{ii} - \log\det\bC\bigr)$，即 <a class="ref" data-ref="eq-mi-negentropy"></a>。若 $\by = \bU\bz$ 且 $\bz$ 是白的，则 $\bC = \bU\bI\bU^\top = \bI$，最后一项为 $\tfrac12\log(1/1) = 0$；又由<a class="ref" data-ref="prop-negentropy-properties"></a>（c），$J(\by) = J(\bz)$。因此 $I(\by) = J(\bz) - \sum_i J(y_i)$，其中 $J(\bz)$ 与 $\bU$ 无关。由于 $I(\by) \ge 0$，且仅当输出独立时取等号（<a class="ref" data-ref="prop-mi-properties"></a>），对每个 $\bU$ 都有 $\sum_i J(y_i) \le J(\bz)$，等号恰在输出独立时成立。能实现分离的旋转（$\bU\tilde\bA = \bPi\bD$）使输出独立，因而达到最大值。反之，任何最大值点都使输出独立；当至多一个源是高斯的时，Comon 定理（<a class="ref" data-ref="thm-comon"></a>）表明它能实现分离。</p>
+  </details>
+</div>
+
+<h2 id="sec-probability-references"><span lang="en">References</span><span lang="zh-CN">参考文献</span></h2>
+
+<div class="references">
+  <ol>
+    <li>Bell, A. J., &amp; Sejnowski, T. J. (1997). The “independent components” of natural scenes are edge filters. <i>Vision Research</i>, 37(23), 3327–3338.</li>
+    <li>Billingsley, P. (1995). <i>Probability and Measure</i> (3rd ed.). Wiley.</li>
+    <li>Comon, P. (1994). Independent component analysis, a new concept? <i>Signal Processing</i>, 36(3), 287–314.</li>
+    <li>Cover, T. M., &amp; Thomas, J. A. (2006). <i>Elements of Information Theory</i> (2nd ed.). Wiley.</li>
+    <li>Gazor, S., &amp; Zhang, W. (2003). Speech probability distribution. <i>IEEE Signal Processing Letters</i>, 10(7), 204–207.</li>
+    <li>Hyvärinen, A., Karhunen, J., &amp; Oja, E. (2001). <i>Independent Component Analysis</i>. Wiley.</li>
+    <li>Kullback, S., &amp; Leibler, R. A. (1951). On information and sufficiency. <i>Annals of Mathematical Statistics</i>, 22(1), 79–86.</li>
+    <li>Lukacs, E. (1970). <i>Characteristic Functions</i> (2nd ed.). Griffin.</li>
+    <li>Marcinkiewicz, J. (1939). Sur une propriété de la loi de Gauss. <i>Mathematische Zeitschrift</i>, 44, 612–618.</li>
+    <li>McCullagh, P. (1987). <i>Tensor Methods in Statistics</i>. Chapman and Hall.</li>
+    <li>Shannon, C. E. (1948). A mathematical theory of communication. <i>Bell System Technical Journal</i>, 27(3), 379–423, and 27(4), 623–656.</li>
+    <li>Westfall, P. H. (2014). Kurtosis as peakedness, 1905–2014. R.I.P. <i>The American Statistician</i>, 68(3), 191–195.</li>
+  </ol>
+</div>

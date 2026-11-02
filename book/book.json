@@ -1,0 +1,367 @@
+{
+  "title": {
+    "en": "Independent Component Analysis: From Foundations to Frontiers",
+    "zh": "独立成分分析：从基础到硬核"
+  },
+  "short": {
+    "en": "The ICA Book",
+    "zh": "ICA 学习书"
+  },
+  "author": "Yuda Bi",
+  "year": 2026,
+  "siteUrl": "https://yuda-bi.com",
+  "description": {
+    "en": "A bilingual open book on independent component analysis, from first principles to identifiability, contrasts, algorithms, Cramér–Rao bounds, overcomplete and nonlinear ICA, and ICA for fMRI, with exercises and solutions.",
+    "zh": "一本中英双语的独立成分分析开放教材：从基本原理到可辨识性、对比函数、算法、Cramér–Rao 界、过完备与非线性 ICA，以及 fMRI 中的 ICA，每章配习题与解答。"
+  },
+  "parts": [
+    {
+      "label": {
+        "en": "Part I",
+        "zh": "第一部分"
+      },
+      "title": {
+        "en": "Foundations",
+        "zh": "基础"
+      },
+      "chapters": [
+        {
+          "slug": "ica-problem",
+          "title": {
+            "en": "The ICA Problem",
+            "zh": "ICA 问题"
+          },
+          "summary": {
+            "en": "The cocktail-party problem, the linear mixing model, what can and cannot be recovered, and how ICA differs from PCA and factor analysis.",
+            "zh": "鸡尾酒会问题、线性混合模型、哪些量可以恢复哪些不能，以及 ICA 与 PCA、因子分析的区别。"
+          }
+        },
+        {
+          "slug": "probability",
+          "title": {
+            "en": "Independence, Cumulants and Entropy",
+            "zh": "独立性、累积量与熵"
+          },
+          "summary": {
+            "en": "The probability toolkit of ICA: independence versus uncorrelatedness, characteristic functions, moments and cumulants, differential entropy, mutual information and negentropy.",
+            "zh": "ICA 的概率工具：独立与不相关、特征函数、矩与累积量、微分熵、互信息与负熵。"
+          }
+        },
+        {
+          "slug": "whitening",
+          "title": {
+            "en": "Whitening and the Geometry of ICA",
+            "zh": "白化与 ICA 的几何"
+          },
+          "summary": {
+            "en": "Second-order statistics determine the mixing matrix up to a rotation. Whitening, PCA reduction, and why a rotation is exactly what higher-order statistics must find.",
+            "zh": "二阶统计量只能把混合矩阵确定到一个旋转。白化、PCA 降维，以及为什么高阶统计量要找的恰好是这个旋转。"
+          }
+        }
+      ]
+    },
+    {
+      "label": {
+        "en": "Part II",
+        "zh": "第二部分"
+      },
+      "title": {
+        "en": "Principles",
+        "zh": "原理"
+      },
+      "chapters": [
+        {
+          "slug": "identifiability",
+          "title": {
+            "en": "Identifiability",
+            "zh": "可辨识性"
+          },
+          "summary": {
+            "en": "The Darmois–Skitovich theorem and Comon's theorem: with at most one Gaussian source, the mixing matrix is determined up to scaling and permutation.",
+            "zh": "Darmois–Skitovich 定理与 Comon 定理：至多一个高斯源时，混合矩阵在尺度与置换意义下唯一。"
+          }
+        },
+        {
+          "slug": "kurtosis",
+          "title": {
+            "en": "Non-Gaussianity and Kurtosis",
+            "zh": "非高斯性与峭度"
+          },
+          "summary": {
+            "en": "Why mixing makes signals more Gaussian, kurtosis as a contrast, the landscape of kurtosis on the sphere, and the price of its sensitivity to outliers.",
+            "zh": "为什么混合会让信号更接近高斯、峭度作为对比函数、峭度在球面上的地形，以及它对离群值敏感的代价。"
+          }
+        },
+        {
+          "slug": "likelihood",
+          "title": {
+            "en": "Negentropy, Mutual Information and Likelihood",
+            "zh": "负熵、互信息与似然"
+          },
+          "summary": {
+            "en": "Information-theoretic contrasts and maximum likelihood: their equivalences, the score function, Infomax, robust negentropy approximations, and what happens when the source model is wrong.",
+            "zh": "信息论对比函数与最大似然：它们的等价关系、得分函数、Infomax、稳健的负熵近似，以及源模型设错时会发生什么。"
+          }
+        }
+      ]
+    },
+    {
+      "label": {
+        "en": "Part III",
+        "zh": "第三部分"
+      },
+      "title": {
+        "en": "Algorithms",
+        "zh": "算法"
+      },
+      "chapters": [
+        {
+          "slug": "natural-gradient",
+          "title": {
+            "en": "Natural Gradient, Infomax and Stability",
+            "zh": "自然梯度、Infomax 与稳定性"
+          },
+          "summary": {
+            "en": "The relative (natural) gradient, equivariance, local stability of the separating solutions, and the Infomax and extended Infomax algorithms.",
+            "zh": "相对（自然）梯度、等变性、分离解的局部稳定性，以及 Infomax 与扩展 Infomax 算法。"
+          }
+        },
+        {
+          "slug": "fastica",
+          "title": {
+            "en": "FastICA",
+            "zh": "FastICA 算法"
+          },
+          "summary": {
+            "en": "The fixed-point algorithm as an approximate Newton method: one-unit, deflation and symmetric versions, convergence rates, and the choice of nonlinearity.",
+            "zh": "作为近似牛顿法的不动点算法：单单元、逐次提取与对称版本，收敛速度，以及非线性函数的选择。"
+          }
+        },
+        {
+          "slug": "jade-sobi",
+          "title": {
+            "en": "Tensor and Second-Order Methods: JADE and SOBI",
+            "zh": "张量方法与二阶方法：JADE 与 SOBI"
+          },
+          "summary": {
+            "en": "Fourth-order cumulant tensors and joint diagonalization (JADE), Jacobi rotations, and separation from temporal structure alone (AMUSE, SOBI).",
+            "zh": "四阶累积量张量与联合对角化（JADE）、Jacobi 旋转，以及仅利用时间结构的分离（AMUSE、SOBI）。"
+          }
+        }
+      ]
+    },
+    {
+      "label": {
+        "en": "Part IV",
+        "zh": "第四部分"
+      },
+      "title": {
+        "en": "Statistical Theory",
+        "zh": "统计理论"
+      },
+      "chapters": [
+        {
+          "slug": "performance",
+          "title": {
+            "en": "Asymptotic Performance and the Cramér–Rao Bound",
+            "zh": "渐近性能与 Cramér–Rao 界"
+          },
+          "summary": {
+            "en": "The gain matrix and interference-to-signal ratio, asymptotic variance of contrast-based estimators, the optimal nonlinearity, and the Cramér–Rao bound for ICA.",
+            "zh": "增益矩阵与干扰信号比、基于对比函数的估计量的渐近方差、最优非线性函数，以及 ICA 的 Cramér–Rao 界。"
+          }
+        },
+        {
+          "slug": "model-order",
+          "title": {
+            "en": "Noise, Model Order and Reliability",
+            "zh": "噪声、模型阶数与可靠性"
+          },
+          "summary": {
+            "en": "Noisy ICA, PCA reduction and model-order selection, split and unstable components, and how to assess the reliability of an ICA decomposition.",
+            "zh": "含噪 ICA、PCA 降维与模型阶数选择、分裂与不稳定的成分，以及如何评估一次 ICA 分解的可靠性。"
+          }
+        }
+      ]
+    },
+    {
+      "label": {
+        "en": "Part V",
+        "zh": "第五部分"
+      },
+      "title": {
+        "en": "Beyond the Square Linear Model",
+        "zh": "超越方阵线性模型"
+      },
+      "chapters": [
+        {
+          "slug": "overcomplete",
+          "title": {
+            "en": "Overcomplete ICA and Sparse Component Analysis",
+            "zh": "过完备 ICA 与稀疏成分分析"
+          },
+          "summary": {
+            "en": "More sources than sensors: what is still identifiable, why sources cannot simply be inverted, tensor rank, and sparsity-based recovery.",
+            "zh": "源多于传感器时：哪些仍可辨识、为什么源不能直接求逆、张量秩，以及基于稀疏性的恢复。"
+          }
+        },
+        {
+          "slug": "nonlinear",
+          "title": {
+            "en": "Nonlinear ICA",
+            "zh": "非线性 ICA"
+          },
+          "summary": {
+            "en": "Why general nonlinear ICA is not identifiable, and how temporal structure or auxiliary variables restore identifiability (TCL, PCL, iVAE).",
+            "zh": "为什么一般的非线性 ICA 不可辨识，以及时间结构或辅助变量如何恢复可辨识性（TCL、PCL、iVAE）。"
+          }
+        }
+      ]
+    },
+    {
+      "label": {
+        "en": "Part VI",
+        "zh": "第六部分"
+      },
+      "title": {
+        "en": "ICA for Brain Imaging",
+        "zh": "脑影像中的 ICA"
+      },
+      "chapters": [
+        {
+          "slug": "fmri-ica",
+          "title": {
+            "en": "Spatial ICA of fMRI",
+            "zh": "fMRI 的空间 ICA"
+          },
+          "summary": {
+            "en": "Spatial versus temporal ICA, the fMRI data model, preprocessing and dimension reduction, and how to read components as networks or artifacts.",
+            "zh": "空间 ICA 与时间 ICA、fMRI 数据模型、预处理与降维，以及如何把成分解读为网络或伪迹。"
+          }
+        },
+        {
+          "slug": "group-ica",
+          "title": {
+            "en": "Group ICA, Dual Regression and IVA",
+            "zh": "组 ICA、双回归与独立向量分析"
+          },
+          "summary": {
+            "en": "Multi-subject ICA: temporal concatenation, back-reconstruction, dual regression, spatially constrained ICA, independent vector analysis, network connectivity and multimodal fusion.",
+            "zh": "多被试 ICA：时间拼接、反重建、双回归、空间约束 ICA、独立向量分析、网络连接以及多模态融合。"
+          }
+        }
+      ]
+    },
+    {
+      "label": {
+        "en": "Appendix",
+        "zh": "附录"
+      },
+      "appendix": true,
+      "title": {
+        "en": "Appendix",
+        "zh": "附录"
+      },
+      "chapters": [
+        {
+          "slug": "math-background",
+          "title": {
+            "en": "Mathematical Background",
+            "zh": "数学基础"
+          },
+          "summary": {
+            "en": "Facts used throughout: orthogonal and permutation matrices, matrix square roots, the polar decomposition, Kronecker products and tensors, matrix calculus, optimization on the sphere and the orthogonal group, and the asymptotic statistics of Part IV (delta method, sandwich covariance, Fisher information).",
+            "zh": "全书用到的数学工具：正交矩阵与置换矩阵、矩阵平方根、极分解、Kronecker 积与张量、矩阵微积分、球面与正交群上的优化，以及第四部分用到的渐近统计（delta 方法、三明治协方差、Fisher 信息）。"
+          }
+        }
+      ]
+    }
+  ],
+  "macros": {
+    "\\E": "\\mathbb{E}",
+    "\\R": "\\mathbb{R}",
+    "\\C": "\\mathbb{C}",
+    "\\Ncal": "\\mathcal{N}",
+    "\\Cov": "\\operatorname{Cov}",
+    "\\Var": "\\operatorname{Var}",
+    "\\kurt": "\\operatorname{kurt}",
+    "\\cum": "\\operatorname{cum}",
+    "\\diag": "\\operatorname{diag}",
+    "\\offdiag": "\\operatorname{off}",
+    "\\tr": "\\operatorname{tr}",
+    "\\sign": "\\operatorname{sign}",
+    "\\rank": "\\operatorname{rank}",
+    "\\vecop": "\\operatorname{vec}",
+    "\\argmax": "\\operatorname*{arg\\,max}",
+    "\\argmin": "\\operatorname*{arg\\,min}",
+    "\\iid": "\\overset{\\text{i.i.d.}}{\\sim}",
+    "\\bx": "\\mathbf{x}",
+    "\\bs": "\\mathbf{s}",
+    "\\by": "\\mathbf{y}",
+    "\\bz": "\\mathbf{z}",
+    "\\bw": "\\mathbf{w}",
+    "\\ba": "\\mathbf{a}",
+    "\\bb": "\\mathbf{b}",
+    "\\bu": "\\mathbf{u}",
+    "\\bv": "\\mathbf{v}",
+    "\\be": "\\mathbf{e}",
+    "\\bn": "\\mathbf{n}",
+    "\\bq": "\\mathbf{q}",
+    "\\bt": "\\mathbf{t}",
+    "\\bA": "\\mathbf{A}",
+    "\\bB": "\\mathbf{B}",
+    "\\bC": "\\mathbf{C}",
+    "\\bD": "\\mathbf{D}",
+    "\\bF": "\\mathbf{F}",
+    "\\bG": "\\mathbf{G}",
+    "\\bH": "\\mathbf{H}",
+    "\\bI": "\\mathbf{I}",
+    "\\bJ": "\\mathbf{J}",
+    "\\bK": "\\mathbf{K}",
+    "\\bM": "\\mathbf{M}",
+    "\\bP": "\\mathbf{P}",
+    "\\bQ": "\\mathbf{Q}",
+    "\\bR": "\\mathbf{R}",
+    "\\bS": "\\mathbf{S}",
+    "\\bT": "\\mathbf{T}",
+    "\\bU": "\\mathbf{U}",
+    "\\bV": "\\mathbf{V}",
+    "\\bW": "\\mathbf{W}",
+    "\\bX": "\\mathbf{X}",
+    "\\bY": "\\mathbf{Y}",
+    "\\bZ": "\\mathbf{Z}",
+    "\\bzero": "\\mathbf{0}",
+    "\\bLambda": "\\boldsymbol{\\Lambda}",
+    "\\bPi": "\\boldsymbol{\\Pi}",
+    "\\bSigma": "\\boldsymbol{\\Sigma}",
+    "\\bpsi": "\\boldsymbol{\\psi}",
+    "\\bphi": "\\boldsymbol{\\varphi}",
+    "\\bmu": "\\boldsymbol{\\mu}",
+    "\\bomega": "\\boldsymbol{\\omega}",
+    "\\btheta": "\\boldsymbol{\\theta}",
+    "\\bepsilon": "\\boldsymbol{\\varepsilon}",
+    "\\bE": "\\mathbf{E}",
+    "\\bL": "\\mathbf{L}",
+    "\\bN": "\\mathbf{N}",
+    "\\bO": "\\mathbf{O}",
+    "\\bc": "\\mathbf{c}",
+    "\\bd": "\\mathbf{d}",
+    "\\bg": "\\mathbf{g}",
+    "\\bh": "\\mathbf{h}",
+    "\\bk": "\\mathbf{k}",
+    "\\br": "\\mathbf{r}",
+    "\\bDelta": "\\boldsymbol{\\Delta}",
+    "\\bGamma": "\\boldsymbol{\\Gamma}",
+    "\\bOmega": "\\boldsymbol{\\Omega}",
+    "\\bTheta": "\\boldsymbol{\\Theta}",
+    "\\bPhi": "\\boldsymbol{\\Phi}",
+    "\\bPsi": "\\boldsymbol{\\Psi}",
+    "\\balpha": "\\boldsymbol{\\alpha}",
+    "\\bdelta": "\\boldsymbol{\\delta}",
+    "\\bgamma": "\\boldsymbol{\\gamma}",
+    "\\blambda": "\\boldsymbol{\\lambda}",
+    "\\bsigma": "\\boldsymbol{\\sigma}",
+    "\\bxi": "\\boldsymbol{\\xi}",
+    "\\bkappa": "\\boldsymbol{\\kappa}"
+  }
+}

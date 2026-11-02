@@ -1,0 +1,312 @@
+<!-- Chapter 12. Overcomplete ICA and sparse component analysis. Source format: book/AUTHORING.md -->
+
+<h2 id="sec-overcomplete-intro"><span lang="en">More sources than sensors</span><span lang="zh-CN">源多于传感器</span></h2>
+
+<p lang="en">Two microphones in a room with three speakers, a few dozen EEG electrodes picking up many more cortical sources, a pair of stereo channels carrying a whole band: in each case there are more sources than sensors. The model is still <a class="ref" data-ref="eq-model"></a>, $\bx = \bA\bs$, but now $\bA \in \R^{m \times n}$ with $m &lt; n$. Such a mixture is called <em>overcomplete</em>, since $\bA$ has more columns than the dimension of the space they live in, or <em>underdetermined</em>, since $\bx = \bA\bs$ has fewer equations than unknowns. Throughout the chapter $\bA$ has rank $m$ and no zero column.</p>
+<p lang="zh-CN">屋里有三个人说话却只有两只麦克风；几十个 EEG 电极接收到远多于此的皮层源；两个立体声声道承载着整支乐队：这些情形下源都多于传感器。模型仍是 <a class="ref" data-ref="eq-model"></a>，即 $\bx = \bA\bs$，但此时 $\bA \in \R^{m \times n}$ 且 $m &lt; n$。这样的混合称为<em>过完备</em>的，因为 $\bA$ 的列数多于它们所在空间的维数；也称为<em>欠定</em>的，因为方程 $\bx = \bA\bs$ 的方程个数少于未知数个数。本章始终假设 $\bA$ 的秩为 $m$，且没有零列。</p>
+
+<p lang="en">In the square case two questions have the same answer: can $\bA$ be identified from the distribution of $\bx$, and can the sources be recovered from the observations? With $m &lt; n$ they separate. The first answer is still yes, under conditions close to those of Comon's theorem (<a class="ref" data-ref="sec-overcomplete-identifiability"></a>). The second is no: even with $\bA$ known, $\bs(t)$ cannot be computed from $\bx(t)$, and it can be estimated well only with prior information such as sparsity (<a class="ref" data-ref="sec-source-recovery"></a>). The chapter then turns to how $\bA$ can actually be estimated, from cumulant tensors (<a class="ref" data-ref="sec-tensor-rank"></a>) or from sparsity (<a class="ref" data-ref="sec-sca"></a>), and to why the problem is harder than square ICA (<a class="ref" data-ref="sec-overcomplete-difficulty"></a>).</p>
+<p lang="zh-CN">在方阵情形下，两个问题的答案相同：能否从 $\bx$ 的分布辨识出 $\bA$？能否从观测中恢复出源？当 $m &lt; n$ 时，这两个问题分道扬镳。第一个问题的答案仍然是肯定的，条件与 Comon 定理相近（<a class="ref" data-ref="sec-overcomplete-identifiability"></a>）。第二个问题的答案是否定的：即使 $\bA$ 已知，也无法由 $\bx(t)$ 算出 $\bs(t)$，只有借助稀疏性之类的先验信息才能把它估计好（<a class="ref" data-ref="sec-source-recovery"></a>）。随后本章讨论 $\bA$ 实际上怎样估计：利用累积量张量（<a class="ref" data-ref="sec-tensor-rank"></a>）或利用稀疏性（<a class="ref" data-ref="sec-sca"></a>）；最后说明这个问题为什么比方阵 ICA 更难（<a class="ref" data-ref="sec-overcomplete-difficulty"></a>）。</p>
+
+<h2 id="sec-overcomplete-identifiability"><span lang="en">What is still identifiable</span><span lang="zh-CN">仍然可辨识的是什么</span></h2>
+
+<p lang="en">Two columns that are collinear, $\ba_2 = c\,\ba_1$, can never be told apart, because $s_1\ba_1 + s_2\ba_2 = (s_1 + cs_2)\,\ba_1$ behaves like a single source. Apart from this, non-Gaussianity pins down every column, however many there are.</p>
+<p lang="zh-CN">两个共线的列 $\ba_2 = c\,\ba_1$ 永远无法区分，因为 $s_1\ba_1 + s_2\ba_2 = (s_1 + cs_2)\,\ba_1$ 的表现与单个源无异。除此之外，非高斯性能确定每一列，无论列有多少。</p>
+
+<div class="env" data-kind="theorem" id="thm-overcomplete-identifiability" data-en="identifiability of an overcomplete mixing matrix" data-zh="过完备混合矩阵的可辨识性">
+  <p lang="en">Let $\bx = \bA\bs = \bB\bt$, where $\bA \in \R^{m \times n}$ and $\bB \in \R^{m \times n'}$ have no zero columns, and $\bs$ and $\bt$ each have mutually independent, non-degenerate (non-constant) components.</p>
+  <p lang="zh-CN">设 $\bx = \bA\bs = \bB\bt$，其中 $\bA \in \R^{m \times n}$ 与 $\bB \in \R^{m \times n'}$ 都没有零列，$\bs$ 与 $\bt$ 各自的分量相互独立且非退化（不是常数）。</p>
+  <ol lang="en">
+    <li>If no two columns of $\bA$ are collinear and $s_j$ is non-Gaussian, then $\ba_j$ is collinear with some column of $\bB$.</li>
+    <li>If neither $\bA$ nor $\bB$ has two collinear columns and all components of $\bs$ and of $\bt$ are non-Gaussian, then $n' = n$ and $\bB = \bA\bD\bPi$ for an invertible diagonal matrix $\bD$ and a permutation matrix $\bPi$.</li>
+  </ol>
+  <ol lang="zh-CN">
+    <li>若 $\bA$ 中没有两列共线，且 $s_j$ 非高斯，则 $\ba_j$ 与 $\bB$ 的某一列共线。</li>
+    <li>若 $\bA$ 与 $\bB$ 中都没有两列共线，且 $\bs$ 与 $\bt$ 的所有分量都非高斯，则 $n' = n$，并且 $\bB = \bA\bD\bPi$，其中 $\bD$ 为可逆对角矩阵，$\bPi$ 为置换矩阵。</li>
+  </ol>
+  <p lang="en">The number of sources is not limited by $m$: with two sensors, any number of non-Gaussian sources whose columns point in different directions are identified up to scale and order (Kagan, Linnik &amp; Rao, 1973; Eriksson &amp; Koivunen, 2004).</p>
+  <p lang="zh-CN">源的个数不受 $m$ 的限制：只有两个传感器时，任意多个非高斯源，只要各自的列指向不同方向，都能在尺度和顺序意义下被辨识（Kagan, Linnik &amp; Rao, 1973; Eriksson &amp; Koivunen, 2004）。</p>
+</div>
+
+<p lang="en">Part 1 is a theorem of Kagan, Linnik and Rao (1973) on the uniqueness of linear structures, which holds without any moment conditions; Eriksson and Koivunen (2004) used it to separate identifiability, separability and uniqueness in ICA. We prove it under the extra assumption that the sources have moment generating functions near zero, with the same tools as the Darmois–Skitovich theorem (<a class="ref" data-ref="thm-darmois-skitovich"></a>). The key step is a lemma on powers of linear forms.</p>
+<p lang="zh-CN">第 1 部分是 Kagan、Linnik 和 Rao（1973）关于线性结构唯一性的一个定理，它不需要任何矩条件；Eriksson 和 Koivunen（2004）用它厘清了 ICA 中可辨识性、可分离性与唯一性的区别。下面在源的矩母函数在零点附近存在这一额外假设下给出证明，所用工具与 Darmois–Skitovich 定理（<a class="ref" data-ref="thm-darmois-skitovich"></a>）相同。关键一步是一个关于线性型之幂的引理。</p>
+
+<div class="env" data-kind="lemma" id="lem-oc-power-forms" data-en="powers of linear forms" data-zh="线性型的幂">
+  <p lang="en">Let $\bv_1, \dots, \bv_N \in \R^m$ be nonzero and pairwise non-collinear, and let $r \ge N - 1$. If $\sum_{j=1}^N c_j(\bv_j^\top\bu)^r = 0$ for all $\bu \in \R^m$, then $c_1 = \dots = c_N = 0$.</p>
+  <p lang="zh-CN">设 $\bv_1, \dots, \bv_N \in \R^m$ 非零且两两不共线，$r \ge N - 1$。若对所有 $\bu \in \R^m$ 都有 $\sum_{j=1}^N c_j(\bv_j^\top\bu)^r = 0$，则 $c_1 = \dots = c_N = 0$。</p>
+</div>
+<div class="proof">
+  <p lang="en">Choose $\be, \mathbf{f} \in \R^m$ with $\bv_j^\top\mathbf{f} \ne 0$ for all $j$ and $(\bv_j^\top\be)(\bv_k^\top\mathbf{f}) \ne (\bv_k^\top\be)(\bv_j^\top\mathbf{f})$ for all $j \ne k$. Such a pair exists: each excluded set is the zero set of a polynomial in $(\be, \mathbf{f})$ that is not identically zero (for the second kind, it is the determinant of $[\bv_j\ \bv_k]^\top[\be\ \mathbf{f}]$, which equals 1 for a suitable choice because $\bv_j, \bv_k$ are linearly independent), and finitely many such sets cannot cover $\R^{2m}$. Put $t_j = (\bv_j^\top\be)/(\bv_j^\top\mathbf{f})$; these numbers are distinct. Substituting $\bu = \alpha\be + \beta\mathbf{f}$ and expanding,</p>
+  <p lang="zh-CN">取 $\be, \mathbf{f} \in \R^m$，使对所有 $j$ 有 $\bv_j^\top\mathbf{f} \ne 0$，并对所有 $j \ne k$ 有 $(\bv_j^\top\be)(\bv_k^\top\mathbf{f}) \ne (\bv_k^\top\be)(\bv_j^\top\mathbf{f})$。这样的一对向量存在：每个需要避开的集合都是 $(\be, \mathbf{f})$ 的某个不恒为零的多项式的零点集（对第二类条件，该多项式是 $[\bv_j\ \bv_k]^\top[\be\ \mathbf{f}]$ 的行列式，由于 $\bv_j, \bv_k$ 线性无关，适当选取时它等于 1），而有限个这样的集合不可能覆盖 $\R^{2m}$。令 $t_j = (\bv_j^\top\be)/(\bv_j^\top\mathbf{f})$，这些数互不相同。代入 $\bu = \alpha\be + \beta\mathbf{f}$ 并展开，得</p>
+  <div class="eq">$$0 = \sum_{j=1}^N c_j(\bv_j^\top\mathbf{f})^r(\alpha t_j + \beta)^r = \sum_{l=0}^r \binom{r}{l}\alpha^l\beta^{r-l}\sum_{j=1}^N c_j(\bv_j^\top\mathbf{f})^r\,t_j^l \qquad (\alpha, \beta \in \R),$$</div>
+  <p lang="en">so $\sum_j c_j(\bv_j^\top\mathbf{f})^r\,t_j^l = 0$ for $l = 0, \dots, r$. Since $r + 1 \ge N$ and the $t_j$ are distinct, the Vandermonde matrix $(t_j^l)_{0 \le l &lt; N,\,1 \le j \le N}$ is invertible; hence $c_j(\bv_j^\top\mathbf{f})^r = 0$ and $c_j = 0$ for every $j$.</p>
+  <p lang="zh-CN">所以对 $l = 0, \dots, r$ 有 $\sum_j c_j(\bv_j^\top\mathbf{f})^r\,t_j^l = 0$。由于 $r + 1 \ge N$ 且各 $t_j$ 互不相同，Vandermonde 矩阵 $(t_j^l)_{0 \le l &lt; N,\,1 \le j \le N}$ 可逆，因此 $c_j(\bv_j^\top\mathbf{f})^r = 0$，即对每个 $j$ 都有 $c_j = 0$。</p>
+</div>
+
+<div class="proof" data-en="of the theorem, assuming moment generating functions" data-zh="定理，假设矩母函数存在">
+  <p lang="en">Assume that every $s_j$ and $t_k$ has a moment generating function in a neighbourhood of zero. <b>Part 1.</b> For every $\bu \in \R^m$ and every order $r \ge 3$, the cumulants of $\bu^\top\bx = \sum_j(\ba_j^\top\bu)\,s_j = \sum_k(\bb_k^\top\bu)\,t_k$ can be computed in two ways; additivity under independence and homogeneity (<a class="ref" data-ref="prop-cumulant-properties"></a>) give</p>
+  <p lang="zh-CN">假设每个 $s_j$ 与 $t_k$ 的矩母函数都在零点的某个邻域内存在。<b>第 1 部分。</b>对每个 $\bu \in \R^m$ 和每个阶数 $r \ge 3$，$\bu^\top\bx = \sum_j(\ba_j^\top\bu)\,s_j = \sum_k(\bb_k^\top\bu)\,t_k$ 的累积量可以用两种方式计算；由独立变量之和的可加性与齐次性（<a class="ref" data-ref="prop-cumulant-properties"></a>）得</p>
+  <div class="eq">$$\sum_{j=1}^n\kappa_r(s_j)\,(\ba_j^\top\bu)^r = \sum_{k=1}^{n'}\kappa_r(t_k)\,(\bb_k^\top\bu)^r \qquad (\bu \in \R^m).$$</div>
+  <p lang="en">Group all columns of $\bA$ and $\bB$ into classes of collinear vectors and write each column as a multiple of a representative $\bv$ of its class; with $N \le n + n'$ classes, the identity takes the form $\sum_{\text{classes}} c_{\bv, r}(\bv^\top\bu)^r = 0$. If $\ba_j$ is collinear with no column of $\bB$, its class contains no other column, so its coefficient is $\kappa_r(s_j)$ times a nonzero factor. By <a class="ref" data-ref="lem-oc-power-forms"></a>, $\kappa_r(s_j) = 0$ for every $r \ge r_0 = \max(3, N - 1)$. The cumulant generating function $K(\tau) = \log\E[e^{\tau s_j}]$ is analytic near zero with Taylor coefficients $\kappa_r(s_j)/r!$, so it is a polynomial there. Then $\E[e^{\tau s_j}] = e^{K(\tau)}$ on a real interval; both sides are analytic in a strip around the imaginary axis, so the characteristic function of $s_j$ is $e^{K(iu)}$, the exponential of a polynomial. By Marcinkiewicz's theorem $K$ has degree at most two; since $s_j$ is not constant, it is Gaussian, a contradiction. <b>Part 2.</b> Part 1 assigns to each $j$ a column $\bb_{k(j)}$ collinear with $\ba_j$, unique because no two columns of $\bB$ are collinear; exchanging the roles of the two representations assigns to each $k$ a column $\ba_{j(k)}$. Since no two columns of $\bA$ are collinear, $j(k(j)) = j$, and likewise $k(j(k)) = k$. The two maps are inverse bijections, so $n' = n$ and each column of $\bB$ is a nonzero multiple of a different column of $\bA$.</p>
+  <p lang="zh-CN">把 $\bA$ 与 $\bB$ 的所有列按共线关系分成若干类，并把每一列写成其所在类的代表向量 $\bv$ 的倍数；设共有 $N \le n + n'$ 类，则上述恒等式化为 $\sum_{\text{各类}} c_{\bv, r}(\bv^\top\bu)^r = 0$。若 $\ba_j$ 与 $\bB$ 的任何一列都不共线，它所在的类中就没有别的列，于是该类的系数是 $\kappa_r(s_j)$ 乘以一个非零因子。由<a class="ref" data-ref="lem-oc-power-forms"></a>，对每个 $r \ge r_0 = \max(3, N - 1)$ 都有 $\kappa_r(s_j) = 0$。累积量生成函数 $K(\tau) = \log\E[e^{\tau s_j}]$ 在零点附近解析，其 Taylor 系数为 $\kappa_r(s_j)/r!$，所以它在那里是一个多项式。于是在某个实区间上 $\E[e^{\tau s_j}] = e^{K(\tau)}$；两边在包含虚轴的一个带形区域内都解析，所以 $s_j$ 的特征函数为 $e^{K(iu)}$，即一个多项式的指数。由 Marcinkiewicz 定理，$K$ 的次数至多为二；而 $s_j$ 不是常数，所以它是高斯的，矛盾。<b>第 2 部分。</b>由第 1 部分，对每个 $j$ 存在与 $\ba_j$ 共线的列 $\bb_{k(j)}$，且由于 $\bB$ 中没有两列共线，它是唯一的；交换两个表示的角色，又对每个 $k$ 得到列 $\ba_{j(k)}$。由于 $\bA$ 中没有两列共线，$j(k(j)) = j$，同理 $k(j(k)) = k$。这两个映射互为逆映射，所以 $n' = n$，且 $\bB$ 的每一列都是 $\bA$ 的不同列的非零倍数。</p>
+</div>
+
+<p lang="en">Three remarks delimit the result. First, it says nothing about the columns of Gaussian sources, and part 2 genuinely needs the non-Gaussianity of both representations: if two sources contain independent Gaussian parts, those parts can be rotated into new directions, giving a second representation with two extra Gaussian columns (<a class="ref" data-ref="ex-oc-gaussian-factor"></a>). Second, identifiability of $\bA$ does not identify the sources: under further conditions on the characteristic functions the <em>distribution</em> of $\bs$ is determined as well (Eriksson &amp; Koivunen, 2004), but the values $\bs(t)$ never are (next section). Third, identifiability is a statement about the whole distribution of $\bx$; <a class="ref" data-ref="sec-tensor-rank"></a> shows that low-order statistics may not suffice.</p>
+<p lang="zh-CN">有三点说明界定了这个结果的范围。其一，它对高斯源的列不作任何断言，而且第 2 部分确实需要两个表示都是非高斯的：若有两个源各含一个独立的高斯部分，这两个高斯部分可以被旋转到新的方向上，从而得到多出两个高斯列的第二个表示（<a class="ref" data-ref="ex-oc-gaussian-factor"></a>）。其二，$\bA$ 可辨识并不意味着源可辨识：在关于特征函数的进一步条件下，$\bs$ 的<em>分布</em>也被确定（Eriksson &amp; Koivunen, 2004），但取值 $\bs(t)$ 永远无法确定（见下一节）。其三，可辨识性说的是 $\bx$ 的整个分布；<a class="ref" data-ref="sec-tensor-rank"></a>将说明低阶统计量可能不够用。</p>
+
+<h2 id="sec-source-recovery"><span lang="en">Recovering the sources</span><span lang="zh-CN">恢复源</span></h2>
+
+<p lang="en">Suppose $\bA$ is known. In the square case $\bs = \bA^{-1}\bx$. With $m &lt; n$ no such formula exists.</p>
+<p lang="zh-CN">假设 $\bA$ 已知。在方阵情形下 $\bs = \bA^{-1}\bx$；当 $m &lt; n$ 时，不存在这样的公式。</p>
+
+<div class="env" data-kind="proposition" id="prop-oc-affine" data-en="the solution set is affine" data-zh="解集是仿射子空间">
+  <p lang="en">Let $\bA \in \R^{m \times n}$ have rank $m &lt; n$. For every $\bx \in \R^m$ the set $\{\bs : \bA\bs = \bx\}$ equals $\bA^{+}\bx + \mathcal{N}(\bA)$, an affine subspace of dimension $n - m$, where $\bA^{+} = \bA^\top(\bA\bA^\top)^{-1}$ and $\mathcal{N}(\bA)$ is the null space of $\bA$. No matrix $\bW \in \R^{n \times m}$ satisfies $\bW\bA = \bI$.</p>
+  <p lang="zh-CN">设 $\bA \in \R^{m \times n}$ 的秩为 $m &lt; n$。对每个 $\bx \in \R^m$，集合 $\{\bs : \bA\bs = \bx\}$ 等于 $\bA^{+}\bx + \mathcal{N}(\bA)$，是一个 $n - m$ 维的仿射子空间，其中 $\bA^{+} = \bA^\top(\bA\bA^\top)^{-1}$，$\mathcal{N}(\bA)$ 是 $\bA$ 的零空间。不存在满足 $\bW\bA = \bI$ 的矩阵 $\bW \in \R^{n \times m}$。</p>
+</div>
+<div class="proof">
+  <p lang="en">$\bA\bA^{+}\bx = \bx$, and two solutions differ by an element of $\mathcal{N}(\bA)$, which has dimension $n - m$ by the rank–nullity theorem. For any $\bW$, $\rank(\bW\bA) \le m &lt; n = \rank(\bI)$.</p>
+  <p lang="zh-CN">$\bA\bA^{+}\bx = \bx$，且任意两个解之差属于 $\mathcal{N}(\bA)$，由秩–零化度定理，它的维数为 $n - m$。对任意 $\bW$，$\rank(\bW\bA) \le m &lt; n = \rank(\bI)$。</p>
+</div>
+
+<p lang="en">Every point of the solution set explains the observation equally well, so the choice among them must come from prior knowledge of the sources. With independent source densities $p_i$, the maximum a posteriori (MAP) estimate in the noiseless model, and its version for Gaussian noise of variance $\sigma^2$, are</p>
+<p lang="zh-CN">解集中的每一点都同样好地解释了观测，所以只能依靠关于源的先验知识在其中作选择。若源的密度为相互独立的 $p_i$，无噪声模型中的最大后验（MAP）估计，以及方差为 $\sigma^2$ 的高斯噪声下的相应形式为</p>
+
+<div class="eq" id="eq-oc-map">$$\begin{aligned} \hat\bs &= \argmax_{\bs:\ \bA\bs = \bx}\ \sum_{i=1}^n\log p_i(s_i), \\ \hat\bs &= \argmin_{\bs}\ \Bigl[\frac{1}{2\sigma^2}\|\bx - \bA\bs\|^2 - \sum_{i=1}^n\log p_i(s_i)\Bigr]. \end{aligned}$$</div>
+
+<p lang="en">A Gaussian prior gives the minimum-norm solution $\bA^{+}\bx$, which spreads energy over all sources. A Laplace prior, $\log p_i(s) = -|s|/b + \text{const}$, turns the noiseless problem into</p>
+<p lang="zh-CN">高斯先验给出最小范数解 $\bA^{+}\bx$，它把能量分摊到所有源上。拉普拉斯先验 $\log p_i(s) = -|s|/b + \text{常数}$ 则把无噪声问题变为</p>
+
+<div class="eq" id="eq-oc-basis-pursuit">$$\hat\bs = \argmin\,\bigl\{\|\bs\|_1 :\ \bA\bs = \bx\bigr\},$$</div>
+
+<p lang="en">the <em>basis pursuit</em> problem of Chen, Donoho and Saunders (1998); with noise it becomes the $\ell_1$-penalized least-squares problem they called basis pursuit denoising. Writing $\bs = \bs^+ - \bs^-$ with $\bs^\pm \ge \bzero$ turns <a class="ref" data-ref="eq-oc-basis-pursuit"></a> into a linear program with $m$ equality constraints. When the program has a solution it has one at a vertex of the feasible set, and a vertex has at most $m$ nonzero variables: the $\ell_1$ solution is automatically sparse, explaining each observation with at most $m$ active sources. For $m = 2$ and unit-norm columns the solution has a simple geometric form, the <em>shortest path</em> rule used by Bofill and Zibulevsky (2001): among the $2n$ signed directions $\pm\ba_j$, take the two that are adjacent to $\bx$ in angle, one on each side, and write $\bx$ as their positive combination (<a class="ref" data-ref="ex-oc-shortest-path"></a>).</p>
+<p lang="zh-CN">这就是 Chen、Donoho 和 Saunders（1998）的<em>基追踪</em>问题；有噪声时，它变成 $\ell_1$ 惩罚的最小二乘问题，他们称之为基追踪去噪。把 $\bs$ 写成 $\bs^+ - \bs^-$，$\bs^\pm \ge \bzero$，<a class="ref" data-ref="eq-oc-basis-pursuit"></a> 就成为一个含 $m$ 个等式约束的线性规划。该规划有解时，必在可行集的某个顶点处有解，而顶点至多有 $m$ 个非零变量：$\ell_1$ 解自动就是稀疏的，每个观测至多用 $m$ 个活跃源来解释。当 $m = 2$ 且各列为单位范数时，这个解有简单的几何形式，即 Bofill 和 Zibulevsky（2001）所用的<em>最短路径</em>法则：在 $2n$ 个带符号的方向 $\pm\ba_j$ 中，取在角度上与 $\bx$ 相邻的两个（两侧各一个），把 $\bx$ 写成它们的正系数组合（<a class="ref" data-ref="ex-oc-shortest-path"></a>）。</p>
+
+<div class="env" data-kind="example" id="example-oc-l1" data-en="three directions in the plane" data-zh="平面上的三个方向">
+  <p lang="en">Let the columns of $\bA$ be the unit vectors at $0^\circ$, $60^\circ$ and $120^\circ$, $\bA = \bigl(\begin{smallmatrix} 1 &amp; 1/2 &amp; -1/2 \\ 0 &amp; \sqrt3/2 &amp; \sqrt3/2 \end{smallmatrix}\bigr)$. Since $\ba_1 - \ba_2 + \ba_3 = \bzero$, the null space is spanned by $(1, -1, 1)^\top$. For $\bx = \ba_2$ the solutions are $\bs = (c, 1 - c, c)^\top$. The $\ell_1$ norm $2|c| + |1 - c|$ is smallest at $c = 0$, giving the one-source explanation $(0, 1, 0)^\top$; the minimum-norm solution minimizes $2c^2 + (1 - c)^2$ at $c = 1/3$, giving $\bA^{+}\bx = (1/3, 2/3, 1/3)^\top$. The same $\bx$ is also produced by $\bs = (1, 0, 1)^\top$, two sources active at once, and no method can tell the two explanations apart; $\ell_1$ picks the sparser one.</p>
+  <p lang="zh-CN">设 $\bA$ 的各列为 $0^\circ$、$60^\circ$ 和 $120^\circ$ 方向的单位向量，即 $\bA = \bigl(\begin{smallmatrix} 1 &amp; 1/2 &amp; -1/2 \\ 0 &amp; \sqrt3/2 &amp; \sqrt3/2 \end{smallmatrix}\bigr)$。由于 $\ba_1 - \ba_2 + \ba_3 = \bzero$，零空间由 $(1, -1, 1)^\top$ 张成。对 $\bx = \ba_2$，解为 $\bs = (c, 1 - c, c)^\top$。$\ell_1$ 范数 $2|c| + |1 - c|$ 在 $c = 0$ 处最小，给出单源解释 $(0, 1, 0)^\top$；最小范数解则在 $c = 1/3$ 处最小化 $2c^2 + (1 - c)^2$，给出 $\bA^{+}\bx = (1/3, 2/3, 1/3)^\top$。同一个 $\bx$ 也可以由 $\bs = (1, 0, 1)^\top$（两个源同时活跃）产生，任何方法都无法区分这两种解释；$\ell_1$ 选择更稀疏的那一个。</p>
+</div>
+
+<p lang="en">When is the sparsest explanation the true one, and when does $\ell_1$ find it? A clean sufficient condition uses the <em>mutual coherence</em> $\mu(\bA) = \max_{i \ne j}|\ba_i^\top\ba_j|$ of a matrix with unit-norm columns.</p>
+<p lang="zh-CN">什么时候最稀疏的解释就是真实的解释？$\ell_1$ 又在什么时候能找到它？对各列为单位范数的矩阵，利用<em>互相干性</em> $\mu(\bA) = \max_{i \ne j}|\ba_i^\top\ba_j|$ 可以给出一个简洁的充分条件。</p>
+
+<div class="env" data-kind="fact" id="fact-oc-coherence" data-en="recovery by ℓ1 minimization under low coherence" data-zh="低相干性下 ℓ1 最小化的恢复">
+  <p lang="en">If $\bx = \bA\bs$ and $\bs$ has fewer than $\frac12\bigl(1 + 1/\mu(\bA)\bigr)$ nonzero entries, then $\bs$ is the unique sparsest solution of $\bA\bs = \bx$ and the unique solution of <a class="ref" data-ref="eq-oc-basis-pursuit"></a> (Donoho &amp; Elad, 2003).</p>
+  <p lang="zh-CN">若 $\bx = \bA\bs$，且 $\bs$ 的非零元个数少于 $\frac12\bigl(1 + 1/\mu(\bA)\bigr)$，则 $\bs$ 是 $\bA\bs = \bx$ 唯一的最稀疏解，也是 <a class="ref" data-ref="eq-oc-basis-pursuit"></a> 的唯一解（Donoho &amp; Elad, 2003）。</p>
+</div>
+
+<p lang="en">In <a class="ref" data-ref="example-oc-l1"></a>, $\mu = 1/2$ and the bound is $3/2$: every single active source is recovered exactly, while two active sources are not guaranteed, and indeed $(1, 0, 1)^\top$ is not recovered. Sources that are active only rarely, so that at most one or a few are active at any time, are therefore the natural setting for overcomplete separation (<a class="ref" data-ref="sec-sca"></a>).</p>
+<p lang="zh-CN">在<a class="ref" data-ref="example-oc-l1"></a>中，$\mu = 1/2$，界为 $3/2$：任何单个活跃源都能被精确恢复，而两个活跃源则没有保证，$(1, 0, 1)^\top$ 确实没有被恢复。因此，只是偶尔活跃、任一时刻至多一个或少数几个活跃的源，是过完备分离的天然场景（<a class="ref" data-ref="sec-sca"></a>）。</p>
+
+<h2 id="sec-tensor-rank"><span lang="en">Cumulant tensors and tensor rank</span><span lang="zh-CN">累积量张量与张量秩</span></h2>
+
+<p lang="en">How can $\bA$ actually be estimated? The fourth-order cumulant tensor of $\bx = \bA\bs$, which Gaussian noise does not change, is</p>
+<p lang="zh-CN">$\bA$ 实际上怎样估计？$\bx = \bA\bs$ 的四阶累积量张量（高斯噪声不改变它）为</p>
+
+<div class="eq" id="eq-oc-cumulant-cp">$$\mathcal{C}_4(\bx) = \sum_{j=1}^n \kappa_j\;\ba_j \otimes \ba_j \otimes \ba_j \otimes \ba_j, \qquad \kappa_j = \kurt(s_j),$$</div>
+
+<p lang="en">a sum of $n$ symmetric rank-one tensors: a symmetric <em>canonical polyadic</em> (CP) decomposition. In the square case whitening makes the vectors orthonormal and the decomposition is found by joint diagonalization, as in <a class="ref" data-ref="eq-cumulant-tensor-ica"></a>. With $n &gt; m$ the vectors $\ba_j$ cannot be orthogonal, and whitening is no longer a shortcut. But a tensor, unlike a matrix, can have rank larger than its dimension and still have a unique decomposition. The basic uniqueness result concerns three-way arrays. The <em>k-rank</em> $k_{\bA}$ of a matrix is the largest $k$ such that every set of $k$ columns is linearly independent.</p>
+<p lang="zh-CN">它是 $n$ 个对称秩一张量之和，即一个对称的<em>典范多元</em>（CP）分解。在方阵情形下，白化使这些向量标准正交，分解可以用联合对角化求得，见 <a class="ref" data-ref="eq-cumulant-tensor-ica"></a>。当 $n &gt; m$ 时，向量 $\ba_j$ 不可能两两正交，白化也就不再是捷径。但与矩阵不同，张量的秩可以超过它的维数，而分解仍然唯一。最基本的唯一性结果针对三阶阵列。矩阵的 <em>k 秩</em> $k_{\bA}$ 是满足“任意 $k$ 列都线性无关”的最大的 $k$。</p>
+
+<div class="env" data-kind="theorem" id="thm-oc-kruskal" data-en="Kruskal" data-zh="Kruskal">
+  <p lang="en">Let $\mathcal{T} = \sum_{r=1}^R \ba_r \otimes \bb_r \otimes \mathbf{c}_r$ with factor matrices $\bA$, $\bB$, $\bC$ whose columns are $\ba_r$, $\bb_r$, $\mathbf{c}_r$. If</p>
+  <p lang="zh-CN">设 $\mathcal{T} = \sum_{r=1}^R \ba_r \otimes \bb_r \otimes \mathbf{c}_r$，因子矩阵 $\bA$、$\bB$、$\bC$ 的列分别为 $\ba_r$、$\bb_r$、$\mathbf{c}_r$。若</p>
+  <div class="eq" id="eq-oc-kruskal">$$k_{\bA} + k_{\bB} + k_{\bC} \ \ge\ 2R + 2,$$</div>
+  <p lang="en">then $\mathcal{T}$ has rank $R$, and every decomposition of $\mathcal{T}$ into $R$ rank-one terms coincides with this one up to the order of the terms and the scaling of the vectors within each term (Kruskal, 1977).</p>
+  <p lang="zh-CN">则 $\mathcal{T}$ 的秩为 $R$，并且 $\mathcal{T}$ 分解为 $R$ 个秩一项的任何分解，在各项的次序以及每项内部向量的缩放意义下都与这一分解相同（Kruskal, 1977）。</p>
+</div>
+
+<p lang="en">Applied to the cumulant tensor, Kruskal's condition gives a simple sufficient condition, which we derive here.</p>
+<p lang="zh-CN">把 Kruskal 条件用于累积量张量，可以得到一个简单的充分条件，推导如下。</p>
+
+<div class="env" data-kind="proposition" id="prop-oc-kruskal-cumulant" data-en="fourth-order identifiability for generic mixing" data-zh="一般混合矩阵下的四阶可辨识性">
+  <p lang="en">Let $m \le n \le 2m - 2$, let all $\kappa_j \ne 0$, and let $\bA$ be drawn from any probability density on $\R^{m \times n}$. Then, with probability one, the decomposition <a class="ref" data-ref="eq-oc-cumulant-cp"></a> into $n$ symmetric rank-one terms is unique up to order, so the fourth-order cumulants determine the columns of $\bA$ up to scale and order.</p>
+  <p lang="zh-CN">设 $m \le n \le 2m - 2$，所有 $\kappa_j \ne 0$，且 $\bA$ 服从 $\R^{m \times n}$ 上的某个概率密度。则以概率一，<a class="ref" data-ref="eq-oc-cumulant-cp"></a> 分解为 $n$ 个对称秩一项的方式在次序意义下唯一，因而四阶累积量在尺度和次序意义下确定了 $\bA$ 的各列。</p>
+</div>
+<div class="proof">
+  <p lang="en">Reshape $\mathcal{C}_4(\bx)$ into the $m \times m \times m^2$ array $\sum_j \ba_j \otimes \ba_j \otimes \mathbf{c}_j$ with $\mathbf{c}_j = \kappa_j\,\ba_j \otimes \ba_j$, so the factor matrices are $\bA$, $\bA$ and $\bC = [\mathbf{c}_1, \dots, \mathbf{c}_n]$. Every $m \times m$ minor of $\bA$ is a polynomial in its entries that is not identically zero, so with probability one $k_{\bA} = m$. The vectors $\ba \otimes \ba$ are the vectorized matrices $\ba\ba^\top$, which span the $D = m(m+1)/2$-dimensional space of symmetric matrices (the matrices $\be_i\be_i^\top$ and $(\be_i + \be_j)(\be_i + \be_j)^\top$ form a basis). Hence for each set of $\min(n, D)$ columns there is a choice of the $\ba_j$ that makes the corresponding $\mathbf{c}_j$ independent, a suitable minor is a polynomial that is not identically zero, and with probability one $k_{\bC} = \min(n, D)$; the factors $\kappa_j \ne 0$ do not affect this. Since $D - (2m - 2) = (m^2 - 3m + 4)/2 &gt; 0$, we have $\min(n, D) = n$, and <a class="ref" data-ref="eq-oc-kruskal"></a> reads $2m + n \ge 2n + 2$, that is, $n \le 2m - 2$. By <a class="ref" data-ref="thm-oc-kruskal"></a> the three-way decomposition with $n$ terms is unique. Any symmetric decomposition with $n$ terms is in particular a three-way decomposition, so its terms are those of <a class="ref" data-ref="eq-oc-cumulant-cp"></a>, and the term $\kappa_j\ba_j^{\otimes 4}$ determines $\ba_j$ up to scale.</p>
+  <p lang="zh-CN">把 $\mathcal{C}_4(\bx)$ 重排为 $m \times m \times m^2$ 的阵列 $\sum_j \ba_j \otimes \ba_j \otimes \mathbf{c}_j$，其中 $\mathbf{c}_j = \kappa_j\,\ba_j \otimes \ba_j$，于是因子矩阵为 $\bA$、$\bA$ 和 $\bC = [\mathbf{c}_1, \dots, \mathbf{c}_n]$。$\bA$ 的每个 $m \times m$ 子式都是其元素的不恒为零的多项式，所以以概率一 $k_{\bA} = m$。向量 $\ba \otimes \ba$ 就是向量化的矩阵 $\ba\ba^\top$，它们张成 $D = m(m+1)/2$ 维的对称矩阵空间（矩阵 $\be_i\be_i^\top$ 与 $(\be_i + \be_j)(\be_i + \be_j)^\top$ 构成一组基）。因此对任意 $\min(n, D)$ 列，都有某种 $\ba_j$ 的取法使相应的 $\mathbf{c}_j$ 线性无关，于是某个适当的子式是不恒为零的多项式，以概率一 $k_{\bC} = \min(n, D)$；非零因子 $\kappa_j$ 不影响这一点。由于 $D - (2m - 2) = (m^2 - 3m + 4)/2 &gt; 0$，有 $\min(n, D) = n$，于是 <a class="ref" data-ref="eq-oc-kruskal"></a> 化为 $2m + n \ge 2n + 2$，即 $n \le 2m - 2$。由<a class="ref" data-ref="thm-oc-kruskal"></a>，含 $n$ 项的三阶分解唯一。任何含 $n$ 项的对称分解都特别地是一个三阶分解，所以它的各项就是 <a class="ref" data-ref="eq-oc-cumulant-cp"></a> 的各项，而项 $\kappa_j\ba_j^{\otimes 4}$ 在尺度意义下确定了 $\ba_j$。</p>
+</div>
+
+<p lang="en">For $m = 3$ this allows four sources and for $m = 4$ six, but for $m = 2$ nothing beyond the square case. Kruskal's condition is only sufficient, yet for two sensors fourth-order statistics really are not enough, as a count of parameters shows.</p>
+<p lang="zh-CN">$m = 3$ 时它允许四个源，$m = 4$ 时允许六个，而 $m = 2$ 时则超不出方阵情形。Kruskal 条件只是充分条件；但对两个传感器而言，四阶统计量确实不够用，数一数参数就能看出来。</p>
+
+<div class="env" data-kind="example" id="example-oc-quartic" data-en="two sensors, three sources" data-zh="两个传感器、三个源">
+  <p lang="en">For $m = 2$ the tensor $\mathcal{C}_4(\bx)$ is determined by the binary quartic $\sum_j\kappa_j(\ba_j^\top\bu)^4$, which has five coefficients, while three directions and three weights are six parameters; generically a one-parameter family of decompositions fits. For example, unit columns at $0^\circ$, $60^\circ$, $120^\circ$ with fourth cumulants $3, 1, 2$ give exactly the same quartic as unit columns at $20.0^\circ$, $99.6^\circ$, $156.3^\circ$ with fourth cumulants $2.07$, $1.69$, $2.23$ (computed numerically). If the first model has unit-variance sources, its covariance is $1.5\,\bI$, and the second model reproduces it with source variances $1.21$, $1.32$, $0.47$. With symmetric sources the two models therefore have identical cumulants up to order four, yet different mixing matrices. By <a class="ref" data-ref="thm-overcomplete-identifiability"></a> their full distributions differ, so higher-order statistics must be used; a binary sextic has seven coefficients, so for sixth-order cumulants the count no longer rules out uniqueness.</p>
+  <p lang="zh-CN">当 $m = 2$ 时，张量 $\mathcal{C}_4(\bx)$ 由二元四次型 $\sum_j\kappa_j(\ba_j^\top\bu)^4$ 确定，它有五个系数，而三个方向加三个权重共六个参数；一般情况下有一个单参数族的分解都与之吻合。例如，$0^\circ$、$60^\circ$、$120^\circ$ 方向的单位列配四阶累积量 $3, 1, 2$，与 $20.0^\circ$、$99.6^\circ$、$156.3^\circ$ 方向的单位列配四阶累积量 $2.07$、$1.69$、$2.23$，给出完全相同的四次型（数值计算所得）。若第一个模型的源方差为一，其协方差为 $1.5\,\bI$；第二个模型取源方差 $1.21$、$1.32$、$0.47$ 时也给出同样的协方差。因此在源对称时，这两个模型直到四阶的累积量完全相同，混合矩阵却不同。由<a class="ref" data-ref="thm-overcomplete-identifiability"></a>，它们的完整分布不同，所以必须使用更高阶的统计量；二元六次型有七个系数，因此对六阶累积量，参数计数不再排除唯一性。</p>
+</div>
+
+<p lang="en">Practical algorithms exploit more of the structure of the cumulant tensor. FOOBI (De Lathauwer, Castaing &amp; Cardoso, 2007) uses only fourth-order cumulants: it rearranges the tensor into an $m^2 \times m^2$ matrix of rank $n$ and recovers the rank-one terms by a simultaneous matrix diagonalization; the number of sources it can handle grows roughly quadratically with the number of sensors. Characteristic-function methods (Comon &amp; Rajih, 2006) use the second characteristic function $\log\E[e^{i\bu^\top\bx}] = \sum_j\log\varphi_{s_j}(\ba_j^\top\bu)$, where $\varphi_{s_j}$ is the characteristic function of $s_j$: its derivatives at several points $\bu$ are tensors with the same factors $\ba_j$ but different weights, and decomposing them jointly supplies the extra equations that a single cumulant tensor lacks.</p>
+<p lang="zh-CN">实用的算法会利用累积量张量更多的结构。FOOBI（De Lathauwer, Castaing &amp; Cardoso, 2007）只用四阶累积量：它把张量重排为一个秩为 $n$ 的 $m^2 \times m^2$ 矩阵，再通过同时矩阵对角化求出各秩一项；它能处理的源的个数大致随传感器个数呈平方增长。特征函数方法（Comon &amp; Rajih, 2006）利用第二特征函数 $\log\E[e^{i\bu^\top\bx}] = \sum_j\log\varphi_{s_j}(\ba_j^\top\bu)$，其中 $\varphi_{s_j}$ 是 $s_j$ 的特征函数：它在若干个点 $\bu$ 处的各阶导数都是因子同为 $\ba_j$、权重不同的张量，对它们作联合分解，就补上了单个累积量张量所缺的方程。</p>
+
+<h2 id="sec-sca"><span lang="en">Sparse component analysis</span><span lang="zh-CN">稀疏成分分析</span></h2>
+
+<p lang="en">Sparsity is the assumption that makes overcomplete separation practical. At a time point where only source $j$ is active, $\bx(t) = s_j(t)\,\ba_j$ lies on the line through $\ba_j$. If such <em>single-source points</em> are common, the scatter plot of the data consists of $n$ lines through the origin, and their directions estimate the columns of $\bA$ up to scale and sign. <em>Sparse component analysis</em> (SCA) estimates $\bA$ by clustering the directions of the data points and then recovers the sources by $\ell_1$ minimization or a related sparse method.</p>
+<p lang="zh-CN">稀疏性是使过完备分离切实可行的假设。在只有源 $j$ 活跃的时刻，$\bx(t) = s_j(t)\,\ba_j$ 落在过 $\ba_j$ 的直线上。如果这样的<em>单源点</em>很常见，数据的散点图就由 $n$ 条过原点的直线组成，这些直线的方向在尺度和符号意义下估计了 $\bA$ 的各列。<em>稀疏成分分析</em>（SCA）通过对数据点的方向聚类来估计 $\bA$，再用 $\ell_1$ 最小化或相关的稀疏方法恢复源。</p>
+
+<p lang="en">The script below does this for three sparse sources and two sensors. Each source is Laplace-distributed but active only 20% of the time, so that about 38% of the samples have exactly one active source and 10% have two or more. The columns are estimated from the peaks of a smoothed histogram of the directions of the larger data points, and the sources by the shortest-path rule of <a class="ref" data-ref="sec-source-recovery"></a>.</p>
+<p lang="zh-CN">下面的脚本对两个传感器上的三个稀疏源完成这一过程。每个源服从拉普拉斯分布，但只在 20% 的时间里活跃，因此约 38% 的样本恰有一个活跃源，10% 的样本有两个或更多。各列由较大数据点的方向的平滑直方图的峰值来估计，源则用<a class="ref" data-ref="sec-source-recovery"></a>中的最短路径法则恢复。</p>
+
+<pre class="code"><code>import numpy as np
+
+rng = np.random.default_rng(0)
+n, T = 3, 4000
+S = rng.laplace(size=(n, T))
+S *= rng.random((n, T)) &lt; 0.2                 # each source active 20% of time
+theta = np.deg2rad([15.0, 70.0, 125.0])       # true column directions
+A = np.vstack([np.cos(theta), np.sin(theta)]) # 2 x 3, unit-norm columns
+X = A @ S + 0.01 * rng.normal(size=(2, T))    # two sensors, weak noise
+
+# 1) columns: peaks of the histogram of directions of the larger points
+keep = np.linalg.norm(X, axis=0) &gt; 0.2
+ang = np.arctan2(X[1, keep], X[0, keep]) % np.pi   # sign removed
+width = np.pi / 180
+h, edges = np.histogram(ang, bins=180, range=(0, np.pi))
+h = np.convolve(np.r_[h[-2:], h, h[:2]], np.ones(5) / 5, "valid")  # circular
+peaks = [i for i in range(180)
+         if h[i] &gt;= h[i - 1] and h[i] &gt; h[(i + 1) % 180]]
+top = sorted(peaks, key=lambda i: -h[i])[:n]
+th_hat = np.sort(edges[top] + width / 2)
+A_hat = np.vstack([np.cos(th_hat), np.sin(th_hat)])
+print("estimated angles (deg):", np.round(np.rad2deg(th_hat), 1))
+
+# 2) sources: the l1 solution uses the two signed columns adjacent to x(t)
+dirs = np.r_[th_hat, th_hat + np.pi]          # the 2n signed directions
+S_l1 = np.zeros((n, T))
+for t in range(T):
+    rel = (dirs - np.arctan2(X[1, t], X[0, t])) % (2 * np.pi)
+    i, j = np.argmin(rel) % n, np.argmax(rel) % n   # one on each side
+    S_l1[[i, j], t] = np.linalg.solve(A_hat[:, [i, j]], X[:, t])
+S_pinv = np.linalg.pinv(A_hat) @ X            # minimum l2-norm solution
+
+def snr_db(S_est):
+    err = np.sum((S - S_est) ** 2, axis=1)
+    return np.round(10 * np.log10(np.sum(S ** 2, axis=1) / err), 1)
+print("SNR (dB), l1:  ", snr_db(S_l1))
+print("SNR (dB), pinv:", snr_db(S_pinv))</code></pre>
+
+<p lang="en">The script prints</p>
+<p lang="zh-CN">脚本输出</p>
+
+<pre class="code"><code>estimated angles (deg): [ 14.5  70.5 125.5]
+SNR (dB), l1:   [10.7  9.  10.8]
+SNR (dB), pinv: [5.1 3.5 5.3]</code></pre>
+
+<p lang="en">The three directions are found to within half a degree, half the 1° bin width of the histogram. The $\ell_1$ estimates of the sources have signal-to-noise ratios of 9 to 11 dB, against 3.5 to 5.3 dB for the minimum-norm solution. The remaining error comes mainly from the time points with two or more active sources, for which the two-column explanation chosen by $\ell_1$ is wrong, exactly as in <a class="ref" data-ref="example-oc-l1"></a>. <a class="ref" data-ref="fig-sca"></a> shows the data and the histogram.</p>
+<p lang="zh-CN">三个方向的估计误差都在半度以内，即直方图 1° 箱宽的一半。源的 $\ell_1$ 估计的信噪比为 9 到 11 dB，而最小范数解只有 3.5 到 5.3 dB。剩余误差主要来自有两个或更多活跃源的时刻：在这些时刻，$\ell_1$ 选出的双列解释是错的，正如<a class="ref" data-ref="example-oc-l1"></a>所示。<a class="ref" data-ref="fig-sca"></a>画出了数据与直方图。</p>
+
+<figure id="fig-sca">
+  <img src="fig/ch12-sca.svg" width="600" height="289" alt="Panel a: scatter plot of two mixtures of three sparse sources; most points lie on three lines through the origin at 15, 70 and 125 degrees, drawn dashed. Panel b: histogram of the directions of the data points between 0 and 180 degrees with three sharp peaks at the true directions; the smoothed histogram and the estimated peak locations are marked.">
+  <figcaption><span lang="en">Two mixtures of three sparse sources (the data of the script). (a) Scatter plot of $\bx(t)$; dashed lines: the directions of the columns of $\bA$. (b) Histogram of the directions $\theta$ of the points with $\|\bx(t)\| &gt; 0.2$ (gray), its smoothed version (red), the true directions (dashed) and the estimated ones (dots).</span><span lang="zh-CN">三个稀疏源的两个混合（数据与脚本相同）。（a）$\bx(t)$ 的散点图；虚线为 $\bA$ 各列的方向。（b）满足 $\|\bx(t)\| &gt; 0.2$ 的数据点的方向 $\theta$ 的直方图（灰色）、其平滑结果（红色）、真实方向（虚线）和估计方向（圆点）。</span></figcaption>
+</figure>
+
+<p lang="en">Most real signals are not sparse in time, but become sparse after a linear transform such as the short-time Fourier transform (STFT) or a wavelet transform. Because the transform is linear and is applied to each sensor separately, an instantaneous mixture keeps its form in the transform domain, $\tilde\bx = \bA\tilde\bs$, where the coefficients are far sparser. Bofill and Zibulevsky (2001) estimated $\bA$ for two sensors from the angular distribution of the transformed data and recovered the sources by the shortest-path rule in the transform domain. DUET (Jourjine, Rickard &amp; Yılmaz, 2000) treats two microphones that receive each source with its own attenuation and delay. It assumes <em>W-disjoint orthogonality</em>: in every time–frequency bin at most one source is active. The ratio of the two STFTs in a bin then gives the relative attenuation and delay of the dominant source, a two-dimensional histogram of these parameters has one peak per source, and each source is recovered by keeping the bins assigned to its peak (binary time–frequency masking).</p>
+<p lang="zh-CN">大多数真实信号在时域上并不稀疏，但经过短时 Fourier 变换（STFT）或小波变换之类的线性变换之后会变得稀疏。由于变换是线性的，并且对每个传感器分别作用，瞬时混合在变换域中保持原来的形式 $\tilde\bx = \bA\tilde\bs$，而其中的系数要稀疏得多。Bofill 和 Zibulevsky（2001）对两个传感器的情形，由变换后数据的角度分布估计 $\bA$，再在变换域中用最短路径法则恢复源。DUET（Jourjine, Rickard &amp; Yılmaz, 2000）处理的是两只麦克风以各自的衰减和延迟接收每个源的情形。它假设 <em>W 不相交正交性</em>：每个时频单元中至多有一个源活跃。于是一个时频单元中两路 STFT 之比给出主导源的相对衰减与延迟，这两个参数的二维直方图对每个源有一个峰，把分配给某个峰的时频单元保留下来（二值时频掩蔽），就恢复出相应的源。</p>
+
+<p lang="en">The single-source assumption can be relaxed. Georgiev, Theis and Cichocki (2005) showed that if every sample has at most $m - 1$ active sources, the data lie on a union of hyperplanes, each spanned by $m - 1$ columns of $\bA$, and gave conditions (columns in general position and enough samples on each hyperplane) under which clustering the data into hyperplanes identifies $\bA$ up to permutation and scaling and allows the sources to be recovered. Learning can also be done by likelihood. Lewicki and Sejnowski (2000) maximized an approximation of $p(\bx \mid \bA) = \int p(\bx \mid \bA, \bs)\,p(\bs)\,d\bs$ obtained by Laplace's method around the MAP estimate of the sources, with Laplacian priors; they showed that overcomplete bases can approximate the distribution of natural data better than complete ones, and the same machinery separates more sources than mixtures. The model is closely related to the sparse coding of natural images by Olshausen and Field (1997).</p>
+<p lang="zh-CN">单源假设可以放宽。Georgiev、Theis 和 Cichocki（2005）指出，若每个样本至多有 $m - 1$ 个活跃源，数据就落在若干超平面的并集上，每个超平面由 $\bA$ 的 $m - 1$ 列张成；他们给出了一些条件（各列处于一般位置，且每个超平面上有足够多的样本），在这些条件下把数据聚类到各超平面就能在置换和尺度意义下辨识 $\bA$，并恢复出源。学习也可以基于似然进行。Lewicki 和 Sejnowski（2000）采用拉普拉斯先验，在源的 MAP 估计附近用 Laplace 方法近似 $p(\bx \mid \bA) = \int p(\bx \mid \bA, \bs)\,p(\bs)\,d\bs$，并最大化这一近似；他们表明过完备基能比完备基更好地逼近自然数据的分布，同一套方法还能分离多于混合个数的源。这一模型与 Olshausen 和 Field（1997）对自然图像的稀疏编码密切相关。</p>
+
+<h2 id="sec-overcomplete-difficulty"><span lang="en">Why the overcomplete case is harder</span><span lang="zh-CN">为什么过完备情形更难</span></h2>
+
+<p lang="en">Identifiability holds, but estimation is harder than in the square case for four reasons.</p>
+<p lang="zh-CN">可辨识性依然成立，但估计比方阵情形更难，原因有四。</p>
+
+<ul lang="en">
+  <li><b>No whitening shortcut.</b> In the square case second-order statistics reduce the unknown to a rotation with $n(n-1)/2$ parameters. With $n &gt; m$ the covariance $\bA\bA^\top$ fixes only $m(m+1)/2$ numbers, whitening cannot make $n$ columns orthogonal, and what remains is not a rotation to be searched for.</li>
+  <li><b>Higher-order statistics.</b> The columns are determined by statistics beyond the covariance, and the larger $n/m$, the higher the order needed (<a class="ref" data-ref="sec-tensor-rank"></a>). Sample cumulants of high order have large variance and are sensitive to outliers (<a class="ref" data-ref="sec-kurtosis-robustness"></a>), so many more samples are required.</li>
+  <li><b>No closed-form likelihood.</b> The likelihood $p(\bx \mid \bA)$ is an integral of $\prod_i p_i(s_i)$ over the $(n - m)$-dimensional solution set of <a class="ref" data-ref="prop-oc-affine"></a> (or over $\R^n$ when there is noise), with no closed form for non-Gaussian priors. It has to be approximated, by Laplace's method, by sampling, or by expectation–maximization schemes, and the resulting likelihood surfaces tend to be flat, with many local optima.</li>
+  <li><b>Irreducible recovery error.</b> Even with $\bA$ known exactly, the sources are recovered only approximately, with an error governed by how sparse they are (<a class="ref" data-ref="fact-oc-coherence"></a>).</li>
+</ul>
+<ul lang="zh-CN">
+  <li><b>没有白化这条捷径。</b>在方阵情形下，二阶统计量把未知量化归为一个有 $n(n-1)/2$ 个参数的旋转。当 $n &gt; m$ 时，协方差 $\bA\bA^\top$ 只确定 $m(m+1)/2$ 个数，白化无法使 $n$ 个列两两正交，剩下的也不是一个可供搜索的旋转。</li>
+  <li><b>需要高阶统计量。</b>各列由协方差之外的统计量确定，而 $n/m$ 越大，所需的阶数越高（<a class="ref" data-ref="sec-tensor-rank"></a>）。高阶样本累积量方差大，对离群值敏感（<a class="ref" data-ref="sec-kurtosis-robustness"></a>），因此需要多得多的样本。</li>
+  <li><b>似然没有闭式。</b>似然 $p(\bx \mid \bA)$ 是 $\prod_i p_i(s_i)$ 在<a class="ref" data-ref="prop-oc-affine"></a>的 $n - m$ 维解集上（有噪声时在 $\R^n$ 上）的积分，对非高斯先验没有闭式。它只能近似计算，例如用 Laplace 方法、抽样或期望最大化类的方法，而所得的似然曲面往往很平坦，局部最优也多。</li>
+  <li><b>恢复误差无法消除。</b>即使 $\bA$ 完全已知，源也只能近似恢复，误差取决于源有多稀疏（<a class="ref" data-ref="fact-oc-coherence"></a>）。</li>
+</ul>
+
+<p lang="en">Sparsity helps at every step: it creates single-source points that reveal $\bA$, makes $\ell_1$ recovery accurate, and concentrates the likelihood around the true columns. Without it, overcomplete ICA remains possible in principle but is statistically demanding.</p>
+<p lang="zh-CN">稀疏性在每一步都有帮助：它产生揭示 $\bA$ 的单源点，使 $\ell_1$ 恢复准确，并使似然集中在真实的列附近。没有稀疏性，过完备 ICA 在原理上仍然可行，但在统计上要求很高。</p>
+
+<div class="keypoints">
+  <p class="kp-title" lang="en">Key points</p>
+  <p class="kp-title" lang="zh-CN">本章要点</p>
+  <ul lang="en">
+    <li>With more sources than sensors, the mixing matrix is still identifiable up to scale and order when all sources are non-Gaussian and no two columns are collinear; the number of sources is not limited by $m$.</li>
+    <li>The sources are not identifiable from the observations: $\bA\bs = \bx$ leaves an $(n - m)$-dimensional affine set of solutions. MAP estimation with a Laplace prior is basis pursuit, whose solutions use at most $m$ active sources.</li>
+    <li>The fourth-order cumulant tensor is a symmetric CP decomposition of rank $n &gt; m$. Kruskal's condition guarantees its uniqueness for generic $\bA$ when $n \le 2m - 2$; with two sensors and three sources fourth-order statistics are not enough.</li>
+    <li>Sparse component analysis uses single-source points: the data concentrate along the columns of $\bA$, whose directions can be found by clustering, often after a time–frequency transform.</li>
+    <li>Overcomplete estimation is harder than square ICA: no whitening shortcut, reliance on high-order statistics, an intractable likelihood and an irreducible recovery error. Sparsity mitigates all four.</li>
+  </ul>
+  <ul lang="zh-CN">
+    <li>源多于传感器时，只要所有源都非高斯且没有两列共线，混合矩阵在尺度与顺序意义下仍然可辨识；源的个数不受 $m$ 的限制。</li>
+    <li>源本身不能由观测确定：$\bA\bs = \bx$ 的解构成 $n - m$ 维仿射集。采用拉普拉斯先验的 MAP 估计就是基追踪，其解至多使用 $m$ 个活跃源。</li>
+    <li>四阶累积量张量是秩为 $n &gt; m$ 的对称 CP 分解。当 $n \le 2m - 2$ 时，Kruskal 条件保证一般的 $\bA$ 下这一分解唯一；两个传感器、三个源时，四阶统计量不够用。</li>
+    <li>稀疏成分分析利用单源点：数据集中在 $\bA$ 的各列方向上，这些方向可以通过聚类找到，常常先作时频变换。</li>
+    <li>过完备估计比方阵 ICA 更难：没有白化捷径，依赖高阶统计量，似然难以计算，恢复误差无法消除。稀疏性能缓解这四方面的困难。</li>
+  </ul>
+</div>
+
+<h2 id="sec-overcomplete-exercises"><span lang="en">Exercises</span><span lang="zh-CN">习题</span></h2>
+
+<div class="exercise" id="ex-oc-affine" data-level="basic">
+  <p lang="en">With $\bA$ as in <a class="ref" data-ref="example-oc-l1"></a> and $\bx = 2\ba_1 + \ba_2 = (5/2, \sqrt3/2)^\top$, find the set of solutions of $\bA\bs = \bx$, the minimum-norm solution and the minimum-$\ell_1$ solution. Which sources does each use?</p>
+  <p lang="zh-CN">取<a class="ref" data-ref="example-oc-l1"></a>中的 $\bA$，并令 $\bx = 2\ba_1 + \ba_2 = (5/2, \sqrt3/2)^\top$。求 $\bA\bs = \bx$ 的解集、最小范数解和最小 $\ell_1$ 解。它们各用了哪些源？</p>
+  <details class="solution">
+    <p lang="en">Since the null space is spanned by $(1, -1, 1)^\top$, the solutions are $\bs = (2 + c,\ 1 - c,\ c)^\top$. The squared norm $(2 + c)^2 + (1 - c)^2 + c^2$ has derivative $2 + 6c$, so the minimum-norm solution is at $c = -1/3$: $\bA^{+}\bx = (5/3, 4/3, -1/3)^\top$, which uses all three sources. For $-2 \le c \le 1$ the $\ell_1$ norm is $(2 + c) + (1 - c) + |c| = 3 + |c|$, and outside this interval it is larger, so the minimum is at $c = 0$: $(2, 1, 0)^\top$. It uses the two columns at $0^\circ$ and $60^\circ$, which are the neighbours of $\bx$ (at $19.1^\circ$) in angle, and it recovers the true $\bs$.</p>
+    <p lang="zh-CN">零空间由 $(1, -1, 1)^\top$ 张成，故解为 $\bs = (2 + c,\ 1 - c,\ c)^\top$。范数平方 $(2 + c)^2 + (1 - c)^2 + c^2$ 的导数为 $2 + 6c$，所以最小范数解在 $c = -1/3$ 处：$\bA^{+}\bx = (5/3, 4/3, -1/3)^\top$，用到了全部三个源。当 $-2 \le c \le 1$ 时，$\ell_1$ 范数为 $(2 + c) + (1 - c) + |c| = 3 + |c|$，区间外则更大，所以最小值在 $c = 0$ 处取得：$(2, 1, 0)^\top$。它用的是 $0^\circ$ 和 $60^\circ$ 方向的两列，恰好是 $\bx$（位于 $19.1^\circ$）在角度上的两个邻居，并且恢复出了真实的 $\bs$。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-oc-coherence" data-level="basic">
+  <p lang="en">Let the $n \ge 3$ columns of $\bA \in \R^{2 \times n}$ be unit vectors at the angles $k\pi/n$, $k = 0, \dots, n - 1$. Compute the mutual coherence and the sparsity level guaranteed by <a class="ref" data-ref="fact-oc-coherence"></a>. What does this say about two sensors?</p>
+  <p lang="zh-CN">设 $\bA \in \R^{2 \times n}$ 的 $n \ge 3$ 列是角度为 $k\pi/n$（$k = 0, \dots, n - 1$）的单位向量。计算互相干性，以及<a class="ref" data-ref="fact-oc-coherence"></a>所保证的稀疏程度。这对两个传感器的情形说明了什么？</p>
+  <details class="solution">
+    <p lang="en">For unit vectors at angles $\phi_i, \phi_j$, $|\ba_i^\top\ba_j| = |\cos(\phi_i - \phi_j)|$, which is largest for adjacent directions (the angles are taken modulo $\pi$ since only the lines matter), so $\mu = \cos(\pi/n)$. The guarantee is $\|\bs\|_0 &lt; \frac12(1 + 1/\cos(\pi/n))$. For $n \ge 3$, $\cos(\pi/n) \ge 1/2$, so the bound is at most $3/2$: only one active source at a time is guaranteed to be recovered, however the columns are arranged. With two sensors, accurate recovery therefore needs sources that are rarely active together, which is what sparse component analysis assumes.</p>
+    <p lang="zh-CN">对角度为 $\phi_i, \phi_j$ 的单位向量，$|\ba_i^\top\ba_j| = |\cos(\phi_i - \phi_j)|$，在方向相邻时最大（由于只关心直线，角度按模 $\pi$ 计），所以 $\mu = \cos(\pi/n)$。所保证的稀疏程度为 $\|\bs\|_0 &lt; \frac12(1 + 1/\cos(\pi/n))$。当 $n \ge 3$ 时 $\cos(\pi/n) \ge 1/2$，因此这个界至多为 $3/2$：无论各列如何排列，能保证恢复的只是每个时刻一个活跃源的情形。因此在两个传感器下，要准确恢复，源必须很少同时活跃，而这正是稀疏成分分析的假设。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-oc-shortest-path" data-level="intermediate">
+  <p lang="en">Let $m = 2$ and let the columns of $\bA$ be unit vectors, no two collinear. Show that a minimum-$\ell_1$ solution of $\bA\bs = \bx$ is obtained by writing $\bx$ as a nonnegative combination of the two signed columns $\pm\ba_j$ adjacent to $\bx$ in angle, one on each side.</p>
+  <p lang="zh-CN">设 $m = 2$，$\bA$ 的各列为单位向量且两两不共线。证明：把 $\bx$ 写成在角度上与它相邻（两侧各一个）的两个带符号列 $\pm\ba_j$ 的非负组合，就得到 $\bA\bs = \bx$ 的一个最小 $\ell_1$ 解。</p>
+  <details class="solution">
+    <p lang="en">Let $\mathcal{P}$ be the convex hull of the $2n$ points $\pm\ba_j$, a symmetric polygon whose vertices are all of these points, since they lie on the unit circle. For any solution, $\bx/\|\bs\|_1 = \sum_j (|s_j|/\|\bs\|_1)\,\sign(s_j)\ba_j$ is a convex combination of the points, so $\bx \in \|\bs\|_1\mathcal{P}$ and $\|\bs\|_1 \ge \rho(\bx) = \min\{\rho \ge 0 : \bx \in \rho\mathcal{P}\}$. The ray from the origin through $\bx$ leaves $\mathcal{P}$ through the edge joining the two vertices $\bv, \bv'$ adjacent to it in angle, at the point $\bx/\rho(\bx)$; write $\bx/\rho(\bx) = \lambda\bv + (1 - \lambda)\bv'$ with $0 \le \lambda \le 1$. Then $\bx = \rho(\bx)\lambda\,\bv + \rho(\bx)(1 - \lambda)\,\bv'$ is a representation with $\ell_1$ norm $\rho(\bx)$, which attains the lower bound. It is the nonnegative combination of $\bv$ and $\bv'$ in the statement.</p>
+    <p lang="zh-CN">设 $\mathcal{P}$ 为 $2n$ 个点 $\pm\ba_j$ 的凸包，它是一个对称多边形；由于这些点都在单位圆上，它们全是顶点。对任一解，$\bx/\|\bs\|_1 = \sum_j (|s_j|/\|\bs\|_1)\,\sign(s_j)\ba_j$ 是这些点的凸组合，所以 $\bx \in \|\bs\|_1\mathcal{P}$，从而 $\|\bs\|_1 \ge \rho(\bx) = \min\{\rho \ge 0 : \bx \in \rho\mathcal{P}\}$。从原点出发经过 $\bx$ 的射线，在点 $\bx/\rho(\bx)$ 处穿过连接与它在角度上相邻的两个顶点 $\bv, \bv'$ 的那条边离开 $\mathcal{P}$；写 $\bx/\rho(\bx) = \lambda\bv + (1 - \lambda)\bv'$，$0 \le \lambda \le 1$。于是 $\bx = \rho(\bx)\lambda\,\bv + \rho(\bx)(1 - \lambda)\,\bv'$ 是一个 $\ell_1$ 范数为 $\rho(\bx)$ 的表示，达到了下界。它正是题中所说的 $\bv$ 与 $\bv'$ 的非负组合。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-oc-quartic" data-level="intermediate">
+  <p lang="en">For $m = 2$, show that the cumulant tensor of order $r$ of $\bx = \bA\bs$ is determined by the binary form $\sum_j\kappa_r(s_j)(\ba_j^\top\bu)^r$, which has $r + 1$ coefficients. Explain why, for generic parameters, cumulants of order $r$ alone cannot determine $n$ directions in the plane unless $r + 1 \ge 2n$. Which order is the first usable one for three symmetric sources?</p>
+  <p lang="zh-CN">设 $m = 2$，证明 $\bx = \bA\bs$ 的 $r$ 阶累积量张量由二元型 $\sum_j\kappa_r(s_j)(\ba_j^\top\bu)^r$ 确定，它有 $r + 1$ 个系数。说明为什么对一般的参数，若 $r + 1 &lt; 2n$，单靠 $r$ 阶累积量无法确定平面上的 $n$ 个方向。对三个对称分布的源，第一个可用的阶数是几？</p>
+  <details class="solution">
+    <p lang="en">A symmetric tensor $\mathcal{C}$ of order $r$ is determined by its values $\mathcal{C}(\bu, \dots, \bu)$, a homogeneous polynomial in $\bu \in \R^2$ (polarization), and by multilinearity $\mathcal{C}_r(\bx)(\bu, \dots, \bu) = \kappa_r(\bu^\top\bx) = \sum_j\kappa_r(s_j)(\ba_j^\top\bu)^r$, a binary form of degree $r$ with $r + 1$ coefficients. The unknowns are $n$ angles and $n$ weights, $2n$ in all, and the map from them to the coefficients is polynomial. Near a point where its Jacobian has maximal rank, at most $r + 1$, the rank is locally constant, so by the constant rank theorem the set of parameters giving the same form is locally a manifold of dimension $2n - (r + 1) &gt; 0$ when $r + 1 &lt; 2n$: there are infinitely many decompositions, as in <a class="ref" data-ref="example-oc-quartic"></a> for $r = 4$, $n = 3$. For $n = 3$ the count requires $r \ge 5$; symmetric sources have vanishing odd cumulants, so the first usable order is $r = 6$, where $7 \ge 6$. The count is necessary, not sufficient, for uniqueness.</p>
+    <p lang="zh-CN">$r$ 阶对称张量 $\mathcal{C}$ 由它在对角线上的取值 $\mathcal{C}(\bu, \dots, \bu)$ 确定（极化恒等式），这是 $\bu \in \R^2$ 的齐次多项式；由多线性，$\mathcal{C}_r(\bx)(\bu, \dots, \bu) = \kappa_r(\bu^\top\bx) = \sum_j\kappa_r(s_j)(\ba_j^\top\bu)^r$，是一个有 $r + 1$ 个系数的 $r$ 次二元型。未知量是 $n$ 个角度和 $n$ 个权重，共 $2n$ 个，它们到系数的映射是多项式映射。在其 Jacobian 秩达到最大值（至多 $r + 1$）的点附近，秩局部恒定，由常秩定理，给出同一个型的参数集合局部上是一个维数为 $2n - (r + 1)$ 的流形；当 $r + 1 &lt; 2n$ 时这个维数为正，即有无穷多个分解，正如<a class="ref" data-ref="example-oc-quartic"></a>中 $r = 4$、$n = 3$ 的情形。对 $n = 3$，计数要求 $r \ge 5$；对称源的奇数阶累积量为零，所以第一个可用的阶数是 $r = 6$，此时 $7 \ge 6$。这个计数条件对唯一性是必要的，而不是充分的。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-oc-gaussian-factor" data-level="advanced">
+  <p lang="en">Show that part 2 of <a class="ref" data-ref="thm-overcomplete-identifiability"></a> fails if the components of $\bt$ are allowed to be Gaussian. Specifically, let $s_1 = u_1 + g_1$ and $s_2 = u_2 + g_2$, where $u_1, u_2$ are non-Gaussian and non-constant, $g_i \sim \Ncal(0, \sigma_i^2)$ with $\sigma_i &gt; 0$, and all variables are independent, and let $\ba_1, \ba_2$ be linearly independent. Construct a second representation $\bx = \bB\bt$ with $n + 2$ columns, no two collinear, and independent components.</p>
+  <p lang="zh-CN">证明：若允许 $\bt$ 的分量为高斯，<a class="ref" data-ref="thm-overcomplete-identifiability"></a>的第 2 部分不再成立。具体地，设 $s_1 = u_1 + g_1$，$s_2 = u_2 + g_2$，其中 $u_1, u_2$ 非高斯且不是常数，$g_i \sim \Ncal(0, \sigma_i^2)$，$\sigma_i &gt; 0$，所有变量相互独立，且 $\ba_1, \ba_2$ 线性无关。构造第二个表示 $\bx = \bB\bt$，使它有 $n + 2$ 列、没有两列共线，且各分量相互独立。</p>
+  <details class="solution">
+    <p lang="en">Write $\bx = u_1\ba_1 + u_2\ba_2 + \sum_{j \ge 3}s_j\ba_j + \bG\bh_0$, where $\bG = [\sigma_1\ba_1,\ \sigma_2\ba_2]$ and $\bh_0 = (g_1/\sigma_1, g_2/\sigma_2)^\top \sim \Ncal(\bzero, \bI_2)$. For any $2 \times 2$ orthogonal $\bQ$, $\bh = \bQ^\top\bh_0$ is again standard Gaussian with independent components, and $\bG\bh_0 = (\bG\bQ)\bh$. Let $\bb_1, \bb_2$ be the columns of $\bG\bQ$. Then $\bx = \bB\bt$ with $\bB = [\ba_1, \ba_2, \ba_3, \dots, \ba_n, \bb_1, \bb_2]$ and $\bt = (u_1, u_2, s_3, \dots, s_n, h_1, h_2)^\top$. The components of $\bt$ are independent: $\bh$ is a function of $(g_1, g_2)$ alone, which is independent of all other variables, and $h_1, h_2$ are uncorrelated jointly Gaussian variables. The columns $\bb_1, \bb_2$ are linearly independent because $\bG\bQ$ has rank 2, and each of the finitely many conditions “$\bb_i$ collinear with $\ba_j$” holds only for finitely many rotation angles of $\bQ$, so a suitable $\bQ$ makes all $n + 2$ columns pairwise non-collinear. Part 1 still holds, since every $\ba_j$ is a column of $\bB$, but $n' = n + 2 \ne n$; what fails is the hypothesis of part 2, because $h_1$ and $h_2$ are Gaussian.</p>
+    <p lang="zh-CN">写 $\bx = u_1\ba_1 + u_2\ba_2 + \sum_{j \ge 3}s_j\ba_j + \bG\bh_0$，其中 $\bG = [\sigma_1\ba_1,\ \sigma_2\ba_2]$，$\bh_0 = (g_1/\sigma_1, g_2/\sigma_2)^\top \sim \Ncal(\bzero, \bI_2)$。对任意 $2 \times 2$ 正交矩阵 $\bQ$，$\bh = \bQ^\top\bh_0$ 仍是分量独立的标准高斯向量，且 $\bG\bh_0 = (\bG\bQ)\bh$。记 $\bb_1, \bb_2$ 为 $\bG\bQ$ 的两列。于是 $\bx = \bB\bt$，其中 $\bB = [\ba_1, \ba_2, \ba_3, \dots, \ba_n, \bb_1, \bb_2]$，$\bt = (u_1, u_2, s_3, \dots, s_n, h_1, h_2)^\top$。$\bt$ 的分量相互独立：$\bh$ 只是 $(g_1, g_2)$ 的函数，而后者与其余所有变量独立；$h_1, h_2$ 是不相关的联合高斯变量。由于 $\bG\bQ$ 的秩为 2，$\bb_1, \bb_2$ 线性无关；而有限个条件“$\bb_i$ 与 $\ba_j$ 共线”中的每一个都只对 $\bQ$ 的有限个旋转角成立，所以适当选取 $\bQ$ 可使全部 $n + 2$ 列两两不共线。第 1 部分仍然成立，因为每个 $\ba_j$ 都是 $\bB$ 的一列；但 $n' = n + 2 \ne n$。不成立的是第 2 部分的前提，因为 $h_1$ 和 $h_2$ 是高斯的。</p>
+  </details>
+</div>
+
+<h2 id="sec-overcomplete-references"><span lang="en">References</span><span lang="zh-CN">参考文献</span></h2>
+
+<div class="references">
+  <ol>
+    <li>Bofill, P., &amp; Zibulevsky, M. (2001). Underdetermined blind source separation using sparse representations. <i>Signal Processing</i>, 81(11), 2353–2362.</li>
+    <li>Chen, S. S., Donoho, D. L., &amp; Saunders, M. A. (1998). Atomic decomposition by basis pursuit. <i>SIAM Journal on Scientific Computing</i>, 20(1), 33–61.</li>
+    <li>Comon, P., &amp; Rajih, M. (2006). Blind identification of under-determined mixtures based on the characteristic function. <i>Signal Processing</i>, 86(9), 2271–2281.</li>
+    <li>De Lathauwer, L., Castaing, J., &amp; Cardoso, J.-F. (2007). Fourth-order cumulant-based blind identification of underdetermined mixtures. <i>IEEE Transactions on Signal Processing</i>, 55(6), 2965–2973.</li>
+    <li>Donoho, D. L., &amp; Elad, M. (2003). Optimally sparse representation in general (nonorthogonal) dictionaries via ℓ<sub>1</sub> minimization. <i>Proceedings of the National Academy of Sciences</i>, 100(5), 2197–2202.</li>
+    <li>Eriksson, J., &amp; Koivunen, V. (2004). Identifiability, separability, and uniqueness of linear ICA models. <i>IEEE Signal Processing Letters</i>, 11(7), 601–604.</li>
+    <li>Georgiev, P., Theis, F., &amp; Cichocki, A. (2005). Sparse component analysis and blind source separation of underdetermined mixtures. <i>IEEE Transactions on Neural Networks</i>, 16(4), 992–996.</li>
+    <li>Jourjine, A., Rickard, S., &amp; Yılmaz, Ö. (2000). Blind separation of disjoint orthogonal signals: Demixing N sources from 2 mixtures. In <i>Proceedings of the IEEE International Conference on Acoustics, Speech, and Signal Processing</i> (pp. 2985–2988).</li>
+    <li>Kagan, A. M., Linnik, Yu. V., &amp; Rao, C. R. (1973). <i>Characterization Problems in Mathematical Statistics</i>. Wiley.</li>
+    <li>Kruskal, J. B. (1977). Three-way arrays: Rank and uniqueness of trilinear decompositions, with application to arithmetic complexity and statistics. <i>Linear Algebra and its Applications</i>, 18(2), 95–138.</li>
+    <li>Lewicki, M. S., &amp; Sejnowski, T. J. (2000). Learning overcomplete representations. <i>Neural Computation</i>, 12(2), 337–365.</li>
+    <li>Olshausen, B. A., &amp; Field, D. J. (1997). Sparse coding with an overcomplete basis set: A strategy employed by V1? <i>Vision Research</i>, 37(23), 3311–3325.</li>
+  </ol>
+</div>

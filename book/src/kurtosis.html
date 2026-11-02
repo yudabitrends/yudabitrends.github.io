@@ -1,0 +1,314 @@
+<!-- Chapter 5. Non-Gaussianity and Kurtosis. Source format: book/AUTHORING.md -->
+
+<h2 id="sec-clt-intuition"><span lang="en">Mixing makes signals more Gaussian</span><span lang="zh-CN">混合使信号更接近高斯</span></h2>
+
+<p lang="en"><a class="ref" data-ref="sec-first-look"></a> separated two sources by choosing the projection of the whitened data with the largest absolute kurtosis. The reasoning was a heuristic drawn from the central limit theorem: a sum of independent variables tends to be more Gaussian than the variables themselves, so a projection that mixes several sources looks more Gaussian than a projection that equals one source, and the least Gaussian projections should be the sources. <a class="ref" data-ref="identifiability"></a> showed that the sources are determined by the distribution of the data; this chapter shows that, for kurtosis, the heuristic is a theorem, and then examines what the theorem costs in practice.</p>
+<p lang="zh-CN"><a class="ref" data-ref="sec-first-look"></a>选取白化数据中峭度绝对值最大的投影，把两个源分离了出来。其理由是来自中心极限定理的启发式论证：独立变量之和往往比各个变量本身更接近高斯，所以混合了多个源的投影比恰好等于某一个源的投影更像高斯，而最不像高斯的投影就应该是源。<a class="ref" data-ref="identifiability"></a>证明了源由数据的分布唯一确定；本章说明，对峭度而言，这个启发式论证是一个定理，然后再考察这个定理在实践中要付出什么代价。</p>
+
+<p lang="en">ICA usually involves a handful of sources, so the limit theorem itself is not what matters. What matters is a statement for finitely many terms: a combination of independent sources sits, in a precise sense, between the sources and the Gaussian. For kurtosis the statement is simple. If $s_1, \dots, s_n$ are independent with unit variance and the same kurtosis $\kappa$, then their normalized sum $n^{-1/2}\sum_i s_i$ has kurtosis $\kappa/n$, and no unit-variance combination has kurtosis larger in absolute value than the most kurtotic source (<a class="ref" data-ref="prop-kurtosis-sum"></a>). The analogous statement for entropy is taken up in <a class="ref" data-ref="likelihood"></a>.</p>
+<p lang="zh-CN">ICA 通常只涉及少数几个源，所以要紧的并不是极限定理本身，而是一个关于有限项的论断：独立源的组合在确切的意义上介于源与高斯之间。对峭度而言，这个论断很简单。若 $s_1, \dots, s_n$ 独立、方差为一且峭度同为 $\kappa$，则其归一化和 $n^{-1/2}\sum_i s_i$ 的峭度为 $\kappa/n$；并且任何单位方差的组合，其峭度的绝对值都不会超过峭度最大的那个源（<a class="ref" data-ref="prop-kurtosis-sum"></a>）。熵的相应论断留到<a class="ref" data-ref="likelihood"></a>讨论。</p>
+
+<p lang="en">Throughout the chapter the data are whitened, $\bz = \tilde\bA\bs$, with $\tilde\bA$ orthogonal and independent zero-mean sources of unit variance and finite fourth moments (<a class="ref" data-ref="eq-whitened-model"></a>). A one-unit method looks for a unit vector $\bw$ such that $y = \bw^\top\bz$ is a source. In source coordinates, $\bq = \tilde\bA^\top\bw$, the projection is $y = \bq^\top\bs$, and $\|\bq\| = \|\bw\| = 1$ because $\tilde\bA$ is orthogonal; in particular $\E[y^2] = \|\bq\|^2 = 1$. Searching over unit vectors $\bw$ is therefore the same as searching over unit vectors $\bq$, and $y$ is a source exactly when $\bq = \pm\be_i$, a standard basis vector.</p>
+<p lang="zh-CN">本章始终假定数据已经白化：$\bz = \tilde\bA\bs$，其中 $\tilde\bA$ 是正交矩阵，各源独立、均值为零、方差为一且四阶矩有限（<a class="ref" data-ref="eq-whitened-model"></a>）。单单元方法寻找一个单位向量 $\bw$，使 $y = \bw^\top\bz$ 是某个源。在源坐标 $\bq = \tilde\bA^\top\bw$ 下，投影为 $y = \bq^\top\bs$；由于 $\tilde\bA$ 正交，$\|\bq\| = \|\bw\| = 1$，特别地 $\E[y^2] = \|\bq\|^2 = 1$。因此在单位向量 $\bw$ 上搜索，等价于在单位向量 $\bq$ 上搜索；而 $y$ 恰为某个源，当且仅当 $\bq = \pm\be_i$ 是标准基向量。</p>
+
+<p lang="en">The same idea appeared earlier in exploratory statistics as <em>projection pursuit</em>. Friedman &amp; Tukey (1974) proposed to explore multivariate data by numerically optimizing a "projection index" over one- or two-dimensional projections. Huber (1985) argued that the Gaussian is the least interesting distribution, since most projections of high-dimensional data look nearly Gaussian, so that a projection index should measure departure from Gaussianity. One-unit ICA contrasts are projection indices of exactly this kind, applied to whitened data; under the ICA model the interesting directions are the sources (Hyvärinen, Karhunen &amp; Oja, 2001).</p>
+<p lang="zh-CN">同样的思想更早出现在探索性统计中，名为<em>投影寻踪</em>。Friedman &amp; Tukey（1974）提出，在一维或二维投影上数值优化一个“投影指标”，以此探索多元数据。Huber（1985）认为高斯分布是最没有意思的分布，因为高维数据的大多数投影看上去都近似高斯，所以投影指标应当度量偏离高斯的程度。单单元 ICA 对比函数正是这类投影指标，只不过作用在白化数据上；在 ICA 模型下，有意思的方向就是源（Hyvärinen, Karhunen &amp; Oja, 2001）。</p>
+
+<h2 id="sec-kurtosis-combination"><span lang="en">Kurtosis of a linear combination</span><span lang="zh-CN">线性组合的峭度</span></h2>
+
+<p lang="en">For a zero-mean variable, $\kurt(y) = \E[y^4] - 3(\E[y^2])^2$ is the fourth cumulant (<a class="ref" data-ref="def-kurtosis"></a>). It vanishes for the Gaussian; variables with $\kurt(y) &lt; 0$ are called <em>sub-Gaussian</em> (uniform: $-1.2$; a binary $\pm 1$ variable: $-2$, the smallest possible value at unit variance) and variables with $\kurt(y) &gt; 0$ <em>super-Gaussian</em> (Laplace: $3$; centered exponential: $6$). As a cumulant it has two properties that drive everything in this chapter: for independent $u$ and $v$ and a real number $\alpha$,</p>
+<p lang="zh-CN">对零均值变量，$\kurt(y) = \E[y^4] - 3(\E[y^2])^2$ 就是四阶累积量（<a class="ref" data-ref="def-kurtosis"></a>）。高斯变量的峭度为零；$\kurt(y) &lt; 0$ 的变量称为<em>亚高斯</em>的（均匀分布为 $-1.2$；取 $\pm 1$ 的二值变量为 $-2$，这是单位方差下可能取到的最小值），$\kurt(y) &gt; 0$ 的变量称为<em>超高斯</em>的（拉普拉斯分布为 $3$；中心化的指数分布为 $6$）。作为累积量，它有两条性质，本章的一切都由它们推出：对独立的 $u$、$v$ 与实数 $\alpha$，</p>
+
+<div class="eq">$$\kurt(u + v) = \kurt(u) + \kurt(v), \qquad \kurt(\alpha u) = \alpha^4 \kurt(u).$$</div>
+
+<div class="env" data-kind="proposition" id="prop-kurtosis-sum" data-en="kurtosis of a combination" data-zh="组合的峭度">
+  <p lang="en">Let $s_1, \dots, s_n$ be independent with zero mean, unit variance and kurtoses $\kappa_i = \kurt(s_i)$. For every $\bq \in \R^n$,</p>
+  <p lang="zh-CN">设 $s_1, \dots, s_n$ 独立，均值为零、方差为一，峭度为 $\kappa_i = \kurt(s_i)$。则对任意 $\bq \in \R^n$，</p>
+  <div class="eq" id="eq-kurtosis-sum">$$\kurt\Bigl(\sum_{i=1}^n q_i s_i\Bigr) = \sum_{i=1}^n q_i^4\, \kappa_i .$$</div>
+  <p lang="en">If $\|\bq\| = 1$, then $|\kurt(\bq^\top\bs)| \le \max_i |\kappa_i|$. When $\max_i |\kappa_i| &gt; 0$, equality holds only for $\bq = \pm\be_j$ with $|\kappa_j| = \max_i |\kappa_i|$. If all $\kappa_i$ equal $\kappa$, then $\kurt(\bq^\top\bs) = \kappa\sum_i q_i^4$ lies between $\kappa/n$ and $\kappa$, and the value $\kappa/n$ is attained when all $q_i^2 = 1/n$.</p>
+  <p lang="zh-CN">若 $\|\bq\| = 1$，则 $|\kurt(\bq^\top\bs)| \le \max_i |\kappa_i|$。当 $\max_i |\kappa_i| &gt; 0$ 时，等号只在 $\bq = \pm\be_j$ 且 $|\kappa_j| = \max_i |\kappa_i|$ 时成立。若所有 $\kappa_i$ 都等于 $\kappa$，则 $\kurt(\bq^\top\bs) = \kappa\sum_i q_i^4$ 介于 $\kappa/n$ 与 $\kappa$ 之间，且当所有 $q_i^2 = 1/n$ 时取到 $\kappa/n$。</p>
+</div>
+<div class="proof">
+  <p lang="en">The identity follows from additivity over the independent terms $q_i s_i$ and from $\kurt(q_i s_i) = q_i^4 \kappa_i$. For a unit vector, $\sum_i q_i^4 \le (\sum_i q_i^2)^2 = 1$, with equality only when a single $q_j$ is nonzero; hence $|\sum_i q_i^4\kappa_i| \le \max_i|\kappa_i| \sum_i q_i^4 \le \max_i|\kappa_i|$, and equality in the last step forces $\bq = \pm\be_j$, after which the first step forces $|\kappa_j| = \max_i|\kappa_i|$. Finally, by the Cauchy–Schwarz inequality, $1 = (\sum_i q_i^2)^2 \le n\sum_i q_i^4$, with equality exactly when all $q_i^2$ are equal.</p>
+  <p lang="zh-CN">恒等式由峭度对独立项 $q_i s_i$ 的可加性以及 $\kurt(q_i s_i) = q_i^4 \kappa_i$ 得到。对单位向量，$\sum_i q_i^4 \le (\sum_i q_i^2)^2 = 1$，等号只在只有一个 $q_j$ 非零时成立；因此 $|\sum_i q_i^4\kappa_i| \le \max_i|\kappa_i| \sum_i q_i^4 \le \max_i|\kappa_i|$，后一个不等式取等号迫使 $\bq = \pm\be_j$，此时前一个不等式取等号又迫使 $|\kappa_j| = \max_i|\kappa_i|$。最后，由 Cauchy–Schwarz 不等式，$1 = (\sum_i q_i^2)^2 \le n\sum_i q_i^4$，当且仅当所有 $q_i^2$ 相等时取等号。</p>
+</div>
+
+<p lang="en">Three consequences shape the rest of the chapter. First, mixing can never produce more absolute kurtosis than the most kurtotic source contains, which is the precise form of the central-limit heuristic. Second, a mixture can still be more kurtotic than <em>some</em> of the sources: mixing a nearly Gaussian source with a Laplacian one gives a combination that is less Gaussian than the first source. Third, kurtoses of opposite signs can cancel: for a uniform and a Laplacian source, $\kurt(\cos\theta\, s_1 + \sin\theta\, s_2) = -1.2\cos^4\theta + 3\sin^4\theta$ vanishes at $\tan^4\theta = 0.4$, that is $\theta \approx 38.5^\circ$, although this combination is certainly not Gaussian. Kurtosis is a signed measure, and the quantities to maximize are $|\kurt|$ or $\kurt^2$.</p>
+<p lang="zh-CN">由此得到的三点决定了本章其余部分。其一，混合产生的峭度绝对值永远不会超过峭度最大的源，这正是中心极限启发式论证的精确形式。其二，混合仍可能比<em>某些</em>源的峭度更大：把一个接近高斯的源与一个拉普拉斯源混合，得到的组合比前者更不像高斯。其三，符号相反的峭度会相互抵消：对一个均匀源和一个拉普拉斯源，$\kurt(\cos\theta\, s_1 + \sin\theta\, s_2) = -1.2\cos^4\theta + 3\sin^4\theta$ 在 $\tan^4\theta = 0.4$，即 $\theta \approx 38.5^\circ$ 处为零，而这个组合显然不是高斯的。峭度是带符号的量，应当最大化的是 $|\kurt|$ 或 $\kurt^2$。</p>
+
+<h2 id="sec-kurtosis-landscape"><span lang="en">The kurtosis landscape on the sphere</span><span lang="zh-CN">峭度在球面上的地形</span></h2>
+
+<p lang="en">By <a class="ref" data-ref="prop-kurtosis-sum"></a>, the one-unit contrast in source coordinates is the quartic form $F(\bq) = \sum_i \kappa_i q_i^4$ restricted to the unit sphere, and $|\kurt(\bw^\top\bz)| = |F(\tilde\bA^\top\bw)|$. The map $\bw \mapsto \tilde\bA^\top\bw$ is an isometry of the sphere, so local maxima in $\bw$ and in $\bq$ correspond. The global maximum of $|F|$ sits at a source with the largest $|\kappa_i|$. The question that matters for algorithms, which climb from a random starting point, is whether $|F|$ has other local maxima. We first find all critical points of $F$ on the sphere (see <a class="ref" data-ref="sec-sphere-optimization"></a> for the Lagrange conditions).</p>
+<p lang="zh-CN">由<a class="ref" data-ref="prop-kurtosis-sum"></a>，在源坐标下，单单元对比函数就是限制在单位球面上的四次型 $F(\bq) = \sum_i \kappa_i q_i^4$，且 $|\kurt(\bw^\top\bz)| = |F(\tilde\bA^\top\bw)|$。映射 $\bw \mapsto \tilde\bA^\top\bw$ 是球面的等距变换，所以 $\bw$ 与 $\bq$ 中的局部极大点一一对应。$|F|$ 的全局最大值出现在 $|\kappa_i|$ 最大的源处。对从随机起点出发向上爬的算法来说，真正要紧的问题是：$|F|$ 还有没有别的局部极大点？我们先求出 $F$ 在球面上的全部临界点（拉格朗日条件见<a class="ref" data-ref="sec-sphere-optimization"></a>）。</p>
+
+<div class="env" data-kind="lemma" id="lem-kurtosis-critical" data-en="critical points" data-zh="临界点">
+  <p lang="en">A unit vector $\bq$ is a critical point of $F$ on the sphere if and only if there is a number $\mu$ with $\kappa_i q_i^2 = \mu$ for every $i$ in the support $S = \{i : q_i \neq 0\}$. Either $\mu = 0$, in which case $\kappa_i = 0$ on $S$ and $F(\bq) = 0$; or $\mu \neq 0$, in which case all $\kappa_i$ with $i \in S$ are nonzero and have the sign of $\mu$, and</p>
+  <p lang="zh-CN">单位向量 $\bq$ 是 $F$ 在球面上的临界点，当且仅当存在数 $\mu$，使对支撑集 $S = \{i : q_i \neq 0\}$ 中的每个 $i$ 都有 $\kappa_i q_i^2 = \mu$。此时要么 $\mu = 0$，于是在 $S$ 上 $\kappa_i = 0$，且 $F(\bq) = 0$；要么 $\mu \neq 0$，于是所有 $i \in S$ 的 $\kappa_i$ 都非零且与 $\mu$ 同号，并且</p>
+  <div class="eq" id="eq-kurtosis-critical">$$q_i^2 = \frac{\mu}{\kappa_i} \ \ (i \in S), \qquad \mu = \Bigl(\sum_{i \in S} \frac{1}{\kappa_i}\Bigr)^{-1} = F(\bq).$$</div>
+</div>
+<div class="proof">
+  <p lang="en">On the sphere, $\bq$ is critical exactly when $\nabla F(\bq) = 4(\kappa_1 q_1^3, \dots, \kappa_n q_n^3)^\top$ is parallel to $\bq$, that is $\kappa_i q_i^3 = \mu q_i$ for all $i$ and some $\mu$. For $q_i \neq 0$ this reads $\kappa_i q_i^2 = \mu$. If $\mu \neq 0$, then $q_i^2 = \mu/\kappa_i &gt; 0$ forces the sign condition, and $\sum_{i \in S} q_i^2 = 1$ gives the value of $\mu$. Finally $F(\bq) = \sum_{i \in S} (\kappa_i q_i^2) q_i^2 = \mu \sum_{i \in S} q_i^2 = \mu$.</p>
+  <p lang="zh-CN">在球面上，$\bq$ 是临界点当且仅当 $\nabla F(\bq) = 4(\kappa_1 q_1^3, \dots, \kappa_n q_n^3)^\top$ 与 $\bq$ 平行，即存在 $\mu$ 使对一切 $i$ 有 $\kappa_i q_i^3 = \mu q_i$。对 $q_i \neq 0$，这就是 $\kappa_i q_i^2 = \mu$。若 $\mu \neq 0$，则 $q_i^2 = \mu/\kappa_i &gt; 0$ 给出符号条件，而 $\sum_{i \in S} q_i^2 = 1$ 给出 $\mu$ 的值。最后 $F(\bq) = \sum_{i \in S} (\kappa_i q_i^2) q_i^2 = \mu \sum_{i \in S} q_i^2 = \mu$。</p>
+</div>
+
+<p lang="en">Every single-source point $\pm\be_i$ is critical, with $\mu = \kappa_i$. The critical points with $|S| \ge 2$ mix sources whose kurtoses share a sign, with weights $q_i^2 \propto 1/\kappa_i$; the theorem below shows that none of them is a local maximum of $|F|$.</p>
+<p lang="zh-CN">每个单源点 $\pm\be_i$ 都是临界点，对应 $\mu = \kappa_i$。$|S| \ge 2$ 的临界点则把峭度同号的若干个源混合在一起，权重为 $q_i^2 \propto 1/\kappa_i$；下面的定理说明，它们没有一个是 $|F|$ 的局部极大点。</p>
+
+<div class="env" data-kind="theorem" id="thm-kurtosis-maxima" data-en="Delfosse &amp; Loubaton, 1995" data-zh="Delfosse &amp; Loubaton，1995">
+  <p lang="en">Let $\bz = \tilde\bA\bs$ with $\tilde\bA$ orthogonal and independent sources of zero mean, unit variance and kurtoses $\kappa_1, \dots, \kappa_n$, not all zero. The local maxima of $\mathcal{K}(\bw) = |\kurt(\bw^\top\bz)|$ on the unit sphere are exactly the points $\bw = \pm\tilde\ba_i$ with $\kappa_i \neq 0$, where $\tilde\ba_i$ is the $i$-th column of $\tilde\bA$; there $\bw^\top\bz = \pm s_i$. Each of them is a strict local maximum, and the global maximum value of $\mathcal{K}$ is $\max_i |\kappa_i|$.</p>
+  <p lang="zh-CN">设 $\bz = \tilde\bA\bs$，$\tilde\bA$ 正交，各源独立、均值为零、方差为一，峭度为 $\kappa_1, \dots, \kappa_n$ 且不全为零。则 $\mathcal{K}(\bw) = |\kurt(\bw^\top\bz)|$ 在单位球面上的局部极大点恰好是满足 $\kappa_i \neq 0$ 的点 $\bw = \pm\tilde\ba_i$，其中 $\tilde\ba_i$ 是 $\tilde\bA$ 的第 $i$ 列；在这些点上 $\bw^\top\bz = \pm s_i$。它们都是严格局部极大点，$\mathcal{K}$ 的全局最大值为 $\max_i |\kappa_i|$。</p>
+</div>
+<div class="proof">
+  <p lang="en">Work with $|F|$ in source coordinates. <b>Sources are strict local maxima.</b> Let $\kappa_i \neq 0$ and $\kappa_{\max} = \max_j |\kappa_j|$. For a unit vector $\bq$ near $\pm\be_i$, put $\varepsilon = 1 - q_i^2 = \sum_{j \neq i} q_j^2$, which is small and positive unless $\bq = \pm\be_i$. Since $\sum_{j \neq i} q_j^4 \le \varepsilon^2$, we have $F(\bq) = \kappa_i(1 - \varepsilon)^2 + \rho$ with $|\rho| \le \kappa_{\max}\varepsilon^2$. If $\kappa_i &gt; 0$, then $F(\bq) \le \kappa_i - 2\kappa_i\varepsilon + (\kappa_i + \kappa_{\max})\varepsilon^2 &lt; \kappa_i$ for $0 &lt; \varepsilon &lt; 2\kappa_i/(\kappa_i + \kappa_{\max})$, while $F(\bq) \ge \kappa_i(1-\varepsilon)^2 - \kappa_{\max}\varepsilon^2 &gt; 0$ for small $\varepsilon$; so $|F(\bq)| &lt; |F(\pm\be_i)|$. The case $\kappa_i &lt; 0$ is the same with all signs reversed.</p>
+  <p lang="zh-CN">在源坐标下讨论 $|F|$。<b>源方向是严格局部极大点。</b>设 $\kappa_i \neq 0$，记 $\kappa_{\max} = \max_j |\kappa_j|$。对 $\pm\be_i$ 附近的单位向量 $\bq$，令 $\varepsilon = 1 - q_i^2 = \sum_{j \neq i} q_j^2$，除非 $\bq = \pm\be_i$，它是一个小正数。由于 $\sum_{j \neq i} q_j^4 \le \varepsilon^2$，有 $F(\bq) = \kappa_i(1 - \varepsilon)^2 + \rho$，其中 $|\rho| \le \kappa_{\max}\varepsilon^2$。若 $\kappa_i &gt; 0$，则当 $0 &lt; \varepsilon &lt; 2\kappa_i/(\kappa_i + \kappa_{\max})$ 时 $F(\bq) \le \kappa_i - 2\kappa_i\varepsilon + (\kappa_i + \kappa_{\max})\varepsilon^2 &lt; \kappa_i$，而 $\varepsilon$ 很小时 $F(\bq) \ge \kappa_i(1-\varepsilon)^2 - \kappa_{\max}\varepsilon^2 &gt; 0$；所以 $|F(\bq)| &lt; |F(\pm\be_i)|$。$\kappa_i &lt; 0$ 的情形只需把所有符号反过来。</p>
+  <p lang="en"><b>No other local maxima.</b> Let $\bq$ be a local maximum of $|F|$. Suppose first $F(\bq) = 0$. Then $F$ vanishes on a neighbourhood $U$ of $\bq$ in the sphere; since $F(r\bu) = r^4 F(\bu)$, the polynomial $F$ then vanishes on the open cone $\{r\bu : r &gt; 0, \bu \in U\}$ of $\R^n$, hence everywhere, so all $\kappa_i = 0$, which is excluded. So $F(\bq) \neq 0$, $|F|$ is smooth near $\bq$, and $\bq$ is a critical point of $F$ with $\mu = F(\bq) \neq 0$, as described in <a class="ref" data-ref="lem-kurtosis-critical"></a>. Suppose its support contains two indices $i \neq j$. Move along the great circle that rotates $(q_i, q_j)$ and keeps the other coordinates fixed: $q_i = r\cos\phi$, $q_j = r\sin\phi$ with $r^2 = q_i^2 + q_j^2$. Along it $F = C + r^4 h(u)$ with $C$ constant, $u = \cos^2\phi$ and $h(u) = \kappa_i u^2 + \kappa_j (1 - u)^2$. The condition $\kappa_i q_i^2 = \kappa_j q_j^2$ says that $\bq$ sits at the stationary point $u^* = \kappa_j/(\kappa_i + \kappa_j) \in (0, 1)$ of the quadratic $h$, whose leading coefficient $\kappa_i + \kappa_j$ has the sign of $\mu$. If $\mu &gt; 0$, $h$ has a strict minimum at $u^*$, so the positive function $F$ has a strict local minimum along the circle; if $\mu &lt; 0$, $h$ has a strict maximum at $u^*$ and the negative function $F$ again has $|F|$ minimal there. (Near $u^*$ the map $\phi \mapsto u$ is a local diffeomorphism.) Either way $\bq$ is not a local maximum of $|F|$, a contradiction. Hence $|S| = 1$ and $\bq = \pm\be_i$ with $\kappa_i \neq 0$.</p>
+  <p lang="zh-CN"><b>没有其他局部极大点。</b>设 $\bq$ 是 $|F|$ 的局部极大点。先设 $F(\bq) = 0$。则 $F$ 在 $\bq$ 在球面上的某个邻域 $U$ 内恒为零；由于 $F(r\bu) = r^4 F(\bu)$，多项式 $F$ 在 $\R^n$ 的开锥 $\{r\bu : r &gt; 0, \bu \in U\}$ 上恒为零，从而处处为零，即所有 $\kappa_i = 0$，与假设矛盾。所以 $F(\bq) \neq 0$，$|F|$ 在 $\bq$ 附近光滑，$\bq$ 是 $F$ 的临界点且 $\mu = F(\bq) \neq 0$，其形式如<a class="ref" data-ref="lem-kurtosis-critical"></a>所述。假设其支撑集含两个下标 $i \neq j$。沿着旋转 $(q_i, q_j)$、保持其余坐标不变的大圆移动：$q_i = r\cos\phi$，$q_j = r\sin\phi$，$r^2 = q_i^2 + q_j^2$。沿此大圆，$F = C + r^4 h(u)$，其中 $C$ 为常数，$u = \cos^2\phi$，$h(u) = \kappa_i u^2 + \kappa_j (1 - u)^2$。条件 $\kappa_i q_i^2 = \kappa_j q_j^2$ 说明 $\bq$ 恰位于二次函数 $h$ 的驻点 $u^* = \kappa_j/(\kappa_i + \kappa_j) \in (0, 1)$，而 $h$ 的首项系数 $\kappa_i + \kappa_j$ 与 $\mu$ 同号。若 $\mu &gt; 0$，$h$ 在 $u^*$ 处取严格极小，于是取正值的 $F$ 沿该大圆取严格局部极小；若 $\mu &lt; 0$，$h$ 在 $u^*$ 处取严格极大，取负值的 $F$ 在此处同样使 $|F|$ 取极小。（在 $u^*$ 附近，$\phi \mapsto u$ 是局部微分同胚。）无论哪种情形，$\bq$ 都不是 $|F|$ 的局部极大点，矛盾。所以 $|S| = 1$，即 $\bq = \pm\be_i$ 且 $\kappa_i \neq 0$。</p>
+  <p lang="en"><b>Translation.</b> The global maximum value is $\max_i |\kappa_i|$ by <a class="ref" data-ref="prop-kurtosis-sum"></a>. Finally $\bq = \pm\be_i$ corresponds to $\bw = \tilde\bA\bq = \pm\tilde\ba_i$, and then $\bw^\top\bz = \bq^\top\bs = \pm s_i$.</p>
+  <p lang="zh-CN"><b>换回原坐标。</b>由<a class="ref" data-ref="prop-kurtosis-sum"></a>，全局最大值为 $\max_i |\kappa_i|$。最后，$\bq = \pm\be_i$ 对应 $\bw = \tilde\bA\bq = \pm\tilde\ba_i$，此时 $\bw^\top\bz = \bq^\top\bs = \pm s_i$。</p>
+</div>
+
+<p lang="en"><a class="ref" data-ref="fig-kurtosis-landscape"></a> shows the landscape for two sources. With two sub-Gaussian sources (a), $|\kurt|$ has its local maxima at the two source directions and local minima at the interior critical points, where $\tan^2(\theta - \theta_0) = \kappa_1/\kappa_2$ and $|\kurt| = |(1/\kappa_1 + 1/\kappa_2)^{-1}| = 0.75$. With a sub- and a super-Gaussian source (b), there are no interior critical points with $|S| = 2$; instead the kurtosis changes sign between the source directions, and $|\kurt|$ drops to zero. In both cases every local maximum is a source, as the theorem says.</p>
+<p lang="zh-CN"><a class="ref" data-ref="fig-kurtosis-landscape"></a>展示了两个源时的地形。两个源都是亚高斯时（a），$|\kurt|$ 的局部极大点位于两个源方向，局部极小点位于内部临界点，在那里 $\tan^2(\theta - \theta_0) = \kappa_1/\kappa_2$，$|\kurt| = |(1/\kappa_1 + 1/\kappa_2)^{-1}| = 0.75$。一个亚高斯源加一个超高斯源时（b），不存在 $|S| = 2$ 的内部临界点；峭度在两个源方向之间改变符号，$|\kurt|$ 降到零。两种情形下，每个局部极大点都是源，正如定理所言。</p>
+
+<figure id="fig-kurtosis-landscape">
+  <img src="fig/ch05-landscape.svg" width="620" height="250" alt="Two panels plotting the absolute kurtosis of the projection onto the direction at angle theta, for theta from 0 to pi. Left: a uniform and a binary source; maxima of 1.2 and 2 at the source directions (dashed lines), minima of 0.75 between them. Right: a uniform and a Laplacian source; maxima at the source directions and zeros between them; the sample estimate overshoots the Laplacian peak.">
+  <figcaption><span lang="en">Absolute kurtosis of $\bw_\theta^\top\bz$, with $\bw_\theta = (\cos\theta, \sin\theta)^\top$, for two whitened sources whose directions are $\theta_0 = \pi/6$ and $\theta_0 + \pi/2$ (dashed). Lines: $|\kappa_1\cos^4(\theta - \theta_0) + \kappa_2\sin^4(\theta - \theta_0)|$; dots: estimates from $T = 5000$ samples. (a) Uniform and binary sources: open circles mark the interior critical points, which are minima of $|\kurt|$. (b) Uniform and Laplacian sources: the kurtosis changes sign between the sources. The estimate at the Laplacian direction overshoots by about $0.7$, about $1.4$ standard deviations of the standardized sample kurtosis at this sample size (<a class="ref" data-ref="sec-kurtosis-robustness"></a>).</span><span lang="zh-CN">$\bw_\theta^\top\bz$ 的峭度绝对值，其中 $\bw_\theta = (\cos\theta, \sin\theta)^\top$；两个白化源的方向为 $\theta_0 = \pi/6$ 与 $\theta_0 + \pi/2$（虚线）。实线为 $|\kappa_1\cos^4(\theta - \theta_0) + \kappa_2\sin^4(\theta - \theta_0)|$，圆点为由 $T = 5000$ 个样本得到的估计。（a）均匀源与二值源：空心圆标出内部临界点，它们是 $|\kurt|$ 的极小点。（b）均匀源与拉普拉斯源：峭度在两个源之间改变符号。拉普拉斯方向上的估计值偏高约 $0.7$，约为该样本量下标准化样本峭度标准差的 $1.4$ 倍（<a class="ref" data-ref="sec-kurtosis-robustness"></a>）。</span></figcaption>
+</figure>
+
+<p lang="en">Two practical remarks follow. First, the absolute value matters. Maximizing $\kurt$ itself finds super-Gaussian sources, but if all sources are sub-Gaussian then $F &lt; 0$ everywhere and its maximum is the critical point with the largest $\mu$, which is the one with full support: the direction that mixes all sources (<a class="ref" data-ref="ex-maximize-kurtosis"></a>). An algorithm must either maximize $|\kurt|$ or $\kurt^2$, or know the sign of the kurtosis it is looking for. Second, a source with $\kappa_i = 0$ produces no local maximum at all: kurtosis cannot see it, even if it is far from Gaussian. We return to this in <a class="ref" data-ref="sec-kurtosis-robustness"></a>.</p>
+<p lang="zh-CN">由此得到两点实际的提醒。第一，绝对值不能省。直接最大化 $\kurt$ 能找到超高斯源；但若所有源都是亚高斯的，则 $F$ 处处为负，其最大值落在 $\mu$ 最大的临界点，也就是支撑集为全集的那个点：把所有源混在一起的方向（<a class="ref" data-ref="ex-maximize-kurtosis"></a>）。算法要么最大化 $|\kurt|$ 或 $\kurt^2$，要么事先知道所找峭度的符号。第二，$\kappa_i = 0$ 的源根本不产生局部极大点：即使它远离高斯，峭度也看不见它。我们将在<a class="ref" data-ref="sec-kurtosis-robustness"></a>回到这一点。</p>
+
+<h2 id="sec-kurtosis-multi-unit"><span lang="en">All components at once: Comon's contrast</span><span lang="zh-CN">同时估计全部成分：Comon 对比函数</span></h2>
+
+<p lang="en">One-unit methods find the sources one at a time. To estimate all of them together, search over orthogonal matrices $\bU$, with outputs $\by = \bU\bz$, and add up a one-unit contrast over the outputs. Comon (1994) proposed the sum of squared kurtoses,</p>
+<p lang="zh-CN">单单元方法一次只找一个源。若要同时估计全部源，可以在正交矩阵 $\bU$ 上搜索，输出为 $\by = \bU\bz$，并把单单元对比函数对各个输出求和。Comon（1994）提出了峭度平方和</p>
+
+<div class="eq" id="eq-comon-contrast">$$\Psi(\bU) = \sum_{i=1}^{n} \kurt(y_i)^2, \qquad \by = \bU\bz .$$</div>
+
+<p lang="en">For outputs that are symmetric and close to Gaussian, maximizing $\Psi$ approximately minimizes their mutual information (<a class="ref" data-ref="sec-negentropy-approx"></a>). With the orthogonal matrix $\bQ = \bU\tilde\bA$ we have $\by = \bQ\bs$, and by <a class="ref" data-ref="prop-kurtosis-sum"></a>, $\kurt(y_i) = \sum_j Q_{ij}^4 \kappa_j$.</p>
+<p lang="zh-CN">对于对称且接近高斯的输出，最大化 $\Psi$ 近似于最小化输出的互信息（<a class="ref" data-ref="sec-negentropy-approx"></a>）。记正交矩阵 $\bQ = \bU\tilde\bA$，则 $\by = \bQ\bs$，并由<a class="ref" data-ref="prop-kurtosis-sum"></a>得 $\kurt(y_i) = \sum_j Q_{ij}^4 \kappa_j$。</p>
+
+<div class="env" data-kind="proposition" id="prop-comon-contrast" data-en="Comon's kurtosis contrast" data-zh="Comon 峭度对比函数">
+  <p lang="en">For every orthogonal $\bU$, $\Psi(\bU) \le \sum_j \kappa_j^2$. If at most one source has zero kurtosis, equality holds if and only if $\bQ = \bU\tilde\bA$ is a signed permutation matrix, that is, if and only if $\bU$ separates the sources.</p>
+  <p lang="zh-CN">对任意正交矩阵 $\bU$，$\Psi(\bU) \le \sum_j \kappa_j^2$。若至多一个源的峭度为零，则等号成立当且仅当 $\bQ = \bU\tilde\bA$ 是带符号的置换矩阵，即当且仅当 $\bU$ 把源分离开。</p>
+</div>
+<div class="proof">
+  <p lang="en">By the Cauchy–Schwarz inequality with weights $Q_{ij}^2$, $\bigl(\sum_j Q_{ij}^2 \cdot Q_{ij}^2\kappa_j\bigr)^2 \le \bigl(\sum_j Q_{ij}^4\bigr)\bigl(\sum_j Q_{ij}^4\kappa_j^2\bigr) \le \sum_j Q_{ij}^4\kappa_j^2$, because each row of $\bQ$ has unit norm and so $\sum_j Q_{ij}^4 \le 1$. Summing over $i$ and using that each column also has unit norm,</p>
+  <p lang="zh-CN">由带权 $Q_{ij}^2$ 的 Cauchy–Schwarz 不等式，$\bigl(\sum_j Q_{ij}^2 \cdot Q_{ij}^2\kappa_j\bigr)^2 \le \bigl(\sum_j Q_{ij}^4\bigr)\bigl(\sum_j Q_{ij}^4\kappa_j^2\bigr) \le \sum_j Q_{ij}^4\kappa_j^2$，因为 $\bQ$ 的每一行都是单位向量，故 $\sum_j Q_{ij}^4 \le 1$。对 $i$ 求和，并利用每一列也是单位向量，得</p>
+  <div class="eq">$$\Psi(\bU) \le \sum_j \kappa_j^2 \sum_i Q_{ij}^4 \le \sum_j \kappa_j^2 \Bigl(\sum_i Q_{ij}^2\Bigr)^2 = \sum_j \kappa_j^2 .$$</div>
+  <p lang="en">Equality in the last step requires $\sum_i Q_{ij}^4 = 1$, i.e. column $j$ equal to $\pm$ a standard basis vector, for every $j$ with $\kappa_j \neq 0$. These columns are orthonormal, so they occupy distinct rows; if at most one $\kappa_j$ vanishes, the remaining column is a unit vector orthogonal to all the others and is therefore a signed basis vector too. Conversely, for a signed permutation each $\kurt(y_i)$ equals one of the $\kappa_j$, each used once, and $\Psi = \sum_j \kappa_j^2$.</p>
+  <p lang="zh-CN">最后一步取等号要求：对每个 $\kappa_j \neq 0$ 的 $j$，都有 $\sum_i Q_{ij}^4 = 1$，即第 $j$ 列等于 $\pm$ 某个标准基向量。这些列相互正交，因而位于不同的行；若至多一个 $\kappa_j$ 为零，剩下的那一列是与其余各列都正交的单位向量，于是也是带符号的基向量。反之，若 $\bQ$ 是带符号的置换矩阵，则每个 $\kurt(y_i)$ 恰为某个 $\kappa_j$，且每个 $\kappa_j$ 恰好出现一次，故 $\Psi = \sum_j \kappa_j^2$。</p>
+</div>
+
+<p lang="en">Unlike the one-unit contrast, $\Psi$ tolerates one source with zero kurtosis. It also has a useful interpretation. The sum of the squares of <em>all</em> fourth-order cumulants of $\by$, $\sum_{ijkl}\cum(y_i, y_j, y_k, y_l)^2$, does not depend on the rotation and equals $\sum_j \kappa_j^2$ (<a class="ref" data-ref="ex-cumulant-norm"></a>). Maximizing the diagonal part $\Psi$ is therefore the same as minimizing the sum of the squared cross-cumulants, which is the idea behind JADE (<a class="ref" data-ref="jade-sobi"></a>).</p>
+<p lang="zh-CN">与单单元对比函数不同，$\Psi$ 能容忍一个峭度为零的源。它还有一个有用的解释：$\by$ 的<em>全部</em>四阶累积量的平方和 $\sum_{ijkl}\cum(y_i, y_j, y_k, y_l)^2$ 与旋转无关，恒等于 $\sum_j \kappa_j^2$（<a class="ref" data-ref="ex-cumulant-norm"></a>）。因此最大化对角部分 $\Psi$，等价于最小化交叉累积量的平方和，这正是 JADE 的思路（<a class="ref" data-ref="jade-sobi"></a>）。</p>
+
+<h2 id="sec-kurtosis-algorithms"><span lang="en">Gradient ascent, a fixed point, and deflation</span><span lang="zh-CN">梯度上升、不动点与逐个提取</span></h2>
+
+<p lang="en"><b>Gradient ascent.</b> For whitened data $\E[(\bw^\top\bz)^2] = \|\bw\|^2$, so $\kurt(\bw^\top\bz) = \E[(\bw^\top\bz)^4] - 3\|\bw\|^4$ and</p>
+<p lang="zh-CN"><b>梯度上升。</b>对白化数据有 $\E[(\bw^\top\bz)^2] = \|\bw\|^2$，所以 $\kurt(\bw^\top\bz) = \E[(\bw^\top\bz)^4] - 3\|\bw\|^4$，且</p>
+
+<div class="eq" id="eq-kurtosis-gradient">$$\nabla_{\bw} \kurt(\bw^\top\bz) = 4\,\E\bigl[\bz\,(\bw^\top\bz)^3\bigr] - 12\,\|\bw\|^2\,\bw .$$</div>
+
+<p lang="en">To increase $|\kurt|$, take a step along the gradient multiplied by the sign of the current kurtosis, then renormalize. The second term of the gradient points along $\bw$; after normalization it only rescales the step, so it can be dropped:</p>
+<p lang="zh-CN">为了增大 $|\kurt|$，沿梯度乘以当前峭度的符号走一步，再归一化。梯度的第二项沿 $\bw$ 方向，归一化之后只改变步长，因此可以略去：</p>
+
+<div class="eq">$$\bw \leftarrow \bw + \mu\, \sign\bigl(\kurt(\bw^\top\bz)\bigr)\, \E\bigl[\bz\,(\bw^\top\bz)^3\bigr], \qquad \bw \leftarrow \bw / \|\bw\| .$$</div>
+
+<p lang="en">With the expectation replaced by a sample average this is a batch algorithm; with one sample per step it is a stochastic (online) algorithm. Because $|\kurt|$ has no local maxima other than the sources (<a class="ref" data-ref="thm-kurtosis-maxima"></a>), gradient ascent with a small step size cannot be trapped at a spurious maximum. Its costs are a step size $\mu$ that must be tuned and only linear convergence.</p>
+<p lang="zh-CN">把期望换成样本平均，就得到批处理算法；每一步只用一个样本，就得到随机（在线）算法。由于 $|\kurt|$ 除源方向外没有其他局部极大点（<a class="ref" data-ref="thm-kurtosis-maxima"></a>），步长足够小的梯度上升不会被困在伪极大点。它的代价是需要调节步长 $\mu$，而且只有线性收敛速度。</p>
+
+<p lang="en"><b>A fixed-point iteration.</b> At a critical point on the sphere the gradient <a class="ref" data-ref="eq-kurtosis-gradient"></a> is parallel to $\bw$, so $\E[\bz(\bw^\top\bz)^3] - 3\bw$ is a multiple of $\bw$. Hyvärinen &amp; Oja (1997) turned this condition into an iteration without a step size:</p>
+<p lang="zh-CN"><b>不动点迭代。</b>在球面上的临界点处，梯度 <a class="ref" data-ref="eq-kurtosis-gradient"></a> 与 $\bw$ 平行，所以 $\E[\bz(\bw^\top\bz)^3] - 3\bw$ 是 $\bw$ 的倍数。Hyvärinen &amp; Oja（1997）把这个条件变成了一个无需步长的迭代：</p>
+
+<div class="eq" id="eq-kurtosis-fixed-point">$$\bw \leftarrow \E\bigl[\bz\,(\bw^\top\bz)^3\bigr] - 3\bw, \qquad \bw \leftarrow \bw / \|\bw\| .$$</div>
+
+<p lang="en">In source coordinates the iteration is strikingly simple. For a unit vector $\bq$, expand $\E[s_i(\bq^\top\bs)^3] = \sum_{j,k,l} q_j q_k q_l \E[s_i s_j s_k s_l]$. By independence and zero means only the terms in which the indices pair up survive: all four equal to $i$, or one of $j, k, l$ equal to $i$ and the other two equal to some $m \neq i$. This gives $q_i^3\E[s_i^4] + 3q_i\sum_{m \neq i} q_m^2 = q_i^3(\kappa_i + 3) + 3q_i(1 - q_i^2) = \kappa_i q_i^3 + 3q_i$. Since $\tilde\bA^\top\E[\bz(\bw^\top\bz)^3] = \E[\bs(\bq^\top\bs)^3]$, the update before normalization is</p>
+<p lang="zh-CN">在源坐标下，这个迭代简单得出奇。对单位向量 $\bq$，展开 $\E[s_i(\bq^\top\bs)^3] = \sum_{j,k,l} q_j q_k q_l \E[s_i s_j s_k s_l]$。由于独立且均值为零，只有下标两两配对的项保留下来：四个下标都等于 $i$，或者 $j, k, l$ 中有一个等于 $i$、另两个等于某个 $m \neq i$。于是得到 $q_i^3\E[s_i^4] + 3q_i\sum_{m \neq i} q_m^2 = q_i^3(\kappa_i + 3) + 3q_i(1 - q_i^2) = \kappa_i q_i^3 + 3q_i$。由于 $\tilde\bA^\top\E[\bz(\bw^\top\bz)^3] = \E[\bs(\bq^\top\bs)^3]$，归一化之前的更新为</p>
+
+<div class="eq" id="eq-cubic-update">$$q_i^{+} = \kappa_i\, q_i^{3}, \qquad i = 1, \dots, n .$$</div>
+
+<p lang="en">Let $r_j = |\kappa_j|^{1/2}|q_j|$. One step maps $r_j$ to $r_j^3$ up to a common normalizing factor, so all ratios are cubed: $r_j^{+}/r_i^{+} = (r_j/r_i)^3$. If index $i$ has the strictly largest $r_i$ at the start, every other ratio decays like $(r_j/r_i)^{3^k}$ after $k$ steps: the iteration converges <em>cubically</em> to $\bq = \pm\be_i$, that is, $\bw \to \pm\tilde\ba_i$. Sources with zero kurtosis drop out after one step. This is FastICA with the nonlinearity $g(u) = u^3$; <a class="ref" data-ref="fastica"></a> derives FastICA as an approximate Newton method and analyses its convergence for general nonlinearities (<a class="ref" data-ref="thm-fastica-convergence"></a>).</p>
+<p lang="zh-CN">令 $r_j = |\kappa_j|^{1/2}|q_j|$。一步迭代在相差一个公共归一化因子的意义下把 $r_j$ 变为 $r_j^3$，所以所有比值都被立方：$r_j^{+}/r_i^{+} = (r_j/r_i)^3$。若下标 $i$ 在起点处的 $r_i$ 严格最大，则 $k$ 步之后其余比值都按 $(r_j/r_i)^{3^k}$ 衰减：迭代<em>三次收敛</em>到 $\bq = \pm\be_i$，即 $\bw \to \pm\tilde\ba_i$。峭度为零的源在一步之后就消失了。这正是非线性函数取 $g(u) = u^3$ 的 FastICA；<a class="ref" data-ref="fastica"></a>把 FastICA 推导为近似牛顿法，并对一般的非线性函数分析其收敛性（<a class="ref" data-ref="thm-fastica-convergence"></a>）。</p>
+
+<p lang="en"><b>Deflation.</b> To find all sources, run the one-unit iteration repeatedly, each time in the orthogonal complement of the directions already found. Once $\bw_1 = \pm\tilde\ba_{i_1}$ is known, the constraint $\bw \perp \bw_1$ reads $q_{i_1} = 0$ in source coordinates: the problem is the same with source $i_1$ removed, and <a class="ref" data-ref="thm-kurtosis-maxima"></a> applies to the remaining sources. This is the deflation approach of Delfosse &amp; Loubaton (1995).</p>
+<p lang="zh-CN"><b>逐个提取（紧缩）。</b>要找到全部源，就反复运行单单元迭代，每次都限制在已找到方向的正交补中。一旦求得 $\bw_1 = \pm\tilde\ba_{i_1}$，约束 $\bw \perp \bw_1$ 在源坐标下就是 $q_{i_1} = 0$：问题与去掉源 $i_1$ 之后的问题完全相同，<a class="ref" data-ref="thm-kurtosis-maxima"></a>对剩下的源依然适用。这就是 Delfosse &amp; Loubaton（1995）的逐个提取方法。</p>
+
+<div class="env" data-kind="algorithm" id="alg-kurtosis-deflation" data-en="kurtosis-based deflation" data-zh="基于峭度的逐个提取">
+  <ol lang="en">
+    <li>Center and whiten the data: $\bz = \bV\bx$.</li>
+    <li>For $p = 1, \dots, n$: draw a random unit vector $\bw$ and repeat until $|\bw^\top\bw_{\text{old}}|$ is within a tolerance of $1$: set $\bw \leftarrow \hat\E[\bz(\bw^\top\bz)^3] - 3\bw$, then $\bw \leftarrow \bw - \sum_{k &lt; p} (\bw_k^\top\bw)\,\bw_k$, then $\bw \leftarrow \bw/\|\bw\|$. Store $\bw_p = \bw$.</li>
+    <li>Return $\bU = [\bw_1, \dots, \bw_n]^\top$, the unmixing matrix $\bW = \bU\bV$ and the outputs $\by = \bU\bz$.</li>
+  </ol>
+  <ol lang="zh-CN">
+    <li>对数据中心化并白化：$\bz = \bV\bx$。</li>
+    <li>对 $p = 1, \dots, n$：随机取单位向量 $\bw$，重复以下步骤直到 $|\bw^\top\bw_{\text{old}}|$ 与 $1$ 的差小于容差：令 $\bw \leftarrow \hat\E[\bz(\bw^\top\bz)^3] - 3\bw$，再令 $\bw \leftarrow \bw - \sum_{k &lt; p} (\bw_k^\top\bw)\,\bw_k$，然后 $\bw \leftarrow \bw/\|\bw\|$。记 $\bw_p = \bw$。</li>
+    <li>返回 $\bU = [\bw_1, \dots, \bw_n]^\top$、解混矩阵 $\bW = \bU\bV$ 以及输出 $\by = \bU\bz$。</li>
+  </ol>
+</div>
+
+<p lang="en">The script below implements <a class="ref" data-ref="alg-kurtosis-deflation"></a> for three sources: a uniform, a Laplacian and a binary one.</p>
+<p lang="zh-CN">下面的脚本对三个源（一个均匀源、一个拉普拉斯源和一个二值源）实现<a class="ref" data-ref="alg-kurtosis-deflation"></a>。</p>
+
+<pre class="code"><code>import numpy as np
+
+rng = np.random.default_rng(0)
+T, n = 10000, 3
+S = np.vstack([rng.uniform(-np.sqrt(3), np.sqrt(3), T),  # kurtosis -1.2
+               rng.laplace(0.0, 1 / np.sqrt(2), T),       # kurtosis +3
+               rng.choice([-1.0, 1.0], T)])               # kurtosis -2
+A = rng.standard_normal((n, n))
+X = A @ S
+
+X = X - X.mean(axis=1, keepdims=True)                     # whiten: z = V x
+d, E = np.linalg.eigh(np.cov(X))
+V = E @ np.diag(d ** -0.5) @ E.T
+Z = V @ X
+
+U = np.zeros((n, n))                          # rows: directions found so far
+for p in range(n):
+    w = rng.standard_normal(n)
+    w /= np.linalg.norm(w)
+    for it in range(1, 101):
+        y = w @ Z
+        w_new = (Z * y**3).mean(axis=1) - 3 * w           # fixed point
+        w_new -= U[:p].T @ (U[:p] @ w_new)                # Gram-Schmidt
+        w_new /= np.linalg.norm(w_new)
+        done = abs(w_new @ w) &gt; 1 - 1e-12                 # converged
+        w = w_new
+        if done:
+            break
+    U[p] = w
+    y = w @ Z
+    kurt = np.mean(y**4) - 3 * np.mean(y**2)**2
+    print(f"unit {p + 1}: {it} iterations, kurtosis {kurt:+.2f}")
+print(np.round(U @ V @ A, 2) + 0.0)           # close to a signed permutation</code></pre>
+
+<p lang="en">On this run the three units converge in 6, 5 and 2 iterations and recover the uniform source (sample kurtosis $-1.21$), the binary source ($-2.00$) and the Laplacian source ($+2.78$), in that order. The last unit has no freedom left after deflation, so it converges at once. The global matrix is close to a permutation:</p>
+<p lang="zh-CN">这次运行中，三个单元分别在 6、5、2 次迭代后收敛，依次恢复了均匀源（样本峭度 $-1.21$）、二值源（$-2.00$）和拉普拉斯源（$+2.78$）。逐个提取之后，最后一个单元已没有自由度，所以立即收敛。全局矩阵接近一个置换矩阵：</p>
+
+<div class="eq">$$\bU\bV\bA \approx \begin{pmatrix} 1.00 &amp; 0.00 &amp; -0.01 \\ 0.00 &amp; 0.00 &amp; 1.00 \\ -0.01 &amp; 1.01 &amp; -0.01 \end{pmatrix}.$$</div>
+
+<p lang="en">With exact expectations every unit would land exactly on a source. With sample averages the error in $\bw_1$ is passed on to all later units through the orthogonality constraint, so errors accumulate along the deflation sequence. Symmetric orthogonalization, which updates all units in parallel, avoids this ordering (<a class="ref" data-ref="alg-symmetric-fastica"></a>).</p>
+<p lang="zh-CN">若期望是精确的，每个单元都会恰好落在某个源上。用样本平均时，$\bw_1$ 的误差会通过正交约束传给之后的所有单元，误差沿提取顺序累积。对称正交化同时更新所有单元，避免了这种顺序依赖（<a class="ref" data-ref="alg-symmetric-fastica"></a>）。</p>
+
+<h2 id="sec-kurtosis-robustness"><span lang="en">Statistical weaknesses of kurtosis</span><span lang="zh-CN">峭度的统计弱点</span></h2>
+
+<p lang="en">The theory above uses exact expectations. In practice the kurtosis of each candidate projection is estimated from $T$ samples, and the quality of the estimate decides whether the landscape of <a class="ref" data-ref="fig-kurtosis-landscape"></a> can be seen at all. Kurtosis is a fourth-order statistic, so its estimate is governed by moments up to order eight.</p>
+<p lang="zh-CN">上面的理论用的是精确的期望。实践中，每个候选投影的峭度都要从 $T$ 个样本估计，估计的好坏决定了<a class="ref" data-ref="fig-kurtosis-landscape"></a>中的地形能否被看清。峭度是四阶统计量，所以它的估计受到直到八阶的矩的支配。</p>
+
+<div class="env" data-kind="proposition" id="prop-kurtosis-variance" data-en="variance of the sample kurtosis" data-zh="样本峭度的方差">
+  <p lang="en">Let $y_1, \dots, y_T$ be independent copies of a variable $y$ with known zero mean, unit variance and moments $m_k = \E[y^k]$ with $m_8 &lt; \infty$. Let $\hat m_k = \frac1T\sum_t y_t^k$. For the raw estimator $\hat\kappa = \hat m_4 - 3\hat m_2^2$, $\sqrt{T}(\hat\kappa - \kappa)$ converges in distribution to $\Ncal(0, V)$, and for the standardized estimator $\hat\kappa_{\mathrm{s}} = \hat m_4/\hat m_2^2 - 3$, $\sqrt{T}(\hat\kappa_{\mathrm{s}} - \kappa)$ converges to $\Ncal(0, V_{\mathrm{s}})$, where</p>
+  <p lang="zh-CN">设 $y_1, \dots, y_T$ 是变量 $y$ 的独立副本，$y$ 的均值已知为零、方差为一，矩 $m_k = \E[y^k]$ 满足 $m_8 &lt; \infty$。令 $\hat m_k = \frac1T\sum_t y_t^k$。对未标准化的估计量 $\hat\kappa = \hat m_4 - 3\hat m_2^2$，$\sqrt{T}(\hat\kappa - \kappa)$ 依分布收敛到 $\Ncal(0, V)$；对标准化的估计量 $\hat\kappa_{\mathrm{s}} = \hat m_4/\hat m_2^2 - 3$，$\sqrt{T}(\hat\kappa_{\mathrm{s}} - \kappa)$ 依分布收敛到 $\Ncal(0, V_{\mathrm{s}})$，其中</p>
+  <div class="eq" id="eq-kurtosis-variance">$$V = m_8 - m_4^2 - 12\, m_6 + 48\, m_4 - 36, \qquad V_{\mathrm{s}} = m_8 - m_4^2 + 4\, m_4^3 - 4\, m_4 m_6 .$$</div>
+</div>
+<div class="proof">
+  <p lang="en">By the central limit theorem, $\sqrt{T}(\hat m_2 - 1, \hat m_4 - m_4)$ is asymptotically Gaussian with covariance entries $\Var(y^2) = m_4 - 1$, $\Var(y^4) = m_8 - m_4^2$ and $\Cov(y^2, y^4) = m_6 - m_4$. The map $(a, b) \mapsto b - 3a^2$ has gradient $(-6, 1)$ at $(1, m_4)$, so by the delta method (<a class="ref" data-ref="sec-asymptotics"></a>) $V = 36(m_4 - 1) - 12(m_6 - m_4) + (m_8 - m_4^2)$, which is the stated expression. The map $(a, b) \mapsto b/a^2 - 3$ has gradient $(-2m_4, 1)$ there, which gives $V_{\mathrm{s}} = 4m_4^2(m_4 - 1) - 4m_4(m_6 - m_4) + (m_8 - m_4^2)$.</p>
+  <p lang="zh-CN">由中心极限定理，$\sqrt{T}(\hat m_2 - 1, \hat m_4 - m_4)$ 渐近服从高斯分布，其协方差的各元素为 $\Var(y^2) = m_4 - 1$、$\Var(y^4) = m_8 - m_4^2$ 与 $\Cov(y^2, y^4) = m_6 - m_4$。映射 $(a, b) \mapsto b - 3a^2$ 在 $(1, m_4)$ 处的梯度为 $(-6, 1)$，由 delta 方法（<a class="ref" data-ref="sec-asymptotics"></a>）得 $V = 36(m_4 - 1) - 12(m_6 - m_4) + (m_8 - m_4^2)$，整理即得所述表达式。映射 $(a, b) \mapsto b/a^2 - 3$ 在该点的梯度为 $(-2m_4, 1)$，由此得 $V_{\mathrm{s}} = 4m_4^2(m_4 - 1) - 4m_4(m_6 - m_4) + (m_8 - m_4^2)$。</p>
+</div>
+
+<p lang="en">For the Gaussian, $V = V_{\mathrm{s}} = 24$, the familiar $24/T$. For the uniform law $V = 1728/175 \approx 9.87$ but $V_{\mathrm{s}} = 1152/875 \approx 1.32$, and for the Laplace law $V = 1656$ and $V_{\mathrm{s}} = 1188$ (<a class="ref" data-ref="ex-kurtosis-variance"></a>). In practice the kurtosis is usually computed on standardized data, as in the code and figure of this chapter, because whitening standardizes every projection. Standardization helps a great deal for light tails and little for heavy ones: with $T = 1000$ samples the standard error of the standardized sample kurtosis is about $0.04$ for a uniform source, whose kurtosis is $-1.2$, but about $1.1$ for a Laplacian source, whose kurtosis is $3$. Heavy tails make the estimate of a large kurtosis very noisy. Centering by the sample mean leaves both variances unchanged when $m_3 = 0$, as for symmetric laws; otherwise it adds a term (<a class="ref" data-ref="ex-kurtosis-variance"></a>).</p>
+<p lang="zh-CN">对高斯分布，$V = V_{\mathrm{s}} = 24$，即熟知的 $24/T$。对均匀分布，$V = 1728/175 \approx 9.87$，而 $V_{\mathrm{s}} = 1152/875 \approx 1.32$；对拉普拉斯分布，$V = 1656$，$V_{\mathrm{s}} = 1188$（<a class="ref" data-ref="ex-kurtosis-variance"></a>）。实践中通常在标准化后的数据上计算峭度，本章的代码与插图也是如此，因为白化会把每个投影都标准化。标准化对轻尾分布帮助很大，对重尾分布帮助有限：当 $T = 1000$ 时，均匀源（峭度 $-1.2$）的标准化样本峭度的标准误约为 $0.04$，而拉普拉斯源（峭度 $3$）的标准误约为 $1.1$。重尾使得对大峭度的估计非常嘈杂。用样本均值中心化时，若 $m_3 = 0$（例如对称分布），两个方差都不变；否则会多出一项（<a class="ref" data-ref="ex-kurtosis-variance"></a>）。</p>
+
+<p lang="en"><b>Heavier tails.</b> If $m_8 = \infty$, for example for Student's $t$ distribution with $\nu \le 8$ degrees of freedom, the sample fourth moment has infinite variance and the error of the sample kurtosis decays more slowly than $1/\sqrt{T}$. If $m_4 = \infty$ ($\nu \le 4$), the kurtosis is not even defined, although the source is perfectly separable in principle.</p>
+<p lang="zh-CN"><b>更重的尾部。</b>若 $m_8 = \infty$（例如自由度 $\nu \le 8$ 的 Student $t$ 分布），样本四阶矩的方差为无穷大，样本峭度的误差衰减得比 $1/\sqrt{T}$ 更慢。若 $m_4 = \infty$（$\nu \le 4$），峭度根本没有定义，尽管这样的源在原则上完全可以分离。</p>
+
+<p lang="en"><b>Outliers.</b> A single observation $x_0$ changes $\hat m_4$ by about $x_0^4/T$, so its influence is unbounded. A point ten standard deviations out, in a sample of $T = 1000$, adds about $10$ to the estimated fourth moment, far more than the kurtosis of any sub-Gaussian source. In one simulated sample of $1000$ unit-variance uniform values, the sample kurtosis after standardizing was $-1.18$; appending a single value at $5$ changed it to $-0.64$, and a single value at $10$ to $+7.13$. One point out of $1001$ turned a clearly sub-Gaussian sample into a strongly super-Gaussian one.</p>
+<p lang="zh-CN"><b>离群值。</b>单个观测 $x_0$ 会使 $\hat m_4$ 改变约 $x_0^4/T$，因此其影响是无界的。在 $T = 1000$ 的样本中，一个偏离十个标准差的点会使四阶矩的估计增加约 $10$，远大于任何亚高斯源的峭度。在一次模拟中，$1000$ 个单位方差均匀样本标准化之后的样本峭度为 $-1.18$；只添加一个取值为 $5$ 的点，它就变为 $-0.64$；添加一个取值为 $10$ 的点，它变为 $+7.13$。$1001$ 个点中的一个，就把一个明显亚高斯的样本变成了强烈超高斯的样本。</p>
+
+<p lang="en"><b>Sources with small kurtosis.</b> Let $s$ be uniform with probability $5/7$ and Laplacian with probability $2/7$, both components having unit variance. Then $\E[s^4] = \frac57\cdot\frac95 + \frac27\cdot 6 = 3$, so $\kurt(s) = 0$, yet $s$ is clearly not Gaussian: its density jumps at $\pm\sqrt3$. By <a class="ref" data-ref="thm-kurtosis-maxima"></a> such a source creates no local maximum of $|\kurt|$, and two of them make $\Psi$ blind to any rotation within their plane, since every projection onto that plane has zero kurtosis. More generally, a source whose kurtosis is small compared with the standard error $\sqrt{V/T}$ is invisible to kurtosis in practice, however non-Gaussian it may be in other respects.</p>
+<p lang="zh-CN"><b>峭度很小的源。</b>令 $s$ 以概率 $5/7$ 服从均匀分布、以概率 $2/7$ 服从拉普拉斯分布，两个分量的方差都为一。则 $\E[s^4] = \frac57\cdot\frac95 + \frac27\cdot 6 = 3$，所以 $\kurt(s) = 0$；但 $s$ 显然不是高斯的：它的密度在 $\pm\sqrt3$ 处有跳跃。由<a class="ref" data-ref="thm-kurtosis-maxima"></a>，这样的源不会产生 $|\kurt|$ 的局部极大点；有两个这样的源时，$\Psi$ 对它们所在平面内的任何旋转都无动于衷，因为该平面上的每个投影的峭度都为零。更一般地，只要一个源的峭度与标准误 $\sqrt{V/T}$ 相比很小，峭度在实践中就看不见它，无论它在其他方面多么非高斯。</p>
+
+<p lang="en">All three weaknesses have the same cause: the function $u^4$ grows fast, so the estimate depends on rare large values and needs high moments to be stable. <a class="ref" data-ref="likelihood"></a> derives contrasts from likelihood and information theory and approximates them with slowly growing functions such as $\log\cosh u$. Their sample averages have small variance under weak moment conditions, a single outlier has bounded or at most linear influence, and they respond to non-Gaussianity that kurtosis misses, including the zero-kurtosis source above (<a class="ref" data-ref="fig-negentropy"></a>).</p>
+<p lang="zh-CN">这三个弱点出自同一个原因：函数 $u^4$ 增长太快，估计依赖于少见的大值，需要高阶矩才能稳定。<a class="ref" data-ref="likelihood"></a>从似然与信息论出发构造对比函数，并用 $\log\cosh u$ 这类增长缓慢的函数来近似它们。在较弱的矩条件下，这些函数的样本平均方差很小，单个离群值的影响有界或至多是线性的，而且它们能察觉峭度察觉不到的非高斯性，包括上面那个峭度为零的源（<a class="ref" data-ref="fig-negentropy"></a>）。</p>
+
+<div class="keypoints">
+  <p class="kp-title" lang="en">Key points</p>
+  <p class="kp-title" lang="zh-CN">本章要点</p>
+  <ul lang="en">
+    <li>For whitened data a projection is $y = \bq^\top\bs$ with $\|\bq\| = 1$, and $\kurt(y) = \sum_i q_i^4\kappa_i$. Its absolute value never exceeds $\max_i|\kappa_i|$: mixing cannot create kurtosis.</li>
+    <li>The local maxima of $|\kurt(\bw^\top\bz)|$ on the unit sphere are exactly $\pm$ the source directions with nonzero kurtosis (Delfosse &amp; Loubaton, 1995). The other critical points, with $q_i^2 \propto 1/\kappa_i$ on a support of size at least two, are not maxima, so one-unit searches have no spurious solutions.</li>
+    <li>The absolute value matters: when all sources are sub-Gaussian, maximizing $\kurt$ itself finds the most mixed direction. Comon's contrast $\sum_i\kurt(y_i)^2$ over rotations is maximized exactly at separating solutions when at most one source has zero kurtosis.</li>
+    <li>The fixed-point iteration $\bw \leftarrow \E[\bz(\bw^\top\bz)^3] - 3\bw$ acts as $q_i \mapsto \kappa_i q_i^3$ in source coordinates and converges cubically; deflation finds the sources one after another.</li>
+    <li>The sample kurtosis has variance about $V/T$, where $V$ depends on moments up to order eight (24 for the Gaussian, more than 1000 for the Laplace law), unbounded sensitivity to outliers, and no response to non-Gaussian sources with zero kurtosis. These weaknesses motivate the contrasts of <a class="ref" data-ref="likelihood"></a>.</li>
+  </ul>
+  <ul lang="zh-CN">
+    <li>对白化数据，投影为 $y = \bq^\top\bs$，$\|\bq\| = 1$，且 $\kurt(y) = \sum_i q_i^4\kappa_i$。其绝对值永远不超过 $\max_i|\kappa_i|$：混合不会制造峭度。</li>
+    <li>$|\kurt(\bw^\top\bz)|$ 在单位球面上的局部极大点恰好是峭度非零的源方向及其反方向（Delfosse &amp; Loubaton, 1995）。其余临界点在大小至少为二的支撑集上满足 $q_i^2 \propto 1/\kappa_i$，都不是极大点，因此单单元搜索没有伪解。</li>
+    <li>绝对值不能省：所有源都是亚高斯时，直接最大化 $\kurt$ 会找到混合最充分的方向。若至多一个源的峭度为零，Comon 对比函数 $\sum_i\kurt(y_i)^2$ 在旋转上的最大值恰好在分离解处取得。</li>
+    <li>不动点迭代 $\bw \leftarrow \E[\bz(\bw^\top\bz)^3] - 3\bw$ 在源坐标下就是 $q_i \mapsto \kappa_i q_i^3$，三次收敛；逐个提取依次找出各个源。</li>
+    <li>样本峭度的方差约为 $V/T$，其中 $V$ 依赖于直到八阶的矩（高斯分布为 24，拉普拉斯分布超过 1000）；它对离群值的敏感性无界，对峭度为零的非高斯源毫无反应。这些弱点促成了<a class="ref" data-ref="likelihood"></a>中的对比函数。</li>
+  </ul>
+</div>
+
+<h2 id="sec-kurtosis-exercises"><span lang="en">Exercises</span><span lang="zh-CN">习题</span></h2>
+
+<div class="exercise" id="ex-kurtosis-mixtures" data-level="basic">
+  <p lang="en">Let $s_1, s_2$ be independent with unit variance. Compute the kurtosis of $(s_1 + s_2)/\sqrt2$ when (a) both sources are uniform, and (b) $s_1$ is uniform and $s_2$ Laplacian. (c) In case (b), find the angles $\theta$ for which $\cos\theta\, s_1 + \sin\theta\, s_2$ has zero kurtosis.</p>
+  <p lang="zh-CN">设 $s_1, s_2$ 独立且方差为一。在以下情形计算 $(s_1 + s_2)/\sqrt2$ 的峭度：（a）两个源都服从均匀分布；（b）$s_1$ 服从均匀分布，$s_2$ 服从拉普拉斯分布。（c）在情形（b）中，求使 $\cos\theta\, s_1 + \sin\theta\, s_2$ 峭度为零的角度 $\theta$。</p>
+  <details class="solution">
+    <p lang="en">By <a class="ref" data-ref="prop-kurtosis-sum"></a> with $q_1 = q_2 = 1/\sqrt2$, the kurtosis is $\tfrac14(\kappa_1 + \kappa_2)$. (a) $\tfrac14(-1.2 - 1.2) = -0.6$, half the kurtosis of each source. (b) $\tfrac14(-1.2 + 3) = 0.45$, smaller in absolute value than both $1.2$ and $3$. (c) We need $-1.2\cos^4\theta + 3\sin^4\theta = 0$, that is $\tan^4\theta = 0.4$, so $\tan\theta = \pm 0.4^{1/4} \approx \pm 0.795$ and $\theta \approx \pm 38.5^\circ$ modulo $180^\circ$. These combinations have zero kurtosis but are not Gaussian, because a non-Gaussian source enters with a nonzero weight (<a class="ref" data-ref="fact-cramer"></a>).</p>
+    <p lang="zh-CN">由<a class="ref" data-ref="prop-kurtosis-sum"></a>，取 $q_1 = q_2 = 1/\sqrt2$，峭度为 $\tfrac14(\kappa_1 + \kappa_2)$。（a）$\tfrac14(-1.2 - 1.2) = -0.6$，是每个源峭度的一半。（b）$\tfrac14(-1.2 + 3) = 0.45$，其绝对值比 $1.2$ 和 $3$ 都小。（c）需要 $-1.2\cos^4\theta + 3\sin^4\theta = 0$，即 $\tan^4\theta = 0.4$，所以 $\tan\theta = \pm 0.4^{1/4} \approx \pm 0.795$，$\theta \approx \pm 38.5^\circ$（模 $180^\circ$）。这些组合的峭度为零，却不是高斯的，因为其中以非零权重含有非高斯源（<a class="ref" data-ref="fact-cramer"></a>）。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-maximize-kurtosis" data-level="basic">
+  <p lang="en">Three independent uniform sources are whitened. Find the maximum of $\kurt(\bw^\top\bz)$, without absolute value, over unit vectors $\bw$, and describe the output at a maximizer. What happens if $|\kurt|$ is maximized instead?</p>
+  <p lang="zh-CN">对三个独立的均匀源做白化。在单位向量 $\bw$ 上求 $\kurt(\bw^\top\bz)$（不取绝对值）的最大值，并描述最大点处的输出。如果改为最大化 $|\kurt|$，结果如何？</p>
+  <details class="solution">
+    <p lang="en">In source coordinates $\kurt = -1.2\sum_i q_i^4$, so we must minimize $\sum_i q_i^4$ on the sphere. By <a class="ref" data-ref="prop-kurtosis-sum"></a> the minimum is $1/3$, attained when $q_1^2 = q_2^2 = q_3^2 = 1/3$; the maximum kurtosis is $-0.4$, in agreement with <a class="ref" data-ref="lem-kurtosis-critical"></a>: $\mu = (3/(-1.2))^{-1} = -0.4$. The output is $(\pm s_1 \pm s_2 \pm s_3)/\sqrt3$, an equal mixture of all three sources, the worst possible answer. Maximizing $|\kurt|$ instead gives the six points $\bq = \pm\be_i$, with $|\kurt| = 1.2$, which are the sources (<a class="ref" data-ref="thm-kurtosis-maxima"></a>).</p>
+    <p lang="zh-CN">在源坐标下 $\kurt = -1.2\sum_i q_i^4$，所以要在球面上最小化 $\sum_i q_i^4$。由<a class="ref" data-ref="prop-kurtosis-sum"></a>，最小值为 $1/3$，在 $q_1^2 = q_2^2 = q_3^2 = 1/3$ 时取得；峭度的最大值为 $-0.4$，与<a class="ref" data-ref="lem-kurtosis-critical"></a>一致：$\mu = (3/(-1.2))^{-1} = -0.4$。此时输出为 $(\pm s_1 \pm s_2 \pm s_3)/\sqrt3$，是三个源的等权混合，这是最糟糕的答案。改为最大化 $|\kurt|$，得到六个点 $\bq = \pm\be_i$，$|\kurt| = 1.2$，它们正是源（<a class="ref" data-ref="thm-kurtosis-maxima"></a>）。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-two-source-landscape" data-level="intermediate">
+  <p lang="en">For two sources, put $\bq = (\cos\theta, \sin\theta)^\top$ and $f(\theta) = \kappa_1\cos^4\theta + \kappa_2\sin^4\theta$. Find all critical points of $f$, compute $f$ at the interior ones, and decide which critical points are local maxima of $|f|$. Evaluate the interior critical point for $\kappa_1 = -1.2$, $\kappa_2 = -2$, as in <a class="ref" data-ref="fig-kurtosis-landscape"></a>(a).</p>
+  <p lang="zh-CN">对两个源，令 $\bq = (\cos\theta, \sin\theta)^\top$，$f(\theta) = \kappa_1\cos^4\theta + \kappa_2\sin^4\theta$。求 $f$ 的全部临界点，计算 $f$ 在内部临界点处的值，并判断哪些临界点是 $|f|$ 的局部极大点。对<a class="ref" data-ref="fig-kurtosis-landscape"></a>（a）中的 $\kappa_1 = -1.2$、$\kappa_2 = -2$，求出内部临界点。</p>
+  <details class="solution">
+    <p lang="en">$f'(\theta) = 4\sin\theta\cos\theta\,(\kappa_2\sin^2\theta - \kappa_1\cos^2\theta)$. The zeros are $\theta = 0$ and $\theta = \pi/2$ (modulo $\pi$), the two sources, and, if $\kappa_1\kappa_2 &gt; 0$, the angles with $\tan^2\theta = \kappa_1/\kappa_2$. There $\cos^2\theta = \kappa_2/(\kappa_1 + \kappa_2)$ and $\sin^2\theta = \kappa_1/(\kappa_1 + \kappa_2)$, so $f = (\kappa_1\kappa_2^2 + \kappa_2\kappa_1^2)/(\kappa_1 + \kappa_2)^2 = \kappa_1\kappa_2/(\kappa_1 + \kappa_2) = (1/\kappa_1 + 1/\kappa_2)^{-1}$, as in <a class="ref" data-ref="lem-kurtosis-critical"></a>. With $u = \cos^2\theta$, $f = \kappa_1 u^2 + \kappa_2(1-u)^2$ is a quadratic in $u$ with leading coefficient $\kappa_1 + \kappa_2$; when both kurtoses are positive the interior point is its minimum, when both are negative its maximum, and in both cases $|f|$ is minimal there, with $|f| = |\kappa_1\kappa_2|/|\kappa_1 + \kappa_2| &lt; \min(|\kappa_1|, |\kappa_2|)$. The sources are the local maxima of $|f|$, with values $|\kappa_1|$ and $|\kappa_2|$. For $\kappa_1 = -1.2$ and $\kappa_2 = -2$: $\tan^2\theta = 0.6$, $\theta \approx 37.8^\circ$ from the first source, and $f = -0.75$. When the kurtoses have opposite signs there is no interior critical point of $f$; instead $f$ vanishes where $\tan^4\theta = -\kappa_1/\kappa_2$, and $|f|$ is minimal (zero) there.</p>
+    <p lang="zh-CN">$f'(\theta) = 4\sin\theta\cos\theta\,(\kappa_2\sin^2\theta - \kappa_1\cos^2\theta)$。其零点为 $\theta = 0$ 与 $\theta = \pi/2$（模 $\pi$），即两个源；若 $\kappa_1\kappa_2 &gt; 0$，还有满足 $\tan^2\theta = \kappa_1/\kappa_2$ 的角度。在后者处 $\cos^2\theta = \kappa_2/(\kappa_1 + \kappa_2)$，$\sin^2\theta = \kappa_1/(\kappa_1 + \kappa_2)$，故 $f = (\kappa_1\kappa_2^2 + \kappa_2\kappa_1^2)/(\kappa_1 + \kappa_2)^2 = \kappa_1\kappa_2/(\kappa_1 + \kappa_2) = (1/\kappa_1 + 1/\kappa_2)^{-1}$，与<a class="ref" data-ref="lem-kurtosis-critical"></a>一致。令 $u = \cos^2\theta$，则 $f = \kappa_1 u^2 + \kappa_2(1-u)^2$ 是 $u$ 的二次函数，首项系数为 $\kappa_1 + \kappa_2$；两个峭度都为正时内部点是它的极小点，都为负时是极大点，两种情形下 $|f|$ 都在此取极小，且 $|f| = |\kappa_1\kappa_2|/|\kappa_1 + \kappa_2| &lt; \min(|\kappa_1|, |\kappa_2|)$。两个源是 $|f|$ 的局部极大点，取值分别为 $|\kappa_1|$ 与 $|\kappa_2|$。当 $\kappa_1 = -1.2$、$\kappa_2 = -2$ 时，$\tan^2\theta = 0.6$，即距第一个源约 $37.8^\circ$，$f = -0.75$。若两个峭度异号，则 $f$ 没有内部临界点；$f$ 在 $\tan^4\theta = -\kappa_1/\kappa_2$ 处为零，$|f|$ 在那里取极小（零）。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-cubic-convergence" data-level="intermediate">
+  <p lang="en">All sources have the same kurtosis $\kappa \neq 0$, and the iteration <a class="ref" data-ref="eq-kurtosis-fixed-point"></a> starts from a unit vector with $|q_2/q_1| = 1/2$ and $|q_j| \le |q_2|$ for $j \ge 3$ (exact expectations). How many iterations are needed until $|q_j/q_1| &lt; 10^{-8}$ for all $j \ge 2$? How many would a method need that squares the ratios at each step, or one that halves them?</p>
+  <p lang="zh-CN">所有源的峭度都等于 $\kappa \neq 0$，迭代 <a class="ref" data-ref="eq-kurtosis-fixed-point"></a> 从满足 $|q_2/q_1| = 1/2$、且 $j \ge 3$ 时 $|q_j| \le |q_2|$ 的单位向量出发（期望精确）。需要多少次迭代才能使所有 $j \ge 2$ 都满足 $|q_j/q_1| &lt; 10^{-8}$？若某方法每步把比值平方，或者每步把比值减半，又各需要多少次？</p>
+  <details class="solution">
+    <p lang="en">By <a class="ref" data-ref="eq-cubic-update"></a>, normalization does not affect ratios, and with equal kurtoses $q_j^+/q_1^+ = (q_j/q_1)^3$. After $k$ steps every ratio is at most $(1/2)^{3^k}$: $0.125$, $1.95 \times 10^{-3}$ and $(1/2)^{27} \approx 7.5 \times 10^{-9}$ for $k = 1, 2, 3$. Three iterations suffice. Squaring gives $(1/2)^{2^k}$, which falls below $10^{-8}$ only when $2^k \ge 27$, that is after $k = 5$ steps. Halving gives $(1/2)^{k+1}$, which needs $k + 1 \ge 27$, that is $26$ steps. With sample averages the iteration converges to the fixed point of the sample criterion, which differs from the exact source direction by the statistical error discussed in <a class="ref" data-ref="performance"></a>.</p>
+    <p lang="zh-CN">由 <a class="ref" data-ref="eq-cubic-update"></a>，归一化不影响比值，峭度相等时 $q_j^+/q_1^+ = (q_j/q_1)^3$。$k$ 步之后每个比值至多为 $(1/2)^{3^k}$：$k = 1, 2, 3$ 时分别为 $0.125$、$1.95 \times 10^{-3}$ 和 $(1/2)^{27} \approx 7.5 \times 10^{-9}$。三次迭代就够了。若每步平方，比值为 $(1/2)^{2^k}$，只有当 $2^k \ge 27$ 即 $k = 5$ 步之后才低于 $10^{-8}$。若每步减半，比值为 $(1/2)^{k+1}$，需要 $k + 1 \ge 27$，即 $26$ 步。使用样本平均时，迭代收敛到样本准则的不动点，它与精确的源方向之间相差<a class="ref" data-ref="performance"></a>讨论的统计误差。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-kurtosis-variance" data-level="advanced">
+  <p lang="en">(a) Evaluate $V$ and $V_{\mathrm{s}}$ in <a class="ref" data-ref="eq-kurtosis-variance"></a> for the Gaussian, the uniform and the Laplace laws with unit variance. (b) Suppose the data are centered by their sample mean $\bar y$ before computing $\hat\kappa$. Show that this adds $-4m_3\bar y$ to $\hat\kappa$ up to terms of order $1/T$, and that the asymptotic variance becomes $V + 64m_3^2 - 8m_3m_5$, which equals $V$ for symmetric laws.</p>
+  <p lang="zh-CN">（a）对单位方差的高斯分布、均匀分布与拉普拉斯分布，计算 <a class="ref" data-ref="eq-kurtosis-variance"></a> 中的 $V$ 与 $V_{\mathrm{s}}$。（b）假设在计算 $\hat\kappa$ 之前先用样本均值 $\bar y$ 对数据中心化。证明这在忽略 $1/T$ 阶项的意义下给 $\hat\kappa$ 加上了 $-4m_3\bar y$，并证明渐近方差变为 $V + 64m_3^2 - 8m_3m_5$，对称分布时它等于 $V$。</p>
+  <details class="solution">
+    <p lang="en">(a) Gaussian: $m_4 = 3$, $m_6 = 15$, $m_8 = 105$, so $V = 105 - 9 - 180 + 144 - 36 = 24$. Uniform on $[-\sqrt3, \sqrt3]$: $m_{2k} = 3^k/(2k+1)$, so $m_4 = 9/5$, $m_6 = 27/7$, $m_8 = 9$ and $V = 9 - 81/25 - 324/7 + 432/5 - 36 = 1728/175 \approx 9.87$. Laplace with scale $b = 1/\sqrt2$: $m_{2k} = (2k)!\, b^{2k} = (2k)!/2^k$, so $m_4 = 6$, $m_6 = 90$, $m_8 = 2520$ and $V = 2520 - 36 - 1080 + 288 - 36 = 1656$. For the standardized estimator the same moments give $V_{\mathrm{s}} = 105 - 9 + 108 - 180 = 24$ for the Gaussian, $V_{\mathrm{s}} = 9 - 81/25 + 2916/125 - 972/35 = 1152/875 \approx 1.32$ for the uniform and $V_{\mathrm{s}} = 2520 - 36 + 864 - 2160 = 1188$ for the Laplace law. (b) With $\tilde y_t = y_t - \bar y$, expanding the powers gives $\frac1T\sum_t \tilde y_t^4 = \hat m_4 - 4\bar y\,\hat m_3 + O_p(1/T)$ and $\frac1T\sum_t\tilde y_t^2 = \hat m_2 - \bar y^2$, because $\bar y = O_p(T^{-1/2})$. Hence the centered estimate is $\hat\kappa - 4\bar y\,\hat m_3 + O_p(1/T) = \hat\kappa - 4m_3\bar y + o_p(T^{-1/2})$. So $\sqrt T$ times the error is asymptotically the normalized sum of $y^4 - 6y^2 - 4m_3 y$ (minus its mean), whose variance is $\Var(y^4 - 6y^2) + 16m_3^2\Var(y) - 8m_3\Cov(y^4, y) + 48m_3\Cov(y^2, y) = V + 16m_3^2 - 8m_3m_5 + 48m_3^2$, using $\Cov(y^4, y) = m_5$ and $\Cov(y^2, y) = m_3$. This is $V + 64m_3^2 - 8m_3m_5$. For a symmetric law $m_3 = m_5 = 0$. For the centered exponential law ($m_3 = 2$, $m_5 = 44$) the value drops from $V = 11968$ to $11520$.</p>
+    <p lang="zh-CN">（a）高斯分布：$m_4 = 3$，$m_6 = 15$，$m_8 = 105$，故 $V = 105 - 9 - 180 + 144 - 36 = 24$。$[-\sqrt3, \sqrt3]$ 上的均匀分布：$m_{2k} = 3^k/(2k+1)$，于是 $m_4 = 9/5$，$m_6 = 27/7$，$m_8 = 9$，$V = 9 - 81/25 - 324/7 + 432/5 - 36 = 1728/175 \approx 9.87$。尺度为 $b = 1/\sqrt2$ 的拉普拉斯分布：$m_{2k} = (2k)!\, b^{2k} = (2k)!/2^k$，于是 $m_4 = 6$，$m_6 = 90$，$m_8 = 2520$，$V = 2520 - 36 - 1080 + 288 - 36 = 1656$。对标准化估计量，同样的矩给出：高斯分布 $V_{\mathrm{s}} = 105 - 9 + 108 - 180 = 24$，均匀分布 $V_{\mathrm{s}} = 9 - 81/25 + 2916/125 - 972/35 = 1152/875 \approx 1.32$，拉普拉斯分布 $V_{\mathrm{s}} = 2520 - 36 + 864 - 2160 = 1188$。（b）记 $\tilde y_t = y_t - \bar y$，展开各次幂，由于 $\bar y = O_p(T^{-1/2})$，得 $\frac1T\sum_t \tilde y_t^4 = \hat m_4 - 4\bar y\,\hat m_3 + O_p(1/T)$，$\frac1T\sum_t\tilde y_t^2 = \hat m_2 - \bar y^2$。所以中心化后的估计为 $\hat\kappa - 4\bar y\,\hat m_3 + O_p(1/T) = \hat\kappa - 4m_3\bar y + o_p(T^{-1/2})$。于是误差乘以 $\sqrt T$ 渐近等于 $y^4 - 6y^2 - 4m_3 y$（减去其均值）的归一化和，其方差为 $\Var(y^4 - 6y^2) + 16m_3^2\Var(y) - 8m_3\Cov(y^4, y) + 48m_3\Cov(y^2, y) = V + 16m_3^2 - 8m_3m_5 + 48m_3^2$，这里用到 $\Cov(y^4, y) = m_5$ 与 $\Cov(y^2, y) = m_3$。结果即 $V + 64m_3^2 - 8m_3m_5$。对称分布有 $m_3 = m_5 = 0$。对中心化的指数分布（$m_3 = 2$，$m_5 = 44$），该值由 $V = 11968$ 降为 $11520$。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-cumulant-norm" data-level="advanced">
+  <p lang="en">Let $\by = \bQ\bs$ with $\bQ$ orthogonal and independent sources with kurtoses $\kappa_p$. (a) Show that $\cum(y_i, y_j, y_k, y_l) = \sum_p \kappa_p Q_{ip}Q_{jp}Q_{kp}Q_{lp}$. (b) Show that $\sum_{i,j,k,l} \cum(y_i, y_j, y_k, y_l)^2 = \sum_p \kappa_p^2$ for every orthogonal $\bQ$. (c) Conclude that maximizing $\Psi$ in <a class="ref" data-ref="eq-comon-contrast"></a> is equivalent to minimizing the sum of the squares of all fourth-order cross-cumulants of $\by$, those whose four indices are not all equal.</p>
+  <p lang="zh-CN">设 $\by = \bQ\bs$，$\bQ$ 正交，各源独立，峭度为 $\kappa_p$。（a）证明 $\cum(y_i, y_j, y_k, y_l) = \sum_p \kappa_p Q_{ip}Q_{jp}Q_{kp}Q_{lp}$。（b）证明对任意正交矩阵 $\bQ$，$\sum_{i,j,k,l} \cum(y_i, y_j, y_k, y_l)^2 = \sum_p \kappa_p^2$。（c）由此说明：最大化 <a class="ref" data-ref="eq-comon-contrast"></a> 中的 $\Psi$，等价于最小化 $\by$ 的全部四阶交叉累积量（四个下标不全相等者）的平方和。</p>
+  <details class="solution">
+    <p lang="en">(a) By multilinearity, $\cum(y_i, y_j, y_k, y_l) = \sum_{p,q,r,t} Q_{ip}Q_{jq}Q_{kr}Q_{lt}\cum(s_p, s_q, s_r, s_t)$, and for independent sources the cumulant vanishes unless $p = q = r = t$, in which case it is $\kappa_p$. (b) Squaring and summing,</p>
+    <p lang="zh-CN">（a）由多重线性，$\cum(y_i, y_j, y_k, y_l) = \sum_{p,q,r,t} Q_{ip}Q_{jq}Q_{kr}Q_{lt}\cum(s_p, s_q, s_r, s_t)$；对独立的源，除非 $p = q = r = t$，否则该累积量为零，而 $p = q = r = t$ 时它等于 $\kappa_p$。（b）平方后求和，</p>
+    <div class="eq">$$\sum_{i,j,k,l}\Bigl(\sum_p \kappa_p Q_{ip}Q_{jp}Q_{kp}Q_{lp}\Bigr)^2 = \sum_{p,p'} \kappa_p\kappa_{p'} \Bigl(\sum_i Q_{ip}Q_{ip'}\Bigr)^4 = \sum_{p,p'} \kappa_p\kappa_{p'}\,\delta_{pp'} = \sum_p \kappa_p^2,$$</div>
+    <p lang="en">because the columns of $\bQ$ are orthonormal. (c) The terms with $i = j = k = l$ add up to $\sum_i \kurt(y_i)^2 = \Psi$, so $\Psi$ plus the sum of the squared cross-cumulants equals the constant $\sum_p \kappa_p^2$. Maximizing one is minimizing the other; at a separating solution all cross-cumulants vanish.</p>
+    <p lang="zh-CN">这里用到 $\bQ$ 的各列标准正交。（c）$i = j = k = l$ 的那些项之和为 $\sum_i \kurt(y_i)^2 = \Psi$，所以 $\Psi$ 与交叉累积量平方和之和等于常数 $\sum_p \kappa_p^2$。最大化前者就是最小化后者；在分离解处，所有交叉累积量都为零。</p>
+  </details>
+</div>
+
+<h2 id="sec-kurtosis-references"><span lang="en">References</span><span lang="zh-CN">参考文献</span></h2>
+
+<div class="references">
+  <ol>
+    <li>Comon, P. (1994). Independent component analysis, a new concept? <i>Signal Processing</i>, 36(3), 287–314.</li>
+    <li>Delfosse, N., &amp; Loubaton, P. (1995). Adaptive blind separation of independent sources: A deflation approach. <i>Signal Processing</i>, 45(1), 59–83.</li>
+    <li>Friedman, J. H., &amp; Tukey, J. W. (1974). A projection pursuit algorithm for exploratory data analysis. <i>IEEE Transactions on Computers</i>, C-23(9), 881–890.</li>
+    <li>Huber, P. J. (1985). Projection pursuit. <i>The Annals of Statistics</i>, 13(2), 435–475.</li>
+    <li>Hyvärinen, A., Karhunen, J., &amp; Oja, E. (2001). <i>Independent Component Analysis</i>. Wiley.</li>
+    <li>Hyvärinen, A., &amp; Oja, E. (1997). A fast fixed-point algorithm for independent component analysis. <i>Neural Computation</i>, 9(7), 1483–1492.</li>
+  </ol>
+</div>

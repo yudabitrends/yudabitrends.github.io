@@ -1,0 +1,297 @@
+<!-- Chapter 11. Noise, model order and reliability. Source format: book/AUTHORING.md -->
+
+<h2 id="sec-model-order-intro"><span lang="en">Beyond the noiseless square model</span><span lang="zh-CN">超越无噪声的方阵模型</span></h2>
+
+<p lang="en">The theory of the previous chapters assumes that $\bx = \bA\bs$ holds exactly and that the number of sources is known. Real recordings violate this in three ways that matter. Sensors add noise, so the data follow $\bx = \bA\bs + \bn$. The number of sources is unknown and usually much smaller than the number of sensors: a 64-channel EEG recording or an fMRI data set with hundreds of time points is reduced to a few dozen components, and someone has to decide how many. Finally, ICA algorithms are iterative and randomly initialized and their contrasts have several local optima, so two runs on the same data can return different components.</p>
+<p lang="zh-CN">前面各章的理论假设 $\bx = \bA\bs$ 严格成立，而且源的个数已知。真实数据在三个要紧的方面违背这些假设。传感器会引入噪声，所以数据服从 $\bx = \bA\bs + \bn$。源的个数未知，而且通常远小于传感器个数：一份 64 导联的 EEG 记录，或一份有几百个时间点的 fMRI 数据，往往被降到几十个成分，而降到多少需要有人决定。最后，ICA 算法是迭代的、随机初始化的，其对比函数有多个局部最优，所以在同一份数据上运行两次，可能得到不同的成分。</p>
+
+<p lang="en">This chapter takes up the three questions in turn: what noise does to ICA (<a class="ref" data-ref="sec-noisy-ica"></a>), how to choose the number of components and what happens when it is wrong (<a class="ref" data-ref="sec-model-order-selection"></a> and <a class="ref" data-ref="sec-split-components"></a>), and how to judge whether an estimated component can be trusted (<a class="ref" data-ref="sec-icasso"></a> and <a class="ref" data-ref="sec-reliability-meaning"></a>).</p>
+<p lang="zh-CN">本章依次讨论这三个问题：噪声对 ICA 有什么影响（<a class="ref" data-ref="sec-noisy-ica"></a>）；如何选择成分个数，以及选错了会怎样（<a class="ref" data-ref="sec-model-order-selection"></a>与<a class="ref" data-ref="sec-split-components"></a>）；如何判断一个估计出的成分是否可信（<a class="ref" data-ref="sec-icasso"></a>与<a class="ref" data-ref="sec-reliability-meaning"></a>）。</p>
+
+<h2 id="sec-noisy-ica"><span lang="en">Noisy ICA</span><span lang="zh-CN">含噪 ICA</span></h2>
+
+<p lang="en">The noisy model is</p>
+<p lang="zh-CN">含噪模型为</p>
+
+<div class="eq" id="eq-noisy-model">$$\bx = \bA\bs + \bn, \qquad \bn \sim \Ncal(\bzero, \sigma^2\bI),$$</div>
+
+<p lang="en">with $\bA \in \R^{m \times n}$ of full column rank ($m \ge n$), sources as in <a class="ref" data-ref="asm-ica"></a> with unit variance, and noise independent of the sources. Isotropic noise is the standard assumption; noise with a known covariance $\bSigma_{\bn}$ is reduced to it by replacing $\bx$ with $\bSigma_{\bn}^{-1/2}\bx$. The covariance of the data is $\bC_{\bx} = \bA\bA^\top + \sigma^2\bI$. If $d_1 \ge \dots \ge d_n &gt; 0$ are the nonzero eigenvalues of $\bA\bA^\top$, the eigenvalues of $\bC_{\bx}$ are</p>
+<p lang="zh-CN">其中 $\bA \in \R^{m \times n}$ 列满秩（$m \ge n$），源满足<a class="ref" data-ref="asm-ica"></a>且方差为一，噪声与源独立。各向同性噪声是标准假设；若噪声协方差 $\bSigma_{\bn}$ 已知，用 $\bSigma_{\bn}^{-1/2}\bx$ 代替 $\bx$ 即可化为这种情形。数据的协方差为 $\bC_{\bx} = \bA\bA^\top + \sigma^2\bI$。若 $d_1 \ge \dots \ge d_n &gt; 0$ 是 $\bA\bA^\top$ 的非零特征值，则 $\bC_{\bx}$ 的特征值为</p>
+
+<div class="eq" id="eq-noisy-eigenvalues">$$\lambda_k = d_k + \sigma^2 \quad (k \le n), \qquad \lambda_k = \sigma^2 \quad (n &lt; k \le m),$$</div>
+
+<p lang="en">and the $n$ leading eigenvectors span the column space of $\bA$. This is why PCA reduction (<a class="ref" data-ref="sec-pca-reduction"></a>) keeps the signal, and it is the starting point of order selection. Four consequences of noise follow.</p>
+<p lang="zh-CN">并且前 $n$ 个特征向量张成 $\bA$ 的列空间。这就是 PCA 降维（<a class="ref" data-ref="sec-pca-reduction"></a>）能保留信号的原因，也是选择阶数的出发点。噪声带来以下四个后果。</p>
+
+<h3><span lang="en">Whitening is biased</span><span lang="zh-CN">白化有偏</span></h3>
+
+<div class="env" data-kind="proposition" id="prop-whitening-bias" data-en="whitening noisy data" data-zh="含噪数据的白化">
+  <p lang="en">Let $\bU_n$ hold the $n$ leading eigenvectors of $\bC_{\bx}$ and $\bLambda_n = \diag(\lambda_1, \dots, \lambda_n)$, and let $\bV = \bQ\bLambda_n^{-1/2}\bU_n^\top$ with $\bQ$ orthogonal (for $m = n$ this is every whitening matrix). Then</p>
+  <p lang="zh-CN">设 $\bU_n$ 由 $\bC_{\bx}$ 的前 $n$ 个特征向量组成，$\bLambda_n = \diag(\lambda_1, \dots, \lambda_n)$，并设 $\bV = \bQ\bLambda_n^{-1/2}\bU_n^\top$，其中 $\bQ$ 为正交矩阵（$m = n$ 时这就是全部白化矩阵）。则</p>
+  <div class="eq" id="eq-whitening-bias">$$(\bV\bA)(\bV\bA)^\top = \bI - \sigma^2\,\bV\bV^\top,$$</div>
+  <p lang="en">so the singular values of $\bV\bA$ are $\sqrt{1 - \sigma^2/\lambda_k}$, $k = 1, \dots, n$, and $\bV\bA$ is not orthogonal when $\sigma^2 &gt; 0$. The bias-corrected matrix $\bV_{\mathrm c} = \bQ(\bLambda_n - \sigma^2\bI)^{-1/2}\bU_n^\top$ makes $\bV_{\mathrm c}\bA$ orthogonal.</p>
+  <p lang="zh-CN">因此 $\bV\bA$ 的奇异值为 $\sqrt{1 - \sigma^2/\lambda_k}$（$k = 1, \dots, n$），当 $\sigma^2 &gt; 0$ 时 $\bV\bA$ 不是正交矩阵。经偏差校正的矩阵 $\bV_{\mathrm c} = \bQ(\bLambda_n - \sigma^2\bI)^{-1/2}\bU_n^\top$ 则使 $\bV_{\mathrm c}\bA$ 成为正交矩阵。</p>
+</div>
+<div class="proof">
+  <p lang="en">Since $\bA\bA^\top = \bC_{\bx} - \sigma^2\bI$ has its column space spanned by $\bU_n$, $\bA\bA^\top = \bU_n(\bLambda_n - \sigma^2\bI)\bU_n^\top$. Hence $(\bV\bA)(\bV\bA)^\top = \bQ\bLambda_n^{-1/2}(\bLambda_n - \sigma^2\bI)\bLambda_n^{-1/2}\bQ^\top = \bI - \sigma^2\bQ\bLambda_n^{-1}\bQ^\top$, and $\bV\bV^\top = \bQ\bLambda_n^{-1}\bQ^\top$ has eigenvalues $1/\lambda_k$. Replacing $\bLambda_n^{-1/2}$ by $(\bLambda_n - \sigma^2\bI)^{-1/2}$ gives $\bQ\bQ^\top = \bI$.</p>
+  <p lang="zh-CN">由于 $\bA\bA^\top = \bC_{\bx} - \sigma^2\bI$ 的列空间由 $\bU_n$ 张成，有 $\bA\bA^\top = \bU_n(\bLambda_n - \sigma^2\bI)\bU_n^\top$。因此 $(\bV\bA)(\bV\bA)^\top = \bQ\bLambda_n^{-1/2}(\bLambda_n - \sigma^2\bI)\bLambda_n^{-1/2}\bQ^\top = \bI - \sigma^2\bQ\bLambda_n^{-1}\bQ^\top$，而 $\bV\bV^\top = \bQ\bLambda_n^{-1}\bQ^\top$ 的特征值为 $1/\lambda_k$。把 $\bLambda_n^{-1/2}$ 换成 $(\bLambda_n - \sigma^2\bI)^{-1/2}$ 就得到 $\bQ\bQ^\top = \bI$。</p>
+</div>
+
+<p lang="en">After ordinary whitening, an algorithm that searches over rotations therefore cannot, in general, reach a separating matrix. A rotation can turn $\bV\bA$ into a scaled permutation matrix only if the columns of $\bV\bA$ are orthogonal; since $(\bV\bA)^\top(\bV\bA) = (\bA^\top\bA + \sigma^2\bI)^{-1}\bA^\top\bA$, this happens exactly when the columns of $\bA$ are orthogonal. The distortion is of relative size $\sigma^2/\lambda_k$ and is largest along the weakest signal direction. Bias correction requires $\sigma^2$, which can be estimated from the discarded eigenvalues when $m &gt; n$ (see probabilistic PCA below). Unlike the noiseless case, equivariance is also lost: the outputs $\bW\bx = \bP\bs + \bW\bn$ contain a noise term that depends on $\bW$ and hence on $\bA$.</p>
+<p lang="zh-CN">因此，在普通白化之后，在旋转中搜索的算法一般无法到达分离矩阵。只有当 $\bV\bA$ 的各列相互正交时，旋转才能把它变成带尺度的置换矩阵；而 $(\bV\bA)^\top(\bV\bA) = (\bA^\top\bA + \sigma^2\bI)^{-1}\bA^\top\bA$，所以这恰好发生在 $\bA$ 的各列相互正交的时候。畸变的相对大小为 $\sigma^2/\lambda_k$，沿最弱的信号方向最大。偏差校正需要知道 $\sigma^2$；当 $m &gt; n$ 时，可以由被舍弃的特征值估计它（见下文的概率 PCA）。与无噪声情形不同，等变性也不再成立：输出 $\bW\bx = \bP\bs + \bW\bn$ 含有依赖于 $\bW$、从而依赖于 $\bA$ 的噪声项。</p>
+
+<h3><span lang="en">Higher-order cumulants ignore Gaussian noise</span><span lang="zh-CN">高阶累积量对高斯噪声“视而不见”</span></h3>
+
+<p lang="en">Cumulants are additive for independent summands and vanish beyond order two for Gaussian variables (<a class="ref" data-ref="prop-cumulant-properties"></a>). Hence the fourth-order cumulants of noisy data are those of the noiseless mixture,</p>
+<p lang="zh-CN">独立随机变量之和的累积量等于各自累积量之和，而高斯变量二阶以上的累积量全为零（<a class="ref" data-ref="prop-cumulant-properties"></a>）。因此含噪数据的四阶累积量与无噪声混合的完全相同：</p>
+
+<div class="eq" id="eq-noisy-cumulant">$$\cum(x_i, x_j, x_k, x_l) = \sum_{p=1}^n \kappa_p\,a_{ip}a_{jp}a_{kp}a_{lp}.$$</div>
+
+<p lang="en">After bias-corrected whitening $\bz = \bV_{\mathrm c}\bx$, a unit vector $\bw$ gives $\kurt(\bw^\top\bz) = \sum_p q_p^4\kappa_p$ with $\bq = (\bV_{\mathrm c}\bA)^\top\bw$ a unit vector, exactly as without noise; so the source directions remain the maxima of $|\kurt|$ on the sphere (<a class="ref" data-ref="thm-kurtosis-maxima"></a>), and cumulant methods such as JADE remain consistent once the whitening is corrected. Contrasts built from other nonlinearities, such as $\log\cosh$ or a likelihood, are biased by noise. Hyvärinen (1999) introduced “Gaussian moments”, expectations of Gaussian functions of the output whose noise bias can be removed in closed form, together with a modified FastICA.</p>
+<p lang="zh-CN">经偏差校正的白化 $\bz = \bV_{\mathrm c}\bx$ 之后，对单位向量 $\bw$ 有 $\kurt(\bw^\top\bz) = \sum_p q_p^4\kappa_p$，其中 $\bq = (\bV_{\mathrm c}\bA)^\top\bw$ 也是单位向量，与无噪声时完全一样；所以源方向仍然是 $|\kurt|$ 在球面上的极大点（<a class="ref" data-ref="thm-kurtosis-maxima"></a>），白化一经校正，JADE 这类累积量方法仍然相合。基于其他非线性函数（如 $\log\cosh$ 或似然）的对比函数则会被噪声带偏。Hyvärinen（1999）提出了“高斯矩”，即输出的高斯函数的期望，其噪声偏差可以用闭式去除，并给出了相应修改的 FastICA。</p>
+
+<h3><span lang="en">The sources cannot be recovered exactly</span><span lang="zh-CN">源无法精确恢复</span></h3>
+
+<p lang="en">Even with $\bA$ known, noise cannot be removed. For $m = n$ the unmixed outputs $\bA^{-1}\bx = \bs + \bA^{-1}\bn$ carry noise with covariance $\sigma^2(\bA^\top\bA)^{-1}$, which is large when $\bA$ is ill-conditioned. The linear estimator with the smallest mean squared error is $\hat\bs = \bA^\top(\bA\bA^\top + \sigma^2\bI)^{-1}\bx$, which accepts a bias (shrinkage toward zero) in exchange for less noise; nonlinear estimators that use the non-Gaussian source densities do better still (Hyvärinen, Karhunen &amp; Oja, 2001). Noisy ICA thus splits into two tasks: estimating $\bA$, which can be done consistently, and estimating $\bs$, which can only be done approximately.</p>
+<p lang="zh-CN">即使 $\bA$ 已知，噪声也无法去除。$m = n$ 时，解混输出 $\bA^{-1}\bx = \bs + \bA^{-1}\bn$ 所含噪声的协方差为 $\sigma^2(\bA^\top\bA)^{-1}$，$\bA$ 病态时它很大。均方误差最小的线性估计量是 $\hat\bs = \bA^\top(\bA\bA^\top + \sigma^2\bI)^{-1}\bx$，它以一定的偏差（向零收缩）换取较小的噪声；利用非高斯源密度的非线性估计量还能做得更好（Hyvärinen, Karhunen &amp; Oja, 2001）。因此含噪 ICA 分为两个任务：估计 $\bA$，这可以相合地做到；估计 $\bs$，这只能近似地做到。</p>
+
+<h3><span lang="en">Probabilistic PCA</span><span lang="zh-CN">概率 PCA</span></h3>
+
+<p lang="en">Probabilistic PCA (Tipping &amp; Bishop, 1999) is the model $\bx = \bF\mathbf{f} + \bn$ with $k$ Gaussian factors $\mathbf{f} \sim \Ncal(\bzero, \bI)$ and $\bn \sim \Ncal(\bzero, \sigma^2\bI)$. Let $\ell_1 \ge \dots \ge \ell_m$ be the eigenvalues of the sample covariance, $\bU_k$ the corresponding $k$ leading eigenvectors and $\mathbf{L}_k = \diag(\ell_1, \dots, \ell_k)$. The maximum-likelihood estimates are</p>
+<p lang="zh-CN">概率 PCA（Tipping &amp; Bishop, 1999）是模型 $\bx = \bF\mathbf{f} + \bn$，其中 $k$ 个因子 $\mathbf{f} \sim \Ncal(\bzero, \bI)$ 为高斯分布，$\bn \sim \Ncal(\bzero, \sigma^2\bI)$。设 $\ell_1 \ge \dots \ge \ell_m$ 为样本协方差的特征值，$\bU_k$ 为相应的前 $k$ 个特征向量，$\mathbf{L}_k = \diag(\ell_1, \dots, \ell_k)$。最大似然估计为</p>
+
+<div class="eq" id="eq-ppca-ml">$$\hat\sigma^2 = \frac{1}{m - k}\sum_{j=k+1}^m \ell_j, \qquad \hat\bF = \bU_k\bigl(\mathbf{L}_k - \hat\sigma^2\bI\bigr)^{1/2}\bR,$$</div>
+
+<p lang="en">where $\bR$ is an arbitrary orthogonal matrix. The noise variance is the average of the discarded eigenvalues, and the factor loadings are determined only up to the rotation $\bR$, because Gaussian factors can be rotated freely. That rotation is exactly what ICA determines when the factors are non-Gaussian. A noisy-ICA pipeline therefore estimates the signal subspace and $\sigma^2$ by probabilistic PCA, whitens with the bias-corrected matrix $(\mathbf{L}_k - \hat\sigma^2\bI)^{-1/2}\bU_k^\top$, and finds the rotation by ICA; probabilistic ICA for fMRI (Beckmann &amp; Smith, 2004) follows this route (<a class="ref" data-ref="fmri-ica"></a>).</p>
+<p lang="zh-CN">其中 $\bR$ 是任意正交矩阵。噪声方差就是被舍弃特征值的平均；因子载荷只能确定到旋转 $\bR$，因为高斯因子可以自由旋转。而当因子非高斯时，这个旋转恰好由 ICA 确定。因此含噪 ICA 的流程是：用概率 PCA 估计信号子空间和 $\sigma^2$，用经偏差校正的矩阵 $(\mathbf{L}_k - \hat\sigma^2\bI)^{-1/2}\bU_k^\top$ 白化，再用 ICA 求出旋转。fMRI 中的概率 ICA（Beckmann &amp; Smith, 2004）走的就是这条路（<a class="ref" data-ref="fmri-ica"></a>）。</p>
+
+<h2 id="sec-model-order-selection"><span lang="en">Choosing the number of components</span><span lang="zh-CN">选择成分个数</span></h2>
+
+<p lang="en">When $m &gt; n$, ICA is run on the $k$-dimensional principal subspace, and $k$, the <em>model order</em>, must be chosen. In the population, <a class="ref" data-ref="eq-noisy-eigenvalues"></a> shows $n$ eigenvalues above a flat floor $\sigma^2$. In a sample the noise eigenvalues spread around $\sigma^2$, the more so the larger $m/T$, and a weak signal eigenvalue can disappear among them. A principled choice compares, for each candidate $k$, how well the “$k$ signals plus white noise” covariance fits the data against how many parameters it uses.</p>
+<p lang="zh-CN">当 $m &gt; n$ 时，ICA 在 $k$ 维主子空间上运行，而 $k$，即<em>模型阶数</em>，必须选定。在总体层面，<a class="ref" data-ref="eq-noisy-eigenvalues"></a> 显示有 $n$ 个特征值高出平坦的噪声底 $\sigma^2$。在样本中，噪声特征值会在 $\sigma^2$ 周围散开，$m/T$ 越大散得越开，较弱的信号特征值可能淹没其中。有原则的选择方法是：对每个候选的 $k$，权衡“$k$ 个信号加白噪声”这一协方差模型对数据的拟合程度与它所用的参数个数。</p>
+
+<p lang="en">The maximum-likelihood fit of that model is the probabilistic PCA solution, and its maximized Gaussian log-likelihood depends on the eigenvalues only through the ratio of the geometric to the arithmetic mean of the $m - k$ smallest ones (<a class="ref" data-ref="ex-mo-loglik"></a>):</p>
+<p lang="zh-CN">这个模型的最大似然拟合就是概率 PCA 的解，其最大化后的高斯对数似然只通过最小的 $m - k$ 个特征值的几何平均与算术平均之比依赖于特征值（<a class="ref" data-ref="ex-mo-loglik"></a>）：</p>
+
+<div class="eq" id="eq-ppca-loglik">$$\log\frac{L_k}{L_m} = \frac{T}{2}\,(m - k)\,\log\frac{\bigl(\prod_{j=k+1}^m \ell_j\bigr)^{1/(m-k)}}{\frac{1}{m-k}\sum_{j=k+1}^m \ell_j}, \qquad k &lt; m.$$</div>
+
+<p lang="en">Here $L_k$ is the maximized likelihood of the model with $k$ signals and $L_m$ that of an unrestricted covariance, which does not depend on $k$. The logarithm on the right is at most zero and vanishes only when the $m - k$ smallest eigenvalues are equal. The model has $p(k) = mk - k(k-1)/2 + 1$ free parameters ($k$ signal eigenvalues, $\sigma^2$, and $k$ orthonormal eigenvectors in $\R^m$). The order is chosen by minimizing</p>
+<p lang="zh-CN">其中 $L_k$ 是含 $k$ 个信号的模型的最大似然值，$L_m$ 是协方差不受限制时的最大似然值，后者与 $k$ 无关。右边的对数不大于零，且仅当最小的 $m - k$ 个特征值全部相等时为零。该模型有 $p(k) = mk - k(k-1)/2 + 1$ 个自由参数（$k$ 个信号特征值、$\sigma^2$，以及 $\R^m$ 中的 $k$ 个标准正交特征向量）。阶数通过最小化下列准则来选择：</p>
+
+<div class="eq" id="eq-aic-mdl">$$\mathrm{AIC}(k) = -2\log\frac{L_k}{L_m} + 2\,p(k), \qquad \mathrm{MDL}(k) = -\log\frac{L_k}{L_m} + \tfrac12\,p(k)\log T,$$</div>
+
+<p lang="en">the criteria of Akaike (1974) and of Rissanen (1978), written relative to $L_m$, which shifts them by a constant and does not change the minimizer; MDL coincides with half the Bayesian information criterion of Schwarz (1978). Wax and Kailath (1985) derived these eigenvalue forms for complex-valued array data, where the likelihood term carries $T$ instead of $T/2$ and the parameter count is $k(2m - k)$; the forms above are the real-valued analogues. Because its penalty grows with $\log T$, MDL is consistent for i.i.d. Gaussian data, whereas AIC tends to overestimate the order (Wax &amp; Kailath, 1985). Minka (2000) proposed a Bayesian alternative, a Laplace approximation to the evidence of the probabilistic PCA model, which outperformed cross-validation and other methods in his simulations; it is used in probabilistic ICA (Beckmann &amp; Smith, 2004).</p>
+<p lang="zh-CN">这分别是 Akaike（1974）和 Rissanen（1978）的准则，这里写成相对于 $L_m$ 的形式，只差一个常数，不改变最小点；MDL 恰为 Schwarz（1978）的贝叶斯信息准则的一半。Wax 和 Kailath（1985）针对复值阵列数据推导了这些基于特征值的形式，那里似然项中是 $T$ 而不是 $T/2$，参数个数为 $k(2m - k)$；上面的形式是相应的实值版本。由于 MDL 的惩罚项随 $\log T$ 增长，它对独立同分布的高斯数据是相合的，而 AIC 往往高估阶数（Wax &amp; Kailath, 1985）。Minka（2000）提出了一个贝叶斯替代方案：用 Laplace 近似计算概率 PCA 模型的证据（evidence），在他的模拟中优于交叉验证和其他方法；概率 ICA 采用了这一方法（Beckmann &amp; Smith, 2004）。</p>
+
+<h3><span lang="en">Dependent samples</span><span lang="zh-CN">相依样本</span></h3>
+
+<p lang="en">All of these criteria treat the $T$ samples as independent. Temporally or spatially correlated samples carry less information than their number suggests: the sample covariance fluctuates more, the noise eigenvalues spread more, and the criteria read the spread as signal and overestimate the order. Li, Adalı and Calhoun (2007) proposed to subsample the data so that the retained samples are effectively independent, choosing the subsampling depth from an entropy-rate measure of the dependence, and to apply the criteria to the subsampled data. In the GIFT toolbox, which implements this method, the eigenvalues of the subsampled data are further divided by the corresponding quantiles of the Marčenko–Pastur law (<a class="ref" data-ref="sec-pca-reduction"></a>) for the effective sample size, and the order is taken at the first local minimum of MDL rather than at its global minimum. The script below shows the effect with $n = 8$ Laplace sources in $m = 30$ sensors, where sources and noise are either white or first-order autoregressive with coefficient $\phi = 0.9$.</p>
+<p lang="zh-CN">上述准则都把 $T$ 个样本当作相互独立。时间上或空间上相关的样本所含的信息比其个数所暗示的要少：样本协方差波动更大，噪声特征值散得更开，而准则会把这种散开误读为信号，从而高估阶数。Li、Adalı 和 Calhoun（2007）提出对数据降采样，使保留下来的样本近似独立（降采样的间隔由衡量相依程度的熵率指标确定），再对降采样后的数据应用这些准则。在实现了这一方法的 GIFT 工具箱中，降采样数据的特征值还要再除以按有效样本量计算的 Marčenko–Pastur 分布（<a class="ref" data-ref="sec-pca-reduction"></a>）的相应分位数，阶数取 MDL 的第一个局部极小点，而不是全局极小点。下面的脚本用 $m = 30$ 个传感器中的 $n = 8$ 个拉普拉斯源演示这一效应，源和噪声或者是白的，或者是系数 $\phi = 0.9$ 的一阶自回归过程。</p>
+
+<pre class="code"><code>import numpy as np
+
+def order_criteria(X):
+    """Orders chosen by AIC and MDL from the sample covariance eigenvalues."""
+    m, T = X.shape
+    ell = np.sort(np.linalg.eigvalsh(np.cov(X)))[::-1]
+    aic, mdl = [], []
+    for k in range(m):
+        tail = ell[k:]                      # the m - k smallest eigenvalues
+        loglr = (m - k) * (np.mean(np.log(tail)) - np.log(np.mean(tail)))
+        p = m * k - k * (k - 1) / 2 + 1     # free parameters of the model
+        aic.append(-T * loglr + 2 * p)
+        mdl.append(-T / 2 * loglr + p / 2 * np.log(T))
+    return int(np.argmin(aic)), int(np.argmin(mdl))
+
+def ar1(E, phi):
+    """Turn each row of white noise E into a unit-variance AR(1) series."""
+    Y = np.empty_like(E)
+    Y[:, 0] = E[:, 0]
+    for t in range(1, E.shape[1]):
+        Y[:, t] = phi * Y[:, t - 1] + np.sqrt(1 - phi ** 2) * E[:, t]
+    return Y
+
+rng = np.random.default_rng(1)
+m, n, T = 30, 8, 5000
+A = rng.normal(size=(m, n))
+S = rng.laplace(0, 1 / np.sqrt(2), (n, T))
+N = rng.normal(size=(m, T))
+for phi in [0.0, 0.9]:
+    X = A @ ar1(S, phi) + ar1(N, phi)
+    print(f"phi = {phi}: all samples (AIC, MDL) = {order_criteria(X)}, "
+          f"every 10th sample = {order_criteria(X[:, ::10])}")</code></pre>
+
+<p lang="en">The script prints</p>
+<p lang="zh-CN">脚本输出</p>
+
+<pre class="code"><code>phi = 0.0: all samples (AIC, MDL) = (9, 8), every 10th sample = (8, 8)
+phi = 0.9: all samples (AIC, MDL) = (29, 18), every 10th sample = (9, 8)</code></pre>
+
+<p lang="en">With independent samples MDL finds the eight sources and AIC overestimates by one. With dependent samples both fail, AIC choosing the largest admissible order. Keeping every tenth sample restores the behaviour seen with independent samples (MDL 8, AIC 9), although it discards 90% of the data; ten is close to the factor $(1 + \phi^2)/(1 - \phi^2) \approx 9.5$ by which the dependence inflates the variance of a sample covariance between two such AR(1) series. <a class="ref" data-ref="fig-order"></a> shows why: the noise eigenvalues of the dependent data form a tilted floor rather than a flat one, and MDL reaches its minimum far beyond $k = 8$.</p>
+<p lang="zh-CN">样本独立时，MDL 找到了全部八个源，AIC 多估了一个。样本相依时两者都失败了，AIC 甚至选了允许的最大阶数。每十个样本保留一个，尽管丢掉了 90% 的数据，却恢复了独立样本时的结果（MDL 为 8，AIC 为 9）；10 接近于这种相依性使两个 AR(1) 序列之间样本协方差的方差放大的倍数 $(1 + \phi^2)/(1 - \phi^2) \approx 9.5$。<a class="ref" data-ref="fig-order"></a>说明了原因：相依数据的噪声特征值构成倾斜的而不是平坦的“底”，MDL 的最小值远在 $k = 8$ 之后。</p>
+
+<figure id="fig-order">
+  <img src="fig/ch11-order.svg" width="620" height="269" alt="Panel a: sorted eigenvalues on a log scale for independent and dependent samples; both show eight large eigenvalues, followed by a flat noise floor near 1 for independent samples and a tilted floor from about 1.3 to 0.6 for dependent samples. Panel b: MDL minus its minimum against k; the curve for independent samples has its minimum at k equal to 8, the one for dependent samples at k equal to 18.">
+  <figcaption><span lang="en">Order selection with independent ($\phi = 0$) and dependent ($\phi = 0.9$) samples, for the data of the script ($m = 30$, $n = 8$, $T = 5000$). (a) Eigenvalues $\ell_k$ of the sample covariance; the dotted line is the noise variance. (b) $\mathrm{MDL}(k)$ minus its minimum; open markers show the selected orders, 8 and 18.</span><span lang="zh-CN">独立样本（$\phi = 0$）与相依样本（$\phi = 0.9$）下的阶数选择，数据与脚本相同（$m = 30$，$n = 8$，$T = 5000$）。（a）样本协方差的特征值 $\ell_k$；点线为噪声方差。（b）$\mathrm{MDL}(k)$ 减去其最小值；空心标记为所选阶数，分别是 8 和 18。</span></figcaption>
+</figure>
+
+<h2 id="sec-split-components"><span lang="en">Too few or too many components: merged and split components</span><span lang="zh-CN">成分过少或过多：合并与分裂</span></h2>
+
+<p lang="en">A wrong order has characteristic consequences. If $k &lt; n$, PCA keeps the $k$ directions of largest variance and discards directions that still contain signal; the sources that live partly in the discarded directions cannot be separated and appear as <em>merged</em> components, mixtures of two or more sources. The typical victims are sources with nearly collinear mixing columns. Their sum direction has large variance and their difference direction small variance, proportional to $1 - \cos\theta$ for columns of equal norm at angle $\theta$ (<a class="ref" data-ref="ex-mo-merge"></a>), so the difference is the first thing to be discarded. In fMRI terms, two regions with similar time courses are found as one network.</p>
+<p lang="zh-CN">阶数选错会带来典型的后果。若 $k &lt; n$，PCA 只保留方差最大的 $k$ 个方向，丢掉了仍含信号的方向；部分落在被丢弃方向上的那些源无法分开，表现为<em>合并</em>的成分，即两个或更多源的混合。最典型的受害者是混合列几乎共线的源：它们的和方向方差大，差方向方差小，对夹角为 $\theta$、范数相等的两列，后者与 $1 - \cos\theta$ 成正比（<a class="ref" data-ref="ex-mo-merge"></a>），所以差方向最先被丢掉。用 fMRI 的话说，时间过程相近的两个脑区会被当成一个网络。</p>
+
+<p lang="en">If $k &gt; n$, the extra dimensions contain mostly noise. With Gaussian noise and enough samples, ICA leaves the sources intact and returns $k - n$ nearly Gaussian components, which are harmless once recognized. Two problems remain. First, components that are merged at a lower order may split at a higher one, and whether the parts are distinct sources or fragments of one process is a question about the data that ICA cannot answer. Second, when $k$ is large relative to $T$, ICA overfits: with too few samples per dimension it returns components concentrated on a single spike or bump, whose apparent non-Gaussianity is created by the fit itself (Särelä &amp; Vigário, 2003). Overfitting is a reason to reduce the dimension before ICA even when the data contain many genuine sources. In practice the cost of overestimation is not negligible: on fMRI data, Li, Adalı and Calhoun (2007) found that at overestimated orders the estimated components become less stable and task-related activations are estimated less accurately.</p>
+<p lang="zh-CN">若 $k &gt; n$，多出来的维度主要是噪声。在高斯噪声且样本充足时，ICA 不会破坏源，只是多返回 $k - n$ 个近似高斯的成分，认出来就无害。但仍有两个问题。其一，低阶时被合并的成分在高阶时可能分裂，而分出来的部分是不同的源还是同一过程的碎片，是关于数据的问题，ICA 回答不了。其二，当 $k$ 相对于 $T$ 很大时，ICA 会过拟合：每个维度的样本太少，它会返回集中在单个尖峰或鼓包上的成分，其表面上的非高斯性是拟合本身造出来的（Särelä &amp; Vigário, 2003）。即使数据中确实有很多源，这也是在 ICA 之前先降维的一个理由。实践中高估阶数的代价并不可忽略：Li、Adalı 和 Calhoun（2007）在 fMRI 数据上发现，阶数高估时估计出的成分变得不那么稳定，任务相关激活的估计也变差。</p>
+
+<div class="env" data-kind="example" id="example-mo-split" data-en="merging and splitting" data-zh="合并与分裂">
+  <p lang="en">Six unit-variance Laplace sources are mixed into $m = 20$ sensors with white noise of standard deviation $0.7$ ($T = 3000$), and the column $\ba_2$ is placed at $30^\circ$ from $\ba_1$. The sample eigenvalues are $53.5, 37.6, 28.2, 17.7, 11.6, 2.05$, followed by a floor near $\sigma^2 = 0.49$ ($0.55, 0.53, \dots$), and MDL selects $k = 6$. <a class="ref" data-ref="fig-split"></a> shows the absolute correlations between the sources and the components found by symmetric FastICA after PCA reduction to $k = 5, 6, 9$. At $k = 5$, $s_1$ and $s_2$ appear together in one component, with correlations $0.67$ and $0.73$, close to the value $1/\sqrt2 \approx 0.71$ of an equal mixture. At $k = 6$ they separate, each with correlation $0.93$, the remainder being noise. At $k = 9$ the six sources are unchanged and the three extra components correlate with no source (all absolute correlations below $0.15$).</p>
+  <p lang="zh-CN">把六个单位方差的拉普拉斯源混合到 $m = 20$ 个传感器上，加上标准差为 $0.7$ 的白噪声（$T = 3000$），并让列 $\ba_2$ 与 $\ba_1$ 成 $30^\circ$ 夹角。样本特征值为 $53.5, 37.6, 28.2, 17.7, 11.6, 2.05$，之后是 $\sigma^2 = 0.49$ 附近的噪声底（$0.55, 0.53, \dots$），MDL 选出 $k = 6$。<a class="ref" data-ref="fig-split"></a>给出了源与对称 FastICA 所得成分之间的相关系数绝对值，PCA 分别降到 $k = 5, 6, 9$ 维。$k = 5$ 时，$s_1$ 与 $s_2$ 一起出现在同一个成分中，相关系数为 $0.67$ 和 $0.73$，接近等权混合的理论值 $1/\sqrt2 \approx 0.71$。$k = 6$ 时它们分开了，相关系数都是 $0.93$，余下的是噪声。$k = 9$ 时六个源不受影响，另外三个成分与任何源都不相关（相关系数绝对值都低于 $0.15$）。</p>
+</div>
+
+<figure id="fig-split">
+  <img src="fig/ch11-split.svg" width="620" height="197" alt="Three heat maps of absolute correlations between six sources (rows) and the estimated components (columns) for model orders 5, 6 and 9. At order 5, sources 1 and 2 both load on the first component with values 0.67 and 0.73. At orders 6 and 9 each source has its own component with correlation 0.93 to 0.99, and at order 9 three components match no source.">
+  <figcaption><span lang="en">Absolute correlations between the sources $s_i$ and the ICA components $y_j$ for model orders $k = 5$ (too few), $6$ (correct) and $9$ (too many), for the data of <a class="ref" data-ref="example-mo-split"></a>. Values of at least $0.15$ are printed.</span><span lang="zh-CN">模型阶数为 $k = 5$（过少）、$6$（正确）和 $9$（过多）时，源 $s_i$ 与 ICA 成分 $y_j$ 之间相关系数的绝对值，数据同<a class="ref" data-ref="example-mo-split"></a>。图中标出了不小于 $0.15$ 的数值。</span></figcaption>
+</figure>
+
+<p lang="en">There is therefore no single correct order for a real data set: the order sets the scale at which the data are described. A sound practice is to run ICA at several orders, track how components merge and split between them (for example by correlating components across orders), and report the order and how it was chosen. <a class="ref" data-ref="fmri-ica"></a> discusses the consequences for brain networks.</p>
+<p lang="zh-CN">因此，对一份真实数据并不存在唯一正确的阶数：阶数决定了描述数据的尺度。稳妥的做法是在几个阶数下分别运行 ICA，追踪成分在阶数之间如何合并与分裂（例如计算不同阶数下成分之间的相关），并报告所用的阶数及其选择方法。<a class="ref" data-ref="fmri-ica"></a>讨论这对脑网络研究意味着什么。</p>
+
+<h2 id="sec-icasso"><span lang="en">Reliability across runs: ICASSO and RAICAR</span><span lang="zh-CN">多次运行的可靠性：ICASSO 与 RAICAR</span></h2>
+
+<p lang="en">An ICA estimate depends on more than the model. The starting point decides which local optimum the algorithm reaches, and the finite sample perturbs every optimum (<a class="ref" data-ref="performance"></a>). A component that appears in every run is more trustworthy than one that appears once. ICASSO (Himberg, Hyvärinen &amp; Esposito, 2004) turns this observation into a procedure.</p>
+<p lang="zh-CN">ICA 的估计结果不只取决于模型。起点决定了算法到达哪个局部最优，有限样本又会扰动每个最优点（<a class="ref" data-ref="performance"></a>）。每次运行都出现的成分，比只出现一次的成分更可信。ICASSO（Himberg, Hyvärinen &amp; Esposito, 2004）把这一观察变成了一套流程。</p>
+
+<div class="env" data-kind="algorithm" id="alg-icasso" data-en="ICASSO" data-zh="ICASSO">
+  <ol lang="en">
+    <li>Run ICA $R$ times, each with a new random initialization and, optionally, on a bootstrap resample of the data (columns of $\bX$ drawn with replacement). Collect all estimated components, $R \times k$ in total.</li>
+    <li>For every pair of estimates $a, b$ compute the similarity $\sigma_{ab} = |r_{ab}|$, the absolute correlation between the two estimated components (rows of $\hat\bW\bX$: time series in temporal ICA, spatial maps in spatial ICA); with unmixing vectors $\bw_a, \bw_b$ it equals $|\bw_a^\top\bC_{\bx}\bw_b|/\sqrt{(\bw_a^\top\bC_{\bx}\bw_a)(\bw_b^\top\bC_{\bx}\bw_b)}$.</li>
+    <li>Cluster the estimates by agglomerative hierarchical clustering with average linkage on the dissimilarity $1 - \sigma_{ab}$, and cut the tree into $k$ clusters.</li>
+    <li>For each cluster $C$ compute the quality index <a class="ref" data-ref="eq-icasso-iq"></a> and choose as its representative (the <em>centrotype</em>) the estimate with the largest total similarity to the other members of $C$.</li>
+    <li>Report the centrotypes ranked by $I_q$; compact and isolated clusters ($I_q$ near 1) indicate reliable components.</li>
+  </ol>
+  <ol lang="zh-CN">
+    <li>运行 ICA $R$ 次，每次使用新的随机初始化，也可以在数据的自助重抽样样本（有放回地抽取 $\bX$ 的列）上运行。收集全部估计成分，共 $R \times k$ 个。</li>
+    <li>对每一对估计 $a, b$ 计算相似度 $\sigma_{ab} = |r_{ab}|$，即两个估计成分（$\hat\bW\bX$ 的行：时间 ICA 中是时间序列，空间 ICA 中是空间图）之间相关系数的绝对值；若解混向量为 $\bw_a, \bw_b$，它等于 $|\bw_a^\top\bC_{\bx}\bw_b|/\sqrt{(\bw_a^\top\bC_{\bx}\bw_a)(\bw_b^\top\bC_{\bx}\bw_b)}$。</li>
+    <li>以 $1 - \sigma_{ab}$ 为相异度，用平均连接的凝聚式层次聚类对这些估计聚类，并把聚类树切成 $k$ 个簇。</li>
+    <li>对每个簇 $C$ 计算质量指标 <a class="ref" data-ref="eq-icasso-iq"></a>，并选出与簇内其他成员总相似度最大的估计作为代表（称为<em>中心型</em>，centrotype）。</li>
+    <li>按 $I_q$ 排序报告各中心型；紧凑且孤立的簇（$I_q$ 接近 1）表示可靠的成分。</li>
+  </ol>
+</div>
+
+<p lang="en">The quality index of a cluster $C$ with complement $C^c$ is the average similarity inside the cluster minus the average similarity to the estimates outside it:</p>
+<p lang="zh-CN">簇 $C$（其补集为 $C^c$）的质量指标，是簇内的平均相似度减去它与簇外估计的平均相似度：</p>
+
+<div class="eq" id="eq-icasso-iq">$$I_q(C) = \frac{1}{|C|^2}\sum_{a, b \in C}\sigma_{ab} \;-\; \frac{1}{|C|\,|C^c|}\sum_{a \in C}\sum_{b \in C^c}\sigma_{ab}.$$</div>
+
+<p lang="en">ICASSO also projects the estimates to two dimensions for visual inspection. RAICAR (Yang, LaConte, Weng &amp; Hu, 2008) follows the same idea with a different matching step: it runs ICA many times, aligns the components across runs from the matrix of absolute cross-correlations between runs, ranks the aligned components by a reproducibility index computed from the absolute correlations among their aligned realizations, and averages the aligned estimates. Both methods reuse the same data. <em>Split-half reproducibility</em> asks a stronger question: split the data into two halves (two groups of subjects, two sessions, or the two halves of a long recording), run ICA on each, match the components between the halves by maximizing the total absolute correlation over permutations, and report the matched correlations. A component that reappears in independent data is closer to a scientific replication than one that reappears in reruns.</p>
+<p lang="zh-CN">ICASSO 还把这些估计投影到二维平面上，便于目视检查。RAICAR（Yang, LaConte, Weng &amp; Hu, 2008）遵循同样的思路，只是配对步骤不同：它多次运行 ICA，利用各次运行之间的相关系数绝对值矩阵把成分对齐，按可重复性指标给对齐后的成分排序（该指标由同一成分各次实现之间相关系数的绝对值算出），再对对齐后的估计取平均。这两种方法用的都是同一份数据。<em>分半可重复性</em>问的是更强的问题：把数据分成两半（两组被试、两次扫描，或长记录的前后两半），分别做 ICA，通过在所有置换中最大化总的相关绝对值来配对两半的成分，然后报告配对后的相关系数。在独立数据中重新出现的成分，比在重复运行中重新出现的成分，更接近科学意义上的重复验证。</p>
+
+<p lang="en">The spread of a component across bootstrap runs is an empirical version of the sampling variability studied in <a class="ref" data-ref="performance"></a>. It is large for nearly Gaussian sources, whose asymptotic variance is at least $1/(\mathcal{J} - 1)$ for one-unit estimators (<a class="ref" data-ref="prop-optimal-nonlinearity"></a>), and it grows as $T$ decreases. A low stability index can therefore be predicted, in part, from the source distributions and the sample size.</p>
+<p lang="zh-CN">一个成分在各次自助重抽样运行之间的离散程度，是<a class="ref" data-ref="performance"></a>所研究的抽样变异性的经验版本。对接近高斯的源它很大，因为单单元估计量的渐近方差至少为 $1/(\mathcal{J} - 1)$（<a class="ref" data-ref="prop-optimal-nonlinearity"></a>）；样本量 $T$ 越小，它也越大。所以较低的稳定性指标，在一定程度上可以由源的分布和样本量预先估计出来。</p>
+
+<h2 id="sec-reliability-meaning"><span lang="en">What a stability index does and does not certify</span><span lang="zh-CN">稳定性指标能说明什么、不能说明什么</span></h2>
+
+<p lang="en">A high stability index certifies that the component is a reproducible optimum of the chosen contrast for these data: it is not an accident of one initialization and, when resampling is used, not an accident of a few samples. It does not certify much more.</p>
+<p lang="zh-CN">较高的稳定性指标说明：对这份数据而言，这个成分是所选对比函数的一个可重复的最优点；它不是某次初始化的偶然结果，若用了重抽样，也不是少数几个样本造成的偶然结果。除此之外，它说明不了更多。</p>
+
+<ul lang="en">
+  <li><b>Stable is not unbiased.</b> A biased estimator is stable and wrong. Noise-biased whitening (<a class="ref" data-ref="prop-whitening-bias"></a>) produces reproducible but distorted components, and an order that is too low produces perfectly stable merged components (<a class="ref" data-ref="example-mo-split"></a>).</li>
+  <li><b>Stable is not meaningful.</b> In fMRI, head motion and physiological artifacts are among the most stable components of all; stability says nothing about their origin.</li>
+  <li><b>Stable is not independent.</b> ICA returns maximally independent components whether or not the data were generated by independent sources, and a dependent structure can be reproduced as reliably as an independent one.</li>
+  <li><b>Unstable is not always bad.</b> If two sources are nearly Gaussian, or more generally if the contrast is nearly flat within a subspace, each run returns a different rotation inside a subspace that is itself stable (<a class="ref" data-ref="sec-gaussian-subspace"></a>). The individual components then have low stability while the subspace they span is reliable; comparing subspaces across runs, rather than single components, reveals this (<a class="ref" data-ref="ex-mo-gaussian-pair"></a>).</li>
+</ul>
+<ul lang="zh-CN">
+  <li><b>稳定不等于无偏。</b>有偏的估计量可以既稳定又错误。受噪声影响的白化（<a class="ref" data-ref="prop-whitening-bias"></a>）给出可重复但有畸变的成分，阶数过低则给出完全稳定的合并成分（<a class="ref" data-ref="example-mo-split"></a>）。</li>
+  <li><b>稳定不等于有意义。</b>在 fMRI 中，头动和生理伪迹恰恰是最稳定的成分之一；稳定性对它们的来源一无所知。</li>
+  <li><b>稳定不等于独立。</b>无论数据是否由独立源生成，ICA 都会返回“尽可能独立”的成分；相依的结构也可以和独立的结构一样被稳定地重现。</li>
+  <li><b>不稳定未必是坏事。</b>如果两个源接近高斯，或者更一般地，对比函数在某个子空间内几乎是平的，那么每次运行都会在这个本身稳定的子空间内给出不同的旋转（<a class="ref" data-ref="sec-gaussian-subspace"></a>）。此时单个成分的稳定性很低，而它们张成的子空间是可靠的；在各次运行之间比较子空间而不是单个成分，就能看出这一点（<a class="ref" data-ref="ex-mo-gaussian-pair"></a>）。</li>
+</ul>
+
+<p lang="en">Stability is thus necessary for a component to be interpreted, but not sufficient. Validity has to come from elsewhere: agreement with the noise and order diagnostics of this chapter, replication in independent data, and knowledge of the domain.</p>
+<p lang="zh-CN">因此，稳定是对成分作解释的必要条件，而不是充分条件。有效性必须另有来源：与本章的噪声诊断和阶数诊断相互印证、在独立数据中得到重复，以及领域知识。</p>
+
+<div class="keypoints">
+  <p class="kp-title" lang="en">Key points</p>
+  <p class="kp-title" lang="zh-CN">本章要点</p>
+  <ul lang="en">
+    <li>Gaussian noise biases whitening: $\bV\bA$ has singular values $\sqrt{1 - \sigma^2/\lambda_k}$. Bias-corrected whitening needs $\sigma^2$, which probabilistic PCA estimates as the mean of the discarded eigenvalues.</li>
+    <li>Cumulants of order three and higher ignore Gaussian noise, so cumulant contrasts with corrected whitening still identify $\bA$; the sources themselves can only be estimated approximately.</li>
+    <li>AIC, MDL and Minka's evidence choose the order from the eigenvalues of the covariance, assuming independent samples. MDL is consistent and AIC tends to overestimate; dependent samples make all of them overestimate, and subsampling restores accuracy.</li>
+    <li>Too few components merge sources, nearly collinear ones first; too many add noise components and, when samples are scarce, overfitted spikes. Splits at higher orders must be interpreted, not taken for granted.</li>
+    <li>ICASSO, RAICAR and split-half analyses measure reproducibility. Stability is necessary but not sufficient for validity, and unstable single components can span a stable subspace.</li>
+  </ul>
+  <ul lang="zh-CN">
+    <li>高斯噪声使白化有偏：$\bV\bA$ 的奇异值为 $\sqrt{1 - \sigma^2/\lambda_k}$。偏差校正的白化需要 $\sigma^2$，概率 PCA 用被舍弃特征值的平均来估计它。</li>
+    <li>三阶及以上的累积量对高斯噪声“视而不见”，因此在校正白化之后，累积量对比函数仍能辨识 $\bA$；源本身则只能近似估计。</li>
+    <li>AIC、MDL 和 Minka 的证据方法都由协方差的特征值选择阶数，并假设样本相互独立。MDL 相合，AIC 往往高估；样本相依时它们都会高估，降采样可以恢复准确性。</li>
+    <li>成分过少会合并源，混合列几乎共线的源最先被合并；成分过多会多出噪声成分，样本稀少时还会出现过拟合的尖峰。高阶时的分裂需要解释，不能想当然地接受。</li>
+    <li>ICASSO、RAICAR 和分半分析衡量的是可重复性。稳定是有效的必要条件而非充分条件；不稳定的单个成分可能张成一个稳定的子空间。</li>
+  </ul>
+</div>
+
+<h2 id="sec-model-order-exercises"><span lang="en">Exercises</span><span lang="zh-CN">习题</span></h2>
+
+<div class="exercise" id="ex-mo-whitening" data-level="basic">
+  <p lang="en">Let $m = n = 2$, $\bA = \bigl(\begin{smallmatrix} 1 &amp; 0.6 \\ 0.4 &amp; 1 \end{smallmatrix}\bigr)$, unit-variance sources and noise variance $\sigma^2 = 0.25$. Compute $\bC_{\bx}$ and its eigenvalues, the singular values of $\bV\bA$ for $\bV = \bC_{\bx}^{-1/2}$, and the matrix $\bV_{\mathrm c}\bA$ for the bias-corrected $\bV_{\mathrm c} = (\bC_{\bx} - \sigma^2\bI)^{-1/2}$. Which direction is distorted most by ordinary whitening?</p>
+  <p lang="zh-CN">设 $m = n = 2$，$\bA = \bigl(\begin{smallmatrix} 1 &amp; 0.6 \\ 0.4 &amp; 1 \end{smallmatrix}\bigr)$，源的方差为一，噪声方差 $\sigma^2 = 0.25$。计算 $\bC_{\bx}$ 及其特征值，$\bV = \bC_{\bx}^{-1/2}$ 时 $\bV\bA$ 的奇异值，以及经偏差校正的 $\bV_{\mathrm c} = (\bC_{\bx} - \sigma^2\bI)^{-1/2}$ 给出的 $\bV_{\mathrm c}\bA$。普通白化对哪个方向的畸变最大？</p>
+  <details class="solution">
+    <p lang="en">$\bC_{\bx} = \bA\bA^\top + 0.25\,\bI = \bigl(\begin{smallmatrix} 1.61 &amp; 1.00 \\ 1.00 &amp; 1.41 \end{smallmatrix}\bigr)$, with trace $3.02$ and determinant $1.2701$, so its eigenvalues are $(3.02 \pm 2.01)/2$, that is, $2.515$ and $0.505$. By <a class="ref" data-ref="prop-whitening-bias"></a> the singular values of $\bV\bA$ are $\sqrt{1 - 0.25/2.515} = 0.949$ and $\sqrt{1 - 0.25/0.505} = 0.711$; numerically $\bV\bA = \bigl(\begin{smallmatrix} 0.826 &amp; 0.202 \\ 0.037 &amp; 0.826 \end{smallmatrix}\bigr)$, which is not orthogonal. The weak principal direction, whose eigenvalue $0.505$ is half noise, is shrunk by 29%. With the correction, $\bV_{\mathrm c}\bA = \bigl(\begin{smallmatrix} 0.995 &amp; 0.0995 \\ -0.0995 &amp; 0.995 \end{smallmatrix}\bigr)$, a rotation by about $5.7^\circ$.</p>
+    <p lang="zh-CN">$\bC_{\bx} = \bA\bA^\top + 0.25\,\bI = \bigl(\begin{smallmatrix} 1.61 &amp; 1.00 \\ 1.00 &amp; 1.41 \end{smallmatrix}\bigr)$，迹为 $3.02$，行列式为 $1.2701$，所以特征值为 $(3.02 \pm 2.01)/2$，即 $2.515$ 和 $0.505$。由<a class="ref" data-ref="prop-whitening-bias"></a>，$\bV\bA$ 的奇异值为 $\sqrt{1 - 0.25/2.515} = 0.949$ 和 $\sqrt{1 - 0.25/0.505} = 0.711$；数值上 $\bV\bA = \bigl(\begin{smallmatrix} 0.826 &amp; 0.202 \\ 0.037 &amp; 0.826 \end{smallmatrix}\bigr)$，不是正交矩阵。较弱的主方向（其特征值 $0.505$ 有一半来自噪声）被压缩了 29%。校正之后，$\bV_{\mathrm c}\bA = \bigl(\begin{smallmatrix} 0.995 &amp; 0.0995 \\ -0.0995 &amp; 0.995 \end{smallmatrix}\bigr)$，是一个约 $5.7^\circ$ 的旋转。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-mo-mdl" data-level="basic">
+  <p lang="en">A sample covariance of $m = 6$ sensors computed from $T = 500$ samples has eigenvalues $9.0, 4.0, 1.10, 1.02, 0.98, 0.90$. Compute the probabilistic PCA estimate of $\sigma^2$ for $k = 2$, the values of $\mathrm{MDL}(k)$ in <a class="ref" data-ref="eq-aic-mdl"></a> for $k = 1, 2, 3$, and the selected order. By how much does bias-corrected whitening rescale the two principal components compared with ordinary whitening?</p>
+  <p lang="zh-CN">由 $T = 500$ 个样本算得的 $m = 6$ 个传感器的样本协方差，特征值为 $9.0, 4.0, 1.10, 1.02, 0.98, 0.90$。计算 $k = 2$ 时概率 PCA 对 $\sigma^2$ 的估计，$k = 1, 2, 3$ 时 <a class="ref" data-ref="eq-aic-mdl"></a> 中 $\mathrm{MDL}(k)$ 的值，以及所选的阶数。与普通白化相比，经偏差校正的白化把两个主成分的尺度改变了多少？</p>
+  <details class="solution">
+    <p lang="en">For $k = 2$, $\hat\sigma^2 = (1.10 + 1.02 + 0.98 + 0.90)/4 = 1.00$. By <a class="ref" data-ref="eq-ppca-loglik"></a> and <a class="ref" data-ref="eq-aic-mdl"></a>, $\mathrm{MDL}(k) = -\frac{T}{2}(m - k)\log(\mathrm{GM}_k/\mathrm{AM}_k) + \frac12 p(k)\log T$, where GM and AM are the geometric and arithmetic means of the $m - k$ smallest eigenvalues, with $\log 500 = 6.215$. For $k = 1$: $\mathrm{AM} = 1.600$, $\mathrm{GM} = 1.317$, $5\log(\mathrm{GM}/\mathrm{AM}) = -0.974$, $p = 7$, so $\mathrm{MDL} = 243.5 + 21.8 = 265.3$. For $k = 2$: $\mathrm{AM} = 1.000$, $\mathrm{GM} = 0.997$, $4\log(\mathrm{GM}/\mathrm{AM}) = -0.0105$, $p = 12$, so $\mathrm{MDL} = 2.6 + 37.3 = 39.9$. For $k = 3$: $\mathrm{AM} = 0.967$, $\mathrm{GM} = 0.965$, $3\log(\mathrm{GM}/\mathrm{AM}) = -0.0040$, $p = 16$, so $\mathrm{MDL} = 1.0 + 49.7 = 50.7$. The order is $k = 2$ (AIC also selects 2 here). Ordinary whitening divides the two principal components by $\sqrt{9} = 3$ and $\sqrt4 = 2$; the corrected version divides them by $\sqrt{9 - 1} = 2.83$ and $\sqrt{4 - 1} = 1.73$, enlarging them by factors $1.06$ and $1.15$.</p>
+    <p lang="zh-CN">$k = 2$ 时 $\hat\sigma^2 = (1.10 + 1.02 + 0.98 + 0.90)/4 = 1.00$。由 <a class="ref" data-ref="eq-ppca-loglik"></a> 和 <a class="ref" data-ref="eq-aic-mdl"></a>，$\mathrm{MDL}(k) = -\frac{T}{2}(m - k)\log(\mathrm{GM}_k/\mathrm{AM}_k) + \frac12 p(k)\log T$，其中 GM 与 AM 分别是最小的 $m - k$ 个特征值的几何平均与算术平均，其中 $\log 500 = 6.215$。$k = 1$：$\mathrm{AM} = 1.600$，$\mathrm{GM} = 1.317$，$5\log(\mathrm{GM}/\mathrm{AM}) = -0.974$，$p = 7$，故 $\mathrm{MDL} = 243.5 + 21.8 = 265.3$。$k = 2$：$\mathrm{AM} = 1.000$，$\mathrm{GM} = 0.997$，$4\log(\mathrm{GM}/\mathrm{AM}) = -0.0105$，$p = 12$，故 $\mathrm{MDL} = 2.6 + 37.3 = 39.9$。$k = 3$：$\mathrm{AM} = 0.967$，$\mathrm{GM} = 0.965$，$3\log(\mathrm{GM}/\mathrm{AM}) = -0.0040$，$p = 16$，故 $\mathrm{MDL} = 1.0 + 49.7 = 50.7$。所选阶数为 $k = 2$（此例中 AIC 也选 2）。普通白化把两个主成分分别除以 $\sqrt{9} = 3$ 和 $\sqrt4 = 2$；校正后改为除以 $\sqrt{9 - 1} = 2.83$ 和 $\sqrt{4 - 1} = 1.73$，即分别放大 $1.06$ 倍和 $1.15$ 倍。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-mo-merge" data-level="intermediate">
+  <p lang="en">Two unit-variance sources have mixing columns $\ba_1, \ba_2$ of equal norm $a$ at angle $\theta$, and the noise is $\Ncal(\bzero, \sigma^2\bI)$; there are no other sources. (a) Find the eigenvalues of $\bC_{\bx}$. (b) If PCA keeps a single component, show that it is an equal mixture of $s_1$ and $s_2$ plus noise, with correlation at most $1/\sqrt2$ with each source. (c) How does the variance of the difference direction behave for small $\theta$?</p>
+  <p lang="zh-CN">两个单位方差的源，其混合列 $\ba_1, \ba_2$ 范数都为 $a$、夹角为 $\theta$，噪声为 $\Ncal(\bzero, \sigma^2\bI)$，没有其他源。（a）求 $\bC_{\bx}$ 的特征值。（b）若 PCA 只保留一个成分，证明它是 $s_1$ 与 $s_2$ 的等权混合加噪声，且与每个源的相关系数至多为 $1/\sqrt2$。（c）$\theta$ 很小时，差方向的方差如何变化？</p>
+  <details class="solution">
+    <p lang="en">(a) $(\ba_1\ba_1^\top + \ba_2\ba_2^\top)(\ba_1 \pm \ba_2) = (a^2 \pm a^2\cos\theta)\,\ba_1 + (a^2\cos\theta \pm a^2)\,\ba_2 = a^2(1 \pm \cos\theta)(\ba_1 \pm \ba_2)$, so $\bC_{\bx}$ has eigenvalues $a^2(1 + \cos\theta) + \sigma^2$ and $a^2(1 - \cos\theta) + \sigma^2$ along $\ba_1 \pm \ba_2$, and $\sigma^2$ with multiplicity $m - 2$. (b) The first principal direction is $\bu = (\ba_1 + \ba_2)/\|\ba_1 + \ba_2\|$, and $\bu^\top\ba_1 = \bu^\top\ba_2 = c$ with $c = a\sqrt{(1 + \cos\theta)/2}$. Hence $\bu^\top\bx = c\,(s_1 + s_2) + \bu^\top\bn$, an equal mixture, and its correlation with $s_1$ is $c/\sqrt{2c^2 + \sigma^2} \le 1/\sqrt2$. With one dimension there is no rotation left for ICA to choose. (c) $a^2(1 - \cos\theta) = 2a^2\sin^2(\theta/2) \approx a^2\theta^2/2$: halving the angle divides the signal variance of the difference direction by four, so nearly collinear pairs are the first to sink below the noise and to be merged.</p>
+    <p lang="zh-CN">（a）$(\ba_1\ba_1^\top + \ba_2\ba_2^\top)(\ba_1 \pm \ba_2) = (a^2 \pm a^2\cos\theta)\,\ba_1 + (a^2\cos\theta \pm a^2)\,\ba_2 = a^2(1 \pm \cos\theta)(\ba_1 \pm \ba_2)$，所以 $\bC_{\bx}$ 沿 $\ba_1 \pm \ba_2$ 的特征值为 $a^2(1 + \cos\theta) + \sigma^2$ 和 $a^2(1 - \cos\theta) + \sigma^2$，另有重数为 $m - 2$ 的特征值 $\sigma^2$。（b）第一主方向为 $\bu = (\ba_1 + \ba_2)/\|\ba_1 + \ba_2\|$，且 $\bu^\top\ba_1 = \bu^\top\ba_2 = c$，其中 $c = a\sqrt{(1 + \cos\theta)/2}$。因此 $\bu^\top\bx = c\,(s_1 + s_2) + \bu^\top\bn$ 是等权混合，它与 $s_1$ 的相关系数为 $c/\sqrt{2c^2 + \sigma^2} \le 1/\sqrt2$。只有一维时，ICA 已经没有旋转可选。（c）$a^2(1 - \cos\theta) = 2a^2\sin^2(\theta/2) \approx a^2\theta^2/2$：夹角减半，差方向的信号方差就变为四分之一，所以几乎共线的一对源最先沉到噪声之下而被合并。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-mo-gaussian-pair" data-level="intermediate">
+  <p lang="en">Suppose two of the sources are Gaussian and the others strongly non-Gaussian. What will ICASSO report for the two Gaussian components? Propose a measure that shows that the subspace they span is nevertheless reproducible.</p>
+  <p lang="zh-CN">设有两个源是高斯的，其余源强烈非高斯。ICASSO 对这两个高斯成分会给出什么结果？提出一个指标，说明它们张成的子空间仍然是可重复的。</p>
+  <details class="solution">
+    <p lang="en">Any rotation of the two Gaussian components leaves them independent and Gaussian (<a class="ref" data-ref="sec-gaussian-subspace"></a>), so the contrast is flat within their plane, and each run returns a rotation determined by the initialization and by sampling noise. Estimates from different runs are spread over all directions in the plane, their absolute correlations take every value between 0 and 1, and the clustering forms two diffuse clusters (or one merged cluster) with low $I_q$. The non-Gaussian components are unaffected because they are identified separately. The plane itself is the same in every run up to sampling error. To see this, take orthonormal bases $\bB_r$ and $\bB_{r'}$ of the two-dimensional span of the corresponding components in runs $r$ and $r'$ (in the whitened coordinates, or after normalizing the component time series) and compute the singular values of $\bB_r^\top\bB_{r'}$, the cosines of the principal angles between the planes. Both cosines are close to 1 when the subspace is reproducible. Equivalently, regress each component of one run on the pair from the other run and report the squared multiple correlation.</p>
+    <p lang="zh-CN">两个高斯成分经任意旋转后仍然独立且服从高斯分布（<a class="ref" data-ref="sec-gaussian-subspace"></a>），所以对比函数在它们所在的平面内是平的，每次运行得到的旋转由初始化和抽样噪声决定。不同运行的估计散布在平面内的各个方向上，它们之间相关系数的绝对值可以取 0 到 1 之间的任何值，聚类会形成两个松散的簇（或合并成一个簇），$I_q$ 很低。非高斯成分不受影响，因为它们是单独被辨识的。而这个平面本身在每次运行中都相同（在抽样误差范围内）。为看出这一点，在第 $r$ 次和第 $r'$ 次运行中，分别取相应两个成分所张成二维子空间的标准正交基 $\bB_r$ 与 $\bB_{r'}$（在白化坐标中，或先把成分时间序列标准化），计算 $\bB_r^\top\bB_{r'}$ 的奇异值，即两个平面之间主角的余弦。子空间可重复时，两个余弦都接近 1。等价地，也可以把一次运行中的每个成分对另一次运行中的那一对成分作回归，报告复相关系数的平方。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-mo-loglik" data-level="advanced">
+  <p lang="en">Let $\hat\bC$ be the sample covariance (normalized by $T$) with eigenvalues $\ell_1 \ge \dots \ge \ell_m$, and consider zero-mean Gaussian models whose covariance $\bSigma$ has eigenvalues $\gamma_1 \ge \dots \ge \gamma_k$ and $\gamma_{k+1} = \dots = \gamma_m = \sigma^2$ with $\gamma_k \ge \sigma^2$. Show that the maximized likelihood $L_k$ satisfies <a class="ref" data-ref="eq-ppca-loglik"></a>, where $L_m$ is the maximum over all covariance matrices, that the maximum is attained at $\gamma_j = \ell_j$ ($j \le k$), $\sigma^2 = \frac{1}{m-k}\sum_{j &gt; k}\ell_j$ and eigenvectors equal to those of $\hat\bC$, and that the model has $p(k) = mk - k(k-1)/2 + 1$ free parameters.</p>
+  <p lang="zh-CN">设 $\hat\bC$ 为样本协方差（以 $T$ 归一化），特征值为 $\ell_1 \ge \dots \ge \ell_m$。考虑零均值高斯模型，其协方差 $\bSigma$ 的特征值为 $\gamma_1 \ge \dots \ge \gamma_k$ 与 $\gamma_{k+1} = \dots = \gamma_m = \sigma^2$，且 $\gamma_k \ge \sigma^2$。证明最大似然值 $L_k$ 满足 <a class="ref" data-ref="eq-ppca-loglik"></a>（其中 $L_m$ 是在所有协方差矩阵上取得的最大值），最大值在 $\gamma_j = \ell_j$（$j \le k$）、$\sigma^2 = \frac{1}{m-k}\sum_{j &gt; k}\ell_j$ 以及特征向量与 $\hat\bC$ 相同处取得；并证明该模型有 $p(k) = mk - k(k-1)/2 + 1$ 个自由参数。</p>
+  <details class="solution">
+    <p lang="en">The log-likelihood of $T$ independent observations is $-\frac{T}{2}\bigl[\log\det\bSigma + \tr(\bSigma^{-1}\hat\bC) + m\log 2\pi\bigr]$. <b>Eigenvectors.</b> For fixed eigenvalues of $\bSigma$, von Neumann's trace inequality gives $\tr(\bSigma^{-1}\hat\bC) \ge \sum_j \ell_j/\gamma_j$, where the largest eigenvalues of $\hat\bC$ are paired with the smallest eigenvalues $1/\gamma_j$ of $\bSigma^{-1}$; equality holds when $\bSigma$ has the eigenvectors of $\hat\bC$ in the same order. <b>Eigenvalues.</b> It remains to minimize $\sum_{j \le k}(\log\gamma_j + \ell_j/\gamma_j) + \sum_{j &gt; k}(\log\sigma^2 + \ell_j/\sigma^2)$. Each term $\log\gamma + \ell/\gamma$ is minimized at $\gamma = \ell$, and the second sum, as a function of $\sigma^2$, at the mean $\bar\ell_k$ of $\ell_{k+1}, \dots, \ell_m$; the constraint $\gamma_k \ge \sigma^2$ holds because $\ell_k \ge \bar\ell_k$. <b>Value.</b> At the optimum $\log\det\bSigma + \tr(\bSigma^{-1}\hat\bC) = \sum_{j \le k}\log\ell_j + (m - k)\log\bar\ell_k + m$. Over all covariance matrices the maximum is attained at $\bSigma = \hat\bC$, where the bracket equals $\sum_{j=1}^m\log\ell_j + m$; this gives $L_m$. Writing $\sum_{j \le k}\log\ell_j = \sum_{j=1}^m\log\ell_j - \sum_{j &gt; k}\log\ell_j$, the difference of the two brackets is $-(m - k)\bigl[\frac{1}{m-k}\sum_{j &gt; k}\log\ell_j - \log\bar\ell_k\bigr]$, $(m - k)$ times the logarithm of the ratio of geometric to arithmetic mean, with a minus sign; multiplying by $-T/2$ gives <a class="ref" data-ref="eq-ppca-loglik"></a>. <b>Parameters.</b> The model is specified by $k$ eigenvalues, $\sigma^2$, and an orthonormal set of $k$ vectors in $\R^m$, which has $mk - k(k+1)/2$ degrees of freedom ($mk$ entries minus $k(k+1)/2$ orthonormality constraints). The total is $k + 1 + mk - k(k+1)/2 = mk - k(k-1)/2 + 1$.</p>
+    <p lang="zh-CN">$T$ 个独立观测的对数似然为 $-\frac{T}{2}\bigl[\log\det\bSigma + \tr(\bSigma^{-1}\hat\bC) + m\log 2\pi\bigr]$。<b>特征向量。</b>当 $\bSigma$ 的特征值固定时，由 von Neumann 迹不等式，$\tr(\bSigma^{-1}\hat\bC) \ge \sum_j \ell_j/\gamma_j$，其中 $\hat\bC$ 的最大特征值与 $\bSigma^{-1}$ 的最小特征值 $1/\gamma_j$ 相配；当 $\bSigma$ 按同样顺序取 $\hat\bC$ 的特征向量时等号成立。<b>特征值。</b>剩下要最小化 $\sum_{j \le k}(\log\gamma_j + \ell_j/\gamma_j) + \sum_{j &gt; k}(\log\sigma^2 + \ell_j/\sigma^2)$。每一项 $\log\gamma + \ell/\gamma$ 在 $\gamma = \ell$ 处取最小值；第二个和作为 $\sigma^2$ 的函数，在 $\ell_{k+1}, \dots, \ell_m$ 的平均值 $\bar\ell_k$ 处取最小值；由于 $\ell_k \ge \bar\ell_k$，约束 $\gamma_k \ge \sigma^2$ 自然满足。<b>最大值。</b>在最优点处 $\log\det\bSigma + \tr(\bSigma^{-1}\hat\bC) = \sum_{j \le k}\log\ell_j + (m - k)\log\bar\ell_k + m$。在所有协方差矩阵上，最大值在 $\bSigma = \hat\bC$ 处取得，此时方括号等于 $\sum_{j=1}^m\log\ell_j + m$，这就给出 $L_m$。把 $\sum_{j \le k}\log\ell_j$ 写成 $\sum_{j=1}^m\log\ell_j - \sum_{j &gt; k}\log\ell_j$，两个方括号之差为 $-(m - k)\bigl[\frac{1}{m-k}\sum_{j &gt; k}\log\ell_j - \log\bar\ell_k\bigr]$，即几何平均与算术平均之比的对数的 $(m - k)$ 倍再取负号；乘以 $-T/2$ 即得 <a class="ref" data-ref="eq-ppca-loglik"></a>。<b>参数个数。</b>模型由 $k$ 个特征值、$\sigma^2$ 以及 $\R^m$ 中的 $k$ 个标准正交向量确定，后者的自由度为 $mk - k(k+1)/2$（$mk$ 个元素减去 $k(k+1)/2$ 个标准正交约束）。合计为 $k + 1 + mk - k(k+1)/2 = mk - k(k-1)/2 + 1$。</p>
+  </details>
+</div>
+
+<h2 id="sec-model-order-references"><span lang="en">References</span><span lang="zh-CN">参考文献</span></h2>
+
+<div class="references">
+  <ol>
+    <li>Akaike, H. (1974). A new look at the statistical model identification. <i>IEEE Transactions on Automatic Control</i>, 19(6), 716–723.</li>
+    <li>Beckmann, C. F., &amp; Smith, S. M. (2004). Probabilistic independent component analysis for functional magnetic resonance imaging. <i>IEEE Transactions on Medical Imaging</i>, 23(2), 137–152.</li>
+    <li>Himberg, J., Hyvärinen, A., &amp; Esposito, F. (2004). Validating the independent components of neuroimaging time series via clustering and visualization. <i>NeuroImage</i>, 22(3), 1214–1222.</li>
+    <li>Hyvärinen, A. (1999). Gaussian moments for noisy independent component analysis. <i>IEEE Signal Processing Letters</i>, 6(6), 145–147.</li>
+    <li>Hyvärinen, A., Karhunen, J., &amp; Oja, E. (2001). <i>Independent Component Analysis</i>. Wiley.</li>
+    <li>Li, Y.-O., Adalı, T., &amp; Calhoun, V. D. (2007). Estimating the number of independent components for functional magnetic resonance imaging data. <i>Human Brain Mapping</i>, 28(11), 1251–1266.</li>
+    <li>Minka, T. P. (2000). Automatic choice of dimensionality for PCA. In <i>Advances in Neural Information Processing Systems 13</i> (pp. 598–604). MIT Press.</li>
+    <li>Rissanen, J. (1978). Modeling by shortest data description. <i>Automatica</i>, 14(5), 465–471.</li>
+    <li>Särelä, J., &amp; Vigário, R. (2003). Overlearning in marginal distribution-based ICA: Analysis and solutions. <i>Journal of Machine Learning Research</i>, 4, 1447–1469.</li>
+    <li>Schwarz, G. (1978). Estimating the dimension of a model. <i>The Annals of Statistics</i>, 6(2), 461–464.</li>
+    <li>Tipping, M. E., &amp; Bishop, C. M. (1999). Probabilistic principal component analysis. <i>Journal of the Royal Statistical Society: Series B</i>, 61(3), 611–622.</li>
+    <li>Wax, M., &amp; Kailath, T. (1985). Detection of signals by information theoretic criteria. <i>IEEE Transactions on Acoustics, Speech, and Signal Processing</i>, 33(2), 387–392.</li>
+    <li>Yang, Z., LaConte, S., Weng, X., &amp; Hu, X. (2008). Ranking and averaging independent component analysis by reproducibility (RAICAR). <i>Human Brain Mapping</i>, 29(6), 711–725.</li>
+  </ol>
+</div>

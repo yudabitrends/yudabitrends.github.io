@@ -201,6 +201,33 @@ h1 {
 }
 .directions p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--muted); }
 
+/* Link to the ICA book (/ica/) */
+.book-promo {
+  display: block;
+  margin: 1.1rem 0 0;
+  padding: 0.95rem 1.2rem 1rem;
+  border: 1px solid var(--frame);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  background: linear-gradient(#fff, var(--panel));
+  box-shadow: var(--shadow);
+  color: var(--text);
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+.book-promo:hover { text-decoration: none; border-color: var(--accent); }
+.book-promo:hover .promo-cta { text-decoration: underline; text-underline-offset: 0.15em; }
+.promo-kicker {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.promo-title { display: block; margin: 0.25rem 0 0.35rem; font-size: 1.15rem; font-weight: 700; line-height: 1.3; color: var(--ink); text-wrap: balance; }
+.promo-desc { display: block; font-size: 0.95rem; line-height: 1.5; color: var(--muted); }
+.promo-cta { display: inline-block; margin-top: 0.5rem; font-weight: 700; color: var(--link); }
+
 /* ---------- Sections ---------- */
 
 h2 {

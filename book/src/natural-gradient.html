@@ -1,0 +1,374 @@
+<!-- Chapter 7. Natural gradient, Infomax and stability. Source format: book/AUTHORING.md -->
+
+<h2 id="sec-ng-from-contrast"><span lang="en">From a contrast to an update rule</span><span lang="zh-CN">从对比函数到更新规则</span></h2>
+
+<p lang="en"><a class="ref" data-ref="likelihood"></a> reduced ICA to an optimization problem: find the unmixing matrix $\bW$ that maximizes the log-likelihood <a class="ref" data-ref="eq-likelihood"></a>, or equivalently minimizes the mutual information of the outputs. This chapter turns that problem into algorithms that adjust $\bW$ step by step. Three questions run through it. In which direction should $\bW$ move? How does the behaviour of the algorithm depend on the unknown mixing matrix $\bA$? And which solutions are attractors, so that the algorithm actually settles on them?</p>
+<p lang="zh-CN"><a class="ref" data-ref="likelihood"></a>把 ICA 归结为一个优化问题：寻找使对数似然 <a class="ref" data-ref="eq-likelihood"></a> 最大的解混矩阵 $\bW$，或者等价地，使输出的互信息最小。本章把这个问题变成逐步调整 $\bW$ 的算法。贯穿全章的有三个问题：$\bW$ 应当沿什么方向移动？算法的行为如何依赖于未知的混合矩阵 $\bA$？哪些解是吸引子，也就是说，算法实际会停在哪些解上？</p>
+
+<p lang="en">The answers are, in order: along the <em>relative</em> or <em>natural</em> gradient, which needs no matrix inversion; not at all, a property called <em>equivariance</em>; and the separating solutions attract the algorithm when a simple condition linking the nonlinearity to the source distributions holds, and not when it fails. The same condition explains why the original Infomax algorithm separates typical super-Gaussian sources such as speech but fails on some sub-Gaussian ones, and how the extended version repairs this.</p>
+<p lang="zh-CN">三个答案依次是：沿着<em>相对梯度</em>（即<em>自然梯度</em>）的方向移动，这一方向不需要矩阵求逆；完全不依赖，这一性质称为<em>等变性</em>；当非线性函数与源分布之间满足一个简单的条件时，分离解吸引算法，条件不满足时则不然。同一个条件解释了为什么原始的 Infomax 算法能分离语音这类常见的超高斯源，却在某些亚高斯源上失效，以及扩展 Infomax 如何弥补这一缺陷。</p>
+
+<p lang="en">Throughout the chapter the model is square ($m = n$, after the PCA reduction of <a class="ref" data-ref="sec-pca-reduction"></a> if necessary), $\bA$ is invertible, and the sources are independent with zero mean. The algorithms use <em>model</em> densities $p_i$ that need not be the true ones. Their scores $\varphi_i = -p_i'/p_i$ are the <em>nonlinearities</em> of the algorithm, collected in $\bphi(\by) = (\varphi_1(y_1), \dots, \varphi_n(y_n))^\top$. When the model is right, $\varphi_i$ is the true score $\psi_i$ of <a class="ref" data-ref="def-score"></a>.</p>
+<p lang="zh-CN">本章始终假设模型是方阵情形（$m = n$，必要时先做<a class="ref" data-ref="sec-pca-reduction"></a>的 PCA 降维），$\bA$ 可逆，各源相互独立且均值为零。算法使用的是<em>模型</em>密度 $p_i$，它不必是真实密度。模型密度的得分函数 $\varphi_i = -p_i'/p_i$ 就是算法中的<em>非线性函数</em>，记作向量 $\bphi(\by) = (\varphi_1(y_1), \dots, \varphi_n(y_n))^\top$。模型正确时，$\varphi_i$ 就是<a class="ref" data-ref="def-score"></a>中的真实得分函数 $\psi_i$。</p>
+
+<h2 id="sec-euclidean-gradient"><span lang="en">The ordinary gradient</span><span lang="zh-CN">普通梯度</span></h2>
+
+<p lang="en">For one observation, the log-likelihood of $\bW$ is $\sum_i \log p_i(\bw_i^\top\bx) + \log|\det\bW|$, where $\bw_i^\top$ is the $i$-th row of $\bW$. Its expectation</p>
+<p lang="zh-CN">对单个观测，$\bW$ 的对数似然为 $\sum_i \log p_i(\bw_i^\top\bx) + \log|\det\bW|$，其中 $\bw_i^\top$ 是 $\bW$ 的第 $i$ 行。它的期望</p>
+
+<div class="eq" id="eq-ng-objective">$$\ell(\bW) = \E\Bigl[\sum_{i=1}^n \log p_i(y_i)\Bigr] + \log|\det\bW|, \qquad \by = \bW\bx,$$</div>
+
+<p lang="en">is the objective of this chapter. Batch algorithms replace $\E$ by the sample average $\hat\E$ over $\bx(1), \dots, \bx(T)$, which turns $\ell$ into $\frac1T\log L(\bW)$. Since $\partial\log|\det\bW|/\partial\bW = \bW^{-\top}$ (<a class="ref" data-ref="sec-matrix-calculus"></a>) and $\partial\log p_i(\bw_i^\top\bx)/\partial\bw_i = -\varphi_i(y_i)\,\bx$, the gradient is</p>
+<p lang="zh-CN">就是本章的目标函数。批量算法把 $\E$ 换成对 $\bx(1), \dots, \bx(T)$ 的样本平均 $\hat\E$，此时 $\ell$ 就是 $\frac1T\log L(\bW)$。由 $\partial\log|\det\bW|/\partial\bW = \bW^{-\top}$（<a class="ref" data-ref="sec-matrix-calculus"></a>）以及 $\partial\log p_i(\bw_i^\top\bx)/\partial\bw_i = -\varphi_i(y_i)\,\bx$，梯度为</p>
+
+<div class="eq" id="eq-euclidean-gradient">$$\nabla\ell(\bW) = \bW^{-\top} - \E\bigl[\bphi(\by)\,\bx^\top\bigr].$$</div>
+
+<p lang="en">Setting the gradient to zero and multiplying on the right by $\bW^\top$ gives the estimating equations $\E[\bphi(\by)\by^\top] = \bI$, that is, $\E[\varphi_i(y_i)\,y_j] = \delta_{ij}$ for all $i, j$. Every separating matrix satisfies the off-diagonal equations, whatever the nonlinearities: if $y_i$ and $y_j$ are multiples of two different sources, then $\E[\varphi_i(y_i)y_j] = \E[\varphi_i(y_i)]\,\E[y_j] = 0$ by independence and zero means. The diagonal equations only fix the scale of each output. This is the robustness to a wrong source model noted in <a class="ref" data-ref="likelihood"></a>: the model does not move the separating points. What it decides is whether an algorithm converges to them, the subject of <a class="ref" data-ref="sec-ng-stability"></a>.</p>
+<p lang="zh-CN">令梯度为零并右乘 $\bW^\top$，得到估计方程 $\E[\bphi(\by)\by^\top] = \bI$，即对所有 $i, j$ 有 $\E[\varphi_i(y_i)\,y_j] = \delta_{ij}$。无论非线性函数取什么，任何分离矩阵都满足其中的非对角方程：若 $y_i$ 与 $y_j$ 分别是两个不同源的倍数，则由独立性与零均值，$\E[\varphi_i(y_i)y_j] = \E[\varphi_i(y_i)]\,\E[y_j] = 0$。对角方程只确定各输出的尺度。这正是<a class="ref" data-ref="likelihood"></a>中提到的对源模型设错的稳健性：模型不会移动分离点，它决定的是算法能否收敛到分离点，这是<a class="ref" data-ref="sec-ng-stability"></a>的主题。</p>
+
+<p lang="en">Plain gradient ascent, $\bW \leftarrow \bW + \mu\nabla\ell(\bW)$ with a step size $\mu &gt; 0$, has two flaws. It needs the inverse $\bW^{-\top}$ at every step. More seriously, its behaviour depends on $\bA$. Write the update in terms of the global matrix $\bP = \bW\bA$, using $\bW^{-\top} = \bP^{-\top}\bA^\top$, $\bx^\top = \bs^\top\bA^\top$ and $\by = \bP\bs$:</p>
+<p lang="zh-CN">普通的梯度上升 $\bW \leftarrow \bW + \mu\nabla\ell(\bW)$（步长 $\mu &gt; 0$）有两个缺点。第一，每一步都要计算逆矩阵 $\bW^{-\top}$。第二，也是更严重的，它的行为依赖于 $\bA$。利用 $\bW^{-\top} = \bP^{-\top}\bA^\top$、$\bx^\top = \bs^\top\bA^\top$ 和 $\by = \bP\bs$，把更新改写成全局矩阵 $\bP = \bW\bA$ 的形式：</p>
+
+<div class="eq" id="eq-euclidean-global">$$\bP \leftarrow \bP + \mu\bigl(\bP^{-\top} - \E[\bphi(\by)\,\bs^\top]\bigr)\,\bA^\top\bA.$$</div>
+
+<p lang="en">The fixed matrix $\bA^\top\bA$ acts as a preconditioner chosen by nature. When $\bA$ is ill-conditioned, the steps are long in some directions and very short in others, and no single step size suits all of them. Panel (a) of <a class="ref" data-ref="fig-ng-dynamics"></a> shows the effect: with a condition number of 10, plain gradient ascent hardly moves in 150 iterations.</p>
+<p lang="zh-CN">固定矩阵 $\bA^\top\bA$ 相当于一个由“自然”指定的预条件矩阵。$\bA$ 病态时，更新在某些方向上步子很大，在另一些方向上步子极小，没有一个统一的步长能同时适合所有方向。<a class="ref" data-ref="fig-ng-dynamics"></a>的（a）图显示了这一效应：条件数为 10 时，普通梯度上升在 150 次迭代中几乎原地不动。</p>
+
+<h2 id="sec-relative-gradient"><span lang="en">Relative and natural gradients</span><span lang="zh-CN">相对梯度与自然梯度</span></h2>
+
+<p lang="en">Cardoso and Laheld (1996) perturb $\bW$ multiplicatively, $\bW \to (\bI + \bepsilon)\bW$ with a small $n \times n$ matrix $\bepsilon$, so that the outputs change by $\by \to \by + \bepsilon\by$. To first order, $\log|\det((\bI + \bepsilon)\bW)| = \log|\det\bW| + \tr\bepsilon$ and $\log p_i\bigl(y_i + (\bepsilon\by)_i\bigr) = \log p_i(y_i) - \varphi_i(y_i)\sum_j \varepsilon_{ij}y_j$. Hence</p>
+<p lang="zh-CN">Cardoso 与 Laheld（1996）对 $\bW$ 做乘性扰动 $\bW \to (\bI + \bepsilon)\bW$，其中 $\bepsilon$ 是一个小的 $n \times n$ 矩阵，于是输出变为 $\by \to \by + \bepsilon\by$。在一阶近似下，$\log|\det((\bI + \bepsilon)\bW)| = \log|\det\bW| + \tr\bepsilon$，且 $\log p_i\bigl(y_i + (\bepsilon\by)_i\bigr) = \log p_i(y_i) - \varphi_i(y_i)\sum_j \varepsilon_{ij}y_j$。因此</p>
+
+<div class="eq" id="eq-relative-expansion">$$\ell\bigl((\bI + \bepsilon)\bW\bigr) = \ell(\bW) + \bigl\langle \bI - \E[\bphi(\by)\by^\top],\ \bepsilon \bigr\rangle + o(\|\bepsilon\|),$$</div>
+
+<p lang="en">where $\langle\bB, \bepsilon\rangle = \tr(\bB^\top\bepsilon) = \sum_{ij} b_{ij}\varepsilon_{ij}$ is the Frobenius inner product. The matrix $\bI - \E[\bphi(\by)\by^\top]$ is the <em>relative gradient</em>; it depends on $\bW$ only through the outputs. By <a class="ref" data-ref="eq-relative-expansion"></a>, among relative perturbations of a given Frobenius norm, the one that increases $\ell$ fastest is proportional to it, which gives the update</p>
+<p lang="zh-CN">其中 $\langle\bB, \bepsilon\rangle = \tr(\bB^\top\bepsilon) = \sum_{ij} b_{ij}\varepsilon_{ij}$ 是 Frobenius 内积。矩阵 $\bI - \E[\bphi(\by)\by^\top]$ 称为<em>相对梯度</em>，它只通过输出依赖于 $\bW$。由 <a class="ref" data-ref="eq-relative-expansion"></a>，在 Frobenius 范数给定的所有相对扰动中，使 $\ell$ 增加最快的扰动与它成正比，由此得到更新规则</p>
+
+<div class="eq" id="eq-natural-gradient">$$\bW \leftarrow \bW + \mu\bigl(\bI - \E[\bphi(\by)\,\by^\top]\bigr)\bW.$$</div>
+
+<p lang="en">Amari, Cichocki and Yang (1996) reached the same rule as a <em>natural gradient</em>, a steepest-ascent direction for a geometry adapted to the problem; Amari (1998) develops the idea in general. On the group of invertible matrices, measure a small change $d\bW$ by the size of the relative change, $\|d\bW\,\bW^{-1}\|_F$. This metric is invariant under right multiplication, $\bW \to \bW\bB$, because $(d\bW\,\bB)(\bW\bB)^{-1} = d\bW\,\bW^{-1}$; right multiplication is the natural symmetry of the problem, since $\by = \bW\bx = (\bW\bB)(\bB^{-1}\bx)$. To find the steepest direction, maximize the first-order change $\langle\nabla\ell, d\bW\rangle$ subject to $\|d\bW\,\bW^{-1}\|_F = \delta$. With $d\bW = \bepsilon\bW$ the objective is $\langle\nabla\ell\,\bW^\top, \bepsilon\rangle$ under $\|\bepsilon\|_F = \delta$, maximized by $\bepsilon \propto \nabla\ell\,\bW^\top$. The steepest direction is therefore $\nabla\ell(\bW)\,\bW^\top\bW$, and by <a class="ref" data-ref="eq-euclidean-gradient"></a></p>
+<p lang="zh-CN">Amari、Cichocki 与 Yang（1996）以<em>自然梯度</em>的形式得到了同一规则：它是在适合本问题的几何下的最速上升方向；Amari（1998）对这一思想作了一般性的阐述。在可逆矩阵构成的群上，用相对变化的大小 $\|d\bW\,\bW^{-1}\|_F$ 来度量小变化 $d\bW$。这个度量在右乘 $\bW \to \bW\bB$ 下不变，因为 $(d\bW\,\bB)(\bW\bB)^{-1} = d\bW\,\bW^{-1}$；而右乘正是本问题的自然对称性，因为 $\by = \bW\bx = (\bW\bB)(\bB^{-1}\bx)$。为求最速方向，在约束 $\|d\bW\,\bW^{-1}\|_F = \delta$ 下最大化一阶变化量 $\langle\nabla\ell, d\bW\rangle$。令 $d\bW = \bepsilon\bW$，目标变为在 $\|\bepsilon\|_F = \delta$ 下最大化 $\langle\nabla\ell\,\bW^\top, \bepsilon\rangle$，最优解为 $\bepsilon \propto \nabla\ell\,\bW^\top$。因此最速方向是 $\nabla\ell(\bW)\,\bW^\top\bW$，再由 <a class="ref" data-ref="eq-euclidean-gradient"></a> 得</p>
+
+<div class="eq">$$\nabla\ell(\bW)\,\bW^\top\bW = \bigl(\bW^{-\top} - \E[\bphi(\by)\bx^\top]\bigr)\bW^\top\bW = \bigl(\bI - \E[\bphi(\by)\by^\top]\bigr)\bW,$$</div>
+
+<p lang="en">the direction of <a class="ref" data-ref="eq-natural-gradient"></a>. It is still an ascent direction, because $\langle\nabla\ell, \nabla\ell\,\bW^\top\bW\rangle = \|\nabla\ell\,\bW^\top\|_F^2 \ge 0$, and it vanishes exactly where the ordinary gradient does. It needs no inverse. Its online form, which uses one sample at a time, is $\bW \leftarrow \bW + \mu_t\bigl(\bI - \bphi(\by(t))\,\by(t)^\top\bigr)\bW$ with $\by(t) = \bW\bx(t)$.</p>
+<p lang="zh-CN">这正是 <a class="ref" data-ref="eq-natural-gradient"></a> 的方向。它仍是上升方向，因为 $\langle\nabla\ell, \nabla\ell\,\bW^\top\bW\rangle = \|\nabla\ell\,\bW^\top\|_F^2 \ge 0$；它为零的位置与普通梯度完全相同；并且它不需要求逆。它的在线形式每次只用一个样本：$\bW \leftarrow \bW + \mu_t\bigl(\bI - \bphi(\by(t))\,\by(t)^\top\bigr)\bW$，其中 $\by(t) = \bW\bx(t)$。</p>
+
+<h2 id="sec-equivariance"><span lang="en">Equivariance</span><span lang="zh-CN">等变性</span></h2>
+
+<p lang="en">Multiplying <a class="ref" data-ref="eq-natural-gradient"></a> on the right by $\bA$ removes the mixing matrix from the dynamics altogether.</p>
+<p lang="zh-CN">把 <a class="ref" data-ref="eq-natural-gradient"></a> 右乘 $\bA$，混合矩阵就从动力学中完全消失了。</p>
+
+<div class="env" data-kind="proposition" id="prop-equivariance" data-en="equivariance" data-zh="等变性">
+  <p lang="en">Let $\bW_0, \bW_1, \dots$ be produced by <a class="ref" data-ref="eq-natural-gradient"></a> with step sizes $\mu_k$, the expectation being replaced by an average over the observed samples $\bx(t) = \bA\bs(t)$ (all of them in batch mode, or the current one in online mode). Then the global matrices $\bP_k = \bW_k\bA$ satisfy</p>
+  <p lang="zh-CN">设 $\bW_0, \bW_1, \dots$ 由 <a class="ref" data-ref="eq-natural-gradient"></a> 以步长 $\mu_k$ 生成，其中期望换成对观测样本 $\bx(t) = \bA\bs(t)$ 的平均（批量模式下对全部样本平均，在线模式下只用当前样本）。则全局矩阵 $\bP_k = \bW_k\bA$ 满足</p>
+  <div class="eq" id="eq-equivariance">$$\bP_{k+1} = \bP_k + \mu_k\bigl(\bI - \hat\E[\bphi(\bP_k\bs)(\bP_k\bs)^\top]\bigr)\bP_k,$$</div>
+  <p lang="en">a recursion that involves $\bA$ only through the starting point $\bP_0 = \bW_0\bA$. In particular, two mixing matrices $\bA$ and $\bA'$ produce identical sequences of global matrices if the algorithm is started at $\bW_0$ and at $\bW_0' = \bW_0\bA\bA'^{-1}$, respectively.</p>
+  <p lang="zh-CN">这个递推只通过起点 $\bP_0 = \bW_0\bA$ 涉及 $\bA$。特别地，对两个混合矩阵 $\bA$ 与 $\bA'$，若算法分别从 $\bW_0$ 与 $\bW_0' = \bW_0\bA\bA'^{-1}$ 出发，则二者产生完全相同的全局矩阵序列。</p>
+</div>
+<div class="proof">
+  <p lang="en">The outputs are $\by(t) = \bW_k\bx(t) = \bW_k\bA\bs(t) = \bP_k\bs(t)$. Multiply <a class="ref" data-ref="eq-natural-gradient"></a> on the right by $\bA$. For the second claim, $\bW_0'\bA' = \bW_0\bA$, so both recursions start from the same $\bP_0$ and use the same sources.</p>
+  <p lang="zh-CN">输出为 $\by(t) = \bW_k\bx(t) = \bW_k\bA\bs(t) = \bP_k\bs(t)$。把 <a class="ref" data-ref="eq-natural-gradient"></a> 右乘 $\bA$ 即得。对第二个结论，$\bW_0'\bA' = \bW_0\bA$，所以两个递推从同一个 $\bP_0$ 出发，并且使用相同的源。</p>
+</div>
+
+<p lang="en">The algorithm sees only the sources and its current global matrix. The speed of convergence, the attained accuracy and the stability of each separating point are the same for every invertible $\bA$; they are properties of the source distributions, the nonlinearities, the step sizes and the starting point $\bP_0$. Cardoso and Laheld (1996) call algorithms with this property <em>equivariant</em>. <a class="ref" data-ref="eq-euclidean-global"></a> shows that plain gradient ascent is not equivariant. <a class="ref" data-ref="fig-ng-dynamics"></a>(a) compares the two on the same sources, started from the same $\bP_0$, for three mixing matrices with condition numbers 1, 10 and 100: the three natural-gradient curves coincide, while the ordinary gradient slows down with the conditioning.</p>
+<p lang="zh-CN">算法“看到”的只有源和它当前的全局矩阵。收敛速度、所达到的精度以及各分离点的稳定性，对每个可逆的 $\bA$ 都一样；它们只取决于源分布、非线性函数、步长以及起点 $\bP_0$。Cardoso 与 Laheld（1996）把具有这一性质的算法称为<em>等变</em>算法。由 <a class="ref" data-ref="eq-euclidean-global"></a> 可见，普通梯度上升不是等变的。<a class="ref" data-ref="fig-ng-dynamics"></a>（a）在同一组源上、从同一个 $\bP_0$ 出发，对条件数分别为 1、10、100 的三个混合矩阵比较了两种算法：三条自然梯度曲线完全重合，而普通梯度随条件数变差而变慢。</p>
+
+<figure id="fig-ng-dynamics">
+  <img src="fig/ch07-dynamics.svg" width="620" height="272" alt="Two log-scale plots of the largest relative interference against iteration. Left: three natural-gradient runs with mixing matrices of condition number 1, 10 and 100 lie on one curve that drops to about 0.003, while ordinary-gradient runs decrease slowly for condition number 1 and stay flat near 0.4 for 10 and 100. Right: runs started next to the separating point; with matched nonlinearities the interference stays near 0.01, with mismatched ones it grows to 1.">
+  <figcaption><span lang="en">Dynamics of batch ICA on $T = 20000$ samples, measured by the largest relative interference $\max_{i \ne j}|p_{ij}/p_{ii}|$ of the global matrix. (a) Two Laplace sources, $\varphi = \tanh$, $\mu = 0.2$, the same $\bP_0$ and three mixing matrices with condition numbers $c = 1, 10, 100$. The natural gradient $\tilde\nabla$ gives the same curve for all three (markers: $c = 10, 100$); the ordinary gradient $\nabla$ depends on $c$. (b) Runs started at the separating point plus a perturbation of size 0.01, $\mu = 0.1$: matched nonlinearities ($y^3$ for uniform sources, $\kappa &lt; 0$; $\tanh$ for Laplace sources, $\kappa &gt; 0$) stay at the finite-sample error level, mismatched ones move away to a non-separating point.</span><span lang="zh-CN">批量 ICA 在 $T = 20000$ 个样本上的动态，用全局矩阵的最大相对干扰 $\max_{i \ne j}|p_{ij}/p_{ii}|$ 来度量。（a）两个拉普拉斯源，$\varphi = \tanh$，$\mu = 0.2$，相同的 $\bP_0$，三个混合矩阵的条件数为 $c = 1, 10, 100$。自然梯度 $\tilde\nabla$ 对三者给出同一条曲线（标记为 $c = 10, 100$ 的结果）；普通梯度 $\nabla$ 则依赖于 $c$。（b）从分离点加上大小为 0.01 的扰动出发，$\mu = 0.1$：非线性函数匹配时（均匀源 $\kappa &lt; 0$ 用 $y^3$；拉普拉斯源 $\kappa &gt; 0$ 用 $\tanh$），干扰停留在有限样本误差的水平；不匹配时，算法离开分离点，收敛到一个不分离的点。</span></figcaption>
+</figure>
+
+<p lang="en">Two caveats. Equivariance is a property of the noiseless model: with $\bx = \bA\bs + \bn$ the outputs are $\bP\bs + \bW\bn$, and the noise term depends on $\bW$ and hence on $\bA$ (<a class="ref" data-ref="sec-noisy-ica"></a>). And it says nothing about the starting point: with $\bW_0 = \bI$ the algorithm starts at $\bP_0 = \bA$, which is far from separation when $\bA$ is ill-conditioned. Whitening first starts it at the orthogonal matrix $\bP_0 = \tilde\bA$ instead, which is one good reason to whiten the data before iterating. Because performance does not depend on $\bA$, the statistical analysis of <a class="ref" data-ref="performance"></a> can assume $\bA = \bI$ without loss of generality.</p>
+<p lang="zh-CN">有两点需要注意。其一，等变性只对无噪声模型成立：若 $\bx = \bA\bs + \bn$，输出为 $\bP\bs + \bW\bn$，噪声项依赖于 $\bW$，从而依赖于 $\bA$（<a class="ref" data-ref="sec-noisy-ica"></a>）。其二，等变性不涉及起点：取 $\bW_0 = \bI$ 时，算法从 $\bP_0 = \bA$ 出发，$\bA$ 病态时这个起点离分离很远。先做白化，起点就变成正交矩阵 $\bP_0 = \tilde\bA$，这是迭代之前先白化数据的一个充分理由。由于性能与 $\bA$ 无关，<a class="ref" data-ref="performance"></a>的统计分析可以不失一般性地假设 $\bA = \bI$。</p>
+
+<h2 id="sec-ng-stability"><span lang="en">Local stability of the separating points</span><span lang="zh-CN">分离点的局部稳定性</span></h2>
+
+<p lang="en">For a small step size, the batch iteration follows, and the online iteration follows on average, the ordinary differential equation $d\bW/dt = (\bI - \E[\bphi(\by)\by^\top])\bW$ obtained by letting $\mu \to 0$. By equivariance, as in <a class="ref" data-ref="eq-equivariance"></a>, in global coordinates it reads</p>
+<p lang="zh-CN">步长很小时，批量迭代跟随、在线迭代平均意义下跟随令 $\mu \to 0$ 得到的常微分方程 $d\bW/dt = (\bI - \E[\bphi(\by)\by^\top])\bW$。由等变性，与 <a class="ref" data-ref="eq-equivariance"></a> 一样，它在全局坐标下写作</p>
+
+<div class="eq" id="eq-mean-flow">$$\frac{d\bP}{dt} = \bigl(\bI - \E[\bphi(\bP\bs)(\bP\bs)^\top]\bigr)\bP.$$</div>
+
+<p lang="en">Its equilibria are the solutions of the estimating equations $\E[\bphi(\by)\by^\top] = \bI$. Consider a separating one, $\bP = \bPi\bD$; after relabelling the sources, $\bPi = \bI$. The off-diagonal equations hold automatically, and the diagonal ones ask for $\E[\varphi_i(d_is_i)\,d_is_i] = 1$; we assume that this equation has a solution $d_i \ne 0$ for every $i$, as it does for all nonlinearities in this chapter. Since the sources are defined only up to scale (<a class="ref" data-ref="prop-indeterminacy"></a>), we may replace $s_i$ by $d_is_i$. The separating point is then $\bP = \bI$, and the sources satisfy the normalization</p>
+<p lang="zh-CN">它的平衡点就是估计方程 $\E[\bphi(\by)\by^\top] = \bI$ 的解。考虑一个分离型平衡点 $\bP = \bPi\bD$；重新给源编号后可设 $\bPi = \bI$。非对角方程自动成立，对角方程要求 $\E[\varphi_i(d_is_i)\,d_is_i] = 1$；我们假设对每个 $i$ 这个方程都有解 $d_i \ne 0$，本章出现的所有非线性函数都满足这一点。由于源只在尺度意义下确定（<a class="ref" data-ref="prop-indeterminacy"></a>），可以用 $d_is_i$ 代替 $s_i$。这样分离点就是 $\bP = \bI$，而各源满足归一化条件</p>
+
+<div class="eq" id="eq-ng-normalization">$$\E[\varphi_i(s_i)\,s_i] = 1, \qquad i = 1, \dots, n.$$</div>
+
+<p lang="en">The variances $\sigma_i^2 = \E[s_i^2]$ are now set by the nonlinearities and generally differ from 1. Define</p>
+<p lang="zh-CN">此时方差 $\sigma_i^2 = \E[s_i^2]$ 由非线性函数决定，一般不等于 1。定义</p>
+
+<div class="eq">$$k_i = \E[\varphi_i'(s_i)], \qquad m_i = \E[\varphi_i'(s_i)\,s_i^2], \qquad \sigma_i^2 = \E[s_i^2].$$</div>
+
+<div class="env" data-kind="theorem" id="thm-stability" data-en="local stability" data-zh="局部稳定性">
+  <p lang="en">Assume the normalization <a class="ref" data-ref="eq-ng-normalization"></a>, continuously differentiable nonlinearities $\varphi_i$, and enough integrability to differentiate the expectations below under the integral sign. Then the separating point $\bP = \bI$ of <a class="ref" data-ref="eq-mean-flow"></a> is asymptotically stable if, for all $i$ and all $j \ne i$,</p>
+  <p lang="zh-CN">设归一化条件 <a class="ref" data-ref="eq-ng-normalization"></a> 成立，非线性函数 $\varphi_i$ 连续可微，且可积性足以在积分号下对下列期望求导。则当对所有 $i$ 和所有 $j \ne i$ 下列条件成立时，<a class="ref" data-ref="eq-mean-flow"></a> 的分离点 $\bP = \bI$ 渐近稳定：</p>
+  <div class="eq">$$\text{(i)}\ \ 1 + m_i &gt; 0, \qquad \text{(ii)}\ \ k_i &gt; 0, \qquad \text{(iii)}\ \ \sigma_i^2\sigma_j^2\,k_ik_j &gt; 1.$$</div>
+  <p lang="en">It is unstable if $1 + m_i &lt; 0$ or $k_i &lt; 0$ for some $i$, or $\sigma_i^2\sigma_j^2k_ik_j &lt; 1$ for some pair $i \ne j$ (Amari, Chen &amp; Cichocki, 1997).</p>
+  <p lang="zh-CN">若对某个 $i$ 有 $1 + m_i &lt; 0$ 或 $k_i &lt; 0$，或对某一对 $i \ne j$ 有 $\sigma_i^2\sigma_j^2k_ik_j &lt; 1$，则该分离点不稳定（Amari, Chen &amp; Cichocki, 1997）。</p>
+</div>
+<div class="proof">
+  <p lang="en">Write $\bP = \bI + \bepsilon$, so that $y_i = s_i + \sum_k \varepsilon_{ik}s_k$ and, to first order, $\varphi_i(y_i) = \varphi_i(s_i) + \varphi_i'(s_i)\sum_k\varepsilon_{ik}s_k$. For $i \ne j$,</p>
+  <p lang="zh-CN">记 $\bP = \bI + \bepsilon$，则 $y_i = s_i + \sum_k \varepsilon_{ik}s_k$，并且在一阶近似下 $\varphi_i(y_i) = \varphi_i(s_i) + \varphi_i'(s_i)\sum_k\varepsilon_{ik}s_k$。对 $i \ne j$，</p>
+  <div class="eq">$$\E[\varphi_i(y_i)\,y_j] = \E[\varphi_i(s_i)s_j] + \sum_l \varepsilon_{jl}\,\E[\varphi_i(s_i)s_l] + \sum_k \varepsilon_{ik}\,\E[\varphi_i'(s_i)s_ks_j] + o(\|\bepsilon\|).$$</div>
+  <p lang="en">By independence, zero means and <a class="ref" data-ref="eq-ng-normalization"></a>, $\E[\varphi_i(s_i)s_l] = \delta_{il}$, and $\E[\varphi_i'(s_i)s_ks_j]$ vanishes unless $k = j$, when it equals $k_i\sigma_j^2$. Hence $\E[\varphi_i(y_i)y_j] = \varepsilon_{ji} + k_i\sigma_j^2\,\varepsilon_{ij} + o(\|\bepsilon\|)$. The same computation for $i = j$ gives $\E[\varphi_i(y_i)y_i] = 1 + (1 + m_i)\,\varepsilon_{ii} + o(\|\bepsilon\|)$. Since $\bI - \E[\bphi(\by)\by^\top]$ is itself of order $\|\bepsilon\|$, multiplying it by $\bP = \bI + \bepsilon$ changes it only at second order. The linearized flow therefore splits into the scalar equations $d\varepsilon_{ii}/dt = -(1 + m_i)\,\varepsilon_{ii}$ and, for each pair $i &lt; j$, the $2 \times 2$ systems</p>
+  <p lang="zh-CN">由独立性、零均值以及 <a class="ref" data-ref="eq-ng-normalization"></a>，有 $\E[\varphi_i(s_i)s_l] = \delta_{il}$；而 $\E[\varphi_i'(s_i)s_ks_j]$ 只在 $k = j$ 时不为零，此时等于 $k_i\sigma_j^2$。因此 $\E[\varphi_i(y_i)y_j] = \varepsilon_{ji} + k_i\sigma_j^2\,\varepsilon_{ij} + o(\|\bepsilon\|)$。对 $i = j$ 作同样的计算，得到 $\E[\varphi_i(y_i)y_i] = 1 + (1 + m_i)\,\varepsilon_{ii} + o(\|\bepsilon\|)$。由于 $\bI - \E[\bphi(\by)\by^\top]$ 本身是 $\|\bepsilon\|$ 阶的，再乘以 $\bP = \bI + \bepsilon$ 只带来二阶的改变。于是线性化的流分解为标量方程 $d\varepsilon_{ii}/dt = -(1 + m_i)\,\varepsilon_{ii}$，以及对每一对 $i &lt; j$ 的 $2 \times 2$ 方程组</p>
+  <div class="eq" id="eq-pair-linearization">$$\frac{d}{dt}\begin{pmatrix}\varepsilon_{ij}\\ \varepsilon_{ji}\end{pmatrix} = -\begin{pmatrix} k_i\sigma_j^2 &amp; 1\\ 1 &amp; k_j\sigma_i^2\end{pmatrix}\begin{pmatrix}\varepsilon_{ij}\\ \varepsilon_{ji}\end{pmatrix}.$$</div>
+  <p lang="en">The $2 \times 2$ matrix is symmetric, so its eigenvalues are real, and the pair is stable exactly when the matrix is positive definite: positive diagonal entries and determinant $\sigma_i^2\sigma_j^2k_ik_j - 1 &gt; 0$. Conversely, a negative diagonal entry or a negative determinant produces a negative eigenvalue of the matrix, that is, a growing mode. The linearization thus has only negative eigenvalues under (i)–(iii) and a positive one under any of the reversed inequalities; Lyapunov's linearization theorem gives both claims.</p>
+  <p lang="zh-CN">这个 $2 \times 2$ 矩阵是对称的，特征值都是实数；这一对分量稳定，当且仅当该矩阵正定，即对角元为正且行列式 $\sigma_i^2\sigma_j^2k_ik_j - 1 &gt; 0$。反之，对角元为负或行列式为负都会使矩阵出现负特征值，也就是一个增长的模态。因此在条件（i）–（iii）下线性化只有负特征值，而在任何一个反向不等式下都有正特征值；由 Lyapunov 线性化定理即得两个结论。</p>
+</div>
+
+<p lang="en">The conditions involve single sources and pairs of sources, never triples. With the normalization in force, write $\gamma_i = k_i\sigma_i^2$. Conditions (ii) and (iii) together say that $\gamma_i &gt; 0$ and $\gamma_i\gamma_j &gt; 1$ for all pairs. A simple sufficient condition is $\gamma_i &gt; 1$ for every source; if two sources have $\gamma &lt; 1$, the pair is unstable. For a Gaussian source, $\gamma_i = 1$ whatever the nonlinearity (<a class="ref" data-ref="ex-ng-gaussian"></a>), so a Gaussian source is always on the boundary; the next result shows that the true score puts every non-Gaussian source strictly inside.</p>
+<p lang="zh-CN">这些条件只涉及单个源和源的两两组合，从不涉及三个源。在归一化条件下记 $\gamma_i = k_i\sigma_i^2$。条件（ii）与（iii）合起来就是：$\gamma_i &gt; 0$，且对所有源对有 $\gamma_i\gamma_j &gt; 1$。一个简单的充分条件是每个源都有 $\gamma_i &gt; 1$；若有两个源的 $\gamma &lt; 1$，则这一对不稳定。对高斯源，无论非线性函数取什么，都有 $\gamma_i = 1$（<a class="ref" data-ref="ex-ng-gaussian"></a>），所以高斯源总是处在边界上；下面的结果表明，用真实得分函数时，每个非高斯源都严格位于稳定区域之内。</p>
+
+<div class="env" data-kind="corollary" id="cor-stability-score" data-en="the true score is stable" data-zh="真实得分函数总是稳定的">
+  <p lang="en">Let each $s_i$ have a smooth density $p_i$ with finite Fisher information, let $\varphi_i = \psi_i = -p_i'/p_i$ be its own score, and assume the boundary terms in the integrations by parts below vanish. Then <a class="ref" data-ref="eq-ng-normalization"></a> holds at the true scale, $1 + m_i = \Var(\psi_i(s_i)\,s_i) &gt; 0$, and $\gamma_i = \sigma_i^2\,\E[\psi_i(s_i)^2] \ge 1$, with equality only if $s_i$ is Gaussian. Consequently the separating point is asymptotically stable whenever at most one source is Gaussian.</p>
+  <p lang="zh-CN">设每个 $s_i$ 有光滑密度 $p_i$ 且 Fisher 信息有限，取 $\varphi_i = \psi_i = -p_i'/p_i$ 为它自己的得分函数，并设下面分部积分中的边界项为零。则 <a class="ref" data-ref="eq-ng-normalization"></a> 在真实尺度下成立，$1 + m_i = \Var(\psi_i(s_i)\,s_i) &gt; 0$，且 $\gamma_i = \sigma_i^2\,\E[\psi_i(s_i)^2] \ge 1$，等号仅当 $s_i$ 为高斯时成立。因此，只要至多一个源是高斯的，分离点就是渐近稳定的。</p>
+</div>
+<div class="proof">
+  <p lang="en">Drop the index $i$ and use $p' = -\psi p$. Integration by parts gives $\E[\psi(s)s] = -\int s\,p'(s)\,ds = \int p = 1$ and $k = \int \psi' p = -\int \psi p' = \E[\psi^2]$. Next, $m = \int \psi' s^2 p = -\int \psi\,(2sp + s^2p') = -2 + \E[\psi^2s^2]$, so $1 + m = \E[(\psi s)^2] - (\E[\psi s])^2 = \Var(\psi(s)s)$. This variance vanishes only if $\psi(s)s = 1$ almost surely, which would force $p(s) \propto 1/|s|$, not a density. Finally, by the Cauchy–Schwarz inequality, $1 = (\E[\psi(s)s])^2 \le \E[\psi^2]\,\E[s^2] = \gamma$, with equality only if $\psi(s) = cs$, that is, $p$ Gaussian. If at most one source is Gaussian, every pair has $\gamma_i\gamma_j &gt; 1$, and all $k_i = \gamma_i/\sigma_i^2 &gt; 0$; <a class="ref" data-ref="thm-stability"></a> applies.</p>
+  <p lang="zh-CN">略去下标 $i$，并利用 $p' = -\psi p$。分部积分给出 $\E[\psi(s)s] = -\int s\,p'(s)\,ds = \int p = 1$，以及 $k = \int \psi' p = -\int \psi p' = \E[\psi^2]$。其次，$m = \int \psi' s^2 p = -\int \psi\,(2sp + s^2p') = -2 + \E[\psi^2s^2]$，所以 $1 + m = \E[(\psi s)^2] - (\E[\psi s])^2 = \Var(\psi(s)s)$。这个方差为零仅当几乎处处有 $\psi(s)s = 1$，这将迫使 $p(s) \propto 1/|s|$，而它不是概率密度。最后，由 Cauchy–Schwarz 不等式，$1 = (\E[\psi(s)s])^2 \le \E[\psi^2]\,\E[s^2] = \gamma$，等号仅当 $\psi(s) = cs$，即 $p$ 为高斯时成立。若至多一个源是高斯的，则每一对都有 $\gamma_i\gamma_j &gt; 1$，且所有 $k_i = \gamma_i/\sigma_i^2 &gt; 0$，于是可以应用<a class="ref" data-ref="thm-stability"></a>。</p>
+</div>
+
+<p lang="en">Rescaling a variable by $c$ divides its Fisher information by $c^2$, so $\gamma_i = \sigma_i^2\,\E[\psi_i(s_i)^2]$ is the Fisher information $\mathcal{J}_i$ of the unit-variance source $s_i/\sigma_i$. The quantity that decides stability under the true model is the same one that limits the attainable accuracy in <a class="ref" data-ref="thm-crb"></a>.</p>
+<p lang="zh-CN">把变量乘以 $c$，其 Fisher 信息就除以 $c^2$，所以 $\gamma_i = \sigma_i^2\,\E[\psi_i(s_i)^2]$ 恰好是单位方差源 $s_i/\sigma_i$ 的 Fisher 信息 $\mathcal{J}_i$。在真实模型下决定稳定性的量，与<a class="ref" data-ref="thm-crb"></a>中限制可达精度的量是同一个。</p>
+
+<p lang="en">With a misspecified model the conditions can fail. <a class="ref" data-ref="tab-ng-gamma"></a> lists $\gamma$ for three common nonlinearities, computed by numerical quadrature after solving <a class="ref" data-ref="eq-ng-normalization"></a>; in every case $1 + m &gt; 1$, so condition (i) holds. With $\varphi = \tanh$, a pair of Laplace sources is stable ($1.414^2 &gt; 1$) but a pair of uniform sources is not ($0.762^2 \approx 0.58$). A uniform source paired with a Laplace source is still stable, since $0.762 \times 1.414 \approx 1.08$, but only barely: the smallest eigenvalue of the linearization is $0.038$, against $0.414$ for two Laplace sources, so convergence near the solution is about ten times slower. For $\varphi(y) = y^3$ one finds $\gamma = 3/(3 + \kappa)$ exactly (<a class="ref" data-ref="ex-ng-cubic"></a>), so the cubic nonlinearity favours sub-Gaussian sources. A finite-difference Jacobian of the mean flow, computed with the same quadrature, reproduces the eigenvalues predicted by <a class="ref" data-ref="eq-pair-linearization"></a> to five decimal places in all these cases.</p>
+<p lang="zh-CN">模型设错时，这些条件可能不成立。<a class="ref" data-ref="tab-ng-gamma"></a>列出了三种常用非线性函数下的 $\gamma$ 值，先解 <a class="ref" data-ref="eq-ng-normalization"></a>，再用数值积分算出；所有情形下都有 $1 + m &gt; 1$，所以条件（i）成立。取 $\varphi = \tanh$ 时，一对拉普拉斯源是稳定的（$1.414^2 &gt; 1$），一对均匀源则不稳定（$0.762^2 \approx 0.58$）。均匀源与拉普拉斯源配对时仍然稳定，因为 $0.762 \times 1.414 \approx 1.08$，但只是勉强稳定：线性化的最小特征值为 $0.038$，而两个拉普拉斯源时为 $0.414$，所以在解附近的收敛要慢约十倍。对 $\varphi(y) = y^3$，可以精确算出 $\gamma = 3/(3 + \kappa)$（<a class="ref" data-ref="ex-ng-cubic"></a>），所以三次非线性偏向亚高斯源。在上述所有情形中，用同样的数值积分计算的平均流有限差分雅可比矩阵，其特征值与 <a class="ref" data-ref="eq-pair-linearization"></a> 的预测在小数点后五位一致。</p>
+
+<figure class="table" id="tab-ng-gamma">
+  <figcaption><span lang="en">Values of $\gamma = k\sigma^2$ at the normalized scale for unit-variance sources ($\kappa$ is the kurtosis). A pair $i, j$ is stable when $\gamma_i, \gamma_j &gt; 0$ and $\gamma_i\gamma_j &gt; 1$. The Gaussian column equals 1 for every nonlinearity.</span><span lang="zh-CN">归一化尺度下的 $\gamma = k\sigma^2$ 值（源为单位方差，$\kappa$ 为峭度）。当 $\gamma_i, \gamma_j &gt; 0$ 且 $\gamma_i\gamma_j &gt; 1$ 时，源对 $i, j$ 稳定。对任何非线性函数，高斯一列都等于 1。</span></figcaption>
+  <div>
+    <table>
+      <thead>
+        <tr><th><span lang="en">Nonlinearity</span><span lang="zh-CN">非线性函数</span></th><th><span lang="en">uniform ($\kappa = -1.2$)</span><span lang="zh-CN">均匀（$\kappa = -1.2$）</span></th><th><span lang="en">Gaussian</span><span lang="zh-CN">高斯</span></th><th><span lang="en">logistic ($\kappa = 1.2$)</span><span lang="zh-CN">logistic（$\kappa = 1.2$）</span></th><th><span lang="en">Laplace ($\kappa = 3$)</span><span lang="zh-CN">拉普拉斯（$\kappa = 3$）</span></th></tr>
+      </thead>
+      <tbody>
+        <tr><td>$\varphi(y) = \tanh(y)$</td><td>$0.762$</td><td>$1$</td><td>$1.134$</td><td>$1.414$</td></tr>
+        <tr><td>$\varphi(y) = \tanh(y/2)$</td><td>$0.846$</td><td>$1$</td><td>$1.097$</td><td>$1.269$</td></tr>
+        <tr><td>$\varphi(y) = y^3$</td><td>$1.667$</td><td>$1$</td><td>$0.714$</td><td>$0.500$</td></tr>
+      </tbody>
+    </table>
+  </div>
+</figure>
+
+<p lang="en">The following script implements batch natural-gradient ICA and runs it from $\bW_0 = \bI$ on two uniform and on two Laplace sources, with $\varphi = \tanh$, with $\varphi(y) = y^3$, and with the extended Infomax rule of <a class="ref" data-ref="sec-extended-infomax"></a>. The printed interference is the largest ratio, over the rows of $\bP = \bW\bA$, of the second-largest to the largest entry in absolute value; it is 0 for perfect separation and near 1 for an even mixture.</p>
+<p lang="zh-CN">下面的脚本实现了批量自然梯度 ICA，并从 $\bW_0 = \bI$ 出发，分别在两个均匀源和两个拉普拉斯源上运行，非线性函数依次取 $\varphi = \tanh$、$\varphi(y) = y^3$ 以及<a class="ref" data-ref="sec-extended-infomax"></a>的扩展 Infomax 规则。打印的干扰值是：在 $\bP = \bW\bA$ 的各行中，绝对值第二大的元素与最大元素之比的最大值；完全分离时为 0，均匀混合时接近 1。</p>
+
+<pre class="code"><code>import numpy as np
+
+def natural_gradient_ica(X, phi, mu=0.1, iters=500):
+    """Batch natural-gradient ICA: W &lt;- W + mu (I - E[phi(y) y^T]) W."""
+    n, T = X.shape
+    W = np.eye(n)
+    for _ in range(iters):
+        Y = W @ X
+        W += mu * (np.eye(n) - phi(Y) @ Y.T / T) @ W
+    return W
+
+def extended_infomax(X, mu=0.1, iters=500):
+    """phi_i(y) = y + k_i tanh(y), k_i = +1 or -1 set by the switching rule."""
+    n, T = X.shape
+    W = np.eye(n)
+    for _ in range(iters):
+        Y = W @ X
+        k = np.sign(np.mean(np.cosh(Y) ** -2, axis=1) * np.mean(Y ** 2, axis=1)
+                    - np.mean(np.tanh(Y) * Y, axis=1))
+        W += mu * (np.eye(n) - (Y + k[:, None] * np.tanh(Y)) @ Y.T / T) @ W
+    return W
+
+def interference(P):
+    """Max over rows of P of second-largest / largest |entry|; 0 = separated."""
+    R = np.sort(np.abs(P), axis=1)
+    return np.max(R[:, -2] / R[:, -1])
+
+rng = np.random.default_rng(0)
+T = 20000
+A = np.array([[1.0, 0.6],
+              [0.4, 1.0]])
+sources = {"uniform": rng.uniform(-np.sqrt(3), np.sqrt(3), (2, T)),   # kappa = -1.2
+           "Laplace": rng.laplace(0, 1 / np.sqrt(2), (2, T))}        # kappa = +3
+methods = {"tanh": lambda X: natural_gradient_ica(X, np.tanh),
+           "cube": lambda X: natural_gradient_ica(X, lambda y: y ** 3),
+           "extended": extended_infomax}
+for sname, S in sources.items():
+    for mname, method in methods.items():
+        W = method(A @ S)
+        print(f"{sname:8s} {mname:9s} interference = {interference(W @ A):.3f}")</code></pre>
+
+<p lang="en">The output is</p>
+<p lang="zh-CN">输出为</p>
+
+<pre class="code"><code>uniform  tanh      interference = 0.987
+uniform  cube      interference = 0.010
+uniform  extended  interference = 0.012
+Laplace  tanh      interference = 0.004
+Laplace  cube      interference = 0.943
+Laplace  extended  interference = 0.005</code></pre>
+
+<p lang="en">exactly the pattern of <a class="ref" data-ref="tab-ng-gamma"></a>: $\tanh$ fails on the uniform pair and $y^3$ on the Laplace pair, where they converge to points whose outputs are roughly even mixtures of the two sources, while each succeeds on the other pair. The residual interference of about 0.01 for the successful runs is estimation error from the finite sample (<a class="ref" data-ref="performance"></a>). <a class="ref" data-ref="fig-ng-dynamics"></a>(b) shows the same dichotomy as a dynamical statement: started next to the separating point, the mismatched runs move away from it.</p>
+<p lang="zh-CN">这恰好是<a class="ref" data-ref="tab-ng-gamma"></a>所预言的模式：$\tanh$ 在均匀源对上失败，$y^3$ 在拉普拉斯源对上失败，它们收敛到的点的输出大致是两个源的均匀混合；而各自在另一对源上都成功。成功运行中约 0.01 的残余干扰是有限样本带来的估计误差（<a class="ref" data-ref="performance"></a>）。<a class="ref" data-ref="fig-ng-dynamics"></a>（b）以动力学的语言展示了同一个二分现象：从分离点附近出发，不匹配的运行会离开分离点。</p>
+
+<h2 id="sec-infomax"><span lang="en">Infomax</span><span lang="zh-CN">Infomax 算法</span></h2>
+
+<p lang="en">Bell and Sejnowski (1995) arrived at the same family of algorithms from a different principle. Pass the outputs $y_i = \bw_i^\top\bx$ through the logistic function $g(y) = 1/(1 + e^{-y})$ and choose $\bW$ to maximize the joint entropy of $\bu = (g(y_1), \dots, g(y_n))^\top$, the information that the bounded outputs carry about the input. Since $g$ is increasing and $\by = \bW\bx$, the change-of-variables formula and <a class="ref" data-ref="prop-entropy-linear"></a> give</p>
+<p lang="zh-CN">Bell 与 Sejnowski（1995）从另一个原理出发得到了同一族算法。把输出 $y_i = \bw_i^\top\bx$ 通过 logistic 函数 $g(y) = 1/(1 + e^{-y})$，再选取 $\bW$ 使 $\bu = (g(y_1), \dots, g(y_n))^\top$ 的联合熵最大，也就是使有界输出所携带的关于输入的信息最大。由于 $g$ 单调递增且 $\by = \bW\bx$，由变量替换公式和<a class="ref" data-ref="prop-entropy-linear"></a>得</p>
+
+<div class="eq">$$H(\bu) = H(\bx) + \log|\det\bW| + \sum_{i=1}^n \E\bigl[\log g'(y_i)\bigr].$$</div>
+
+<p lang="en">Up to the constant $H(\bx)$ this is the objective $\ell(\bW)$ of <a class="ref" data-ref="eq-ng-objective"></a> with model densities $p_i = g'$, the logistic density: Infomax is maximum likelihood with a logistic source model (Cardoso, 1997; <a class="ref" data-ref="prop-infomax-ml"></a>). Since $g' = g(1 - g)$, the score of this model is $\varphi(y) = 2g(y) - 1 = \tanh(y/2)$ (<a class="ref" data-ref="ex-ng-logistic"></a>). Bell and Sejnowski's gradient is $\nabla H(\bu) = \bW^{-\top} + \E[(\mathbf{1} - 2\mathbf{g}(\by))\bx^\top]$, where $\mathbf{1}$ is the vector of ones and $\mathbf{g}$ acts componentwise; this is <a class="ref" data-ref="eq-euclidean-gradient"></a> with $\bphi = 2\mathbf{g} - \mathbf{1}$. They also adapt a bias $\bw_0$ in $\by = \bW\bx + \bw_0$, which we omit for centered data. In practice the algorithm is usually run in its natural-gradient form.</p>
+<p lang="zh-CN">除去常数 $H(\bx)$，这正是 <a class="ref" data-ref="eq-ng-objective"></a> 中的目标函数 $\ell(\bW)$，其模型密度为 $p_i = g'$，即 logistic 密度：Infomax 就是以 logistic 分布为源模型的最大似然（Cardoso, 1997；<a class="ref" data-ref="prop-infomax-ml"></a>）。由于 $g' = g(1 - g)$，这一模型的得分函数为 $\varphi(y) = 2g(y) - 1 = \tanh(y/2)$（<a class="ref" data-ref="ex-ng-logistic"></a>）。Bell 与 Sejnowski 给出的梯度是 $\nabla H(\bu) = \bW^{-\top} + \E[(\mathbf{1} - 2\mathbf{g}(\by))\bx^\top]$，其中 $\mathbf{1}$ 是全 1 向量，$\mathbf{g}$ 逐分量作用；这就是取 $\bphi = 2\mathbf{g} - \mathbf{1}$ 时的 <a class="ref" data-ref="eq-euclidean-gradient"></a>。他们还在 $\by = \bW\bx + \bw_0$ 中自适应调整偏置 $\bw_0$；对已中心化的数据，这里略去偏置。实践中通常使用它的自然梯度形式。</p>
+
+<div class="env" data-kind="algorithm" id="alg-infomax" data-en="natural-gradient Infomax" data-zh="自然梯度 Infomax">
+  <ol lang="en">
+    <li>Center the data; optionally whiten them, $\bz = \bV\bx$, so that the iteration starts from an orthogonal global matrix.</li>
+    <li>Set $\bW = \bI$ and choose a step size $\mu$ and a block size $B$ ($B = T$ gives the batch algorithm).</li>
+    <li>For each block of $B$ samples, compute $\by = \bW\bx$ for the block and update $\bW \leftarrow \bW + \mu\bigl(\bI - \hat\E_B[\tanh(\by/2)\,\by^\top]\bigr)\bW$, where $\hat\E_B$ averages over the block.</li>
+    <li>After each pass through the data, reduce $\mu$ if the change of $\bW$ has grown; stop when the change falls below a tolerance.</li>
+    <li>Return $\bW$ (or $\bW\bV$ if the data were whitened).</li>
+  </ol>
+  <ol lang="zh-CN">
+    <li>中心化数据；可以选择先白化 $\bz = \bV\bx$，使迭代从正交的全局矩阵出发。</li>
+    <li>令 $\bW = \bI$，选取步长 $\mu$ 与块大小 $B$（$B = T$ 即批量算法）。</li>
+    <li>对每个含 $B$ 个样本的数据块，计算该块的 $\by = \bW\bx$，并更新 $\bW \leftarrow \bW + \mu\bigl(\bI - \hat\E_B[\tanh(\by/2)\,\by^\top]\bigr)\bW$，其中 $\hat\E_B$ 表示块内平均。</li>
+    <li>每遍历一次数据后，若 $\bW$ 的变化量增大，就减小 $\mu$；当变化量低于容差时停止。</li>
+    <li>返回 $\bW$（若数据已白化，返回 $\bW\bV$）。</li>
+  </ol>
+</div>
+
+<p lang="en">The second row of <a class="ref" data-ref="tab-ng-gamma"></a> describes this algorithm. Its separating points are stable for the usual super-Gaussian laws, such as the Laplace and logistic laws, consistent with the success of Infomax on speech and on many EEG and fMRI sources, which tend to be super-Gaussian. The exact criterion is $\gamma_i\gamma_j &gt; 1$, not the sign of the kurtosis: a bimodal law with rare large values can have positive kurtosis and still $\gamma &lt; 1$. A pair of uniform sources, with $0.846^2 \approx 0.72 &lt; 1$, is unstable: Infomax cannot separate two sub-Gaussian sources of this kind, however long it runs.</p>
+<p lang="zh-CN"><a class="ref" data-ref="tab-ng-gamma"></a>的第二行描述的正是这个算法。对拉普拉斯、logistic 这类常见的超高斯分布，它的分离点是稳定的，这与 Infomax 在语音以及许多 EEG 和 fMRI 源上的成功相符，因为这些源往往是超高斯的。准确的判据是 $\gamma_i\gamma_j &gt; 1$，而不是峭度的符号：一个带有罕见大值的双峰分布可以峭度为正，却仍有 $\gamma &lt; 1$。一对均匀源满足 $0.846^2 \approx 0.72 &lt; 1$，是不稳定的：无论运行多久，Infomax 都无法分离两个这类亚高斯源。</p>
+
+<h2 id="sec-extended-infomax"><span lang="en">Extended Infomax</span><span lang="zh-CN">扩展 Infomax</span></h2>
+
+<p lang="en">Lee, Girolami and Sejnowski (1999) let each output choose between a super-Gaussian and a sub-Gaussian model. Their update is</p>
+<p lang="zh-CN">Lee、Girolami 与 Sejnowski（1999）让每个输出在超高斯模型与亚高斯模型之间自行选择。他们的更新规则是</p>
+
+<div class="eq" id="eq-extended-infomax">$$\bW \leftarrow \bW + \mu\bigl(\bI - \E\bigl[\bK\tanh(\by)\,\by^\top + \by\by^\top\bigr]\bigr)\bW, \qquad \bK = \diag(\eta_1, \dots, \eta_n),\quad \eta_i \in \{-1, +1\},$$</div>
+
+<p lang="en">that is, $\varphi_i(y) = y + \eta_i\tanh(y)$. With $\eta_i = -1$ this is the score of the bimodal, sub-Gaussian density $\tfrac12\Ncal(1, 1) + \tfrac12\Ncal(-1, 1)$; with $\eta_i = +1$ it is the score of the super-Gaussian density proportional to $e^{-y^2/2}/\cosh y$. Lee et al. motivate this branch with the density proportional to $p_G(y)\operatorname{sech}^2 y$, where $p_G$ is the standard Gaussian density; the score of that density is $y + 2\tanh y$, and the rule they use, $y + \tanh y$, is the score of the density above. The sign is chosen by the <em>switching rule</em></p>
+<p lang="zh-CN">也就是 $\varphi_i(y) = y + \eta_i\tanh(y)$。$\eta_i = -1$ 时，它是双峰亚高斯密度 $\tfrac12\Ncal(1, 1) + \tfrac12\Ncal(-1, 1)$ 的得分函数；$\eta_i = +1$ 时，它是与 $e^{-y^2/2}/\cosh y$ 成正比的超高斯密度的得分函数。Lee 等人用正比于 $p_G(y)\operatorname{sech}^2 y$ 的密度（$p_G$ 为标准高斯密度）来说明这一分支，但该密度的得分函数是 $y + 2\tanh y$；他们实际使用的 $y + \tanh y$ 是上述密度的得分函数。符号由<em>切换规则</em>决定：</p>
+
+<div class="eq" id="eq-switching">$$\eta_i = \sign\Bigl(\E\bigl[\operatorname{sech}^2(y_i)\bigr]\,\E\bigl[y_i^2\bigr] - \E\bigl[\tanh(y_i)\,y_i\bigr]\Bigr),$$</div>
+
+<p lang="en">evaluated on the current outputs, in practice on each block or after each pass through the data. The rule is exactly the stability condition of <a class="ref" data-ref="thm-stability"></a> in disguise.</p>
+<p lang="zh-CN">它在当前输出上估计，实践中在每个数据块上或每遍历一次数据后更新。这条规则其实就是<a class="ref" data-ref="thm-stability"></a>中的稳定性条件换了个样子。</p>
+
+<div class="env" data-kind="proposition" id="prop-extended-infomax" data-en="the switching rule ensures stability" data-zh="切换规则保证稳定">
+  <p lang="en">Consider a separating point of <a class="ref" data-ref="eq-extended-infomax"></a>, with the sources scaled as in <a class="ref" data-ref="eq-ng-normalization"></a>. If every $\eta_i$ is given by <a class="ref" data-ref="eq-switching"></a> evaluated at the separated outputs $y_i = s_i$, and the expression inside the sign is nonzero, then $\gamma_i &gt; 1$ and $1 + m_i &gt; 0$ for every $i$, so the separating point is asymptotically stable.</p>
+  <p lang="zh-CN">考虑 <a class="ref" data-ref="eq-extended-infomax"></a> 的一个分离点，源按 <a class="ref" data-ref="eq-ng-normalization"></a> 取尺度。若每个 $\eta_i$ 都由在分离输出 $y_i = s_i$ 处计算的 <a class="ref" data-ref="eq-switching"></a> 给出，且符号函数内的表达式不为零，则对每个 $i$ 都有 $\gamma_i &gt; 1$ 和 $1 + m_i &gt; 0$，因此该分离点渐近稳定。</p>
+</div>
+<div class="proof">
+  <p lang="en">With $\varphi_i(y) = y + \eta_i\tanh y$, the normalization reads $\sigma_i^2 + \eta_i\E[\tanh(s_i)s_i] = 1$, and $k_i = 1 + \eta_i\E[\operatorname{sech}^2(s_i)]$. Hence</p>
+  <p lang="zh-CN">当 $\varphi_i(y) = y + \eta_i\tanh y$ 时，归一化条件为 $\sigma_i^2 + \eta_i\E[\tanh(s_i)s_i] = 1$，且 $k_i = 1 + \eta_i\E[\operatorname{sech}^2(s_i)]$。因此</p>
+  <div class="eq">$$\gamma_i - 1 = \sigma_i^2 + \eta_i\,\sigma_i^2\,\E[\operatorname{sech}^2(s_i)] - \sigma_i^2 - \eta_i\,\E[\tanh(s_i)s_i] = \eta_i\bigl(\E[\operatorname{sech}^2(s_i)]\,\sigma_i^2 - \E[\tanh(s_i)s_i]\bigr),$$</div>
+  <p lang="en">which is positive when $\eta_i$ is the sign of the bracket. Moreover $m_i = \sigma_i^2 + \eta_i\E[\operatorname{sech}^2(s_i)s_i^2] \ge \sigma_i^2 - \E[\operatorname{sech}^2(s_i)s_i^2] \ge 0$ because $\operatorname{sech}^2 \le 1$, so $1 + m_i \ge 1$. With $\gamma_i &gt; 1$ for all $i$, we get $k_i = \gamma_i/\sigma_i^2 &gt; 0$ and $\gamma_i\gamma_j &gt; 1$, and <a class="ref" data-ref="thm-stability"></a> applies.</p>
+  <p lang="zh-CN">当 $\eta_i$ 取括号内表达式的符号时，上式为正。此外，由于 $\operatorname{sech}^2 \le 1$，有 $m_i = \sigma_i^2 + \eta_i\E[\operatorname{sech}^2(s_i)s_i^2] \ge \sigma_i^2 - \E[\operatorname{sech}^2(s_i)s_i^2] \ge 0$，所以 $1 + m_i \ge 1$。所有 $i$ 都有 $\gamma_i &gt; 1$，于是 $k_i = \gamma_i/\sigma_i^2 &gt; 0$ 且 $\gamma_i\gamma_j &gt; 1$，可以应用<a class="ref" data-ref="thm-stability"></a>。</p>
+</div>
+
+<p lang="en">For a unit-variance uniform source the bracket in <a class="ref" data-ref="eq-switching"></a> equals $-0.126$ and for a unit-variance Laplace source $+0.148$, so the rule picks the sub-Gaussian model for the first and the super-Gaussian model for the second. At the normalized scales the resulting values are $\gamma = 1.273$ (uniform, $\eta = -1$) and $\gamma = 1.084$ (Laplace, $\eta = +1$), both above 1, consistent with the successful extended-Infomax runs in the script of <a class="ref" data-ref="sec-ng-stability"></a>. For a Gaussian source the bracket is zero by Stein's lemma, and the rule has nothing to choose.</p>
+<p lang="zh-CN">对单位方差的均匀源，<a class="ref" data-ref="eq-switching"></a> 中括号内的值为 $-0.126$；对单位方差的拉普拉斯源为 $+0.148$。因此规则为前者选择亚高斯模型，为后者选择超高斯模型。在归一化尺度下，相应的 $\gamma$ 值为 $1.273$（均匀源，$\eta = -1$）和 $1.084$（拉普拉斯源，$\eta = +1$），都大于 1，这与<a class="ref" data-ref="sec-ng-stability"></a>脚本中扩展 Infomax 的成功运行相符。对高斯源，由 Stein 引理，括号内的值为零，规则无从选择。</p>
+
+<h2 id="sec-ng-practice"><span lang="en">Step sizes, online learning and EASI</span><span lang="zh-CN">步长、在线学习与 EASI</span></h2>
+
+<p lang="en"><b>Batch iteration.</b> With a constant step size, <a class="ref" data-ref="eq-natural-gradient"></a> is a fixed-point iteration whose linearization at a separating point is $\bepsilon \leftarrow \bepsilon - \mu\,\mathcal{L}(\bepsilon)$, where $\mathcal{L}$ is the linear map of the proof of <a class="ref" data-ref="thm-stability"></a>. Its eigenvalues $\vartheta$ are the numbers $1 + m_i$ and the eigenvalues of the pair matrices in <a class="ref" data-ref="eq-pair-linearization"></a>, all real. The error contracts if and only if $|1 - \mu\vartheta| &lt; 1$ for every $\vartheta$, that is, $0 &lt; \mu &lt; 2/\vartheta_{\max}$ when all $\vartheta &gt; 0$. For two Laplace sources and $\varphi = \tanh$ the eigenvalues are $2.414$, $1.214$ (twice) and $0.414$: any $\mu &lt; 0.83$ converges locally, and with $\mu = 0.5$ the slowest mode shrinks by the factor $1 - 0.5 \times 0.414 \approx 0.79$ per iteration. By equivariance these numbers do not depend on $\bA$.</p>
+<p lang="zh-CN"><b>批量迭代。</b>步长固定时，<a class="ref" data-ref="eq-natural-gradient"></a> 是一个不动点迭代，它在分离点处的线性化为 $\bepsilon \leftarrow \bepsilon - \mu\,\mathcal{L}(\bepsilon)$，其中 $\mathcal{L}$ 是<a class="ref" data-ref="thm-stability"></a>证明中的线性映射。它的特征值 $\vartheta$ 是各个 $1 + m_i$ 以及 <a class="ref" data-ref="eq-pair-linearization"></a> 中各源对矩阵的特征值，全是实数。误差收缩当且仅当对每个 $\vartheta$ 都有 $|1 - \mu\vartheta| &lt; 1$；当所有 $\vartheta &gt; 0$ 时，即 $0 &lt; \mu &lt; 2/\vartheta_{\max}$。对两个拉普拉斯源和 $\varphi = \tanh$，特征值为 $2.414$、$1.214$（二重）和 $0.414$：任何 $\mu &lt; 0.83$ 都局部收敛；取 $\mu = 0.5$ 时，最慢的模态每次迭代缩小为原来的 $1 - 0.5 \times 0.414 \approx 0.79$ 倍。由等变性，这些数都与 $\bA$ 无关。</p>
+
+<p lang="en"><b>Online learning.</b> The online rule updates $\bW$ with one sample, or a small block, at a time. With a constant step size $\bW$ does not converge; it keeps fluctuating around the separating point, with a spread that shrinks as $\mu$ decreases. The mean flow <a class="ref" data-ref="eq-mean-flow"></a> describes the average motion, so the stability conditions of <a class="ref" data-ref="thm-stability"></a> decide which points the online algorithm can hover around. Step sizes that decrease with $\sum_t\mu_t = \infty$ and $\sum_t\mu_t^2 &lt; \infty$, as in stochastic approximation (Robbins &amp; Monro, 1951), make the fluctuations die out. Online learning suits data that arrive as a stream or do not fit in memory, and it can track a mixing matrix that drifts slowly; for a fixed data set, batch or block updates are simpler to tune.</p>
+<p lang="zh-CN"><b>在线学习。</b>在线规则每次只用一个样本（或一个小数据块）更新 $\bW$。步长固定时 $\bW$ 不会收敛，而是在分离点附近持续波动，波动幅度随 $\mu$ 减小而减小。平均流 <a class="ref" data-ref="eq-mean-flow"></a> 描述的是平均运动，所以在线算法能在哪些点附近徘徊，同样由<a class="ref" data-ref="thm-stability"></a>的稳定性条件决定。像随机逼近（Robbins &amp; Monro, 1951）那样取满足 $\sum_t\mu_t = \infty$ 且 $\sum_t\mu_t^2 &lt; \infty$ 的递减步长，可使波动逐渐消失。在线学习适合以数据流形式到达或内存放不下的数据，也能跟踪缓慢漂移的混合矩阵；对于固定的数据集，批量或分块更新更容易调参。</p>
+
+<p lang="en"><b>EASI.</b> Cardoso and Laheld (1996) proposed a serial algorithm that whitens and rotates at the same time, so that no separate whitening step is needed:</p>
+<p lang="zh-CN"><b>EASI。</b>Cardoso 与 Laheld（1996）提出了一种同时完成白化与旋转的串行算法，因而不需要单独的白化步骤：</p>
+
+<div class="eq" id="eq-easi">$$\bW \leftarrow \bW - \mu_t\bigl[\by\by^\top - \bI + \mathbf{g}(\by)\,\by^\top - \by\,\mathbf{g}(\by)^\top\bigr]\bW, \qquad \by = \bW\bx(t).$$</div>
+
+<p lang="en">The symmetric part $\by\by^\top - \bI$ pushes the output covariance toward $\bI$; the skew-symmetric part $\mathbf{g}(\by)\by^\top - \by\,\mathbf{g}(\by)^\top$ leaves the output covariance unchanged to first order when that covariance is $\bI$, and drives the rotation, with equilibrium $\E[g_i(y_i)y_j] = \E[y_ig_j(y_j)]$. The update has the relative form $\bH(\by)\bW$, so EASI is equivariant. Linearizing as in <a class="ref" data-ref="thm-stability"></a>, for unit-variance sources, shows that a separating point is asymptotically stable if</p>
+<p lang="zh-CN">对称部分 $\by\by^\top - \bI$ 把输出协方差推向 $\bI$；反对称部分 $\mathbf{g}(\by)\by^\top - \by\,\mathbf{g}(\by)^\top$ 在输出协方差等于 $\bI$ 时，一阶近似下不改变它，负责驱动旋转，其平衡条件为 $\E[g_i(y_i)y_j] = \E[y_ig_j(y_j)]$。更新具有相对形式 $\bH(\by)\bW$，所以 EASI 是等变的。对单位方差的源，像<a class="ref" data-ref="thm-stability"></a>那样作线性化可知，分离点在下述条件下渐近稳定：</p>
+
+<div class="eq" id="eq-easi-stability">$$\lambda_i + \lambda_j &lt; 0 \quad \text{for all } i \ne j, \qquad \lambda_i = \E\bigl[g_i(s_i)\,s_i - g_i'(s_i)\bigr]$$</div>
+
+<p lang="en">and unstable if $\lambda_i + \lambda_j &gt; 0$ for some pair (<a class="ref" data-ref="ex-ng-easi"></a>). For $g(y) = y^3$, $\lambda_i = \kappa_i$, so EASI with the cubic nonlinearity separates pairs whose kurtoses sum to a negative number; for $g = \tanh$, $\lambda = -0.148$ for a Laplace source and $+0.126$ for a uniform one. The same quantity $\E[s\,g(s) - g'(s)]$ governs FastICA in the next chapter.</p>
+<p lang="zh-CN">若某一对满足 $\lambda_i + \lambda_j &gt; 0$，则不稳定（<a class="ref" data-ref="ex-ng-easi"></a>）。对 $g(y) = y^3$，$\lambda_i = \kappa_i$，所以采用三次非线性的 EASI 能分离峭度之和为负的源对；对 $g = \tanh$，拉普拉斯源的 $\lambda = -0.148$，均匀源的 $\lambda = +0.126$。同一个量 $\E[s\,g(s) - g'(s)]$ 也支配着下一章的 FastICA。</p>
+
+<div class="keypoints">
+  <p class="kp-title" lang="en">Key points</p>
+  <p class="kp-title" lang="zh-CN">本章要点</p>
+  <ul lang="en">
+    <li>The relative or natural gradient $(\bI - \E[\bphi(\by)\by^\top])\bW$ is the ordinary gradient multiplied on the right by $\bW^\top\bW$. It is the steepest-ascent direction for the metric $\|d\bW\,\bW^{-1}\|_F$ and needs no matrix inversion.</li>
+    <li>Natural-gradient algorithms are equivariant: in terms of the global matrix $\bP = \bW\bA$ they do not depend on $\bA$, so their speed, accuracy and stability are the same for every invertible mixing matrix.</li>
+    <li>Separating points solve the estimating equations whatever the nonlinearity; whether they attract the algorithm depends on $k_i$, $m_i$ and $\sigma_i^2$ through conditions on single sources and pairs. With the true scores they always hold when at most one source is Gaussian.</li>
+    <li>Infomax is maximum likelihood with a logistic source model, $\varphi(y) = \tanh(y/2)$; its separating points are stable for typical super-Gaussian sources (Laplace, logistic) but not, for example, for a pair of uniform sources. Extended Infomax switches each output between a super- and a sub-Gaussian model by a rule that is the stability condition itself.</li>
+    <li>Batch iterations converge locally for $0 &lt; \mu &lt; 2/\vartheta_{\max}$, where $\vartheta_{\max}$ is the largest eigenvalue of the linearization; online updates need decreasing step sizes to settle. EASI whitens and separates in one equivariant serial update and is stable when $\lambda_i + \lambda_j &lt; 0$ for all pairs.</li>
+  </ul>
+  <ul lang="zh-CN">
+    <li>相对梯度（自然梯度）$(\bI - \E[\bphi(\by)\by^\top])\bW$ 就是普通梯度右乘 $\bW^\top\bW$。它是度量 $\|d\bW\,\bW^{-1}\|_F$ 下的最速上升方向，不需要矩阵求逆。</li>
+    <li>自然梯度算法是等变的：用全局矩阵 $\bP = \bW\bA$ 表示时它们与 $\bA$ 无关，所以对每个可逆混合矩阵，其速度、精度与稳定性都相同。</li>
+    <li>无论非线性函数取什么，分离点都满足估计方程；它们能否吸引算法，取决于 $k_i$、$m_i$ 和 $\sigma_i^2$，条件只涉及单个源和源对。使用真实得分函数时，只要至多一个源是高斯的，这些条件总成立。</li>
+    <li>Infomax 是以 logistic 分布为源模型的最大似然，$\varphi(y) = \tanh(y/2)$；它的分离点对常见的超高斯源（拉普拉斯、logistic）是稳定的，但对一对均匀源等情形则不稳定。扩展 Infomax 按一条规则让每个输出在超高斯与亚高斯模型之间切换，而这条规则正是稳定性条件本身。</li>
+    <li>批量迭代在 $0 &lt; \mu &lt; 2/\vartheta_{\max}$ 时局部收敛（$\vartheta_{\max}$ 为线性化的最大特征值）；在线更新需要递减步长才能稳定下来。EASI 用一个等变的串行更新同时完成白化与分离，当所有源对满足 $\lambda_i + \lambda_j &lt; 0$ 时稳定。</li>
+  </ul>
+</div>
+
+<h2 id="sec-natural-gradient-exercises"><span lang="en">Exercises</span><span lang="zh-CN">习题</span></h2>
+
+<div class="exercise" id="ex-ng-logistic" data-level="basic">
+  <p lang="en">Let $g(u) = 1/(1 + e^{-u})$. (a) Show that $g' = g(1 - g)$. (b) Show that the score of the logistic density $g'$ is $2g - 1$, and that $2g(u) - 1 = \tanh(u/2)$. (c) Conclude that the term $\mathbf{1} - 2\mathbf{g}(\by)$ in Bell and Sejnowski's gradient equals $-\bphi(\by)$ for the logistic model.</p>
+  <p lang="zh-CN">设 $g(u) = 1/(1 + e^{-u})$。（a）证明 $g' = g(1 - g)$。（b）证明 logistic 密度 $g'$ 的得分函数为 $2g - 1$，且 $2g(u) - 1 = \tanh(u/2)$。（c）由此说明，对 logistic 模型，Bell 与 Sejnowski 梯度中的项 $\mathbf{1} - 2\mathbf{g}(\by)$ 等于 $-\bphi(\by)$。</p>
+  <details class="solution">
+    <p lang="en">(a) $g'(u) = e^{-u}/(1 + e^{-u})^2 = \frac{1}{1 + e^{-u}}\cdot\frac{e^{-u}}{1 + e^{-u}} = g(u)\,(1 - g(u))$. (b) $\log g' = \log g + \log(1 - g)$, so $(\log g')' = g'/g - g'/(1 - g) = (1 - g) - g = 1 - 2g$, and the score is $-(\log g')' = 2g - 1$. Multiplying numerator and denominator by $e^{u/2}$, $2g(u) - 1 = \frac{1 - e^{-u}}{1 + e^{-u}} = \frac{e^{u/2} - e^{-u/2}}{e^{u/2} + e^{-u/2}} = \tanh(u/2)$. (c) Componentwise, $1 - 2g(y_i) = -(2g(y_i) - 1) = -\varphi(y_i)$, so $\bW^{-\top} + \E[(\mathbf{1} - 2\mathbf{g}(\by))\bx^\top] = \bW^{-\top} - \E[\bphi(\by)\bx^\top]$, which is <a class="ref" data-ref="eq-euclidean-gradient"></a>.</p>
+    <p lang="zh-CN">（a）$g'(u) = e^{-u}/(1 + e^{-u})^2 = \frac{1}{1 + e^{-u}}\cdot\frac{e^{-u}}{1 + e^{-u}} = g(u)\,(1 - g(u))$。（b）$\log g' = \log g + \log(1 - g)$，所以 $(\log g')' = g'/g - g'/(1 - g) = (1 - g) - g = 1 - 2g$，得分函数为 $-(\log g')' = 2g - 1$。分子分母同乘 $e^{u/2}$，得 $2g(u) - 1 = \frac{1 - e^{-u}}{1 + e^{-u}} = \frac{e^{u/2} - e^{-u/2}}{e^{u/2} + e^{-u/2}} = \tanh(u/2)$。（c）逐分量地，$1 - 2g(y_i) = -(2g(y_i) - 1) = -\varphi(y_i)$，所以 $\bW^{-\top} + \E[(\mathbf{1} - 2\mathbf{g}(\by))\bx^\top] = \bW^{-\top} - \E[\bphi(\by)\bx^\top]$，这正是 <a class="ref" data-ref="eq-euclidean-gradient"></a>。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-ng-cubic" data-level="basic">
+  <p lang="en">Take $\varphi(y) = y^3$ and a unit-variance source $s$ with $\E[s^4] = 3 + \kappa$. Find the scale $d$ that solves $\E[\varphi(ds)\,ds] = 1$, and compute $\sigma^2$, $k$, $m$ and $\gamma$ for the rescaled source $ds$. Which pairs of sources are stable? Check the cases of two sub-Gaussian sources, two super-Gaussian sources, a uniform and a Laplace source, and a binary ($\kappa = -2$) and a Laplace source.</p>
+  <p lang="zh-CN">取 $\varphi(y) = y^3$，源 $s$ 为单位方差且 $\E[s^4] = 3 + \kappa$。求满足 $\E[\varphi(ds)\,ds] = 1$ 的尺度 $d$，并对缩放后的源 $ds$ 计算 $\sigma^2$、$k$、$m$ 和 $\gamma$。哪些源对是稳定的？分别检验两个亚高斯源、两个超高斯源、一个均匀源与一个拉普拉斯源，以及一个二值源（$\kappa = -2$）与一个拉普拉斯源的情形。</p>
+  <details class="solution">
+    <p lang="en">$\E[(ds)^3\,ds] = d^4(3 + \kappa) = 1$ gives $d = (3 + \kappa)^{-1/4}$ (here $3 + \kappa = \E[s^4] \ge (\E[s^2])^2 = 1 &gt; 0$). For the rescaled source, $\sigma^2 = d^2$, $k = \E[3d^2s^2] = 3d^2$, $m = \E[3d^2s^2\cdot d^2s^2] = 3d^4(3 + \kappa) = 3$ and $\gamma = k\sigma^2 = 3d^4 = 3/(3 + \kappa)$. Condition (i) holds ($1 + m = 4$), and $k &gt; 0$ always, so a pair is stable exactly when $\gamma_i\gamma_j &gt; 1$, that is, $(3 + \kappa_i)(3 + \kappa_j) &lt; 9$. Two sub-Gaussian sources have both factors below 3: stable. Two super-Gaussian sources have both factors above 3: unstable. Uniform and Laplace: $1.8 \times 6 = 10.8 &gt; 9$, unstable. Binary and Laplace: $1 \times 6 = 6 &lt; 9$, stable.</p>
+    <p lang="zh-CN">由 $\E[(ds)^3\,ds] = d^4(3 + \kappa) = 1$ 得 $d = (3 + \kappa)^{-1/4}$（这里 $3 + \kappa = \E[s^4] \ge (\E[s^2])^2 = 1 &gt; 0$）。对缩放后的源，$\sigma^2 = d^2$，$k = \E[3d^2s^2] = 3d^2$，$m = \E[3d^2s^2\cdot d^2s^2] = 3d^4(3 + \kappa) = 3$，$\gamma = k\sigma^2 = 3d^4 = 3/(3 + \kappa)$。条件（i）成立（$1 + m = 4$），且总有 $k &gt; 0$，所以一对源稳定当且仅当 $\gamma_i\gamma_j &gt; 1$，即 $(3 + \kappa_i)(3 + \kappa_j) &lt; 9$。两个亚高斯源的两个因子都小于 3：稳定。两个超高斯源的两个因子都大于 3：不稳定。均匀源与拉普拉斯源：$1.8 \times 6 = 10.8 &gt; 9$，不稳定。二值源与拉普拉斯源：$1 \times 6 = 6 &lt; 9$，稳定。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-ng-euclid" data-level="intermediate">
+  <p lang="en">(a) Derive <a class="ref" data-ref="eq-euclidean-global"></a> from <a class="ref" data-ref="eq-euclidean-gradient"></a>. (b) Show that multiplying the ordinary gradient on the right by $\bW^\top\bW$ gives an update of $\bP$ in which $\bA$ does not appear. (c) Show that for orthogonal $\bA$ the ordinary-gradient recursion for $\bP$ does not depend on $\bA$ either. Why does this not make plain gradient ascent equivariant?</p>
+  <p lang="zh-CN">（a）由 <a class="ref" data-ref="eq-euclidean-gradient"></a> 推出 <a class="ref" data-ref="eq-euclidean-global"></a>。（b）证明把普通梯度右乘 $\bW^\top\bW$ 后，$\bP$ 的更新中不再出现 $\bA$。（c）证明当 $\bA$ 为正交矩阵时，普通梯度关于 $\bP$ 的递推同样与 $\bA$ 无关。为什么这并不意味着普通梯度上升是等变的？</p>
+  <details class="solution">
+    <p lang="en">(a) From $\bW = \bP\bA^{-1}$, $\bW^{-1} = \bA\bP^{-1}$ and $\bW^{-\top} = \bP^{-\top}\bA^\top$; also $\bx^\top = \bs^\top\bA^\top$ and $\by = \bW\bx = \bP\bs$. Then $\Delta\bP = \Delta\bW\,\bA = \mu\bigl(\bP^{-\top}\bA^\top - \E[\bphi(\by)\bs^\top]\bA^\top\bigr)\bA = \mu\bigl(\bP^{-\top} - \E[\bphi(\by)\bs^\top]\bigr)\bA^\top\bA$. (b) $\nabla\ell\,\bW^\top\bW\,\bA = (\bI - \E[\bphi(\by)\by^\top])\bW\bA = (\bI - \E[\bphi(\bP\bs)(\bP\bs)^\top])\bP$, which involves only $\bP$ and $\bs$. (c) If $\bA^\top\bA = \bI$, then $\Delta\bP = \mu(\bP^{-\top} - \E[\bphi(\by)\bs^\top])$, free of $\bA$. Equivariance asks for independence from every invertible $\bA$; for non-orthogonal $\bA$ the factor $\bA^\top\bA \ne \bI$ changes the recursion. This is why plain gradient ascent behaves much better on whitened data, where the remaining mixing matrix $\tilde\bA$ is orthogonal, but still differs from the natural gradient.</p>
+    <p lang="zh-CN">（a）由 $\bW = \bP\bA^{-1}$ 得 $\bW^{-1} = \bA\bP^{-1}$，$\bW^{-\top} = \bP^{-\top}\bA^\top$；又 $\bx^\top = \bs^\top\bA^\top$，$\by = \bW\bx = \bP\bs$。于是 $\Delta\bP = \Delta\bW\,\bA = \mu\bigl(\bP^{-\top}\bA^\top - \E[\bphi(\by)\bs^\top]\bA^\top\bigr)\bA = \mu\bigl(\bP^{-\top} - \E[\bphi(\by)\bs^\top]\bigr)\bA^\top\bA$。（b）$\nabla\ell\,\bW^\top\bW\,\bA = (\bI - \E[\bphi(\by)\by^\top])\bW\bA = (\bI - \E[\bphi(\bP\bs)(\bP\bs)^\top])\bP$，只涉及 $\bP$ 和 $\bs$。（c）若 $\bA^\top\bA = \bI$，则 $\Delta\bP = \mu(\bP^{-\top} - \E[\bphi(\by)\bs^\top])$，与 $\bA$ 无关。等变性要求对每个可逆的 $\bA$ 都无关；对非正交的 $\bA$，因子 $\bA^\top\bA \ne \bI$ 会改变递推。这也解释了为什么普通梯度上升在白化数据上表现好得多（此时剩下的混合矩阵 $\tilde\bA$ 是正交的），但它仍与自然梯度不同。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-ng-gaussian" data-level="intermediate">
+  <p lang="en">(a) Prove Stein's lemma: if $\nu \sim \Ncal(0, \sigma^2)$ and $\varphi$ is differentiable with $\E|\varphi'(\nu)| &lt; \infty$, then $\E[\nu\,\varphi(\nu)] = \sigma^2\,\E[\varphi'(\nu)]$. (b) Deduce that $\gamma = 1$ for a Gaussian source at the normalized scale, whatever $\varphi$ is. (c) For two Gaussian sources, show that the matrix in <a class="ref" data-ref="eq-pair-linearization"></a> is singular with null vector $(\varepsilon_{ij}, \varepsilon_{ji}) \propto (\sigma_i^2, -\sigma_j^2)$, and that this vector is tangent to a curve of equilibria. Interpret the result.</p>
+  <p lang="zh-CN">（a）证明 Stein 引理：若 $\nu \sim \Ncal(0, \sigma^2)$，$\varphi$ 可微且 $\E|\varphi'(\nu)| &lt; \infty$，则 $\E[\nu\,\varphi(\nu)] = \sigma^2\,\E[\varphi'(\nu)]$。（b）由此推出：无论 $\varphi$ 取什么，高斯源在归一化尺度下都有 $\gamma = 1$。（c）对两个高斯源，证明 <a class="ref" data-ref="eq-pair-linearization"></a> 中的矩阵奇异，零空间向量为 $(\varepsilon_{ij}, \varepsilon_{ji}) \propto (\sigma_i^2, -\sigma_j^2)$，并且这个向量与一条平衡点曲线相切。解释这一结果。</p>
+  <details class="solution">
+    <p lang="en">(a) The density $p(x) = (2\pi\sigma^2)^{-1/2}e^{-x^2/(2\sigma^2)}$ satisfies $x\,p(x) = -\sigma^2p'(x)$. Hence $\E[\nu\varphi(\nu)] = \int\varphi(x)\,x\,p(x)\,dx = -\sigma^2\int\varphi(x)\,p'(x)\,dx = \sigma^2\int\varphi'(x)\,p(x)\,dx = \sigma^2\E[\varphi'(\nu)]$; the boundary term $\varphi(x)p(x)$ vanishes at $\pm\infty$ under the integrability assumption (the standard proof writes $p'$ as an integral and uses Fubini's theorem to avoid any boundary term). (b) At the normalized scale, $\E[\varphi(s)s] = 1$, so $\gamma = k\sigma^2 = \sigma^2\E[\varphi'(s)] = \E[s\varphi(s)] = 1$. (c) With $\gamma_i = \gamma_j = 1$ we have $k_i = 1/\sigma_i^2$ and $k_j = 1/\sigma_j^2$, so the matrix is $\bigl(\begin{smallmatrix}\sigma_j^2/\sigma_i^2 &amp; 1\\ 1 &amp; \sigma_i^2/\sigma_j^2\end{smallmatrix}\bigr)$, with determinant $1 - 1 = 0$; one checks directly that it maps $(\sigma_i^2, -\sigma_j^2)$ to zero. Now let $\bD = \diag(\sigma_i, \sigma_j)$ and $\mathbf{R}(\theta)$ a rotation. The outputs $\bD\mathbf{R}(\theta)\bD^{-1}(s_i, s_j)^\top$ are again independent Gaussians with variances $\sigma_i^2$ and $\sigma_j^2$, because $\bD^{-1}(s_i, s_j)^\top$ is standard Gaussian and rotations preserve that law; for Gaussian outputs the equations $\E[\varphi_i(y_i)y_i] = 1$ depend only on the variances, so every such block is an equilibrium. Its derivative at $\theta = 0$ is $\bD\bigl(\begin{smallmatrix}0 &amp; -1\\ 1 &amp; 0\end{smallmatrix}\bigr)\bD^{-1} = \bigl(\begin{smallmatrix}0 &amp; -\sigma_i/\sigma_j\\ \sigma_j/\sigma_i &amp; 0\end{smallmatrix}\bigr)$, and $(-\sigma_i/\sigma_j, \sigma_j/\sigma_i)$ is proportional to $(\sigma_i^2, -\sigma_j^2)$. The zero eigenvalue is the dynamical face of non-identifiability: two Gaussian sources can be rotated into each other without changing anything the algorithm can see (<a class="ref" data-ref="ex-gaussian-rotation"></a>, <a class="ref" data-ref="thm-comon"></a>).</p>
+    <p lang="zh-CN">（a）密度 $p(x) = (2\pi\sigma^2)^{-1/2}e^{-x^2/(2\sigma^2)}$ 满足 $x\,p(x) = -\sigma^2p'(x)$。因此 $\E[\nu\varphi(\nu)] = \int\varphi(x)\,x\,p(x)\,dx = -\sigma^2\int\varphi(x)\,p'(x)\,dx = \sigma^2\int\varphi'(x)\,p(x)\,dx = \sigma^2\E[\varphi'(\nu)]$；在所给的可积性条件下，边界项 $\varphi(x)p(x)$ 在 $\pm\infty$ 处为零（标准证明把 $p'$ 写成积分并用 Fubini 定理，从而完全避开边界项）。（b）在归一化尺度下 $\E[\varphi(s)s] = 1$，所以 $\gamma = k\sigma^2 = \sigma^2\E[\varphi'(s)] = \E[s\varphi(s)] = 1$。（c）由 $\gamma_i = \gamma_j = 1$ 得 $k_i = 1/\sigma_i^2$，$k_j = 1/\sigma_j^2$，矩阵为 $\bigl(\begin{smallmatrix}\sigma_j^2/\sigma_i^2 &amp; 1\\ 1 &amp; \sigma_i^2/\sigma_j^2\end{smallmatrix}\bigr)$，行列式为 $1 - 1 = 0$；直接验证可知它把 $(\sigma_i^2, -\sigma_j^2)$ 映为零。再令 $\bD = \diag(\sigma_i, \sigma_j)$，$\mathbf{R}(\theta)$ 为旋转矩阵。输出 $\bD\mathbf{R}(\theta)\bD^{-1}(s_i, s_j)^\top$ 仍是方差为 $\sigma_i^2$、$\sigma_j^2$ 的独立高斯变量，因为 $\bD^{-1}(s_i, s_j)^\top$ 是标准高斯向量，而旋转保持这一分布；对高斯输出，方程 $\E[\varphi_i(y_i)y_i] = 1$ 只依赖于方差，所以每个这样的块都是平衡点。它在 $\theta = 0$ 处的导数为 $\bD\bigl(\begin{smallmatrix}0 &amp; -1\\ 1 &amp; 0\end{smallmatrix}\bigr)\bD^{-1} = \bigl(\begin{smallmatrix}0 &amp; -\sigma_i/\sigma_j\\ \sigma_j/\sigma_i &amp; 0\end{smallmatrix}\bigr)$，而 $(-\sigma_i/\sigma_j, \sigma_j/\sigma_i)$ 与 $(\sigma_i^2, -\sigma_j^2)$ 成比例。零特征值是不可辨识性在动力学上的表现：两个高斯源可以相互旋转，而算法所能看到的一切都不会改变（<a class="ref" data-ref="ex-gaussian-rotation"></a>，<a class="ref" data-ref="thm-comon"></a>）。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-ng-easi" data-level="advanced">
+  <p lang="en">Derive the stability condition <a class="ref" data-ref="eq-easi-stability"></a> of EASI. Use unit-variance sources, write the mean flow of <a class="ref" data-ref="eq-easi"></a> as $d\bP/dt = -\E[\bH(\bP\bs)]\bP$, linearize at $\bP = \bI + \bepsilon$, and study each pair $(\varepsilon_{ij}, \varepsilon_{ji})$ in the coordinates $u = \varepsilon_{ij} + \varepsilon_{ji}$, $v = \varepsilon_{ij} - \varepsilon_{ji}$.</p>
+  <p lang="zh-CN">推导 EASI 的稳定性条件 <a class="ref" data-ref="eq-easi-stability"></a>。取单位方差的源，把 <a class="ref" data-ref="eq-easi"></a> 的平均流写成 $d\bP/dt = -\E[\bH(\bP\bs)]\bP$，在 $\bP = \bI + \bepsilon$ 处线性化，并在坐标 $u = \varepsilon_{ij} + \varepsilon_{ji}$、$v = \varepsilon_{ij} - \varepsilon_{ji}$ 下研究每一对 $(\varepsilon_{ij}, \varepsilon_{ji})$。</p>
+  <details class="solution">
+    <p lang="en">At $\bP = \bI$, $\E[\bs\bs^\top] = \bI$, $\E[g_i(s_i)s_j] = 0$ for $i \ne j$, and the diagonal of the skew part is zero, so $\E[\bH(\bs)] = \bzero$: the separating point is an equilibrium. Since $\E[\bH] = O(\|\bepsilon\|)$, the linearized flow is $d\bepsilon/dt = -\E[\bH(\by)]$ to first order. The symmetric part contributes $\E[\by\by^\top] - \bI = \bepsilon + \bepsilon^\top$. For the skew part let $a_i = \E[g_i'(s_i)]$ and $b_i = \E[g_i(s_i)s_i]$. The computation in the proof of <a class="ref" data-ref="thm-stability"></a>, with $\sigma_j = 1$, gives $\E[g_i(y_i)y_j] = b_i\varepsilon_{ji} + a_i\varepsilon_{ij}$ and $\E[y_ig_j(y_j)] = b_j\varepsilon_{ij} + a_j\varepsilon_{ji}$ to first order, for $i \ne j$. Hence $d\varepsilon_{ii}/dt = -2\varepsilon_{ii}$ and</p>
+    <p lang="zh-CN">在 $\bP = \bI$ 处，$\E[\bs\bs^\top] = \bI$，对 $i \ne j$ 有 $\E[g_i(s_i)s_j] = 0$，且反对称部分的对角线为零，所以 $\E[\bH(\bs)] = \bzero$：分离点是平衡点。由于 $\E[\bH] = O(\|\bepsilon\|)$，一阶近似下线性化的流为 $d\bepsilon/dt = -\E[\bH(\by)]$。对称部分贡献 $\E[\by\by^\top] - \bI = \bepsilon + \bepsilon^\top$。对反对称部分，记 $a_i = \E[g_i'(s_i)]$，$b_i = \E[g_i(s_i)s_i]$。把<a class="ref" data-ref="thm-stability"></a>证明中的计算取 $\sigma_j = 1$，可得对 $i \ne j$，一阶近似下 $\E[g_i(y_i)y_j] = b_i\varepsilon_{ji} + a_i\varepsilon_{ij}$，$\E[y_ig_j(y_j)] = b_j\varepsilon_{ij} + a_j\varepsilon_{ji}$。因此 $d\varepsilon_{ii}/dt = -2\varepsilon_{ii}$，并且</p>
+    <div class="eq">$$\begin{aligned} \frac{d\varepsilon_{ij}}{dt} &amp;= -\bigl[\varepsilon_{ij} + \varepsilon_{ji} + (a_i - b_j)\,\varepsilon_{ij} + (b_i - a_j)\,\varepsilon_{ji}\bigr],\\ \frac{d\varepsilon_{ji}}{dt} &amp;= -\bigl[\varepsilon_{ji} + \varepsilon_{ij} + (a_j - b_i)\,\varepsilon_{ji} + (b_j - a_i)\,\varepsilon_{ij}\bigr]. \end{aligned}$$</div>
+    <p lang="en">Adding the two equations, the skew terms cancel and $du/dt = -2u$. Subtracting them gives $dv/dt = -2(a_i - b_j)\varepsilon_{ij} - 2(b_i - a_j)\varepsilon_{ji}$; substituting $\varepsilon_{ij} = (u + v)/2$ and $\varepsilon_{ji} = (u - v)/2$ yields $dv/dt = -c\,u + (\lambda_i + \lambda_j)\,v$ with $c = a_i + b_i - a_j - b_j$ and $\lambda_i = b_i - a_i = \E[g_i(s_i)s_i - g_i'(s_i)]$. The system for $(u, v)$ is triangular, with eigenvalues $-2$ and $\lambda_i + \lambda_j$. All eigenvalues of the linearization are negative if and only if $\lambda_i + \lambda_j &lt; 0$ for every pair, and a pair with $\lambda_i + \lambda_j &gt; 0$ makes the point unstable. (The diagonal entries never cause instability: the symmetric part alone fixes the output variances.)</p>
+    <p lang="zh-CN">两式相加，反对称项相互抵消，得 $du/dt = -2u$。两式相减得 $dv/dt = -2(a_i - b_j)\varepsilon_{ij} - 2(b_i - a_j)\varepsilon_{ji}$；代入 $\varepsilon_{ij} = (u + v)/2$ 和 $\varepsilon_{ji} = (u - v)/2$，得 $dv/dt = -c\,u + (\lambda_i + \lambda_j)\,v$，其中 $c = a_i + b_i - a_j - b_j$，$\lambda_i = b_i - a_i = \E[g_i(s_i)s_i - g_i'(s_i)]$。关于 $(u, v)$ 的方程组是三角形的，特征值为 $-2$ 和 $\lambda_i + \lambda_j$。线性化的全部特征值为负，当且仅当每一对都有 $\lambda_i + \lambda_j &lt; 0$；只要有一对满足 $\lambda_i + \lambda_j &gt; 0$，该点就不稳定。（对角元从不引起不稳定：对称部分本身就固定了输出方差。）</p>
+  </details>
+</div>
+
+<h2 id="sec-natural-gradient-references"><span lang="en">References</span><span lang="zh-CN">参考文献</span></h2>
+
+<div class="references">
+  <ol>
+    <li>Amari, S. (1998). Natural gradient works efficiently in learning. <i>Neural Computation</i>, 10(2), 251–276.</li>
+    <li>Amari, S., Chen, T.-P., &amp; Cichocki, A. (1997). Stability analysis of learning algorithms for blind source separation. <i>Neural Networks</i>, 10(8), 1345–1351.</li>
+    <li>Amari, S., Cichocki, A., &amp; Yang, H. H. (1996). A new learning algorithm for blind signal separation. In <i>Advances in Neural Information Processing Systems 8</i> (pp. 757–763). MIT Press.</li>
+    <li>Bell, A. J., &amp; Sejnowski, T. J. (1995). An information-maximization approach to blind separation and blind deconvolution. <i>Neural Computation</i>, 7(6), 1129–1159.</li>
+    <li>Cardoso, J.-F. (1997). Infomax and maximum likelihood for blind source separation. <i>IEEE Signal Processing Letters</i>, 4(4), 112–114.</li>
+    <li>Cardoso, J.-F., &amp; Laheld, B. H. (1996). Equivariant adaptive source separation. <i>IEEE Transactions on Signal Processing</i>, 44(12), 3017–3030.</li>
+    <li>Lee, T.-W., Girolami, M., &amp; Sejnowski, T. J. (1999). Independent component analysis using an extended infomax algorithm for mixed subgaussian and supergaussian sources. <i>Neural Computation</i>, 11(2), 417–441.</li>
+    <li>Robbins, H., &amp; Monro, S. (1951). A stochastic approximation method. <i>Annals of Mathematical Statistics</i>, 22(3), 400–407.</li>
+  </ol>
+</div>

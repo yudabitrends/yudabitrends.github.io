@@ -1,0 +1,316 @@
+<!-- Chapter 1. The ICA problem. Source format: book/AUTHORING.md -->
+
+<h2 id="sec-cocktail-party"><span lang="en">The cocktail-party problem</span><span lang="zh-CN">鸡尾酒会问题</span></h2>
+
+<p lang="en">Imagine two people speaking at the same time in a room with two microphones. Each microphone sits at a different distance from each speaker, so each records a different blend of the two voices. From the two recordings alone, without knowing where the microphones were or what the voices sound like, can we recover each voice on its own? This is the <em>cocktail-party problem</em>, named after our ability to follow one conversation in a noisy room (Cherry, 1953). Independent component analysis (ICA) solves an idealized version of it, and the idealization covers a surprisingly wide range of data.</p>
+<p lang="zh-CN">设想房间里有两个人同时说话，屋里放着两只麦克风。每只麦克风到两位说话者的距离不同，因此录到的是两个声音的不同混合。只凭这两段录音，既不知道麦克风放在哪里，也不知道声音本来的样子，能否把每个人的声音分别还原出来？这就是<em>鸡尾酒会问题</em>，得名于人在嘈杂房间里仍能听清一段对话的能力（Cherry, 1953）。独立成分分析（independent component analysis, ICA）解决的是这个问题的理想化版本，而这个理想化模型能覆盖的数据范围出乎意料地广。</p>
+
+<p lang="en"><a class="ref" data-ref="fig-signals"></a> shows the idea with two synthetic signals. The sources $s_1(t)$ and $s_2(t)$ are a sinusoid and a sawtooth; the sensors observe $x_1(t)$ and $x_2(t)$, each a weighted sum of the two. Neither recording looks like a clean sinusoid or a clean sawtooth, yet together the two recordings contain everything needed to undo the mixing.</p>
+<p lang="zh-CN"><a class="ref" data-ref="fig-signals"></a> 用两个合成信号说明这一想法。源信号 $s_1(t)$ 与 $s_2(t)$ 分别是正弦波和锯齿波；传感器观测到 $x_1(t)$ 与 $x_2(t)$，各自是两个源的加权和。单看任何一段录音，都既不像干净的正弦波，也不像干净的锯齿波；但两段录音合在一起，已经包含了撤销混合所需的全部信息。</p>
+
+<figure id="fig-signals">
+  <img src="fig/ch01-signals.svg" width="560" height="267" alt="Left: a sinusoid s1 and a sawtooth s2. Right: two mixtures x1 and x2, each a different weighted sum of the two sources.">
+  <figcaption><span lang="en">Two sources (left) and two observed mixtures (right). Each mixture is a different weighted sum of the same two sources.</span><span lang="zh-CN">两个源信号（左）与两个观测到的混合信号（右）。每个混合信号都是这两个源的不同加权和。</span></figcaption>
+</figure>
+
+<p lang="en">The same structure appears whenever several sensors record superpositions of a few underlying processes:</p>
+<p lang="zh-CN">只要若干传感器记录的是少数几个潜在过程的叠加，就会出现同样的结构：</p>
+<ul lang="en">
+  <li><b>EEG and MEG.</b> Each scalp electrode or magnetometer records a weighted sum of activity from many brain sources, together with eye blinks, muscle activity and line noise. ICA is routinely used to separate such artifacts from brain signals (Makeig et al., 1996; Jung et al., 2000).</li>
+  <li><b>Functional MRI.</b> Every voxel's time series mixes several spatially distributed processes. Spatial ICA decomposes fMRI data into maps of coherent networks and their time courses (McKeown et al., 1998); Part VI of this book is devoted to it.</li>
+  <li><b>Communications and audio.</b> Antenna arrays receive superpositions of transmitted signals; microphone arrays receive superpositions of voices.</li>
+  <li><b>Natural images.</b> Applied to small patches of natural images, ICA yields localized, oriented filters that resemble the receptive fields of simple cells in primary visual cortex (Bell &amp; Sejnowski, 1997; van Hateren &amp; van der Schaaf, 1998).</li>
+</ul>
+<ul lang="zh-CN">
+  <li><b>EEG 与 MEG。</b>每个头皮电极或磁强计记录的是许多脑内源活动的加权和，再加上眨眼、肌电和工频干扰。ICA 常被用来把这些伪迹与脑信号分开（Makeig et al., 1996; Jung et al., 2000）。</li>
+  <li><b>功能磁共振（fMRI）。</b>每个体素的时间序列都混合了若干空间分布的过程。空间 ICA 把 fMRI 数据分解为一组协同网络的空间图及其时间过程（McKeown et al., 1998）；本书第六部分专门讨论这一应用。</li>
+  <li><b>通信与音频。</b>天线阵列接收的是多个发射信号的叠加；麦克风阵列接收的是多个人声的叠加。</li>
+  <li><b>自然图像。</b>把 ICA 用于自然图像的小块，得到的是局部化、有方向性的滤波器，与初级视皮层简单细胞的感受野相似（Bell &amp; Sejnowski, 1997; van Hateren &amp; van der Schaaf, 1998）。</li>
+</ul>
+
+<p lang="en">In each case the sensors see mixtures, the quantities of interest are the unmixed components, and neither the mixing weights nor the components are known in advance. The task is therefore called <em>blind source separation</em> (BSS). ICA is the best-known approach to it, and the subject of this book.</p>
+<p lang="zh-CN">在这些例子里，传感器看到的都是混合，我们关心的是未混合的成分，而混合权重与成分本身事先都不知道。因此这一任务被称为<em>盲源分离</em>（blind source separation, BSS）。ICA 是解决它最著名的方法，也是本书的主题。</p>
+
+<p lang="en">Jutten and Hérault (1991) described an early adaptive algorithm for separating sources; Comon (1994) gave ICA a precise formulation and proved that it is identifiable; and the Infomax algorithm of Bell and Sejnowski (1995) brought it into wide use. Hyvärinen, Karhunen and Oja (2001) and Comon and Jutten (2010) give book-length treatments.</p>
+<p lang="zh-CN">Jutten 与 Hérault（1991）描述了一种早期的自适应源分离算法；Comon（1994）给出了 ICA 的严格表述，并证明了它的可辨识性；Bell 与 Sejnowski（1995）的 Infomax 算法使 ICA 得到广泛应用。Hyvärinen、Karhunen 与 Oja（2001）以及 Comon 与 Jutten（2010）是这一领域的专著。</p>
+
+<h2 id="sec-model"><span lang="en">The linear mixing model</span><span lang="zh-CN">线性混合模型</span></h2>
+
+<p lang="en">Write the $n$ unknown source signals at time $t$ as a vector $\bs(t) = (s_1(t), \dots, s_n(t))^\top$ and the $m$ observed signals as $\bx(t) = (x_1(t), \dots, x_m(t))^\top$. The <em>linear instantaneous mixing model</em> states that</p>
+<p lang="zh-CN">把时刻 $t$ 的 $n$ 个未知源信号写成向量 $\bs(t) = (s_1(t), \dots, s_n(t))^\top$，把 $m$ 个观测信号写成 $\bx(t) = (x_1(t), \dots, x_m(t))^\top$。<em>线性瞬时混合模型</em>假设</p>
+
+<div class="eq" id="eq-model">$$\bx(t) = \bA\,\bs(t), \qquad t = 1, \dots, T,$$</div>
+
+<p lang="en">where $\bA \in \R^{m \times n}$ is an unknown constant <em>mixing matrix</em>. Column $j$ of $\bA$, written $\ba_j$, describes how source $j$ reaches the sensors, so <a class="ref" data-ref="eq-model"></a> can also be read as $\bx(t) = \sum_{j=1}^n s_j(t)\,\ba_j$: every observation is a superposition of fixed patterns $\ba_j$ with time-varying amplitudes $s_j(t)$. Stacking the $T$ samples as columns gives the matrix form $\bX = \bA\bS$, with $\bX \in \R^{m \times T}$ and $\bS \in \R^{n \times T}$.</p>
+<p lang="zh-CN">其中 $\bA \in \R^{m \times n}$ 是未知的常数<em>混合矩阵</em>。$\bA$ 的第 $j$ 列记为 $\ba_j$，描述源 $j$ 如何到达各传感器，所以 <a class="ref" data-ref="eq-model"></a> 也可以写成 $\bx(t) = \sum_{j=1}^n s_j(t)\,\ba_j$：每个观测都是若干固定模式 $\ba_j$ 的叠加，叠加系数 $s_j(t)$ 随时间变化。把 $T$ 个样本按列排开，得到矩阵形式 $\bX = \bA\bS$，其中 $\bX \in \R^{m \times T}$，$\bS \in \R^{n \times T}$。</p>
+
+<p lang="en"><em>Instantaneous</em> means that each source reaches every sensor at the same moment, without delays or echoes. This holds well for EEG, where electrical fields propagate through the head essentially instantly, and for the spatial ICA of fMRI. It does not hold for speech recorded in a real room, where each microphone receives filtered and delayed copies of the voices (a convolutive mixture); that harder problem lies outside this book.</p>
+<p lang="zh-CN"><em>瞬时</em>指每个源同时到达所有传感器，没有延迟或回声。对 EEG 来说这一假设相当准确，因为电场在头部的传播几乎是瞬时的；fMRI 的空间 ICA 也满足这一点。但在真实房间里录制的语音并不满足：每只麦克风收到的是经过滤波和延迟的声音副本（卷积混合），这个更难的问题不在本书范围之内。</p>
+
+<p lang="en">Throughout the book, the model comes with the following standing assumptions, unless a chapter says otherwise.</p>
+<p lang="zh-CN">除非某章另有说明，全书都在以下基本假设下讨论这个模型。</p>
+
+<div class="env" data-kind="assumption" id="asm-ica" data-en="the standard ICA model" data-zh="标准 ICA 模型">
+  <ol lang="en">
+    <li>The sources $s_1, \dots, s_n$ are mutually statistically independent.</li>
+    <li>At most one source is Gaussian.</li>
+    <li>The mixing matrix $\bA$ has full column rank $n$; in particular $m \ge n$.</li>
+    <li>The samples $\bs(1), \dots, \bs(T)$ are independent draws from one distribution, and each source has zero mean and finite, nonzero variance.</li>
+  </ol>
+  <ol lang="zh-CN">
+    <li>源 $s_1, \dots, s_n$ 相互统计独立。</li>
+    <li>至多有一个源是高斯的。</li>
+    <li>混合矩阵 $\bA$ 列满秩，秩为 $n$；特别地 $m \ge n$。</li>
+    <li>样本 $\bs(1), \dots, \bs(T)$ 是来自同一分布的独立抽样；各源均值为零，方差有限且不为零。</li>
+  </ol>
+</div>
+
+<p lang="en">Independence is the structural heart of the model: the joint density factorizes, $p_{\bs}(\bs) = \prod_{i=1}^n p_i(s_i)$. The restriction on Gaussian sources is what makes the problem solvable at all; <a class="ref" data-ref="identifiability"></a> proves that, together with the other assumptions, it is also enough. Full column rank ensures that no source is lost or confounded with another. Zero means cost nothing: subtract the sample mean of $\bx$ first, and recover the source means afterwards as $\bW\,\E[\bx]$. Finite variances make the covariance of $\bx$ well defined, and nonzero variances rule out a source that is identically zero, which could be paired with any column of $\bA$. The i.i.d. assumption means that standard ICA ignores time order entirely; it would give the same answer if the samples were shuffled. <a class="ref" data-ref="jade-sobi"></a> shows how temporal structure can be used instead.</p>
+<p lang="zh-CN">独立性是这个模型的结构核心：联合密度可以分解为 $p_{\bs}(\bs) = \prod_{i=1}^n p_i(s_i)$。对高斯源个数的限制，是问题能够求解的前提；<a class="ref" data-ref="identifiability"></a>会证明：在其余假设成立时，这一限制也是充分的。列满秩保证没有哪个源丢失或与其他源混淆。零均值不构成任何限制：先减去 $\bx$ 的样本均值，最后再用 $\bW\,\E[\bx]$ 恢复源的均值即可。方差有限保证 $\bx$ 的协方差有定义；方差不为零则排除了恒为零的源，因为这样的源可以与 $\bA$ 的任意一列相配。独立同分布假设意味着标准 ICA 完全忽略时间顺序：把样本打乱，结果也不会变。<a class="ref" data-ref="jade-sobi"></a>会说明如何转而利用时间结构。</p>
+
+<div class="env" data-kind="definition" id="def-ica" data-en="independent component analysis" data-zh="独立成分分析">
+  <p lang="en">Given samples $\bx(1), \dots, \bx(T)$ from the model <a class="ref" data-ref="eq-model"></a>, <em>independent component analysis</em> estimates an <em>unmixing matrix</em> $\bW \in \R^{n \times m}$ such that the components of the output $\by = \bW\bx$ are mutually independent. The matrix $\bP = \bW\bA \in \R^{n \times n}$, which maps sources to outputs through $\by = \bP\bs$, is called the <em>global</em> (or gain) matrix.</p>
+  <p lang="zh-CN">给定来自模型 <a class="ref" data-ref="eq-model"></a> 的样本 $\bx(1), \dots, \bx(T)$，<em>独立成分分析</em>估计一个<em>解混矩阵</em> $\bW \in \R^{n \times m}$，使输出 $\by = \bW\bx$ 的各分量相互独立。矩阵 $\bP = \bW\bA \in \R^{n \times n}$ 通过 $\by = \bP\bs$ 把源映射到输出，称为<em>全局矩阵</em>（或增益矩阵）。</p>
+</div>
+
+<p lang="en">With finite data, exact independence cannot be verified, so in practice $\bW$ is chosen to optimize a <em>contrast function</em>, a statistic that measures how independent or non-Gaussian the outputs are. Chapters 5 and 6 build these contrasts; Part III turns them into algorithms.</p>
+<p lang="zh-CN">在有限数据下无法验证严格的独立性，因此实践中 $\bW$ 是通过优化某个<em>对比函数</em>（衡量输出有多独立或多非高斯的统计量）得到的。第 5、6 章构造这些对比函数，第三部分把它们变成算法。</p>
+
+<h2 id="sec-ambiguities"><span lang="en">What cannot be recovered</span><span lang="zh-CN">无法恢复的量</span></h2>
+
+<p lang="en">Two things are lost in principle, however much data we have. The first is <em>scale</em>, including sign: since $\bx = \sum_j s_j\,\ba_j = \sum_j (s_j/\alpha_j)(\alpha_j\,\ba_j)$ for any nonzero numbers $\alpha_j$, a source can be multiplied by a constant and its column divided by the same constant without changing the observations. The second is <em>order</em>: the sum does not depend on how its terms are numbered, so permuting the sources and the columns of $\bA$ together changes nothing either.</p>
+<p lang="zh-CN">无论数据有多少，有两样东西原则上无法恢复。第一是<em>尺度</em>（包括符号）：对任意非零数 $\alpha_j$，都有 $\bx = \sum_j s_j\,\ba_j = \sum_j (s_j/\alpha_j)(\alpha_j\,\ba_j)$，所以把某个源乘以一个常数、同时把对应的列除以同一常数，观测不会改变。第二是<em>顺序</em>：求和与各项的编号无关，因此把源和 $\bA$ 的列同时重新排列，观测同样不变。</p>
+
+<div class="env" data-kind="proposition" id="prop-indeterminacy" data-en="scaling and permutation indeterminacy" data-zh="尺度与置换不确定性">
+  <p lang="en">Let $\bPi$ be an $n \times n$ permutation matrix and $\bD$ an invertible diagonal matrix. Then the pair $(\bA\bD^{-1}\bPi^\top,\ \bPi\bD\bs)$ generates exactly the same observations as $(\bA, \bs)$, and the components of $\bPi\bD\bs$ are again mutually independent, with as many Gaussian components as $\bs$. Consequently no method can do better than to find $\bW$ with $\bW\bA = \bPi\bD$, that is, to recover the sources up to order and scale.</p>
+  <p lang="zh-CN">设 $\bPi$ 是 $n \times n$ 置换矩阵，$\bD$ 是可逆对角矩阵。则 $(\bA\bD^{-1}\bPi^\top,\ \bPi\bD\bs)$ 与 $(\bA, \bs)$ 生成完全相同的观测，并且 $\bPi\bD\bs$ 的各分量仍相互独立，所含高斯分量的个数也与 $\bs$ 相同。因此任何方法最多只能找到满足 $\bW\bA = \bPi\bD$ 的 $\bW$，即在顺序与尺度意义下恢复源。</p>
+</div>
+<div class="proof">
+  <p lang="en">Since $\bPi^\top\bPi = \bI$, we have $(\bA\bD^{-1}\bPi^\top)(\bPi\bD\bs) = \bA\bD^{-1}\bD\bs = \bA\bs$. The components of $\bPi\bD\bs$ are the numbers $d_i s_i$ in a different order; functions of independent random variables taken one at a time remain independent, and a nonzero multiple of a variable is Gaussian exactly when the variable is.</p>
+  <p lang="zh-CN">由于 $\bPi^\top\bPi = \bI$，有 $(\bA\bD^{-1}\bPi^\top)(\bPi\bD\bs) = \bA\bD^{-1}\bD\bs = \bA\bs$。$\bPi\bD\bs$ 的分量就是重新排序后的 $d_i s_i$；对独立随机变量逐个作函数变换，结果仍然独立；而一个变量的非零倍数是高斯的，当且仅当该变量本身是高斯的。</p>
+</div>
+
+<p lang="en">Separation therefore succeeds when the global matrix $\bP = \bW\bA$ has exactly one nonzero entry in each row and each column. For instance, with $\bA = \bigl(\begin{smallmatrix} 1 & 0.6 \\ 0.4 & 1 \end{smallmatrix}\bigr)$, an algorithm that returns $\bW$ with $\bW\bA = \bigl(\begin{smallmatrix} 0 & -2 \\ 0.5 & 0 \end{smallmatrix}\bigr)$ has succeeded completely: its outputs are $y_1 = -2\,s_2$ and $y_2 = 0.5\,s_1$.</p>
+<p lang="zh-CN">因此，当全局矩阵 $\bP = \bW\bA$ 的每行每列恰有一个非零元时，分离就成功了。例如，对 $\bA = \bigl(\begin{smallmatrix} 1 & 0.6 \\ 0.4 & 1 \end{smallmatrix}\bigr)$，若某算法给出的 $\bW$ 满足 $\bW\bA = \bigl(\begin{smallmatrix} 0 & -2 \\ 0.5 & 0 \end{smallmatrix}\bigr)$，它就完全成功了：输出为 $y_1 = -2\,s_2$，$y_2 = 0.5\,s_1$。</p>
+
+<p lang="en">In practice the ambiguities are removed by convention. The scale is usually fixed by requiring unit variance, $\E[s_i^2] = 1$, which leaves only the sign. Signs and order are then fixed by whatever is natural for the application: in fMRI, for example, each spatial map is flipped so that its heavier tail is positive, and components are ordered by explained variance or by a contrast value. How close an estimated $\bP$ is to a scaled permutation, when separation is only approximate, is the subject of <a class="ref" data-ref="performance"></a>.</p>
+<p lang="zh-CN">实践中，这些不确定性靠约定来消除。尺度通常通过要求单位方差 $\E[s_i^2] = 1$ 来固定，只剩下符号未定。符号与顺序再按应用中自然的方式确定：例如在 fMRI 中，把每张空间图翻转到其较重的尾部为正，并按解释方差或对比函数值给成分排序。当分离只是近似成功时，如何度量估计的 $\bP$ 离带尺度的置换矩阵有多近，是<a class="ref" data-ref="performance"></a>的主题。</p>
+
+<h2 id="sec-pca-vs-ica"><span lang="en">Why not PCA or factor analysis?</span><span lang="zh-CN">为什么不用 PCA 或因子分析？</span></h2>
+
+<p lang="en">Principal component analysis (PCA) finds an orthogonal transform that makes the outputs uncorrelated and orders them by variance. If $\bA$ were orthogonal and the source variances were distinct, PCA would recover the sources up to sign. In general, however, $\bA$ is not orthogonal, and being uncorrelated is a much weaker requirement than being independent. <a class="ref" data-ref="fig-scatter"></a> makes the difference visible. Two uniform sources fill a square (a). Mixing shears the square into a parallelogram (b). Whitening, for example PCA followed by rescaling each principal component to unit variance, turns the parallelogram back into a square, but leaves it rotated by an unknown angle (c; the figure uses the symmetric whitening matrix $\bC_{\bx}^{-1/2}$, see <a class="ref" data-ref="whitening"></a>). Only by using information beyond the covariance does ICA find the rotation that aligns the square with the axes (d).</p>
+<p lang="zh-CN">主成分分析（PCA）寻找一个正交变换，使输出互不相关并按方差排序。如果 $\bA$ 是正交矩阵、且各源方差互不相同，PCA 能在符号意义下恢复源。但一般情况下 $\bA$ 并不正交，而且不相关是比独立弱得多的要求。<a class="ref" data-ref="fig-scatter"></a> 直观地展示了两者的差别。两个均匀分布的源填满一个正方形（a）。混合把正方形剪切成平行四边形（b）。白化（例如先做 PCA、再把每个主成分缩放到单位方差）会把平行四边形变回正方形，但这个正方形转过了一个未知的角度（c；图中使用的是对称白化矩阵 $\bC_{\bx}^{-1/2}$，见<a class="ref" data-ref="whitening"></a>）。只有利用协方差之外的信息，ICA 才能找到把正方形摆正的那个旋转（d）。</p>
+
+<figure id="fig-scatter">
+  <img src="fig/ch01-scatter.svg" width="660" height="176" alt="Four scatter plots: a square of uniform sources, a sheared parallelogram of mixtures, a rotated square after whitening with arrows along the whitened mixing directions, and an axis-aligned square after ICA.">
+  <figcaption><span lang="en">Two independent uniform sources (a), their mixture (b), the whitened mixture (c), and the ICA solution (d). In (c) the data are uncorrelated with unit variance, yet clearly dependent; the arrows mark the columns of the whitened mixing matrix $\bV\bA$, which are orthogonal. ICA finds the rotation $\bU$ that aligns them with the axes.</span><span lang="zh-CN">两个独立的均匀分布源（a）、它们的混合（b）、白化后的混合（c）以及 ICA 的解（d）。在（c）中数据不相关且方差为一，却显然并不独立；箭头标出白化后混合矩阵 $\bV\bA$ 的列，它们相互正交。ICA 找到把它们转到坐标轴上的旋转 $\bU$。</span></figcaption>
+</figure>
+
+<p lang="en">A count of parameters shows why the covariance cannot be enough. Take $m = n$ and unit-variance sources. The covariance $\bC_{\bx} = \E[\bx\bx^\top] = \bA\bA^\top$ is symmetric, so it supplies $n(n+1)/2$ numbers, while $\bA$ has $n^2$ unknown entries. The shortfall is $n(n-1)/2$, which is exactly the number of free parameters of an $n \times n$ orthogonal matrix: any $\bA\bQ$ with $\bQ$ orthogonal has the same covariance as $\bA$. Second-order statistics determine the mixing matrix only up to a rotation. <a class="ref" data-ref="whitening"></a> makes this precise, and <a class="ref" data-ref="identifiability"></a> shows that higher-order statistics pin down the rotation as soon as the sources are non-Gaussian.</p>
+<p lang="zh-CN">数一数参数，就能看出为什么协方差不够用。取 $m = n$ 且源为单位方差。协方差 $\bC_{\bx} = \E[\bx\bx^\top] = \bA\bA^\top$ 是对称矩阵，只提供 $n(n+1)/2$ 个数，而 $\bA$ 有 $n^2$ 个未知元。两者相差 $n(n-1)/2$，恰好是一个 $n \times n$ 正交矩阵的自由参数个数：对任意正交矩阵 $\bQ$，$\bA\bQ$ 与 $\bA$ 有相同的协方差。二阶统计量只能把混合矩阵确定到一个旋转。<a class="ref" data-ref="whitening"></a>会把这一点说清楚，<a class="ref" data-ref="identifiability"></a>则证明：只要源是非高斯的，高阶统计量就能确定这个旋转。</p>
+
+<p lang="en">Gaussian sources are the exception. If $\bs \sim \Ncal(\bzero, \bI)$, then $\bQ\bs$ has exactly the same distribution as $\bs$ for every orthogonal $\bQ$, so the data cannot distinguish $\bA$ from $\bA\bQ^\top$ by any statistic whatsoever. This is why the standard model allows at most one Gaussian source. Classical <em>factor analysis</em> meets the same obstruction: it models $\bx = \bA\mathbf{f} + \bn$ with Gaussian factors $\mathbf{f}$, so its loadings are determined only up to rotation, and heuristics such as varimax are needed to choose one. ICA can be read as factor analysis with non-Gaussian independent factors, the assumption that removes the rotational freedom.</p>
+<p lang="zh-CN">高斯源是例外。若 $\bs \sim \Ncal(\bzero, \bI)$，则对任意正交矩阵 $\bQ$，$\bQ\bs$ 与 $\bs$ 的分布完全相同，因此任何统计量都无法从数据中区分 $\bA$ 与 $\bA\bQ^\top$。这就是标准模型至多允许一个高斯源的原因。经典的<em>因子分析</em>遇到的是同一障碍：它的模型是 $\bx = \bA\mathbf{f} + \bn$，因子 $\mathbf{f}$ 为高斯分布，所以载荷矩阵只能确定到一个旋转，需要 varimax 之类的启发式方法来选定一个。可以把 ICA 理解为因子相互独立且非高斯的因子分析，正是这一假设消除了旋转自由度。</p>
+
+<h2 id="sec-first-look"><span lang="en">A first look at how ICA works</span><span lang="zh-CN">初窥 ICA 的工作方式</span></h2>
+
+<p lang="en">Most ICA methods follow the two-step logic of <a class="ref" data-ref="fig-scatter"></a>. First, <em>whiten</em>: find a matrix $\bV$ such that $\bz = \bV\bx$ has identity covariance. What remains is to find an orthogonal $\bU$ such that $\by = \bU\bz$ has independent components, a search over rotations. Second, choose the rotation with a <em>contrast function</em> that measures non-Gaussianity or independence. The intuition is the central limit theorem: a sum of independent variables tends to be more Gaussian than the variables themselves, so a mixture of several sources is typically more Gaussian than the most non-Gaussian of them. Making each output as non-Gaussian as possible therefore drives it toward one source; <a class="ref" data-ref="kurtosis"></a> turns this intuition into a theorem.</p>
+<p lang="zh-CN">大多数 ICA 方法都遵循 <a class="ref" data-ref="fig-scatter"></a> 所示的两步思路。第一步是<em>白化</em>：找一个矩阵 $\bV$，使 $\bz = \bV\bx$ 的协方差为单位阵。剩下的任务是找一个正交矩阵 $\bU$，使 $\by = \bU\bz$ 的分量相互独立，也就是在旋转中搜索。第二步是用<em>对比函数</em>来选择旋转，对比函数衡量的是非高斯性或独立性。其直觉来自中心极限定理：独立变量之和往往比各个变量本身更接近高斯，所以几个源的混合通常比其中最非高斯的那个源更接近高斯。让每个输出尽可能非高斯，就会把它推向某一个源；<a class="ref" data-ref="kurtosis"></a>会把这一直觉变成定理。</p>
+
+<p lang="en">The following script carries out both steps for two sources, one uniform and one Laplacian, using kurtosis (the fourth cumulant, $\kurt(y) = \E[y^4] - 3(\E[y^2])^2$) as the contrast and a brute-force search over the rotation angle.</p>
+<p lang="zh-CN">下面的脚本对两个源（一个均匀分布、一个拉普拉斯分布）完成这两步，用峭度（四阶累积量，$\kurt(y) = \E[y^4] - 3(\E[y^2])^2$）作为对比函数，并对旋转角做穷举搜索。</p>
+
+<pre class="code"><code>import numpy as np
+
+rng = np.random.default_rng(0)
+T = 5000
+S = np.vstack([rng.uniform(-np.sqrt(3), np.sqrt(3), T),   # uniform: sub-Gaussian, unit variance
+               rng.laplace(0.0, 1 / np.sqrt(2), T)])      # Laplace: super-Gaussian, unit variance
+A = np.array([[1.0, 0.6],
+              [0.4, 1.0]])
+X = A @ S                                    # observed mixtures, shape (2, T)
+
+# Step 1: whiten, z = V x with sample covariance I
+X = X - X.mean(axis=1, keepdims=True)
+d, E = np.linalg.eigh(np.cov(X))
+V = E @ np.diag(d ** -0.5) @ E.T
+Z = V @ X
+
+# Step 2: rotate, choosing the direction whose projection has the largest |kurtosis|
+def kurt(y):
+    return np.mean(y ** 4) - 3 * np.mean(y ** 2) ** 2
+
+angles = np.linspace(0, np.pi, 360, endpoint=False)
+scores = [abs(kurt(np.cos(a) * Z[0] + np.sin(a) * Z[1])) for a in angles]
+a = angles[np.argmax(scores)]
+U = np.array([[np.cos(a), np.sin(a)],
+              [-np.sin(a), np.cos(a)]])
+Y = U @ Z                                    # estimated sources
+W = U @ V                                    # estimated unmixing matrix
+print(np.round(W @ A, 2))                    # close to a signed permutation</code></pre>
+
+<p lang="en">On this run the script prints $\bW\bA \approx \bigl(\begin{smallmatrix} 0.03 & 1.00 \\ -1.00 & 0.02 \end{smallmatrix}\bigr)$: the first output is the Laplacian source and the second is the uniform source with its sign flipped, exactly the ambiguity that <a class="ref" data-ref="prop-indeterminacy"></a> allows. Directions $\bw$ and $-\bw$ give the same projection up to sign, so searching angles in $[0, \pi)$ covers every direction once. A brute-force search works only in two dimensions; Chapters 7 to 9 develop algorithms that scale to many sources, and <a class="ref" data-ref="performance"></a> asks how accurate any algorithm can possibly be.</p>
+<p lang="zh-CN">这次运行输出 $\bW\bA \approx \bigl(\begin{smallmatrix} 0.03 & 1.00 \\ -1.00 & 0.02 \end{smallmatrix}\bigr)$：第一个输出是拉普拉斯源，第二个输出是符号翻转后的均匀源，恰好是<a class="ref" data-ref="prop-indeterminacy"></a>所允许的不确定性。方向 $\bw$ 与 $-\bw$ 给出的投影只差一个符号，所以在 $[0, \pi)$ 内搜索角度恰好覆盖每个方向一次。穷举搜索只在二维可行；第 7 至 9 章发展能处理大量源的算法，<a class="ref" data-ref="performance"></a>则讨论任何算法最多能达到多高的精度。</p>
+
+<h2 id="sec-roadmap"><span lang="en">How this book is organized</span><span lang="zh-CN">本书的结构</span></h2>
+
+<p lang="en">The book has six parts and an appendix. Each chapter ends with exercises at three levels (basic, intermediate and advanced) with solutions that open on request.</p>
+<p lang="zh-CN">本书分为六个部分和一个附录。每章末尾都有三个难度级别（基础、进阶、硬核）的习题，解答默认折叠，点开即可查看。</p>
+<dl lang="en">
+  <dt>Part I. Foundations</dt>
+  <dd>This chapter; the probability tools of ICA (<a class="ref" data-ref="probability"></a>); whitening and the geometry of the problem (<a class="ref" data-ref="whitening"></a>).</dd>
+  <dt>Part II. Principles</dt>
+  <dd>Identifiability (<a class="ref" data-ref="identifiability"></a>); non-Gaussianity and kurtosis (<a class="ref" data-ref="kurtosis"></a>); negentropy, mutual information and likelihood (<a class="ref" data-ref="likelihood"></a>).</dd>
+  <dt>Part III. Algorithms</dt>
+  <dd>Natural gradient and Infomax (<a class="ref" data-ref="natural-gradient"></a>); FastICA (<a class="ref" data-ref="fastica"></a>); JADE and second-order methods (<a class="ref" data-ref="jade-sobi"></a>).</dd>
+  <dt>Part IV. Statistical theory</dt>
+  <dd>Asymptotic performance and the Cramér–Rao bound (<a class="ref" data-ref="performance"></a>); noise, model order and reliability (<a class="ref" data-ref="model-order"></a>).</dd>
+  <dt>Part V. Beyond the square linear model</dt>
+  <dd>Overcomplete ICA (<a class="ref" data-ref="overcomplete"></a>); nonlinear ICA (<a class="ref" data-ref="nonlinear"></a>).</dd>
+  <dt>Part VI. ICA for brain imaging</dt>
+  <dd>Spatial ICA of fMRI (<a class="ref" data-ref="fmri-ica"></a>); group ICA, dual regression and IVA (<a class="ref" data-ref="group-ica"></a>).</dd>
+</dl>
+<dl lang="zh-CN">
+  <dt>第一部分：基础</dt>
+  <dd>本章；ICA 的概率工具（<a class="ref" data-ref="probability"></a>）；白化与问题的几何（<a class="ref" data-ref="whitening"></a>）。</dd>
+  <dt>第二部分：原理</dt>
+  <dd>可辨识性（<a class="ref" data-ref="identifiability"></a>）；非高斯性与峭度（<a class="ref" data-ref="kurtosis"></a>）；负熵、互信息与似然（<a class="ref" data-ref="likelihood"></a>）。</dd>
+  <dt>第三部分：算法</dt>
+  <dd>自然梯度与 Infomax（<a class="ref" data-ref="natural-gradient"></a>）；FastICA（<a class="ref" data-ref="fastica"></a>）；JADE 与二阶方法（<a class="ref" data-ref="jade-sobi"></a>）。</dd>
+  <dt>第四部分：统计理论</dt>
+  <dd>渐近性能与 Cramér–Rao 界（<a class="ref" data-ref="performance"></a>）；噪声、模型阶数与可靠性（<a class="ref" data-ref="model-order"></a>）。</dd>
+  <dt>第五部分：超越方阵线性模型</dt>
+  <dd>过完备 ICA（<a class="ref" data-ref="overcomplete"></a>）；非线性 ICA（<a class="ref" data-ref="nonlinear"></a>）。</dd>
+  <dt>第六部分：脑影像中的 ICA</dt>
+  <dd>fMRI 的空间 ICA（<a class="ref" data-ref="fmri-ica"></a>）；组 ICA、双回归与独立向量分析（<a class="ref" data-ref="group-ica"></a>）。</dd>
+</dl>
+
+<p lang="en">Two reading paths work well. For practice, read Chapters 1, 3, 5 and 8 and then Part VI. For theory, read Parts I and II in order, then Chapters 7, 10, 12 and 13. <a class="ref" data-ref="math-background"></a> collects the facts from matrix analysis, optimization and asymptotic statistics used throughout.</p>
+<p lang="zh-CN">推荐两条阅读路线。偏重应用：读第 1、3、5、8 章，然后读第六部分。偏重理论：按顺序读第一、二部分，再读第 7、10、12、13 章。<a class="ref" data-ref="math-background"></a>汇集了全书用到的矩阵分析、优化与渐近统计知识。</p>
+
+<h2 id="sec-notation"><span lang="en">Notation</span><span lang="zh-CN">记号</span></h2>
+
+<p lang="en">Vectors are bold lowercase, matrices bold uppercase, scalars italic. All vectors are column vectors, and $^\top$ denotes transposition. The symbols below keep the same meaning in every chapter unless a chapter says otherwise; Part VI, for example, writes fMRI data as a matrix with $T$ time points and $V$ voxels.</p>
+<p lang="zh-CN">向量用粗体小写字母，矩阵用粗体大写字母，标量用斜体。所有向量都是列向量，$^\top$ 表示转置。除非某章另有说明，下表中的记号在全书各章含义不变；例如第六部分把 fMRI 数据写成 $T$ 个时间点 × $V$ 个体素的矩阵。</p>
+
+<figure class="table" id="tab-notation">
+  <figcaption><span lang="en">Notation used throughout the book.</span><span lang="zh-CN">全书通用记号。</span></figcaption>
+  <div>
+    <table>
+      <thead>
+        <tr><th><span lang="en">Symbol</span><span lang="zh-CN">记号</span></th><th><span lang="en">Meaning</span><span lang="zh-CN">含义</span></th></tr>
+      </thead>
+      <tbody>
+        <tr><td>$n,\ m,\ T$</td><td><span lang="en">numbers of sources, sensors and samples</span><span lang="zh-CN">源、传感器与样本的个数</span></td></tr>
+        <tr><td>$\bs = (s_1, \dots, s_n)^\top$</td><td><span lang="en">source vector, with densities $p_i$ of $s_i$</span><span lang="zh-CN">源向量，$s_i$ 的密度为 $p_i$</span></td></tr>
+        <tr><td>$\bx,\ \bA,\ \ba_j$</td><td><span lang="en">observations, mixing matrix, its $j$-th column</span><span lang="zh-CN">观测、混合矩阵及其第 $j$ 列</span></td></tr>
+        <tr><td>$\bW,\ \by = \bW\bx$</td><td><span lang="en">unmixing matrix and its outputs</span><span lang="zh-CN">解混矩阵及其输出</span></td></tr>
+        <tr><td>$\bP = \bW\bA$</td><td><span lang="en">global (gain) matrix</span><span lang="zh-CN">全局（增益）矩阵</span></td></tr>
+        <tr><td>$\bV,\ \bz = \bV\bx,\ \tilde\bA = \bV\bA$</td><td><span lang="en">whitening matrix, whitened data, whitened mixing matrix</span><span lang="zh-CN">白化矩阵、白化数据、白化后的混合矩阵</span></td></tr>
+        <tr><td>$\bU,\ \bQ$</td><td><span lang="en">orthogonal matrices (the rotation found after whitening; a generic one)</span><span lang="zh-CN">正交矩阵（白化后求出的旋转；一般的正交矩阵）</span></td></tr>
+        <tr><td>$\bPi,\ \bD,\ \bI$</td><td><span lang="en">permutation, diagonal and identity matrices</span><span lang="zh-CN">置换矩阵、对角矩阵、单位矩阵</span></td></tr>
+        <tr><td>$\E[\cdot],\ \hat\E[\cdot],\ \bC_{\bx}$</td><td><span lang="en">expectation, sample average, covariance $\E[\bx\bx^\top]$ of zero-mean $\bx$</span><span lang="zh-CN">期望、样本平均、零均值 $\bx$ 的协方差 $\E[\bx\bx^\top]$</span></td></tr>
+        <tr><td>$\bw,\ y = \bw^\top\bz,\ \bq = \tilde\bA^\top\bw$</td><td><span lang="en">one-unit methods: a unit vector, its projection, and the same direction in source coordinates</span><span lang="zh-CN">单单元方法：单位向量、其投影，以及同一方向在源坐标下的表示</span></td></tr>
+        <tr><td>$\psi_i = -p_i'/p_i$</td><td><span lang="en">score function of source $i$</span><span lang="zh-CN">源 $i$ 的得分函数</span></td></tr>
+        <tr><td>$\mathcal{J}_i = \E[\psi_i(s_i)^2]$</td><td><span lang="en">Fisher information of the unit-variance source $i$ ($\ge 1$, with equality only for a Gaussian)</span><span lang="zh-CN">单位方差源 $i$ 的 Fisher 信息（$\ge 1$，仅当源为高斯时取等号）</span></td></tr>
+        <tr><td>$\varphi_i,\ g = G'$</td><td><span lang="en">nonlinearity of gradient algorithms; nonlinearity of FastICA</span><span lang="zh-CN">梯度算法中的非线性函数；FastICA 中的非线性函数</span></td></tr>
+        <tr><td>$\kurt(\cdot),\ \cum(\cdot)$</td><td><span lang="en">kurtosis, cumulant</span><span lang="zh-CN">峭度、累积量</span></td></tr>
+        <tr><td>$\kappa_i = \kurt(s_i)$</td><td><span lang="en">kurtosis of the unit-variance source $i$</span><span lang="zh-CN">单位方差源 $i$ 的峭度</span></td></tr>
+        <tr><td>$\nu$</td><td><span lang="en">a standard Gaussian variable, $\nu \sim \Ncal(0, 1)$</span><span lang="zh-CN">标准高斯变量，$\nu \sim \Ncal(0, 1)$</span></td></tr>
+        <tr><td>$H,\ J,\ I,\ D(p\,\|\,q)$</td><td><span lang="en">differential entropy, negentropy, mutual information, Kullback–Leibler divergence</span><span lang="zh-CN">微分熵、负熵、互信息、KL 散度</span></td></tr>
+        <tr><td>$\Ncal(\mu, \sigma^2)$</td><td><span lang="en">Gaussian distribution</span><span lang="zh-CN">高斯分布</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</figure>
+
+<div class="keypoints">
+  <p class="kp-title" lang="en">Key points</p>
+  <p class="kp-title" lang="zh-CN">本章要点</p>
+  <ul lang="en">
+    <li>ICA models observations as an instantaneous linear mixture $\bx = \bA\bs$ of independent sources and estimates an unmixing matrix $\bW$.</li>
+    <li>The scale, sign and order of the sources can never be recovered; success means that $\bW\bA$ is a scaled permutation matrix.</li>
+    <li>Second-order statistics determine $\bA$ only up to a rotation; independence and non-Gaussianity determine the rotation.</li>
+    <li>Gaussian sources are the exception: among two or more Gaussian sources, no rotation can be told apart from another.</li>
+  </ul>
+  <ul lang="zh-CN">
+    <li>ICA 把观测建模为独立源的瞬时线性混合 $\bx = \bA\bs$，并估计解混矩阵 $\bW$。</li>
+    <li>源的尺度、符号与顺序永远无法恢复；分离成功意味着 $\bW\bA$ 是带尺度的置换矩阵。</li>
+    <li>二阶统计量只能把 $\bA$ 确定到一个旋转；独立性与非高斯性确定这个旋转。</li>
+    <li>高斯源是例外：两个及以上高斯源之间，任何旋转都无法区分。</li>
+  </ul>
+</div>
+
+<h2 id="sec-ica-problem-exercises"><span lang="en">Exercises</span><span lang="zh-CN">习题</span></h2>
+
+<div class="exercise" id="ex-indeterminacy" data-level="basic">
+  <p lang="en">Suppose $\bW$ separates the mixture exactly, $\bW\bA = \bI$. Show that $\bW' = \bPi\bD\bW$ also produces mutually independent outputs for every permutation matrix $\bPi$ and invertible diagonal matrix $\bD$. What is $\bW'\bA$?</p>
+  <p lang="zh-CN">设 $\bW$ 恰好完成分离，即 $\bW\bA = \bI$。证明对任意置换矩阵 $\bPi$ 和可逆对角矩阵 $\bD$，$\bW' = \bPi\bD\bW$ 的输出也相互独立。$\bW'\bA$ 等于什么？</p>
+  <details class="solution">
+    <p lang="en">$\bW'\bA = \bPi\bD\bW\bA = \bPi\bD$, so $\by' = \bW'\bx = \bPi\bD\bs$. Its components are the numbers $d_j s_j$ in a different order: each is a function of a single source, and the sources involved are distinct, so the components are independent.</p>
+    <p lang="zh-CN">$\bW'\bA = \bPi\bD\bW\bA = \bPi\bD$，所以 $\by' = \bW'\bx = \bPi\bD\bs$。它的分量就是重新排序后的 $d_j s_j$：每个分量只是某一个源的函数，且涉及的源各不相同，所以这些分量相互独立。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-uncorrelated-dependent" data-level="basic">
+  <p lang="en">Let $s$ be uniform on $[-1, 1]$ and $y = s^2$. Show that $s$ and $y$ are uncorrelated but not independent.</p>
+  <p lang="zh-CN">设 $s$ 在 $[-1, 1]$ 上均匀分布，$y = s^2$。证明 $s$ 与 $y$ 不相关但不独立。</p>
+  <details class="solution">
+    <p lang="en">By symmetry $\E[s] = \E[s^3] = 0$, so $\Cov(s, y) = \E[s^3] - \E[s]\,\E[s^2] = 0$. But $y &lt; 1/4$ exactly when $|s| &lt; 1/2$, so $P(|s| &gt; 1/2,\ y &lt; 1/4) = 0$, whereas $P(|s| &gt; 1/2)\,P(y &lt; 1/4) = \tfrac12 \cdot \tfrac12 = \tfrac14$. The joint probability does not factorize, so the variables are dependent.</p>
+    <p lang="zh-CN">由对称性，$\E[s] = \E[s^3] = 0$，所以 $\Cov(s, y) = \E[s^3] - \E[s]\,\E[s^2] = 0$。但 $y &lt; 1/4$ 当且仅当 $|s| &lt; 1/2$，因此 $P(|s| &gt; 1/2,\ y &lt; 1/4) = 0$，而 $P(|s| &gt; 1/2)\,P(y &lt; 1/4) = \tfrac12 \cdot \tfrac12 = \tfrac14$。联合概率不能分解，所以二者不独立。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-gaussian-rotation" data-level="intermediate">
+  <p lang="en">Let $\bs \sim \Ncal(\bzero, \bI)$ in $\R^2$ and let $\bQ$ be any $2 \times 2$ orthogonal matrix. Show that $\bQ\bs$ has the same distribution as $\bs$, and conclude that the observations $\bx = \bA\bs$ cannot distinguish the mixing matrix $\bA$ from $\bA\bQ^\top$.</p>
+  <p lang="zh-CN">设 $\bs \sim \Ncal(\bzero, \bI)$ 取值于 $\R^2$，$\bQ$ 是任意 $2 \times 2$ 正交矩阵。证明 $\bQ\bs$ 与 $\bs$ 同分布，并由此说明观测 $\bx = \bA\bs$ 无法区分混合矩阵 $\bA$ 与 $\bA\bQ^\top$。</p>
+  <details class="solution">
+    <p lang="en">A linear transform of a Gaussian vector is Gaussian, so $\bQ\bs$ is Gaussian with mean $\bzero$ and covariance $\bQ\bI\bQ^\top = \bI$; a Gaussian distribution is determined by its mean and covariance, so $\bQ\bs \sim \Ncal(\bzero, \bI)$. Now $\bx = \bA\bs = (\bA\bQ^\top)(\bQ\bs)$, and $\bQ\bs$ is again a vector of independent standard Gaussian sources. The models $(\bA, \bs)$ and $(\bA\bQ^\top, \bQ\bs)$ therefore produce identically distributed observations, and no statistic of $\bx$ can tell them apart.</p>
+    <p lang="zh-CN">高斯向量的线性变换仍是高斯的，所以 $\bQ\bs$ 是均值为 $\bzero$、协方差为 $\bQ\bI\bQ^\top = \bI$ 的高斯向量；高斯分布由均值和协方差唯一确定，因此 $\bQ\bs \sim \Ncal(\bzero, \bI)$。又 $\bx = \bA\bs = (\bA\bQ^\top)(\bQ\bs)$，而 $\bQ\bs$ 仍是由独立标准高斯源组成的向量。于是模型 $(\bA, \bs)$ 与 $(\bA\bQ^\top, \bQ\bs)$ 产生同分布的观测，任何关于 $\bx$ 的统计量都无法区分它们。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-counting" data-level="intermediate">
+  <p lang="en">For a square model ($m = n$) with unit-variance sources, count the numbers determined by the covariance $\bC_{\bx}$ and the unknowns in $\bA$. Show that the difference equals the number of free parameters of an $n \times n$ orthogonal matrix, and that every matrix $\bA\bQ$ with $\bQ$ orthogonal has the same covariance.</p>
+  <p lang="zh-CN">对方阵模型（$m = n$）且源为单位方差的情形，数一数协方差 $\bC_{\bx}$ 确定了多少个数，$\bA$ 又有多少个未知量。证明二者之差等于 $n \times n$ 正交矩阵的自由参数个数，并且对任意正交矩阵 $\bQ$，$\bA\bQ$ 都有相同的协方差。</p>
+  <details class="solution">
+    <p lang="en">$\bC_{\bx} = \bA\,\E[\bs\bs^\top]\,\bA^\top = \bA\bA^\top$ is symmetric, so it has $n(n+1)/2$ distinct entries, while $\bA$ has $n^2$. The difference is $n^2 - n(n+1)/2 = n(n-1)/2$. The orthogonality constraints $\bQ^\top\bQ = \bI$ are $n(n+1)/2$ equations (again by symmetry) on $n^2$ entries, leaving $n(n-1)/2$ free parameters: one angle for $n = 2$, three for $n = 3$. Finally $(\bA\bQ)(\bA\bQ)^\top = \bA\bQ\bQ^\top\bA^\top = \bA\bA^\top$.</p>
+    <p lang="zh-CN">$\bC_{\bx} = \bA\,\E[\bs\bs^\top]\,\bA^\top = \bA\bA^\top$ 是对称矩阵，只有 $n(n+1)/2$ 个不同的元素，而 $\bA$ 有 $n^2$ 个元素，两者相差 $n^2 - n(n+1)/2 = n(n-1)/2$。正交性约束 $\bQ^\top\bQ = \bI$ 同样由于对称性只给出 $n(n+1)/2$ 个方程，作用在 $n^2$ 个元素上，剩下 $n(n-1)/2$ 个自由参数：$n = 2$ 时是一个角度，$n = 3$ 时是三个。最后，$(\bA\bQ)(\bA\bQ)^\top = \bA\bQ\bQ^\top\bA^\top = \bA\bA^\top$。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-code-gaussian" data-level="basic">
+  <p lang="en">Run the script of <a class="ref" data-ref="sec-first-look"></a> with both sources replaced by standard Gaussian noise, and plot the absolute kurtosis of the first output against the angle. What do you observe, and why?</p>
+  <p lang="zh-CN">把<a class="ref" data-ref="sec-first-look"></a>中脚本的两个源都换成标准高斯噪声，画出第一个输出的峭度绝对值随角度变化的曲线。你观察到什么？为什么？</p>
+  <details class="solution">
+    <p lang="en">The curve fluctuates near zero with no consistent peak, and the selected angle changes from one random seed to the next. Every projection of a whitened Gaussian vector is again standard Gaussian, with zero kurtosis, so the estimated kurtosis reflects only sampling noise, of order $\sqrt{24/T} \approx 0.07$ for $T = 5000$. Separation fails, as <a class="ref" data-ref="ex-gaussian-rotation"></a> predicts.</p>
+    <p lang="zh-CN">曲线在零附近随机起伏，没有稳定的峰值，选出的角度随随机种子而变。白化后的高斯向量在任意方向上的投影仍是标准高斯分布，峭度为零，因此估计出的峭度只反映抽样噪声，量级约为 $\sqrt{24/T}$，当 $T = 5000$ 时约为 $0.07$。分离失败，正如<a class="ref" data-ref="ex-gaussian-rotation"></a>所预言的那样。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-rotation-kurtosis" data-level="advanced">
+  <p lang="en">Let $s_1, s_2$ be independent with zero mean, unit variance and kurtoses $\kappa_i = \kurt(s_i)$, not both zero. Let $\bz = \tilde\bA\bs$, where $\tilde\bA = \bigl(\begin{smallmatrix} \cos a_0 & -\sin a_0 \\ \sin a_0 & \cos a_0 \end{smallmatrix}\bigr)$ is a rotation, and for the unit vector $\bw = (\cos a, \sin a)^\top$ let $y = \bw^\top\bz$. (a) Show that $\kurt(y) = \kappa_1\cos^4(a - a_0) + \kappa_2\sin^4(a - a_0)$. (b) Show that $|\kurt(y)| \le \max(|\kappa_1|, |\kappa_2|)$, with equality only when $y = \pm s_i$ for a source $i$ whose $|\kappa_i|$ is the larger of the two. (c) The script of <a class="ref" data-ref="sec-first-look"></a> picks the first output by maximizing $|\kurt|$ over the angle, and its sources have kurtoses $3$ (Laplace) and $-1.2$ (uniform). Explain why its first output is the Laplacian source and its second output the uniform one.</p>
+  <p lang="zh-CN">设 $s_1, s_2$ 独立，均值为零、方差为一，峭度 $\kappa_i = \kurt(s_i)$ 不全为零。令 $\bz = \tilde\bA\bs$，其中 $\tilde\bA = \bigl(\begin{smallmatrix} \cos a_0 & -\sin a_0 \\ \sin a_0 & \cos a_0 \end{smallmatrix}\bigr)$ 是一个旋转；对单位向量 $\bw = (\cos a, \sin a)^\top$，令 $y = \bw^\top\bz$。（a）证明 $\kurt(y) = \kappa_1\cos^4(a - a_0) + \kappa_2\sin^4(a - a_0)$。（b）证明 $|\kurt(y)| \le \max(|\kappa_1|, |\kappa_2|)$，且等号只在 $y = \pm s_i$ 时成立，其中源 $i$ 的 $|\kappa_i|$ 是两者中较大的那个。（c）<a class="ref" data-ref="sec-first-look"></a>的脚本通过对角度最大化 $|\kurt|$ 来选出第一个输出，它的两个源的峭度分别为 $3$（拉普拉斯）与 $-1.2$（均匀）。解释为什么第一个输出是拉普拉斯源，第二个输出是均匀源。</p>
+  <details class="solution">
+    <p lang="en">(a) Multiplying out, $\bw^\top\tilde\bA = (\cos a\cos a_0 + \sin a\sin a_0,\ \sin a\cos a_0 - \cos a\sin a_0) = (c, \sigma)$ with $c = \cos(a - a_0)$ and $\sigma = \sin(a - a_0)$, so $y = c\,s_1 + \sigma s_2$ and $\E[y^2] = c^2 + \sigma^2 = 1$. Expanding $\E[y^4]$, the terms with an odd power of a zero-mean source vanish by independence, leaving $\E[y^4] = c^4\E[s_1^4] + 6c^2\sigma^2 + \sigma^4\E[s_2^4] = c^4(\kappa_1 + 3) + 6c^2\sigma^2 + \sigma^4(\kappa_2 + 3)$. Subtracting $3(\E[y^2])^2 = 3(c^2 + \sigma^2)^2 = 3c^4 + 6c^2\sigma^2 + 3\sigma^4$ gives $\kurt(y) = \kappa_1c^4 + \kappa_2\sigma^4$. (b) Let $M = \max(|\kappa_1|, |\kappa_2|) &gt; 0$. Then $|\kurt(y)| \le |\kappa_1|c^4 + |\kappa_2|\sigma^4 \le M(c^4 + \sigma^4) = M(1 - 2c^2\sigma^2) \le M$. Equality in the last step forces $c\sigma = 0$, that is $y = \pm s_1$ or $y = \pm s_2$, where $|\kurt(y)|$ equals $|\kappa_1|$ or $|\kappa_2|$; so the maximum $M$ is reached exactly at $\pm$ the source with the larger $|\kappa_i|$ (at both sources if $|\kappa_1| = |\kappa_2|$). (c) The whitened mixing matrix $\bV\bA$ is orthogonal, so the same computation applies to it (a reflection only changes the sign of $\sigma$, which does not affect $\sigma^4$). Since $3 &gt; |-1.2|$, the largest $|\kurt|$ is reached only at $y = \pm$ the Laplacian source, so the first row of $\bU$ picks it out. The second row of $\bU$ is orthogonal to the first, so in source coordinates it points along the other source: the second output is $\pm$ the uniform source. With $T = 5000$ the standard errors of the kurtosis estimates, about $0.5$ for the Laplacian source and $0.02$ for the uniform one (over 400 repetitions of the script), are small compared with the gap between $3$ and $1.2$; the run above gives $3.91$ and $-1.21$.</p>
+    <p lang="zh-CN">（a）直接相乘，$\bw^\top\tilde\bA = (\cos a\cos a_0 + \sin a\sin a_0,\ \sin a\cos a_0 - \cos a\sin a_0) = (c, \sigma)$，其中 $c = \cos(a - a_0)$，$\sigma = \sin(a - a_0)$，所以 $y = c\,s_1 + \sigma s_2$，且 $\E[y^2] = c^2 + \sigma^2 = 1$。展开 $\E[y^4]$，由独立性，含零均值源奇数次幂的项都为零，剩下 $\E[y^4] = c^4\E[s_1^4] + 6c^2\sigma^2 + \sigma^4\E[s_2^4] = c^4(\kappa_1 + 3) + 6c^2\sigma^2 + \sigma^4(\kappa_2 + 3)$。减去 $3(\E[y^2])^2 = 3(c^2 + \sigma^2)^2 = 3c^4 + 6c^2\sigma^2 + 3\sigma^4$，得 $\kurt(y) = \kappa_1c^4 + \kappa_2\sigma^4$。（b）记 $M = \max(|\kappa_1|, |\kappa_2|) &gt; 0$。则 $|\kurt(y)| \le |\kappa_1|c^4 + |\kappa_2|\sigma^4 \le M(c^4 + \sigma^4) = M(1 - 2c^2\sigma^2) \le M$。最后一步取等号要求 $c\sigma = 0$，即 $y = \pm s_1$ 或 $y = \pm s_2$，此时 $|\kurt(y)|$ 分别等于 $|\kappa_1|$ 或 $|\kappa_2|$；所以最大值 $M$ 恰好在 $|\kappa_i|$ 较大的那个源（的正负号）处取到（若 $|\kappa_1| = |\kappa_2|$，则两个源处都取到）。（c）白化后的混合矩阵 $\bV\bA$ 是正交矩阵，上面的计算同样适用（若它是反射，只会改变 $\sigma$ 的符号，不影响 $\sigma^4$）。由于 $3 &gt; |-1.2|$，$|\kurt|$ 的最大值只在 $y$ 等于正负拉普拉斯源时取到，所以 $\bU$ 的第一行挑出了拉普拉斯源。$\bU$ 的第二行与第一行正交，在源坐标下指向另一个源，所以第二个输出是正负均匀源。$T = 5000$ 时，峭度估计的标准误对拉普拉斯源约为 $0.5$，对均匀源约为 $0.02$（把脚本重复运行 400 次得到），与 $3$ 和 $1.2$ 之间的差距相比都很小；上面那次运行得到的是 $3.91$ 与 $-1.21$。</p>
+  </details>
+</div>
+
+<h2 id="sec-ica-problem-references"><span lang="en">References</span><span lang="zh-CN">参考文献</span></h2>
+
+<div class="references">
+  <ol>
+    <li>Bell, A. J., &amp; Sejnowski, T. J. (1995). An information-maximization approach to blind separation and blind deconvolution. <i>Neural Computation</i>, 7(6), 1129–1159.</li>
+    <li>Bell, A. J., &amp; Sejnowski, T. J. (1997). The “independent components” of natural scenes are edge filters. <i>Vision Research</i>, 37(23), 3327–3338.</li>
+    <li>Cherry, E. C. (1953). Some experiments on the recognition of speech, with one and with two ears. <i>Journal of the Acoustical Society of America</i>, 25(5), 975–979.</li>
+    <li>Comon, P. (1994). Independent component analysis, a new concept? <i>Signal Processing</i>, 36(3), 287–314.</li>
+    <li>Comon, P., &amp; Jutten, C. (Eds.) (2010). <i>Handbook of Blind Source Separation: Independent Component Analysis and Applications</i>. Academic Press.</li>
+    <li>Hyvärinen, A., Karhunen, J., &amp; Oja, E. (2001). <i>Independent Component Analysis</i>. Wiley.</li>
+    <li>Jung, T.-P., Makeig, S., Humphries, C., Lee, T.-W., McKeown, M. J., Iragui, V., &amp; Sejnowski, T. J. (2000). Removing electroencephalographic artifacts by blind source separation. <i>Psychophysiology</i>, 37(2), 163–178.</li>
+    <li>Jutten, C., &amp; Hérault, J. (1991). Blind separation of sources, part I: An adaptive algorithm based on neuromimetic architecture. <i>Signal Processing</i>, 24(1), 1–10.</li>
+    <li>Makeig, S., Bell, A. J., Jung, T.-P., &amp; Sejnowski, T. J. (1996). Independent component analysis of electroencephalographic data. In <i>Advances in Neural Information Processing Systems 8</i> (pp. 145–151). MIT Press.</li>
+    <li>McKeown, M. J., Makeig, S., Brown, G. G., Jung, T.-P., Kindermann, S. S., Bell, A. J., &amp; Sejnowski, T. J. (1998). Analysis of fMRI data by blind separation into independent spatial components. <i>Human Brain Mapping</i>, 6(3), 160–188.</li>
+    <li>van Hateren, J. H., &amp; van der Schaaf, A. (1998). Independent component filters of natural images compared with simple cells in primary visual cortex. <i>Proceedings of the Royal Society B</i>, 265(1394), 359–366.</li>
+  </ol>
+</div>

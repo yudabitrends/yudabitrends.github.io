@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Independent Component Analysis: From Foundations to Frontiers | The ICA Book</title>
+  <meta name="description" content="A bilingual open book on independent component analysis, from first principles to identifiability, contrasts, algorithms, Cramér–Rao bounds, overcomplete and nonlinear ICA, and ICA for fMRI, with exercises and solutions.">
+  <meta name="author" content="Yuda Bi">
+  <link rel="canonical" href="https://yuda-bi.com/ica/">
+  <meta property="og:type" content="book">
+  <meta property="og:url" content="https://yuda-bi.com/ica/">
+  <meta property="og:site_name" content="Yuda Bi">
+  <meta property="og:title" content="Independent Component Analysis: From Foundations to Frontiers | The ICA Book">
+  <meta property="og:description" content="A bilingual open book on independent component analysis, from first principles to identifiability, contrasts, algorithms, Cramér–Rao bounds, overcomplete and nonlinear ICA, and ICA for fMRI, with exercises and solutions.">
+  <meta property="og:image" content="https://yuda-bi.com/assets/og-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/katex/katex.min.css">
+  <link rel="stylesheet" href="../assets/book.css?v=caf4fe41">
+  <script>(function(){var v=null;try{v=localStorage.getItem('ica-book-lang')}catch(e){}if(v!=='en'&&v!=='zh'&&v!=='both'){v=/^zh/i.test(navigator.language||'')?'zh':'en'}var d=document.documentElement;d.setAttribute('data-lang',v);if(v==='zh')d.setAttribute('lang','zh-CN')})();</script>
+</head>
+<body class="book book-home">
+<a class="skip" href="#content"><span lang="en">Skip to content</span><span lang="zh-CN">跳到正文</span></a>
+<header class="bar">
+  <div class="bar-inner">
+    <button class="nav-toggle" type="button" aria-controls="book-nav" aria-expanded="false"><span lang="en">Contents</span><span lang="zh-CN">目录</span></button>
+    <a class="bar-title" href="index.html"><span lang="en">The ICA Book</span><span lang="zh-CN">ICA 学习书</span></a>
+    <a class="bar-home" href="../">Yuda Bi</a>
+    <div class="lang-switch" role="group" aria-label="Language / 语言">
+      <button type="button" data-set-lang="en" aria-pressed="false">EN</button><button type="button" data-set-lang="zh" aria-pressed="false">中文</button><button type="button" data-set-lang="both" aria-pressed="false">EN + 中文</button>
+    </div>
+  </div>
+</header>
+<div class="layout">
+<nav class="book-nav" id="book-nav" aria-label="Contents / 目录">
+  <a class="nav-top is-current" href="index.html"><span lang="en">Contents</span><span lang="zh-CN">目录</span></a>
+  <p class="nav-part"><span lang="en">Part I · Foundations</span><span lang="zh-CN">第一部分 · 基础</span></p>
+  <ol class="nav-chapters">
+    <li><a href="ica-problem.html"><span class="nav-num">1</span><span class="nav-title"><span lang="en">The ICA Problem</span><span lang="zh-CN">ICA 问题</span></span></a></li>
+    <li><a href="probability.html"><span class="nav-num">2</span><span class="nav-title"><span lang="en">Independence, Cumulants and Entropy</span><span lang="zh-CN">独立性、累积量与熵</span></span></a></li>
+    <li><a href="whitening.html"><span class="nav-num">3</span><span class="nav-title"><span lang="en">Whitening and the Geometry of ICA</span><span lang="zh-CN">白化与 ICA 的几何</span></span></a></li>
+  </ol>
+  <p class="nav-part"><span lang="en">Part II · Principles</span><span lang="zh-CN">第二部分 · 原理</span></p>
+  <ol class="nav-chapters">
+    <li><a href="identifiability.html"><span class="nav-num">4</span><span class="nav-title"><span lang="en">Identifiability</span><span lang="zh-CN">可辨识性</span></span></a></li>
+    <li><a href="kurtosis.html"><span class="nav-num">5</span><span class="nav-title"><span lang="en">Non-Gaussianity and Kurtosis</span><span lang="zh-CN">非高斯性与峭度</span></span></a></li>
+    <li><a href="likelihood.html"><span class="nav-num">6</span><span class="nav-title"><span lang="en">Negentropy, Mutual Information and Likelihood</span><span lang="zh-CN">负熵、互信息与似然</span></span></a></li>
+  </ol>
+  <p class="nav-part"><span lang="en">Part III · Algorithms</span><span lang="zh-CN">第三部分 · 算法</span></p>
+  <ol class="nav-chapters">
+    <li><a href="natural-gradient.html"><span class="nav-num">7</span><span class="nav-title"><span lang="en">Natural Gradient, Infomax and Stability</span><span lang="zh-CN">自然梯度、Infomax 与稳定性</span></span></a></li>
+    <li><a href="fastica.html"><span class="nav-num">8</span><span class="nav-title"><span lang="en">FastICA</span><span lang="zh-CN">FastICA 算法</span></span></a></li>
+    <li><a href="jade-sobi.html"><span class="nav-num">9</span><span class="nav-title"><span lang="en">Tensor and Second-Order Methods: JADE and SOBI</span><span lang="zh-CN">张量方法与二阶方法：JADE 与 SOBI</span></span></a></li>
+  </ol>
+  <p class="nav-part"><span lang="en">Part IV · Statistical Theory</span><span lang="zh-CN">第四部分 · 统计理论</span></p>
+  <ol class="nav-chapters">
+    <li><a href="performance.html"><span class="nav-num">10</span><span class="nav-title"><span lang="en">Asymptotic Performance and the Cramér–Rao Bound</span><span lang="zh-CN">渐近性能与 Cramér–Rao 界</span></span></a></li>
+    <li><a href="model-order.html"><span class="nav-num">11</span><span class="nav-title"><span lang="en">Noise, Model Order and Reliability</span><span lang="zh-CN">噪声、模型阶数与可靠性</span></span></a></li>
+  </ol>
+  <p class="nav-part"><span lang="en">Part V · Beyond the Square Linear Model</span><span lang="zh-CN">第五部分 · 超越方阵线性模型</span></p>
+  <ol class="nav-chapters">
+    <li><a href="overcomplete.html"><span class="nav-num">12</span><span class="nav-title"><span lang="en">Overcomplete ICA and Sparse Component Analysis</span><span lang="zh-CN">过完备 ICA 与稀疏成分分析</span></span></a></li>
+    <li><a href="nonlinear.html"><span class="nav-num">13</span><span class="nav-title"><span lang="en">Nonlinear ICA</span><span lang="zh-CN">非线性 ICA</span></span></a></li>
+  </ol>
+  <p class="nav-part"><span lang="en">Part VI · ICA for Brain Imaging</span><span lang="zh-CN">第六部分 · 脑影像中的 ICA</span></p>
+  <ol class="nav-chapters">
+    <li><a href="fmri-ica.html"><span class="nav-num">14</span><span class="nav-title"><span lang="en">Spatial ICA of fMRI</span><span lang="zh-CN">fMRI 的空间 ICA</span></span></a></li>
+    <li><a href="group-ica.html"><span class="nav-num">15</span><span class="nav-title"><span lang="en">Group ICA, Dual Regression and IVA</span><span lang="zh-CN">组 ICA、双回归与独立向量分析</span></span></a></li>
+  </ol>
+  <p class="nav-part"><span lang="en">Appendix</span><span lang="zh-CN">附录</span></p>
+  <ol class="nav-chapters">
+    <li><a href="math-background.html"><span class="nav-num">A</span><span class="nav-title"><span lang="en">Mathematical Background</span><span lang="zh-CN">数学基础</span></span></a></li>
+  </ol>
+</nav>
+<main class="content" id="content">
+<header class="cover">
+  <p class="cover-kicker"><span lang="en">An open book · bilingual</span><span lang="zh-CN">开放教材 · 中英双语</span></p>
+  <h1><span lang="en">Independent Component Analysis: From Foundations to Frontiers</span><span lang="zh-CN">独立成分分析：从基础到硬核</span></h1>
+  <p class="cover-author">Yuda Bi</p>
+  <p class="cover-desc" lang="en">A bilingual open book on independent component analysis, from first principles to identifiability, contrasts, algorithms, Cramér–Rao bounds, overcomplete and nonlinear ICA, and ICA for fMRI, with exercises and solutions.</p>
+  <p class="cover-desc" lang="zh-CN">一本中英双语的独立成分分析开放教材：从基本原理到可辨识性、对比函数、算法、Cramér–Rao 界、过完备与非线性 ICA，以及 fMRI 中的 ICA，每章配习题与解答。</p>
+  <p class="cover-actions"><a class="btn" href="ica-problem.html"><span lang="en">Start reading</span><span lang="zh-CN">开始阅读</span> &rarr;</a></p>
+</header>
+
+
+<h2 id="about"><span lang="en">About this book</span><span lang="zh-CN">关于本书</span></h2>
+
+<p lang="en">Independent component analysis recovers hidden signals from their linear mixtures using two assumptions: the signals are statistically independent, and at most one of them is Gaussian. These two assumptions lead to a remarkably complete theory, with a sharp identifiability theorem, a family of contrast functions linked by information theory, algorithms with provable convergence, exact asymptotic error formulas and a Cramér–Rao bound, and clear limits once the model is stretched to more sources than sensors or to nonlinear mixing. It is also one of the workhorses of brain imaging.</p>
+<p lang="zh-CN">独立成分分析只依靠两个假设，即各信号相互统计独立、且其中至多一个服从高斯分布，就能从线性混合中恢复隐藏的信号。这两个假设引出了一套相当完整的理论：一个精确的可辨识性定理，一族由信息论联系起来的对比函数，可证明收敛的算法，精确的渐近误差公式与 Cramér–Rao 界，以及当模型推广到源多于传感器或非线性混合时清晰的边界。它也是脑影像分析的主力工具之一。</p>
+
+<p lang="en">This book develops the subject from first principles to research level. Every chapter states its results precisely, proves the central ones or points to where the proofs can be found, and checks the theory against small numerical experiments that readers can run themselves. Each chapter closes with exercises, from routine checks to derivations of published results, with worked solutions.</p>
+<p lang="zh-CN">本书从基本原理一直讲到研究前沿。每一章都精确陈述结论，对核心结果给出证明或指出证明的出处，并用读者可以自己运行的小型数值实验来检验理论。每章末尾配有习题，从常规练习到已发表结果的推导，都附有完整解答。</p>
+
+<h2 id="how-to-read"><span lang="en">How to read it</span><span lang="zh-CN">如何阅读</span></h2>
+
+<p lang="en">The prerequisites are linear algebra (eigendecompositions, orthogonal matrices) and probability at the level of an undergraduate course. The chapters on statistical theory also use basic asymptotic statistics; Appendix A collects what is needed. Two paths through the book work well:</p>
+<p lang="zh-CN">预备知识是线性代数（特征分解、正交矩阵）和本科程度的概率论。统计理论各章还会用到基本的渐近统计，所需内容汇集在附录 A。推荐两条阅读路线：</p>
+<ul lang="en">
+  <li><b>Practice first.</b> Chapters 1, 3, 5 and 8, then Part VI on fMRI.</li>
+  <li><b>Theory first.</b> Parts I and II in order, then Chapters 7, 10, 12 and 13.</li>
+</ul>
+<ul lang="zh-CN">
+  <li><b>应用优先。</b>第 1、3、5、8 章，然后读第六部分（fMRI）。</li>
+  <li><b>理论优先。</b>按顺序读第一、二部分，再读第 7、10、12、13 章。</li>
+</ul>
+
+<p lang="en">Use the switch at the top of every page to read in English, in Chinese, or in both languages paragraph by paragraph; the choice is remembered. Links jump between chapters, theorems, equations and exercises, and the contents panel on the left (behind the <i>Contents</i> button on a phone) follows you through the book.</p>
+<p lang="zh-CN">每页顶部的切换按钮可以选择英文、中文，或者中英逐段对照阅读，选择会被记住。链接可以在章节、定理、公式和习题之间跳转；左侧的目录栏（手机上点<i>目录</i>按钮打开）在全书中随时可用。</p>
+
+<h2 id="further-reading"><span lang="en">Further reading</span><span lang="zh-CN">延伸阅读</span></h2>
+
+<p lang="en">Four books cover the field from complementary angles:</p>
+<p lang="zh-CN">以下四本书从不同角度覆盖了这一领域：</p>
+<div class="references">
+  <ol>
+    <li>Hyvärinen, A., Karhunen, J., &amp; Oja, E. (2001). <i>Independent Component Analysis</i>. Wiley.</li>
+    <li>Comon, P., &amp; Jutten, C. (Eds.) (2010). <i>Handbook of Blind Source Separation: Independent Component Analysis and Applications</i>. Academic Press.</li>
+    <li>Cichocki, A., &amp; Amari, S. (2002). <i>Adaptive Blind Signal and Image Processing: Learning Algorithms and Applications</i>. Wiley.</li>
+    <li>Stone, J. V. (2004). <i>Independent Component Analysis: A Tutorial Introduction</i>. MIT Press.</li>
+  </ol>
+</div>
+
+<h2 class="toc-heading" id="contents"><span lang="en">Contents</span><span lang="zh-CN">目录</span></h2>
+
+<section class="toc-part">
+  <h2><span lang="en">Part I · Foundations</span><span lang="zh-CN">第一部分 · 基础</span></h2>
+  <ol class="toc-chapters">
+    <li><a href="ica-problem.html"><span class="toc-label"><span lang="en">Chapter 1</span><span lang="zh-CN">第 1 章</span></span><span class="toc-title"><span lang="en">The ICA Problem</span><span lang="zh-CN">ICA 问题</span></span></a>
+      <p lang="en">The cocktail-party problem, the linear mixing model, what can and cannot be recovered, and how ICA differs from PCA and factor analysis.</p>
+      <p lang="zh-CN">鸡尾酒会问题、线性混合模型、哪些量可以恢复哪些不能，以及 ICA 与 PCA、因子分析的区别。</p></li>
+    <li><a href="probability.html"><span class="toc-label"><span lang="en">Chapter 2</span><span lang="zh-CN">第 2 章</span></span><span class="toc-title"><span lang="en">Independence, Cumulants and Entropy</span><span lang="zh-CN">独立性、累积量与熵</span></span></a>
+      <p lang="en">The probability toolkit of ICA: independence versus uncorrelatedness, characteristic functions, moments and cumulants, differential entropy, mutual information and negentropy.</p>
+      <p lang="zh-CN">ICA 的概率工具：独立与不相关、特征函数、矩与累积量、微分熵、互信息与负熵。</p></li>
+    <li><a href="whitening.html"><span class="toc-label"><span lang="en">Chapter 3</span><span lang="zh-CN">第 3 章</span></span><span class="toc-title"><span lang="en">Whitening and the Geometry of ICA</span><span lang="zh-CN">白化与 ICA 的几何</span></span></a>
+      <p lang="en">Second-order statistics determine the mixing matrix up to a rotation. Whitening, PCA reduction, and why a rotation is exactly what higher-order statistics must find.</p>
+      <p lang="zh-CN">二阶统计量只能把混合矩阵确定到一个旋转。白化、PCA 降维，以及为什么高阶统计量要找的恰好是这个旋转。</p></li>
+  </ol>
+</section>
+<section class="toc-part">
+  <h2><span lang="en">Part II · Principles</span><span lang="zh-CN">第二部分 · 原理</span></h2>
+  <ol class="toc-chapters">
+    <li><a href="identifiability.html"><span class="toc-label"><span lang="en">Chapter 4</span><span lang="zh-CN">第 4 章</span></span><span class="toc-title"><span lang="en">Identifiability</span><span lang="zh-CN">可辨识性</span></span></a>
+      <p lang="en">The Darmois–Skitovich theorem and Comon's theorem: with at most one Gaussian source, the mixing matrix is determined up to scaling and permutation.</p>
+      <p lang="zh-CN">Darmois–Skitovich 定理与 Comon 定理：至多一个高斯源时，混合矩阵在尺度与置换意义下唯一。</p></li>
+    <li><a href="kurtosis.html"><span class="toc-label"><span lang="en">Chapter 5</span><span lang="zh-CN">第 5 章</span></span><span class="toc-title"><span lang="en">Non-Gaussianity and Kurtosis</span><span lang="zh-CN">非高斯性与峭度</span></span></a>
+      <p lang="en">Why mixing makes signals more Gaussian, kurtosis as a contrast, the landscape of kurtosis on the sphere, and the price of its sensitivity to outliers.</p>
+      <p lang="zh-CN">为什么混合会让信号更接近高斯、峭度作为对比函数、峭度在球面上的地形，以及它对离群值敏感的代价。</p></li>
+    <li><a href="likelihood.html"><span class="toc-label"><span lang="en">Chapter 6</span><span lang="zh-CN">第 6 章</span></span><span class="toc-title"><span lang="en">Negentropy, Mutual Information and Likelihood</span><span lang="zh-CN">负熵、互信息与似然</span></span></a>
+      <p lang="en">Information-theoretic contrasts and maximum likelihood: their equivalences, the score function, Infomax, robust negentropy approximations, and what happens when the source model is wrong.</p>
+      <p lang="zh-CN">信息论对比函数与最大似然：它们的等价关系、得分函数、Infomax、稳健的负熵近似，以及源模型设错时会发生什么。</p></li>
+  </ol>
+</section>
+<section class="toc-part">
+  <h2><span lang="en">Part III · Algorithms</span><span lang="zh-CN">第三部分 · 算法</span></h2>
+  <ol class="toc-chapters">
+    <li><a href="natural-gradient.html"><span class="toc-label"><span lang="en">Chapter 7</span><span lang="zh-CN">第 7 章</span></span><span class="toc-title"><span lang="en">Natural Gradient, Infomax and Stability</span><span lang="zh-CN">自然梯度、Infomax 与稳定性</span></span></a>
+      <p lang="en">The relative (natural) gradient, equivariance, local stability of the separating solutions, and the Infomax and extended Infomax algorithms.</p>
+      <p lang="zh-CN">相对（自然）梯度、等变性、分离解的局部稳定性，以及 Infomax 与扩展 Infomax 算法。</p></li>
+    <li><a href="fastica.html"><span class="toc-label"><span lang="en">Chapter 8</span><span lang="zh-CN">第 8 章</span></span><span class="toc-title"><span lang="en">FastICA</span><span lang="zh-CN">FastICA 算法</span></span></a>
+      <p lang="en">The fixed-point algorithm as an approximate Newton method: one-unit, deflation and symmetric versions, convergence rates, and the choice of nonlinearity.</p>
+      <p lang="zh-CN">作为近似牛顿法的不动点算法：单单元、逐次提取与对称版本，收敛速度，以及非线性函数的选择。</p></li>
+    <li><a href="jade-sobi.html"><span class="toc-label"><span lang="en">Chapter 9</span><span lang="zh-CN">第 9 章</span></span><span class="toc-title"><span lang="en">Tensor and Second-Order Methods: JADE and SOBI</span><span lang="zh-CN">张量方法与二阶方法：JADE 与 SOBI</span></span></a>
+      <p lang="en">Fourth-order cumulant tensors and joint diagonalization (JADE), Jacobi rotations, and separation from temporal structure alone (AMUSE, SOBI).</p>
+      <p lang="zh-CN">四阶累积量张量与联合对角化（JADE）、Jacobi 旋转，以及仅利用时间结构的分离（AMUSE、SOBI）。</p></li>
+  </ol>
+</section>
+<section class="toc-part">
+  <h2><span lang="en">Part IV · Statistical Theory</span><span lang="zh-CN">第四部分 · 统计理论</span></h2>
+  <ol class="toc-chapters">
+    <li><a href="performance.html"><span class="toc-label"><span lang="en">Chapter 10</span><span lang="zh-CN">第 10 章</span></span><span class="toc-title"><span lang="en">Asymptotic Performance and the Cramér–Rao Bound</span><span lang="zh-CN">渐近性能与 Cramér–Rao 界</span></span></a>
+      <p lang="en">The gain matrix and interference-to-signal ratio, asymptotic variance of contrast-based estimators, the optimal nonlinearity, and the Cramér–Rao bound for ICA.</p>
+      <p lang="zh-CN">增益矩阵与干扰信号比、基于对比函数的估计量的渐近方差、最优非线性函数，以及 ICA 的 Cramér–Rao 界。</p></li>
+    <li><a href="model-order.html"><span class="toc-label"><span lang="en">Chapter 11</span><span lang="zh-CN">第 11 章</span></span><span class="toc-title"><span lang="en">Noise, Model Order and Reliability</span><span lang="zh-CN">噪声、模型阶数与可靠性</span></span></a>
+      <p lang="en">Noisy ICA, PCA reduction and model-order selection, split and unstable components, and how to assess the reliability of an ICA decomposition.</p>
+      <p lang="zh-CN">含噪 ICA、PCA 降维与模型阶数选择、分裂与不稳定的成分，以及如何评估一次 ICA 分解的可靠性。</p></li>
+  </ol>
+</section>
+<section class="toc-part">
+  <h2><span lang="en">Part V · Beyond the Square Linear Model</span><span lang="zh-CN">第五部分 · 超越方阵线性模型</span></h2>
+  <ol class="toc-chapters">
+    <li><a href="overcomplete.html"><span class="toc-label"><span lang="en">Chapter 12</span><span lang="zh-CN">第 12 章</span></span><span class="toc-title"><span lang="en">Overcomplete ICA and Sparse Component Analysis</span><span lang="zh-CN">过完备 ICA 与稀疏成分分析</span></span></a>
+      <p lang="en">More sources than sensors: what is still identifiable, why sources cannot simply be inverted, tensor rank, and sparsity-based recovery.</p>
+      <p lang="zh-CN">源多于传感器时：哪些仍可辨识、为什么源不能直接求逆、张量秩，以及基于稀疏性的恢复。</p></li>
+    <li><a href="nonlinear.html"><span class="toc-label"><span lang="en">Chapter 13</span><span lang="zh-CN">第 13 章</span></span><span class="toc-title"><span lang="en">Nonlinear ICA</span><span lang="zh-CN">非线性 ICA</span></span></a>
+      <p lang="en">Why general nonlinear ICA is not identifiable, and how temporal structure or auxiliary variables restore identifiability (TCL, PCL, iVAE).</p>
+      <p lang="zh-CN">为什么一般的非线性 ICA 不可辨识，以及时间结构或辅助变量如何恢复可辨识性（TCL、PCL、iVAE）。</p></li>
+  </ol>
+</section>
+<section class="toc-part">
+  <h2><span lang="en">Part VI · ICA for Brain Imaging</span><span lang="zh-CN">第六部分 · 脑影像中的 ICA</span></h2>
+  <ol class="toc-chapters">
+    <li><a href="fmri-ica.html"><span class="toc-label"><span lang="en">Chapter 14</span><span lang="zh-CN">第 14 章</span></span><span class="toc-title"><span lang="en">Spatial ICA of fMRI</span><span lang="zh-CN">fMRI 的空间 ICA</span></span></a>
+      <p lang="en">Spatial versus temporal ICA, the fMRI data model, preprocessing and dimension reduction, and how to read components as networks or artifacts.</p>
+      <p lang="zh-CN">空间 ICA 与时间 ICA、fMRI 数据模型、预处理与降维，以及如何把成分解读为网络或伪迹。</p></li>
+    <li><a href="group-ica.html"><span class="toc-label"><span lang="en">Chapter 15</span><span lang="zh-CN">第 15 章</span></span><span class="toc-title"><span lang="en">Group ICA, Dual Regression and IVA</span><span lang="zh-CN">组 ICA、双回归与独立向量分析</span></span></a>
+      <p lang="en">Multi-subject ICA: temporal concatenation, back-reconstruction, dual regression, spatially constrained ICA, independent vector analysis, network connectivity and multimodal fusion.</p>
+      <p lang="zh-CN">多被试 ICA：时间拼接、反重建、双回归、空间约束 ICA、独立向量分析、网络连接以及多模态融合。</p></li>
+  </ol>
+</section>
+<section class="toc-part">
+  <h2><span lang="en">Appendix</span><span lang="zh-CN">附录</span></h2>
+  <ol class="toc-chapters">
+    <li><a href="math-background.html"><span class="toc-label"><span lang="en">Appendix A</span><span lang="zh-CN">附录 A</span></span><span class="toc-title"><span lang="en">Mathematical Background</span><span lang="zh-CN">数学基础</span></span></a>
+      <p lang="en">Facts used throughout: orthogonal and permutation matrices, matrix square roots, the polar decomposition, Kronecker products and tensors, matrix calculus, optimization on the sphere and the orthogonal group, and the asymptotic statistics of Part IV (delta method, sandwich covariance, Fisher information).</p>
+      <p lang="zh-CN">全书用到的数学工具：正交矩阵与置换矩阵、矩阵平方根、极分解、Kronecker 积与张量、矩阵微积分、球面与正交群上的优化，以及第四部分用到的渐近统计（delta 方法、三明治协方差、Fisher 信息）。</p></li>
+  </ol>
+</section>
+</main>
+</div>
+<footer class="book-foot">
+  <p>&copy; 2026 Yuda Bi &middot; <a href="../"><span lang="en">Homepage</span><span lang="zh-CN">主页</span></a> &middot; <a href="index.html"><span lang="en">Contents</span><span lang="zh-CN">目录</span></a></p>
+  <p class="foot-note"><span lang="en">Formulas typeset with KaTeX.</span><span lang="zh-CN">公式由 KaTeX 排版。</span></p>
+</footer>
+<script>
+(function () {
+  var d = document.documentElement;
+  var btns = document.querySelectorAll('.lang-switch button');
+  function mark() { var v = d.getAttribute('data-lang'); for (var i = 0; i < btns.length; i++) btns[i].setAttribute('aria-pressed', btns[i].getAttribute('data-set-lang') === v ? 'true' : 'false'); }
+  for (var i = 0; i < btns.length; i++) btns[i].addEventListener('click', function () {
+    var v = this.getAttribute('data-set-lang');
+    d.setAttribute('data-lang', v); d.setAttribute('lang', v === 'zh' ? 'zh-CN' : 'en');
+    try { localStorage.setItem('ica-book-lang', v); } catch (e) {}
+    mark();
+  });
+  mark();
+  var tog = document.querySelector('.nav-toggle'), nav = document.getElementById('book-nav');
+  if (tog && nav) {
+    tog.addEventListener('click', function () { var o = document.body.classList.toggle('nav-open'); tog.setAttribute('aria-expanded', o ? 'true' : 'false'); });
+    nav.addEventListener('click', function (e) { if (e.target.closest('a')) { document.body.classList.remove('nav-open'); tog.setAttribute('aria-expanded', 'false'); } });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { document.body.classList.remove('nav-open'); tog.setAttribute('aria-expanded', 'false'); } });
+  }
+})();
+</script>
+</body>
+</html>

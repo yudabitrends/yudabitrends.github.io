@@ -1,0 +1,386 @@
+<!-- Chapter 9. Tensor and second-order methods: JADE and SOBI. Source format: book/AUTHORING.md -->
+
+<h2 id="sec-jade-sobi-diagonalization"><span lang="en">Separation by diagonalization</span><span lang="zh-CN">通过对角化实现分离</span></h2>
+
+<p lang="en">After whitening, the remaining unknown is an orthogonal matrix $\tilde\bA$ (<a class="ref" data-ref="eq-whitened-model"></a>). Suppose we can compute, from the data alone, a symmetric matrix of the form $\bM = \tilde\bA\bLambda\tilde\bA^\top$ with $\bLambda$ diagonal. This is an eigendecomposition: if the diagonal entries of $\bLambda$ are distinct, the eigenvectors of $\bM$ are the columns of $\tilde\bA$, up to sign and order, and $\bU = \tilde\bA^\top$ separates the sources. No iteration, contrast function or step size is needed. The covariance of $\bz$ is useless for this purpose, since it equals $\bI$, but two other families of statistics have exactly this structure: matrices built from fourth-order cumulants, which are informative when the sources are non-Gaussian, and lagged covariance matrices, which are informative when the sources are correlated in time.</p>
+<p lang="zh-CN">白化之后，剩下的未知量是一个正交矩阵 $\tilde\bA$（<a class="ref" data-ref="eq-whitened-model"></a>）。假设能单凭数据算出一个形如 $\bM = \tilde\bA\bLambda\tilde\bA^\top$ 的对称矩阵，其中 $\bLambda$ 是对角阵。这就是一个特征分解：若 $\bLambda$ 的对角元互不相同，$\bM$ 的特征向量就是 $\tilde\bA$ 的各列（相差符号和顺序），于是 $\bU = \tilde\bA^\top$ 就能分离各源。这里不需要迭代，不需要对比函数，也不需要步长。$\bz$ 的协方差对此毫无用处，因为它等于 $\bI$；但另有两族统计量恰好具有这种结构：由四阶累积量构造的矩阵（当源为非高斯时，它们携带信息），以及时滞协方差矩阵（当源在时间上相关时，它们携带信息）。</p>
+
+<p lang="en">A single such matrix is fragile: two equal or nearly equal eigenvalues make its eigenvectors undetermined or badly estimated. Using many matrices at once and finding the one rotation that diagonalizes all of them, approximately, removes the fragility. This chapter develops that idea twice: with cumulant matrices it gives FOBI and JADE (Cardoso, 1989; Cardoso &amp; Souloumiac, 1993), with lagged covariances AMUSE and SOBI (Tong et al., 1990; Belouchrani et al., 1997). The common computational tool is the Jacobi method for joint diagonalization (Cardoso &amp; Souloumiac, 1996).</p>
+<p lang="zh-CN">只用一个这样的矩阵是脆弱的：两个特征值相等或接近相等时，特征向量就不确定或估计得很差。同时使用许多矩阵，寻找一个能把它们全部近似对角化的旋转，就消除了这种脆弱性。本章把这一思想发展两次：用累积量矩阵得到 FOBI 和 JADE（Cardoso, 1989; Cardoso &amp; Souloumiac, 1993），用时滞协方差得到 AMUSE 和 SOBI（Tong et al., 1990; Belouchrani et al., 1997）。两者共同的计算工具是联合对角化的 Jacobi 方法（Cardoso &amp; Souloumiac, 1996）。</p>
+
+<h2 id="sec-cumulant-tensor"><span lang="en">The cumulant tensor of whitened data</span><span lang="zh-CN">白化数据的累积量张量</span></h2>
+
+<p lang="en">For zero-mean variables the fourth-order cumulant is $\cum(z_i, z_j, z_k, z_l) = \E[z_iz_jz_kz_l] - \E[z_iz_j]\E[z_kz_l] - \E[z_iz_k]\E[z_jz_l] - \E[z_iz_l]\E[z_jz_k]$ (<a class="ref" data-ref="def-cumulant"></a>); for whitened data the last three terms are $\delta_{ij}\delta_{kl} + \delta_{ik}\delta_{jl} + \delta_{il}\delta_{jk}$. The $n^4$ numbers $\cum(z_i, z_j, z_k, z_l)$ form a symmetric tensor, the <em>cumulant tensor</em> of $\bz$. Under the ICA model it has a very simple form.</p>
+<p lang="zh-CN">对零均值变量，四阶累积量为 $\cum(z_i, z_j, z_k, z_l) = \E[z_iz_jz_kz_l] - \E[z_iz_j]\E[z_kz_l] - \E[z_iz_k]\E[z_jz_l] - \E[z_iz_l]\E[z_jz_k]$（<a class="ref" data-ref="def-cumulant"></a>）；对白化数据，后三项为 $\delta_{ij}\delta_{kl} + \delta_{ik}\delta_{jl} + \delta_{il}\delta_{jk}$。这 $n^4$ 个数 $\cum(z_i, z_j, z_k, z_l)$ 构成一个对称张量，即 $\bz$ 的<em>累积量张量</em>。在 ICA 模型下它的形式非常简单。</p>
+
+<div class="eq" id="eq-cumulant-tensor-ica">$$\cum(z_i, z_j, z_k, z_l) = \sum_{p=1}^n \kappa_p\,\tilde a_{ip}\,\tilde a_{jp}\,\tilde a_{kp}\,\tilde a_{lp}.$$</div>
+
+<p lang="en">To see this, write $z_i = \sum_p \tilde a_{ip}s_p$ and expand by multilinearity: $\cum(z_i, z_j, z_k, z_l) = \sum_{p,q,r,u}\tilde a_{ip}\tilde a_{jq}\tilde a_{kr}\tilde a_{lu}\cum(s_p, s_q, s_r, s_u)$. A cross-cumulant of independent variables vanishes unless all four arguments are the same variable (<a class="ref" data-ref="prop-cumulant-properties"></a>), so only $p = q = r = u$ survives, with $\cum(s_p, s_p, s_p, s_p) = \kappa_p$. In tensor language, the cumulant tensor is $\sum_p\kappa_p\,\tilde\ba_p \otimes \tilde\ba_p \otimes \tilde\ba_p \otimes \tilde\ba_p$ with orthonormal vectors $\tilde\ba_p$: it is <em>diagonal in the source basis</em>, and ICA of whitened data amounts to an orthogonal decomposition of a symmetric fourth-order tensor (<a class="ref" data-ref="sec-kronecker-tensors"></a>; the non-orthogonal case returns in <a class="ref" data-ref="sec-tensor-rank"></a>). Only $\binom{n+3}{4}$ of the entries are distinct, for example 715 for $n = 10$.</p>
+<p lang="zh-CN">为看出这一点，写 $z_i = \sum_p \tilde a_{ip}s_p$，并利用多重线性展开：$\cum(z_i, z_j, z_k, z_l) = \sum_{p,q,r,u}\tilde a_{ip}\tilde a_{jq}\tilde a_{kr}\tilde a_{lu}\cum(s_p, s_q, s_r, s_u)$。独立变量的交叉累积量为零，除非四个自变量是同一个变量（<a class="ref" data-ref="prop-cumulant-properties"></a>），所以只剩下 $p = q = r = u$ 的项，且 $\cum(s_p, s_p, s_p, s_p) = \kappa_p$。用张量的语言说，累积量张量等于 $\sum_p\kappa_p\,\tilde\ba_p \otimes \tilde\ba_p \otimes \tilde\ba_p \otimes \tilde\ba_p$，其中各 $\tilde\ba_p$ 标准正交：它<em>在源基下是对角的</em>，而白化数据的 ICA 就相当于对一个对称四阶张量作正交分解（<a class="ref" data-ref="sec-kronecker-tensors"></a>；非正交情形将在<a class="ref" data-ref="sec-tensor-rank"></a>中再次出现）。其中只有 $\binom{n+3}{4}$ 个元素互不相同，例如 $n = 10$ 时为 715 个。</p>
+
+<p lang="en">Contracting the tensor with a matrix produces matrices of the eigendecomposition form. For an $n \times n$ matrix $\bM$ define the <em>cumulant matrix</em> $\bQ_{\bz}(\bM)$ by</p>
+<p lang="zh-CN">把这个张量与一个矩阵作缩并，就得到具有特征分解形式的矩阵。对 $n \times n$ 矩阵 $\bM$，定义<em>累积量矩阵</em> $\bQ_{\bz}(\bM)$ 为</p>
+
+<div class="eq">$$\bigl[\bQ_{\bz}(\bM)\bigr]_{ij} = \sum_{k,l=1}^n \cum(z_i, z_j, z_k, z_l)\,m_{kl}.$$</div>
+
+<div class="env" data-kind="proposition" id="prop-cumulant-matrices" data-en="cumulant matrices" data-zh="累积量矩阵">
+  <p lang="en">Let $\bz = \tilde\bA\bs$ be whitened data from the ICA model, with $\tilde\bA$ orthogonal and sources of kurtosis $\kappa_p$. For every $n \times n$ matrix $\bM$:</p>
+  <p lang="zh-CN">设 $\bz = \tilde\bA\bs$ 是来自 ICA 模型的白化数据，$\tilde\bA$ 为正交矩阵，各源的峭度为 $\kappa_p$。则对每个 $n \times n$ 矩阵 $\bM$：</p>
+  <p lang="en">(a) $\bQ_{\bz}(\bM) = \tilde\bA\,\diag\bigl(\kappa_p\,\tilde\ba_p^\top\bM\tilde\ba_p\bigr)\,\tilde\bA^\top$.</p>
+  <p lang="zh-CN">（a）$\bQ_{\bz}(\bM) = \tilde\bA\,\diag\bigl(\kappa_p\,\tilde\ba_p^\top\bM\tilde\ba_p\bigr)\,\tilde\bA^\top$。</p>
+  <p lang="en">(b) $\bQ_{\bz}(\bM) = \E\bigl[(\bz^\top\bM\bz)\,\bz\bz^\top\bigr] - \tr(\bM)\,\bI - \bM - \bM^\top$.</p>
+  <p lang="zh-CN">（b）$\bQ_{\bz}(\bM) = \E\bigl[(\bz^\top\bM\bz)\,\bz\bz^\top\bigr] - \tr(\bM)\,\bI - \bM - \bM^\top$。</p>
+  <p lang="en">(c) On the space of symmetric matrices with the inner product $\langle\bB, \bC\rangle = \tr(\bB^\top\bC)$, the linear map $\bM \mapsto \bQ_{\bz}(\bM)$ is self-adjoint, with eigenmatrices $\tilde\ba_p\tilde\ba_p^\top$ and eigenvalues $\kappa_p$, $p = 1, \dots, n$; all its other eigenvalues are zero.</p>
+  <p lang="zh-CN">（c）在对称矩阵空间上取内积 $\langle\bB, \bC\rangle = \tr(\bB^\top\bC)$，线性映射 $\bM \mapsto \bQ_{\bz}(\bM)$ 是自伴的，其特征矩阵为 $\tilde\ba_p\tilde\ba_p^\top$，对应特征值为 $\kappa_p$（$p = 1, \dots, n$）；其余特征值全为零。</p>
+</div>
+<div class="proof">
+  <p lang="en">(a) Substituting <a class="ref" data-ref="eq-cumulant-tensor-ica"></a>, $[\bQ_{\bz}(\bM)]_{ij} = \sum_p\kappa_p\tilde a_{ip}\tilde a_{jp}\sum_{kl}\tilde a_{kp}m_{kl}\tilde a_{lp} = \sum_p\kappa_p\,(\tilde\ba_p^\top\bM\tilde\ba_p)\,\tilde a_{ip}\tilde a_{jp}$. (b) Contract the definition of the cumulant with $m_{kl}$: the moment term gives $\E[z_iz_j\,\bz^\top\bM\bz]$ and the three products of Kronecker deltas give $\delta_{ij}\tr\bM$, $m_{ij}$ and $m_{ji}$. (c) By (a), $\bQ_{\bz}(\bM) = \sum_p\kappa_p\langle\tilde\ba_p\tilde\ba_p^\top, \bM\rangle\,\tilde\ba_p\tilde\ba_p^\top$. The matrices $\tilde\ba_p\tilde\ba_p^\top$ are orthonormal, because $\langle\tilde\ba_p\tilde\ba_p^\top, \tilde\ba_q\tilde\ba_q^\top\rangle = (\tilde\ba_p^\top\tilde\ba_q)^2 = \delta_{pq}$, so this is a spectral decomposition, and the map vanishes on their orthogonal complement.</p>
+  <p lang="zh-CN">（a）代入 <a class="ref" data-ref="eq-cumulant-tensor-ica"></a>，得 $[\bQ_{\bz}(\bM)]_{ij} = \sum_p\kappa_p\tilde a_{ip}\tilde a_{jp}\sum_{kl}\tilde a_{kp}m_{kl}\tilde a_{lp} = \sum_p\kappa_p\,(\tilde\ba_p^\top\bM\tilde\ba_p)\,\tilde a_{ip}\tilde a_{jp}$。（b）把累积量的定义与 $m_{kl}$ 缩并：矩项给出 $\E[z_iz_j\,\bz^\top\bM\bz]$，三个 Kronecker δ 乘积依次给出 $\delta_{ij}\tr\bM$、$m_{ij}$ 和 $m_{ji}$。（c）由（a），$\bQ_{\bz}(\bM) = \sum_p\kappa_p\langle\tilde\ba_p\tilde\ba_p^\top, \bM\rangle\,\tilde\ba_p\tilde\ba_p^\top$。由于 $\langle\tilde\ba_p\tilde\ba_p^\top, \tilde\ba_q\tilde\ba_q^\top\rangle = (\tilde\ba_p^\top\tilde\ba_q)^2 = \delta_{pq}$，这些矩阵 $\tilde\ba_p\tilde\ba_p^\top$ 标准正交，所以这就是一个谱分解，而该映射在它们的正交补上为零。</p>
+</div>
+
+<p lang="en">Formula (b) is how cumulant matrices are estimated: replace $\E$ by a sample average over whitened data. We checked (a) and (b) to machine precision on discrete sources for which every expectation can be computed exactly, including a skewed one; symmetry of the sources is not needed.</p>
+<p lang="zh-CN">公式（b）就是估计累积量矩阵的方法：在白化数据上把 $\E$ 换成样本平均。我们在可以精确计算所有期望的离散源（包括一个有偏度的源）上验证了（a）和（b），误差在机器精度以内；源的对称性不是必需的。</p>
+
+<p lang="en"><b>FOBI.</b> The simplest choice is $\bM = \bI$. Since $\tilde\ba_p^\top\tilde\ba_p = 1$, part (a) gives $\bQ_{\bz}(\bI) = \tilde\bA\,\diag(\kappa_1, \dots, \kappa_n)\,\tilde\bA^\top$, and part (b) gives $\bQ_{\bz}(\bI) = \E[\|\bz\|^2\bz\bz^\top] - (n + 2)\bI$. The eigenvectors of the weighted covariance $\E[\|\bz\|^2\bz\bz^\top]$ therefore separate the sources whenever their kurtoses are distinct. This is FOBI, for fourth-order blind identification (Cardoso, 1989): one weighted covariance and one eigendecomposition. Its weakness is the distinctness requirement: two Laplace sources, or two sources of the same type in general, cannot be separated by FOBI (<a class="ref" data-ref="ex-jade-fobi"></a>).</p>
+<p lang="zh-CN"><b>FOBI。</b>最简单的选择是 $\bM = \bI$。由于 $\tilde\ba_p^\top\tilde\ba_p = 1$，（a）给出 $\bQ_{\bz}(\bI) = \tilde\bA\,\diag(\kappa_1, \dots, \kappa_n)\,\tilde\bA^\top$，（b）给出 $\bQ_{\bz}(\bI) = \E[\|\bz\|^2\bz\bz^\top] - (n + 2)\bI$。因此，只要各源的峭度互不相同，加权协方差 $\E[\|\bz\|^2\bz\bz^\top]$ 的特征向量就能分离各源。这就是 FOBI（fourth-order blind identification，四阶盲辨识；Cardoso, 1989）：一个加权协方差加一次特征分解。它的弱点在于要求峭度互不相同：两个拉普拉斯源，或者一般地两个同类型的源，都无法用 FOBI 分离（<a class="ref" data-ref="ex-jade-fobi"></a>）。</p>
+
+<h2 id="sec-joint-diagonalization"><span lang="en">Joint approximate diagonalization</span><span lang="zh-CN">联合近似对角化</span></h2>
+
+<p lang="en">Let $\bQ_1, \dots, \bQ_K$ be symmetric matrices that, in the model, all have the form $\bQ_r = \tilde\bA\bLambda_r\tilde\bA^\top$ with diagonal $\bLambda_r = \diag(\lambda_{r1}, \dots, \lambda_{rn})$. With estimated matrices no single rotation makes all of them exactly diagonal, so we minimize the off-diagonal energy</p>
+<p lang="zh-CN">设 $\bQ_1, \dots, \bQ_K$ 是对称矩阵，在模型中它们都形如 $\bQ_r = \tilde\bA\bLambda_r\tilde\bA^\top$，其中 $\bLambda_r = \diag(\lambda_{r1}, \dots, \lambda_{rn})$ 为对角阵。对估计得到的矩阵，没有一个旋转能把它们全部精确对角化，于是我们最小化非对角能量</p>
+
+<div class="eq" id="eq-joint-diagonality">$$\mathcal{C}(\bU) = \sum_{r=1}^K \bigl\|\offdiag\bigl(\bU\bQ_r\bU^\top\bigr)\bigr\|_F^2 \qquad \text{over orthogonal } \bU,$$</div>
+
+<p lang="en">where $\offdiag(\bB)$ is $\bB$ with its diagonal set to zero. Since $\|\bU\bQ_r\bU^\top\|_F = \|\bQ_r\|_F$, minimizing $\mathcal{C}$ is the same as maximizing the diagonal energy $\sum_r\|\diag(\bU\bQ_r\bU^\top)\|^2$. In the model the minimum is zero, and the next lemma says when it is attained only at the right rotation.</p>
+<p lang="zh-CN">其中 $\offdiag(\bB)$ 表示把 $\bB$ 的对角线置零后的矩阵。由于 $\|\bU\bQ_r\bU^\top\|_F = \|\bQ_r\|_F$，最小化 $\mathcal{C}$ 等价于最大化对角能量 $\sum_r\|\diag(\bU\bQ_r\bU^\top)\|^2$。在模型中最小值为零；下面的引理说明它何时只在正确的旋转处取到。</p>
+
+<div class="env" data-kind="lemma" id="lem-joint-diagonalization" data-en="uniqueness of joint diagonalization" data-zh="联合对角化的唯一性">
+  <p lang="en">Let $\bQ_r = \tilde\bA\bLambda_r\tilde\bA^\top$, $r = 1, \dots, K$, with $\tilde\bA$ orthogonal and $\bLambda_r$ diagonal. Suppose that for every pair $p \ne q$ there is an $r$ with $\lambda_{rp} \ne \lambda_{rq}$. Then every orthogonal $\bU$ for which all $\bU\bQ_r\bU^\top$ are diagonal satisfies $\bU\tilde\bA = $ signed permutation matrix. Conversely, if $\lambda_{rp} = \lambda_{rq}$ for all $r$ and some pair $p \ne q$, then a continuum of orthogonal matrices, which are not signed permutations of $\tilde\bA^\top$, diagonalize all $\bQ_r$.</p>
+  <p lang="zh-CN">设 $\bQ_r = \tilde\bA\bLambda_r\tilde\bA^\top$，$r = 1, \dots, K$，其中 $\tilde\bA$ 为正交矩阵，$\bLambda_r$ 为对角阵。若对每一对 $p \ne q$ 都存在某个 $r$ 使 $\lambda_{rp} \ne \lambda_{rq}$，则任何使所有 $\bU\bQ_r\bU^\top$ 都成为对角阵的正交矩阵 $\bU$ 都满足：$\bU\tilde\bA$ 是带符号的置换矩阵。反之，若对某一对 $p \ne q$ 和所有 $r$ 都有 $\lambda_{rp} = \lambda_{rq}$，则存在一族连续的、并非 $\tilde\bA^\top$ 的带符号置换的正交矩阵，能对角化所有 $\bQ_r$。</p>
+</div>
+<div class="proof">
+  <p lang="en">Let $\bB = \bU\tilde\bA$, which is orthogonal, and $\bD_r = \bU\bQ_r\bU^\top = \bB\bLambda_r\bB^\top$, diagonal by assumption. Then $\bB\bLambda_r = \bD_r\bB$, that is, $b_{ij}\lambda_{rj} = d_{r,i}\,b_{ij}$ for all $i, j, r$. If a row $i$ of $\bB$ had two nonzero entries $b_{ij}$ and $b_{il}$, then $\lambda_{rj} = d_{r,i} = \lambda_{rl}$ for all $r$, contradicting the assumption. So each row has at most one nonzero entry; as $\bB$ is invertible it has exactly one, which is $\pm1$ because the rows have unit norm, and the nonzero entries lie in different columns. For the converse, let $\mathbf{G}$ be any rotation acting only on coordinates $p$ and $q$. The $(p, q)$ block of $\bLambda_r$ is a multiple of the $2 \times 2$ identity, so $\mathbf{G}\bLambda_r\mathbf{G}^\top = \bLambda_r$, and $\bU = \mathbf{G}^\top\tilde\bA^\top$ diagonalizes every $\bQ_r$.</p>
+  <p lang="zh-CN">令 $\bB = \bU\tilde\bA$（正交矩阵），$\bD_r = \bU\bQ_r\bU^\top = \bB\bLambda_r\bB^\top$，按假设为对角阵。于是 $\bB\bLambda_r = \bD_r\bB$，即对所有 $i, j, r$ 有 $b_{ij}\lambda_{rj} = d_{r,i}\,b_{ij}$。若 $\bB$ 的某一行 $i$ 有两个非零元 $b_{ij}$ 和 $b_{il}$，则对所有 $r$ 有 $\lambda_{rj} = d_{r,i} = \lambda_{rl}$，与假设矛盾。所以每一行至多有一个非零元；由于 $\bB$ 可逆，恰好有一个，又因各行范数为一，它等于 $\pm1$，并且这些非零元位于不同的列。反过来，设 $\mathbf{G}$ 是只作用在坐标 $p$、$q$ 上的任意旋转。$\bLambda_r$ 的 $(p, q)$ 块是 $2 \times 2$ 单位阵的倍数，所以 $\mathbf{G}\bLambda_r\mathbf{G}^\top = \bLambda_r$，从而 $\bU = \mathbf{G}^\top\tilde\bA^\top$ 能对角化每个 $\bQ_r$。</p>
+</div>
+
+<p lang="en"><b>Jacobi rotations.</b> The Jacobi method minimizes $\mathcal{C}$ by a sequence of plane rotations. A <em>sweep</em> visits every pair $p &lt; q$ once; for each pair it applies $\bQ_r \leftarrow \bR^\top\bQ_r\bR$ to all matrices and $\bU \leftarrow \bR^\top\bU$, where $\bR = \bR_{pq}(\theta)$ is the identity except for $R_{pp} = R_{qq} = \cos\theta$, $R_{pq} = -\sin\theta$ and $R_{qp} = \sin\theta$. Sweeps are repeated until all angles are negligible. The point of the method is that the best angle for a pair has a closed form. Write $\alpha_r = [\bQ_r]_{pp} - [\bQ_r]_{qq}$ and $\beta_r = 2[\bQ_r]_{pq}$. A direct computation on the $(p, q)$ block shows that the rotation acts on these two numbers as</p>
+<p lang="zh-CN"><b>Jacobi 旋转。</b>Jacobi 方法通过一系列平面旋转来最小化 $\mathcal{C}$。一次<em>扫描</em>依次访问每一对 $p &lt; q$；对每一对，对所有矩阵作 $\bQ_r \leftarrow \bR^\top\bQ_r\bR$，并令 $\bU \leftarrow \bR^\top\bU$，其中 $\bR = \bR_{pq}(\theta)$ 除 $R_{pp} = R_{qq} = \cos\theta$、$R_{pq} = -\sin\theta$、$R_{qp} = \sin\theta$ 外都与单位阵相同。重复扫描，直到所有角度都可以忽略为止。这一方法的要点在于：每一对的最优角度有闭式解。记 $\alpha_r = [\bQ_r]_{pp} - [\bQ_r]_{qq}$，$\beta_r = 2[\bQ_r]_{pq}$。对 $(p, q)$ 块直接计算可知，旋转对这两个数的作用为</p>
+
+<div class="eq">$$\begin{pmatrix} \alpha'_r \\ \beta'_r \end{pmatrix} = \begin{pmatrix} \cos2\theta &amp; \sin2\theta \\ -\sin2\theta &amp; \cos2\theta \end{pmatrix} \begin{pmatrix} \alpha_r \\ \beta_r \end{pmatrix},$$</div>
+
+<p lang="en">where primes denote values after the rotation. The other off-diagonal entries in rows and columns $p$ and $q$ are rotated in pairs, $([\bQ_r]_{pk}, [\bQ_r]_{qk})$ for $k \ne p, q$, which preserves their sum of squares, and all remaining entries are unchanged. So the rotation affects $\mathcal{C}$ only through the two entries in positions $(p, q)$ and $(q, p)$, whose contribution is $\tfrac12\sum_r\beta_r'^2$. Write $\mathbf{h}_r = (\alpha_r, \beta_r)^\top$ and $\mathbf{v} = (\cos2\theta, \sin2\theta)^\top$. Because $\|\mathbf{h}_r\|$ is invariant, $\tfrac12\sum_r\beta_r'^2 = \tfrac12\sum_r\bigl(\|\mathbf{h}_r\|^2 - (\mathbf{h}_r^\top\mathbf{v})^2\bigr)$, and the best angle maximizes $\mathbf{v}^\top\mathbf{G}\mathbf{v}$ with $\mathbf{G} = \sum_r\mathbf{h}_r\mathbf{h}_r^\top$: $\mathbf{v}$ is the leading eigenvector of the $2 \times 2$ matrix $\mathbf{G}$. Since $\mathbf{v}^\top\mathbf{G}\mathbf{v} = \tfrac12(g_{11} + g_{22}) + \tfrac12(g_{11} - g_{22})\cos4\theta + g_{12}\sin4\theta$, the optimal angle in $(-\pi/4, \pi/4]$ is</p>
+<p lang="zh-CN">其中带撇号的量表示旋转后的值。第 $p$、$q$ 行和列中的其余非对角元 $([\bQ_r]_{pk}, [\bQ_r]_{qk})$（$k \ne p, q$）成对地旋转，平方和保持不变；其余元素都不变。所以旋转只通过位于 $(p, q)$ 和 $(q, p)$ 的两个元素影响 $\mathcal{C}$，它们的贡献为 $\tfrac12\sum_r\beta_r'^2$。记 $\mathbf{h}_r = (\alpha_r, \beta_r)^\top$，$\mathbf{v} = (\cos2\theta, \sin2\theta)^\top$。由于 $\|\mathbf{h}_r\|$ 不变，有 $\tfrac12\sum_r\beta_r'^2 = \tfrac12\sum_r\bigl(\|\mathbf{h}_r\|^2 - (\mathbf{h}_r^\top\mathbf{v})^2\bigr)$；最优角度使 $\mathbf{v}^\top\mathbf{G}\mathbf{v}$ 最大，其中 $\mathbf{G} = \sum_r\mathbf{h}_r\mathbf{h}_r^\top$，即 $\mathbf{v}$ 是 $2 \times 2$ 矩阵 $\mathbf{G}$ 的主特征向量。由于 $\mathbf{v}^\top\mathbf{G}\mathbf{v} = \tfrac12(g_{11} + g_{22}) + \tfrac12(g_{11} - g_{22})\cos4\theta + g_{12}\sin4\theta$，$(-\pi/4, \pi/4]$ 内的最优角度为</p>
+
+<div class="eq" id="eq-jacobi-angle">$$\theta^\star = \tfrac14\operatorname{atan2}\Bigl(2\sum_{r}\alpha_r\beta_r,\ \ \sum_{r}\bigl(\alpha_r^2 - \beta_r^2\bigr)\Bigr), \qquad \alpha_r = [\bQ_r]_{pp} - [\bQ_r]_{qq},\quad \beta_r = 2[\bQ_r]_{pq},$$</div>
+
+<p lang="en">the real case of the formula of Cardoso and Souloumiac (1996), whose version also covers complex matrices. For a single matrix it reduces to the classical Jacobi angle $\tan2\theta = \beta/\alpha = 2[\bQ]_{pq}/([\bQ]_{pp} - [\bQ]_{qq})$ (<a class="ref" data-ref="ex-jacobi-single"></a>). Each rotation minimizes $\mathcal{C}$ exactly over its plane, so $\mathcal{C}$ never increases. We compared <a class="ref" data-ref="eq-jacobi-angle"></a> with a brute-force search over 20001 angles for 200 random sets of symmetric matrices: the closed form was never beaten, and the angles agreed to within the grid spacing. <a class="ref" data-ref="fig-sobi"></a>(b) shows the criterion of one pair as a function of $\theta$: a constant minus a sinusoid of period $\pi/2$, minimized at $\theta^\star$. In practice a few sweeps suffice. With exactly jointly diagonalizable matrices the decrease is very fast (in a test with $n = 6$ and $K = 5$, $\mathcal{C}$ went from 20 to $10^{-13}$ in three sweeps); with estimated matrices $\mathcal{C}$ levels off after two or three sweeps at a value set by the sampling error.</p>
+<p lang="zh-CN">这是 Cardoso 与 Souloumiac（1996）公式的实数情形，他们的版本也适用于复矩阵。对单个矩阵，它退化为经典的 Jacobi 角 $\tan2\theta = \beta/\alpha = 2[\bQ]_{pq}/([\bQ]_{pp} - [\bQ]_{qq})$（<a class="ref" data-ref="ex-jacobi-single"></a>）。每次旋转都在其所在平面内精确地最小化 $\mathcal{C}$，所以 $\mathcal{C}$ 从不增加。我们在 200 组随机对称矩阵上把 <a class="ref" data-ref="eq-jacobi-angle"></a> 与对 20001 个角度的穷举搜索作了比较：闭式解从未被超越，两者给出的角度在网格间距以内一致。<a class="ref" data-ref="fig-sobi"></a>（b）画出了一对坐标的准则作为 $\theta$ 的函数：它是一个常数减去一个周期为 $\pi/2$ 的正弦曲线，在 $\theta^\star$ 处取最小值。实践中几次扫描就够了。对可以精确联合对角化的矩阵，下降非常快（在 $n = 6$、$K = 5$ 的测试中，$\mathcal{C}$ 在三次扫描内从 20 降到 $10^{-13}$）；对估计得到的矩阵，$\mathcal{C}$ 在两三次扫描后就稳定在由抽样误差决定的水平上。</p>
+
+<h2 id="sec-jade"><span lang="en">JADE</span><span lang="zh-CN">JADE 算法</span></h2>
+
+<p lang="en">JADE, for joint approximate diagonalization of eigenmatrices (Cardoso &amp; Souloumiac, 1993), applies the Jacobi method to cumulant matrices. Let $\bQ_{kl} = \bQ_{\bz}(\be_k\be_l^\top)$, so that $[\bQ_{kl}]_{ij} = \cum(z_i, z_j, z_k, z_l)$; these $n^2$ matrices contain the whole cumulant tensor. The joint-diagonality criterion of this set is itself a function of the output cumulants.</p>
+<p lang="zh-CN">JADE（joint approximate diagonalization of eigenmatrices，特征矩阵的联合近似对角化；Cardoso &amp; Souloumiac, 1993）把 Jacobi 方法用于累积量矩阵。令 $\bQ_{kl} = \bQ_{\bz}(\be_k\be_l^\top)$，即 $[\bQ_{kl}]_{ij} = \cum(z_i, z_j, z_k, z_l)$；这 $n^2$ 个矩阵包含了整个累积量张量。这组矩阵的联合对角化准则本身就是输出累积量的函数。</p>
+
+<div class="env" data-kind="proposition" id="prop-jade-contrast" data-en="the JADE criterion" data-zh="JADE 准则">
+  <p lang="en">For orthogonal $\bU$ and $\by = \bU\bz$,</p>
+  <p lang="zh-CN">对正交矩阵 $\bU$ 和 $\by = \bU\bz$，</p>
+  <div class="eq" id="eq-jade-criterion">$$\sum_{k,l=1}^n \bigl\|\diag\bigl(\bU\bQ_{kl}\bU^\top\bigr)\bigr\|^2 = \sum_{i,k,l=1}^n \cum(y_i, y_i, y_k, y_l)^2.$$</div>
+  <p lang="en">Under the ICA model its maximum over orthogonal $\bU$ is $\sum_p\kappa_p^2$, attained exactly by the rotations that jointly diagonalize all cumulant matrices. These include every separating rotation, and if at most one source has zero kurtosis they are the only ones.</p>
+  <p lang="zh-CN">在 ICA 模型下，它在正交矩阵上的最大值为 $\sum_p\kappa_p^2$，恰好在那些能联合对角化所有累积量矩阵的旋转处取到。这些旋转包括所有分离旋转；若至多一个源的峭度为零，则只有分离旋转能取到最大值。</p>
+</div>
+<div class="proof">
+  <p lang="en">By multilinearity, $[\bU\bQ_{kl}\bU^\top]_{ii} = \sum_{a,b}u_{ia}u_{ib}\cum(z_a, z_b, z_k, z_l) = \cum(y_i, y_i, z_k, z_l)$. For fixed $i$, the matrix with entries $\cum(y_i, y_i, z_k, z_l)$ becomes the matrix with entries $\cum(y_i, y_i, y_k, y_l)$ when multiplied by $\bU$ on the left and $\bU^\top$ on the right, which preserves the Frobenius norm; summing over $i$ gives <a class="ref" data-ref="eq-jade-criterion"></a>. Next, $\sum_{kl}\|\bU\bQ_{kl}\bU^\top\|_F^2 = \sum_{ijkl}\cum(z_i, z_j, z_k, z_l)^2$, which by <a class="ref" data-ref="eq-cumulant-tensor-ica"></a> equals $\sum_{p,q}\kappa_p\kappa_q(\tilde\ba_p^\top\tilde\ba_q)^4 = \sum_p\kappa_p^2$. Hence the criterion equals $\sum_p\kappa_p^2 - \sum_{kl}\|\offdiag(\bU\bQ_{kl}\bU^\top)\|_F^2$, with maximum $\sum_p\kappa_p^2$ exactly when $\bU$ diagonalizes every $\bQ_{kl}$, or equivalently, by linearity, every $\bQ_{\bz}(\bM)$. Separating rotations do so by <a class="ref" data-ref="prop-cumulant-matrices"></a>. For uniqueness apply <a class="ref" data-ref="lem-joint-diagonalization"></a> to the family of all $\bQ_{\bz}(\bM)$: for $\bM = \tilde\ba_p\tilde\ba_p^\top$ the eigenvalues are $\kappa_p$ for source $p$ and $0$ for every other source, so every pair containing a source with nonzero kurtosis is distinguished.</p>
+  <p lang="zh-CN">由多重线性，$[\bU\bQ_{kl}\bU^\top]_{ii} = \sum_{a,b}u_{ia}u_{ib}\cum(z_a, z_b, z_k, z_l) = \cum(y_i, y_i, z_k, z_l)$。固定 $i$，以 $\cum(y_i, y_i, z_k, z_l)$ 为元素的矩阵左乘 $\bU$、右乘 $\bU^\top$ 后，就变成以 $\cum(y_i, y_i, y_k, y_l)$ 为元素的矩阵，而这一变换保持 Frobenius 范数；对 $i$ 求和即得 <a class="ref" data-ref="eq-jade-criterion"></a>。其次，$\sum_{kl}\|\bU\bQ_{kl}\bU^\top\|_F^2 = \sum_{ijkl}\cum(z_i, z_j, z_k, z_l)^2$，由 <a class="ref" data-ref="eq-cumulant-tensor-ica"></a>，它等于 $\sum_{p,q}\kappa_p\kappa_q(\tilde\ba_p^\top\tilde\ba_q)^4 = \sum_p\kappa_p^2$。因此准则等于 $\sum_p\kappa_p^2 - \sum_{kl}\|\offdiag(\bU\bQ_{kl}\bU^\top)\|_F^2$，其最大值 $\sum_p\kappa_p^2$ 恰在 $\bU$ 对角化每个 $\bQ_{kl}$ 时取到，由线性性，这等价于对角化每个 $\bQ_{\bz}(\bM)$。由<a class="ref" data-ref="prop-cumulant-matrices"></a>，分离旋转做到了这一点。至于唯一性，把<a class="ref" data-ref="lem-joint-diagonalization"></a>用于全体 $\bQ_{\bz}(\bM)$：取 $\bM = \tilde\ba_p\tilde\ba_p^\top$ 时，源 $p$ 对应的特征值为 $\kappa_p$，其余各源都为 $0$，所以凡是包含一个峭度非零的源的源对都能被区分。</p>
+</div>
+
+<p lang="en">The terms with $k = l = i$ in <a class="ref" data-ref="eq-jade-criterion"></a> form Comon's contrast $\sum_i\kurt(y_i)^2$ (Comon, 1994; <a class="ref" data-ref="kurtosis"></a>); JADE adds the cross-cumulants $\cum(y_i, y_i, y_k, y_l)$ with $(k, l) \ne (i, i)$. Both are maximized by the separating rotations; the extra terms are what turn the problem into joint diagonalization, with its closed-form Jacobi angles. Cardoso (1999) discusses the relations among these fourth-order contrasts. Two refinements make JADE practical. First, by part (c) of <a class="ref" data-ref="prop-cumulant-matrices"></a>, the linear map $\bM \mapsto \bQ_{\bz}(\bM)$ has eigenpairs $(\lambda_r, \bM_r)$, and the left side of <a class="ref" data-ref="eq-jade-criterion"></a> equals $\sum_r\lambda_r^2\,\|\diag(\bU\bM_r\bU^\top)\|^2$ (<a class="ref" data-ref="ex-jade-eigenmatrix"></a>). In the model only $n$ eigenvalues are nonzero, so JADE jointly diagonalizes the $n$ weighted <em>eigenmatrices</em> $\lambda_r\bM_r$ with the largest $|\lambda_r|$ instead of $n^2$ matrices; this is the "eigenmatrices" of its name. Second, the Jacobi updates touch only two rows and two columns of each matrix.</p>
+<p lang="zh-CN"><a class="ref" data-ref="eq-jade-criterion"></a> 中 $k = l = i$ 的项构成 Comon 的对比函数 $\sum_i\kurt(y_i)^2$（Comon, 1994；<a class="ref" data-ref="kurtosis"></a>）；JADE 另外加上了 $(k, l) \ne (i, i)$ 的交叉累积量 $\cum(y_i, y_i, y_k, y_l)$。两者都在分离旋转处取最大值；正是这些额外的项把问题变成了联合对角化，从而可以使用闭式的 Jacobi 角。Cardoso（1999）讨论了这些四阶对比函数之间的关系。有两点改进使 JADE 实用。第一，由<a class="ref" data-ref="prop-cumulant-matrices"></a>的（c），线性映射 $\bM \mapsto \bQ_{\bz}(\bM)$ 有特征对 $(\lambda_r, \bM_r)$，而 <a class="ref" data-ref="eq-jade-criterion"></a> 的左边等于 $\sum_r\lambda_r^2\,\|\diag(\bU\bM_r\bU^\top)\|^2$（<a class="ref" data-ref="ex-jade-eigenmatrix"></a>）。在模型中只有 $n$ 个特征值非零，所以 JADE 只需联合对角化 $|\lambda_r|$ 最大的 $n$ 个加权<em>特征矩阵</em> $\lambda_r\bM_r$，而不是 $n^2$ 个矩阵；这就是其名称中“特征矩阵”的由来。第二，Jacobi 更新每次只涉及每个矩阵的两行两列。</p>
+
+<div class="env" data-kind="algorithm" id="alg-jade" data-en="JADE" data-zh="JADE">
+  <ol lang="en">
+    <li>Center and whiten the data, $\bz(t) = \bV\bx(t)$, reducing to $n$ dimensions by PCA if $m &gt; n$.</li>
+    <li>Estimate the cumulant matrices $\bQ_{kl}$ from part (b) of <a class="ref" data-ref="prop-cumulant-matrices"></a> with sample averages; optionally replace them by the $n$ most significant weighted eigenmatrices $\lambda_r\bM_r$.</li>
+    <li>Find the orthogonal $\bU$ that jointly diagonalizes these matrices by Jacobi sweeps with the angle <a class="ref" data-ref="eq-jacobi-angle"></a>, until all angles fall below a threshold.</li>
+    <li>Output $\by(t) = \bU\bz(t)$ and the unmixing matrix $\bW = \bU\bV$.</li>
+  </ol>
+  <ol lang="zh-CN">
+    <li>中心化并白化数据，$\bz(t) = \bV\bx(t)$；若 $m &gt; n$，用 PCA 降到 $n$ 维。</li>
+    <li>用<a class="ref" data-ref="prop-cumulant-matrices"></a>的（b）以样本平均估计累积量矩阵 $\bQ_{kl}$；也可以改用最显著的 $n$ 个加权特征矩阵 $\lambda_r\bM_r$。</li>
+    <li>用角度 <a class="ref" data-ref="eq-jacobi-angle"></a> 进行 Jacobi 扫描，求出联合对角化这些矩阵的正交矩阵 $\bU$，直到所有角度都小于阈值。</li>
+    <li>输出 $\by(t) = \bU\bz(t)$ 以及解混矩阵 $\bW = \bU\bV$。</li>
+  </ol>
+</div>
+
+<p lang="en">The following implementation favours clarity: it forms the full cumulant tensor with <code>einsum</code>, uses all $n^2$ matrices $\bQ_{kl}$, and rotates whole matrices. It is applied to a uniform, a Laplace and a binary source.</p>
+<p lang="zh-CN">下面的实现以清晰为先：它用 <code>einsum</code> 构造完整的累积量张量，使用全部 $n^2$ 个矩阵 $\bQ_{kl}$，并对整个矩阵作旋转。示例中的源为一个均匀源、一个拉普拉斯源和一个二值源。</p>
+
+<pre class="code"><code>import numpy as np
+
+def whiten(X):
+    """Center the rows of X; return Z = V X (identity sample covariance) and V."""
+    X = X - X.mean(axis=1, keepdims=True)
+    d, E = np.linalg.eigh(np.cov(X))
+    V = E @ np.diag(d ** -0.5) @ E.T
+    return V @ X, V
+
+def joint_diagonalize(Qs, tol=1e-12, max_sweeps=100):
+    """Jacobi joint diagonalization of symmetric matrices Qs (shape K x n x n).
+    Returns an orthogonal U that makes every U Q U^T as diagonal as possible."""
+    Qs = Qs.copy()
+    n = Qs.shape[1]
+    U = np.eye(n)
+    for sweep in range(max_sweeps):
+        rotated = False
+        for p in range(n - 1):
+            for q in range(p + 1, n):
+                h1 = Qs[:, p, p] - Qs[:, q, q]
+                h2 = 2 * Qs[:, p, q]
+                # closed-form Jacobi angle for the pair (p, q)
+                theta = 0.25 * np.arctan2(2 * h1 @ h2, h1 @ h1 - h2 @ h2)
+                if abs(theta) &gt; tol:
+                    rotated = True
+                    c, s = np.cos(theta), np.sin(theta)
+                    R = np.eye(n)
+                    R[p, p] = R[q, q] = c
+                    R[p, q], R[q, p] = -s, s
+                    Qs = R.T @ Qs @ R      # rotate all matrices in the (p, q) plane
+                    U = R.T @ U
+        if not rotated:
+            break
+    return U
+
+def jade(X):
+    Z, V = whiten(X)
+    n, T = Z.shape
+    I = np.eye(n)
+    M4 = np.einsum('it,jt,kt,lt-&gt;ijkl', Z, Z, Z, Z, optimize=True) / T
+    C = (M4 - np.einsum('ij,kl-&gt;ijkl', I, I) - np.einsum('ik,jl-&gt;ijkl', I, I)
+            - np.einsum('il,jk-&gt;ijkl', I, I))    # cumulant tensor of z
+    Qs = C.reshape(n, n, n * n).transpose(2, 0, 1)    # the n^2 matrices Q(e_k e_l^T)
+    return joint_diagonalize(Qs) @ V
+
+rng = np.random.default_rng(1)
+T = 10000
+S = np.vstack([rng.uniform(-np.sqrt(3), np.sqrt(3), T),    # kappa = -1.2
+               rng.laplace(0, 1 / np.sqrt(2), T),           # kappa = 3
+               np.sign(rng.standard_normal(T))])            # kappa = -2
+A = rng.standard_normal((3, 3))
+P = jade(A @ S) @ A
+print(np.round(P / np.abs(P).max(axis=1, keepdims=True), 2) + 0.0)</code></pre>
+
+<p lang="en">The printed global matrix, each row scaled by its largest entry, is a signed permutation up to entries of at most 0.03:</p>
+<p lang="zh-CN">打印出的全局矩阵（每行除以该行绝对值最大的元素）在至多 0.03 的误差内是一个带符号的置换矩阵：</p>
+
+<pre class="code"><code>[[ 0.    0.03 -1.  ]
+ [ 0.   -1.   -0.03]
+ [-1.   -0.01  0.01]]</code></pre>
+
+<p lang="en">JADE needs no initialization and no step size, and its Jacobi sweeps are deterministic and few; its weakness is cost. Storing the $n^2$ cumulant matrices takes $n^4$ numbers ($6.25 \times 10^6$ for $n = 50$, $10^8$ for $n = 100$), and estimating them takes of the order of $n^4T$ operations. This restricts JADE to moderate numbers of sources, a few tens rather than hundreds.</p>
+<p lang="zh-CN">JADE 不需要初始化，也没有步长，其 Jacobi 扫描是确定性的，次数也很少；它的弱点在于计算量。存储 $n^2$ 个累积量矩阵需要 $n^4$ 个数（$n = 50$ 时为 $6.25 \times 10^6$，$n = 100$ 时为 $10^8$），估计它们需要 $n^4T$ 量级的运算。这使 JADE 只适用于中等数目的源，即几十个而不是几百个。</p>
+
+<h2 id="sec-second-order"><span lang="en">Second-order methods: AMUSE and SOBI</span><span lang="zh-CN">二阶方法：AMUSE 与 SOBI</span></h2>
+
+<p lang="en">The i.i.d. assumption of <a class="ref" data-ref="asm-ica"></a> discards the order of the samples. Many signals, from EEG rhythms to fMRI time courses, are correlated in time, and this structure can replace non-Gaussianity. Assume that the sources are zero-mean, wide-sense stationary, and mutually uncorrelated at every lag: $\E[s_i(t)s_j(t + \tau)] = 0$ for $i \ne j$ and all $\tau$. Write $\rho_i(\tau) = \E[s_i(t)s_i(t + \tau)]$ for the autocovariance of source $i$, with $\rho_i(0) = 1$. The lagged covariance matrices of the data are then</p>
+<p lang="zh-CN"><a class="ref" data-ref="asm-ica"></a>中的独立同分布假设丢弃了样本的顺序。许多信号，从 EEG 节律到 fMRI 时间过程，在时间上都是相关的，这种结构可以取代非高斯性。假设各源均值为零、宽平稳，并且在任何时滞下互不相关：对 $i \ne j$ 和所有 $\tau$ 有 $\E[s_i(t)s_j(t + \tau)] = 0$。记 $\rho_i(\tau) = \E[s_i(t)s_i(t + \tau)]$ 为源 $i$ 的自协方差，$\rho_i(0) = 1$。于是数据的时滞协方差矩阵为</p>
+
+<div class="eq" id="eq-lagged-covariance">$$\bC_{\bx}(\tau) = \E\bigl[\bx(t)\,\bx(t + \tau)^\top\bigr] = \bA\,\diag\bigl(\rho_1(\tau), \dots, \rho_n(\tau)\bigr)\,\bA^\top.$$</div>
+
+<p lang="en">They are symmetric in the model, but their estimates $\hat\bC_{\bx}(\tau) = \frac{1}{T - \tau}\sum_t\bx(t)\bx(t + \tau)^\top$ are not, so one uses $\bar\bC(\tau) = \tfrac12(\hat\bC(\tau) + \hat\bC(\tau)^\top)$. Whitening with $\bC_{\bx}(0) = \bA\bA^\top$ gives $\bar\bC_{\bz}(\tau) = \tilde\bA\,\diag(\rho_i(\tau))\,\tilde\bA^\top$ for every lag: again the joint diagonalization structure. Only second-order statistics are involved, so neither non-Gaussianity nor full independence is required.</p>
+<p lang="zh-CN">在模型中这些矩阵是对称的，但其估计 $\hat\bC_{\bx}(\tau) = \frac{1}{T - \tau}\sum_t\bx(t)\bx(t + \tau)^\top$ 并不对称，所以使用 $\bar\bC(\tau) = \tfrac12(\hat\bC(\tau) + \hat\bC(\tau)^\top)$。用 $\bC_{\bx}(0) = \bA\bA^\top$ 白化后，对每个时滞都有 $\bar\bC_{\bz}(\tau) = \tilde\bA\,\diag(\rho_i(\tau))\,\tilde\bA^\top$：又是联合对角化的结构。这里只涉及二阶统计量，所以既不需要非高斯性，也不需要完全独立。</p>
+
+<p lang="en"><b>AMUSE.</b> The AMUSE algorithm of Tong et al. (1990) uses a single lag: whiten, then take the eigenvectors of $\bar\bC_{\bz}(\tau)$. By <a class="ref" data-ref="lem-joint-diagonalization"></a> with $K = 1$, this separates the sources if and only if the numbers $\rho_1(\tau), \dots, \rho_n(\tau)$ are distinct; Tong et al. (1991) analyse the identifiability question in detail. Molgedey and Schuster (1994) proposed the same idea, formulated as the simultaneous diagonalization of $\bC_{\bx}(0)$ and $\bC_{\bx}(\tau)$. The condition is fragile: two sources with equal or nearly equal autocorrelation at the chosen lag are mixed, or estimated poorly, however different they are at other lags.</p>
+<p lang="zh-CN"><b>AMUSE。</b>Tong 等（1990）提出的 AMUSE 算法只用一个时滞：先白化，再取 $\bar\bC_{\bz}(\tau)$ 的特征向量。由<a class="ref" data-ref="lem-joint-diagonalization"></a>（取 $K = 1$），它能分离各源当且仅当 $\rho_1(\tau), \dots, \rho_n(\tau)$ 互不相同；Tong 等（1991）详细分析了其中的可辨识性问题。Molgedey 与 Schuster（1994）提出了同一思想，表述为 $\bC_{\bx}(0)$ 与 $\bC_{\bx}(\tau)$ 的同时对角化。这个条件是脆弱的：两个源若在所选时滞处自相关相等或接近相等，就会被混在一起或估计得很差，不管它们在其他时滞上相差多大。</p>
+
+<div class="env" data-kind="algorithm" id="alg-sobi" data-en="SOBI" data-zh="SOBI">
+  <ol lang="en">
+    <li>Center the data and whiten them with the sample covariance $\hat\bC_{\bx}(0)$: $\bz(t) = \bV\bx(t)$.</li>
+    <li>Choose lags $\tau_1, \dots, \tau_K$ and compute the symmetrized lagged covariances $\bar\bC_{\bz}(\tau_k)$.</li>
+    <li>Find the orthogonal $\bU$ that jointly diagonalizes them by Jacobi sweeps with <a class="ref" data-ref="eq-jacobi-angle"></a>.</li>
+    <li>Output $\by(t) = \bU\bz(t)$ and the unmixing matrix $\bW = \bU\bV$.</li>
+  </ol>
+  <ol lang="zh-CN">
+    <li>中心化数据，并用样本协方差 $\hat\bC_{\bx}(0)$ 白化：$\bz(t) = \bV\bx(t)$。</li>
+    <li>选取时滞 $\tau_1, \dots, \tau_K$，计算对称化的时滞协方差 $\bar\bC_{\bz}(\tau_k)$。</li>
+    <li>用 <a class="ref" data-ref="eq-jacobi-angle"></a> 进行 Jacobi 扫描，求出联合对角化它们的正交矩阵 $\bU$。</li>
+    <li>输出 $\by(t) = \bU\bz(t)$ 以及解混矩阵 $\bW = \bU\bV$。</li>
+  </ol>
+</div>
+
+<p lang="en">This is SOBI, second-order blind identification (Belouchrani et al., 1997); TDSEP (Ziehe &amp; Müller, 1998) is essentially the same method. Its identifiability condition follows directly from <a class="ref" data-ref="lem-joint-diagonalization"></a>.</p>
+<p lang="zh-CN">这就是 SOBI（second-order blind identification，二阶盲辨识；Belouchrani et al., 1997）；TDSEP（Ziehe &amp; Müller, 1998）本质上是同一种方法。它的可辨识条件直接由<a class="ref" data-ref="lem-joint-diagonalization"></a>得到。</p>
+
+<div class="env" data-kind="theorem" id="thm-sobi-identifiability" data-en="identifiability of SOBI" data-zh="SOBI 的可辨识性">
+  <p lang="en">Let the sources be zero-mean, wide-sense stationary and mutually uncorrelated at all lags, with autocovariances $\rho_i(\tau)$, $\rho_i(0) = 1$, and let $\bz = \tilde\bA\bs$ be the whitened data. If for every pair $i \ne j$ there is a lag $\tau_k$ in the chosen set with $\rho_i(\tau_k) \ne \rho_j(\tau_k)$, then every orthogonal $\bU$ that diagonalizes all $\bC_{\bz}(\tau_1), \dots, \bC_{\bz}(\tau_K)$ satisfies $\bU\tilde\bA = $ signed permutation, so $\bU\bz$ recovers the sources up to sign and order. If some pair has $\rho_i(\tau_k) = \rho_j(\tau_k)$ for all $k$, these matrices cannot separate sources $i$ and $j$ (Belouchrani et al., 1997).</p>
+  <p lang="zh-CN">设各源均值为零、宽平稳，在任何时滞下互不相关，自协方差为 $\rho_i(\tau)$，$\rho_i(0) = 1$，并设 $\bz = \tilde\bA\bs$ 为白化数据。若对每一对 $i \ne j$，在所选的时滞集合中都存在某个 $\tau_k$ 使 $\rho_i(\tau_k) \ne \rho_j(\tau_k)$，则任何能对角化全部 $\bC_{\bz}(\tau_1), \dots, \bC_{\bz}(\tau_K)$ 的正交矩阵 $\bU$ 都满足 $\bU\tilde\bA$ 为带符号的置换矩阵，从而 $\bU\bz$ 在符号与顺序意义下恢复各源。若存在一对源，使得对所有 $k$ 都有 $\rho_i(\tau_k) = \rho_j(\tau_k)$，则这些矩阵无法分离源 $i$ 与源 $j$（Belouchrani et al., 1997）。</p>
+</div>
+<div class="proof">
+  <p lang="en">By <a class="ref" data-ref="eq-lagged-covariance"></a> and whitening, $\bC_{\bz}(\tau_k) = \tilde\bA\,\diag(\rho_1(\tau_k), \dots, \rho_n(\tau_k))\,\tilde\bA^\top$ with $\tilde\bA$ orthogonal. Apply <a class="ref" data-ref="lem-joint-diagonalization"></a> with $\lambda_{ki} = \rho_i(\tau_k)$, in both directions.</p>
+  <p lang="zh-CN">由 <a class="ref" data-ref="eq-lagged-covariance"></a> 并经白化，$\bC_{\bz}(\tau_k) = \tilde\bA\,\diag(\rho_1(\tau_k), \dots, \rho_n(\tau_k))\,\tilde\bA^\top$，其中 $\tilde\bA$ 为正交矩阵。取 $\lambda_{ki} = \rho_i(\tau_k)$，从两个方向应用<a class="ref" data-ref="lem-joint-diagonalization"></a>即可。</p>
+</div>
+
+<p lang="en">Two consequences stand out. Gaussian sources, any number of them, are separable as soon as their autocorrelation functions differ, which is the case whenever their normalized power spectra differ, since the spectrum and the autocovariance determine each other. And i.i.d. sources are never separable by SOBI, since $\rho_i(\tau) = 0$ for all $\tau \ne 0$ and every $i$. Second-order methods and the methods of Chapters 7, 8 and this chapter's first half are thus complementary: one needs temporal structure, the other non-Gaussianity.</p>
+<p lang="zh-CN">有两个推论特别值得注意。第一，任意多个高斯源，只要它们的自相关函数不同，就是可分离的；由于功率谱与自协方差相互唯一确定，只要归一化功率谱不同，这一条件就成立。第二，独立同分布的源永远无法用 SOBI 分离，因为对所有 $\tau \ne 0$ 和每个 $i$ 都有 $\rho_i(\tau) = 0$。因此二阶方法与第 7、8 章以及本章前半部分的方法是互补的：前者需要时间结构，后者需要非高斯性。</p>
+
+<p lang="en">The script below continues the previous one. It generates three Gaussian sources: an AR(1) process with coefficient 0.5, so $\rho_1(\tau) = 0.5^\tau$; a moving average $s_2(t) = e(t) + e(t - 1)$ of white noise, so $\rho_2(1) = 0.5$ and $\rho_2(\tau) = 0$ for $\tau \ge 2$; and an AR(1) process with coefficient $-0.8$. The first two have the same autocorrelation at lag 1 and differ at lag 2 (<a class="ref" data-ref="fig-sobi"></a>(a)).</p>
+<p lang="zh-CN">下面的脚本接着上一个脚本。它生成三个高斯源：系数为 0.5 的 AR(1) 过程，故 $\rho_1(\tau) = 0.5^\tau$；白噪声的滑动平均 $s_2(t) = e(t) + e(t - 1)$，故 $\rho_2(1) = 0.5$，且 $\tau \ge 2$ 时 $\rho_2(\tau) = 0$；以及系数为 $-0.8$ 的 AR(1) 过程。前两个源在时滞 1 处的自相关相同，在时滞 2 处不同（<a class="ref" data-ref="fig-sobi"></a>（a））。</p>
+
+<pre class="code"><code>def sobi(X, lags):
+    Z, V = whiten(X)
+    T = Z.shape[1]
+    # lagged covariances of z, symmetrized before joint diagonalization
+    Cs = [Z[:, :-tau] @ Z[:, tau:].T / (T - tau) for tau in lags]
+    return joint_diagonalize(np.array([(C + C.T) / 2 for C in Cs])) @ V
+
+rng = np.random.default_rng(2)
+T = 20000
+e = rng.standard_normal((3, T + 1))
+s1, s3 = np.zeros(T), np.zeros(T)
+for t in range(1, T):
+    s1[t] = 0.5 * s1[t - 1] + e[0, t]       # AR(1): rho(1) = 0.5, rho(2) = 0.25
+    s3[t] = -0.8 * s3[t - 1] + e[2, t]      # AR(1): rho(1) = -0.8
+s2 = e[1, 1:] + e[1, :-1]                   # MA(1): rho(1) = 0.5, rho(2) = 0
+S = np.vstack([s1, s2, s3])
+S = S / S.std(axis=1, keepdims=True)        # three Gaussian sources
+A = rng.standard_normal((3, 3))
+for name, W in [("AMUSE, lag 1", sobi(A @ S, [1])),
+                ("SOBI, lags 1-5", sobi(A @ S, range(1, 6))),
+                ("JADE", jade(A @ S))]:
+    P = W @ A
+    print(name)
+    print(np.round(P / np.abs(P).max(axis=1, keepdims=True), 2) + 0.0)</code></pre>
+
+<p lang="en">The output is</p>
+<p lang="zh-CN">输出为</p>
+
+<pre class="code"><code>AMUSE, lag 1
+[[ 0.    0.   -1.  ]
+ [ 0.21 -1.    0.  ]
+ [ 1.    0.2   0.  ]]
+SOBI, lags 1-5
+[[ 0.    0.   -1.  ]
+ [ 1.   -0.04  0.  ]
+ [ 0.03  1.    0.  ]]
+JADE
+[[ 0.29  0.24 -1.  ]
+ [ 0.54 -1.   -0.09]
+ [ 1.    0.5   0.41]]</code></pre>
+
+<p lang="en">AMUSE recovers the third source but leaves the first two mixed: in their plane its rotation is decided by sampling noise, so the leakage changes from run to run (over ten random seeds, its largest entry ranged from 0.05 to 0.86). SOBI separates all three, with leakage of at most 0.04 over the same ten seeds. JADE fails, as it must: all three sources are Gaussian and every fourth-order cumulant is zero up to sampling error.</p>
+<p lang="zh-CN">AMUSE 恢复了第三个源，但前两个源仍混在一起：在它们张成的平面内，旋转由抽样噪声决定，所以泄漏量每次运行都不同（在十个随机种子下，其最大泄漏元素在 0.05 到 0.86 之间）。SOBI 把三个源全部分离，在同样十个种子下泄漏至多为 0.04。JADE 失败了，这是必然的：三个源都是高斯的，所有四阶累积量在抽样误差范围内都为零。</p>
+
+<figure id="fig-sobi">
+  <img src="fig/ch09-sobi.svg" width="620" height="267" alt="Left: autocorrelation functions of the three sources against the lag; sources 1 and 2 coincide at lag 1 with value 0.5 and differ at lag 2, source 3 alternates in sign. Right: the joint-diagonalization criterion for one pair of coordinates as a function of the rotation angle between minus pi over 4 and pi over 4, a smooth periodic curve with its minimum marked at the closed-form angle.">
+  <figcaption><span lang="en">(a) Autocorrelation functions of the three Gaussian sources of the example: $\rho_1(\tau) = 0.5^\tau$, $\rho_2(1) = 0.5$ and $\rho_2(\tau) = 0$ for $\tau \ge 2$, $\rho_3(\tau) = (-0.8)^\tau$. Sources 1 and 2 agree at lag 1 (dotted line), so AMUSE with $\tau = 1$ cannot separate them, but they differ at lag 2, which SOBI exploits. (b) The criterion $\mathcal{C}$ of <a class="ref" data-ref="eq-joint-diagonality"></a> for the five whitened lagged covariances of the example, as a function of the angle of a rotation in the $(1, 2)$ plane: a constant minus a sinusoid of period $\pi/2$, minimized at the closed-form angle $\theta^\star$ of <a class="ref" data-ref="eq-jacobi-angle"></a>. The minimum is not zero because this rotation does not change the off-diagonal energy outside positions $(1, 2)$ and $(2, 1)$.</span><span lang="zh-CN">（a）例子中三个高斯源的自相关函数：$\rho_1(\tau) = 0.5^\tau$；$\rho_2(1) = 0.5$，$\tau \ge 2$ 时 $\rho_2(\tau) = 0$；$\rho_3(\tau) = (-0.8)^\tau$。源 1 与源 2 在时滞 1 处相同（点线），所以 $\tau = 1$ 的 AMUSE 无法分离它们；但它们在时滞 2 处不同，SOBI 正是利用了这一点。（b）例子中五个白化时滞协方差的准则 $\mathcal{C}$（<a class="ref" data-ref="eq-joint-diagonality"></a>）作为 $(1, 2)$ 平面内旋转角的函数：它是一个常数减去周期为 $\pi/2$ 的正弦曲线，在 <a class="ref" data-ref="eq-jacobi-angle"></a> 的闭式角 $\theta^\star$ 处取最小值。最小值不为零，是因为这一旋转不改变 $(1, 2)$、$(2, 1)$ 位置以外的非对角能量。</span></figcaption>
+</figure>
+
+<h2 id="sec-jade-sobi-comparison"><span lang="en">Comparison</span><span lang="zh-CN">方法比较</span></h2>
+
+<p lang="en"><a class="ref" data-ref="tab-jade-sobi-comparison"></a> summarizes the methods of this chapter and, for reference, the iterative methods of Chapters 7 and 8. The two families rest on different assumptions, so the choice is mainly a question of which structure the data have: non-Gaussian marginals, temporal correlation, or both.</p>
+<p lang="zh-CN"><a class="ref" data-ref="tab-jade-sobi-comparison"></a>总结了本章的方法，并列出第 7、8 章的迭代方法作为参照。两类方法基于不同的假设，所以选择哪一种，主要取决于数据具有哪种结构：非高斯的边缘分布、时间相关性，还是两者兼有。</p>
+
+<figure class="table" id="tab-jade-sobi-comparison">
+  <figcaption><span lang="en">Separation methods compared. Costs are orders of magnitude for $n$ sources, $T$ samples and $K$ lags; a Jacobi sweep that updates only two rows and columns per rotation costs $O(Kn^3)$ for $K$ matrices.</span><span lang="zh-CN">分离方法的比较。计算量为数量级估计，$n$ 为源数，$T$ 为样本数，$K$ 为时滞数；若每次旋转只更新两行两列，对 $K$ 个矩阵作一次 Jacobi 扫描的代价为 $O(Kn^3)$。</span></figcaption>
+  <div>
+    <table>
+      <thead>
+        <tr><th><span lang="en">Method</span><span lang="zh-CN">方法</span></th><th><span lang="en">Statistics used</span><span lang="zh-CN">所用统计量</span></th><th><span lang="en">Gaussian sources</span><span lang="zh-CN">高斯源</span></th><th><span lang="en">Separates when</span><span lang="zh-CN">可分离的条件</span></th><th><span lang="en">Cost</span><span lang="zh-CN">计算量</span></th></tr>
+      </thead>
+      <tbody>
+        <tr><td>FOBI</td><td>$\E[\|\bz\|^2\bz\bz^\top]$</td><td><span lang="en">at most one</span><span lang="zh-CN">至多一个</span></td><td><span lang="en">all $\kappa_i$ distinct</span><span lang="zh-CN">各 $\kappa_i$ 互不相同</span></td><td><span lang="en">$O(n^2T)$, one eigendecomposition</span><span lang="zh-CN">$O(n^2T)$，一次特征分解</span></td></tr>
+        <tr><td>JADE</td><td><span lang="en">all fourth-order cumulants</span><span lang="zh-CN">全部四阶累积量</span></td><td><span lang="en">at most one</span><span lang="zh-CN">至多一个</span></td><td><span lang="en">at most one $\kappa_i = 0$</span><span lang="zh-CN">至多一个 $\kappa_i = 0$</span></td><td><span lang="en">$O(n^4T)$ to estimate, $n^4$ numbers to store</span><span lang="zh-CN">估计 $O(n^4T)$，存储 $n^4$ 个数</span></td></tr>
+        <tr><td>AMUSE</td><td>$\bC_{\bx}(0)$, $\bC_{\bx}(\tau)$</td><td><span lang="en">any number</span><span lang="zh-CN">任意多个</span></td><td><span lang="en">all $\rho_i(\tau)$ distinct</span><span lang="zh-CN">各 $\rho_i(\tau)$ 互不相同</span></td><td><span lang="en">$O(n^2T)$, one eigendecomposition</span><span lang="zh-CN">$O(n^2T)$，一次特征分解</span></td></tr>
+        <tr><td>SOBI</td><td>$\bC_{\bx}(0)$, $\bC_{\bx}(\tau_1), \dots, \bC_{\bx}(\tau_K)$</td><td><span lang="en">any number</span><span lang="zh-CN">任意多个</span></td><td><span lang="en">every pair differs at some lag</span><span lang="zh-CN">每一对源在某个时滞处不同</span></td><td><span lang="en">$O(Kn^2T)$, then $O(Kn^3)$ per sweep</span><span lang="zh-CN">$O(Kn^2T)$，之后每次扫描 $O(Kn^3)$</span></td></tr>
+        <tr><td><span lang="en">FastICA, Infomax</span><span lang="zh-CN">FastICA、Infomax</span></td><td><span lang="en">nonlinear moments such as $\E[\bz\,g(\bw^\top\bz)]$</span><span lang="zh-CN">非线性矩，如 $\E[\bz\,g(\bw^\top\bz)]$</span></td><td><span lang="en">at most one</span><span lang="zh-CN">至多一个</span></td><td><span lang="en">$\lambda_i \ne 0$ (Ch. 8); stability conditions (Ch. 7)</span><span lang="zh-CN">$\lambda_i \ne 0$（第 8 章）；稳定性条件（第 7 章）</span></td><td><span lang="en">$O(n^2T)$ per iteration</span><span lang="zh-CN">每次迭代 $O(n^2T)$</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</figure>
+
+<p lang="en">Noise affects the two families in parallel ways. Fourth-order cumulants of Gaussian noise vanish, so the cumulant matrices of $\bx = \bA\bs + \bn$ with Gaussian $\bn$ independent of $\bs$ are those of $\bA\bs$; lagged covariances at $\tau \ne 0$ are unaffected by noise that is uncorrelated in time. In both cases only the whitening step, which uses $\bC_{\bx}(0) = \bA\bA^\top + \bC_{\bn}$, is biased by the noise; with more sensors than sources the bias can be reduced as described in <a class="ref" data-ref="sec-noisy-ica"></a>. The methods can also be combined, for example by jointly diagonalizing cumulant matrices and lagged covariances together, when the sources are both non-Gaussian and temporally structured.</p>
+<p lang="zh-CN">噪声对这两类方法的影响方式相似。高斯噪声的四阶累积量为零，所以当 $\bn$ 为高斯且与 $\bs$ 独立时，$\bx = \bA\bs + \bn$ 的累积量矩阵与 $\bA\bs$ 的相同；在时间上不相关的噪声不影响 $\tau \ne 0$ 处的时滞协方差。两种情形下受噪声影响而产生偏差的都只有白化步骤，因为它用到 $\bC_{\bx}(0) = \bA\bA^\top + \bC_{\bn}$；当传感器多于源时，可以按<a class="ref" data-ref="sec-noisy-ica"></a>所述减小这一偏差。当源既是非高斯的又有时间结构时，两类方法还可以结合起来，例如把累积量矩阵与时滞协方差放在一起作联合对角化。</p>
+
+<div class="keypoints">
+  <p class="kp-title" lang="en">Key points</p>
+  <p class="kp-title" lang="zh-CN">本章要点</p>
+  <ul lang="en">
+    <li>After whitening, any statistic of the form $\tilde\bA\bLambda\tilde\bA^\top$ with distinct diagonal entries reveals $\tilde\bA$ through its eigenvectors; jointly diagonalizing many such matrices removes the need for distinct eigenvalues in any single one.</li>
+    <li>The fourth-order cumulant tensor of whitened data is $\sum_p\kappa_p\,\tilde\ba_p^{\otimes 4}$, and every cumulant matrix is $\tilde\bA\,\diag(\kappa_p\tilde\ba_p^\top\bM\tilde\ba_p)\,\tilde\bA^\top$. FOBI uses $\bM = \bI$ and needs distinct kurtoses; JADE uses all cumulant matrices and needs at most one zero kurtosis.</li>
+    <li>Jacobi sweeps minimize the off-diagonal energy one plane at a time with the closed-form angle $\theta^\star = \tfrac14\operatorname{atan2}(2g_{12}, g_{11} - g_{22})$; the criterion never increases, and a few sweeps suffice.</li>
+    <li>Lagged covariances satisfy $\bC_{\bx}(\tau) = \bA\,\diag(\rho_i(\tau))\,\bA^\top$. SOBI separates the sources if and only if every pair is distinguished by some lag in the set, so Gaussian sources with different spectra are separable and i.i.d. sources are not.</li>
+    <li>JADE costs grow as $n^4$; SOBI is cheap. Cumulant methods and second-order methods rely on different structure and complement each other.</li>
+  </ul>
+  <ul lang="zh-CN">
+    <li>白化之后，任何形如 $\tilde\bA\bLambda\tilde\bA^\top$ 且对角元互不相同的统计量，都能通过其特征向量揭示 $\tilde\bA$；对许多这样的矩阵作联合对角化，就不再要求其中任何一个矩阵的特征值互不相同。</li>
+    <li>白化数据的四阶累积量张量为 $\sum_p\kappa_p\,\tilde\ba_p^{\otimes 4}$，每个累积量矩阵都等于 $\tilde\bA\,\diag(\kappa_p\tilde\ba_p^\top\bM\tilde\ba_p)\,\tilde\bA^\top$。FOBI 取 $\bM = \bI$，要求峭度互不相同；JADE 使用全部累积量矩阵，只要求至多一个峭度为零。</li>
+    <li>Jacobi 扫描逐个平面地最小化非对角能量，所用闭式角为 $\theta^\star = \tfrac14\operatorname{atan2}(2g_{12}, g_{11} - g_{22})$；准则从不增加，几次扫描就够了。</li>
+    <li>时滞协方差满足 $\bC_{\bx}(\tau) = \bA\,\diag(\rho_i(\tau))\,\bA^\top$。SOBI 能分离各源，当且仅当每一对源都能被所选集合中的某个时滞区分；因此谱不同的高斯源可以分离，而独立同分布的源不能。</li>
+    <li>JADE 的计算量按 $n^4$ 增长；SOBI 则很便宜。累积量方法与二阶方法依赖不同的结构，相互补充。</li>
+  </ul>
+</div>
+
+<h2 id="sec-jade-sobi-exercises"><span lang="en">Exercises</span><span lang="zh-CN">习题</span></h2>
+
+<div class="exercise" id="ex-jade-fobi" data-level="basic">
+  <p lang="en">(a) Show that for two unit-variance Laplace sources $\bQ_{\bz}(\bI) = 3\bI$, and conclude that FOBI cannot separate them. (b) Why does FOBI succeed for one uniform and one Laplace source? (c) Does JADE separate two Laplace sources?</p>
+  <p lang="zh-CN">（a）证明对两个单位方差的拉普拉斯源有 $\bQ_{\bz}(\bI) = 3\bI$，并由此说明 FOBI 无法分离它们。（b）为什么 FOBI 能分离一个均匀源和一个拉普拉斯源？（c）JADE 能否分离两个拉普拉斯源？</p>
+  <details class="solution">
+    <p lang="en">(a) $\bQ_{\bz}(\bI) = \tilde\bA\,\diag(3, 3)\,\tilde\bA^\top = 3\tilde\bA\tilde\bA^\top = 3\bI$. Every orthogonal $\bU$ gives $\bU(3\bI)\bU^\top = 3\bI$, which is diagonal, so the matrix carries no information about the rotation (this is the converse part of <a class="ref" data-ref="lem-joint-diagonalization"></a>). (b) Then $\bQ_{\bz}(\bI) = \tilde\bA\,\diag(-1.2, 3)\,\tilde\bA^\top$ has distinct eigenvalues, and its unit eigenvectors are $\pm$ the columns of $\tilde\bA$. (c) Yes. Both kurtoses are nonzero, so by <a class="ref" data-ref="prop-jade-contrast"></a> the maximizers of the JADE criterion are exactly the separating rotations. Concretely, $\bQ_{\bz}(\tilde\ba_1\tilde\ba_1^\top) = \tilde\bA\,\diag(3, 0)\,\tilde\bA^\top$ distinguishes the two sources.</p>
+    <p lang="zh-CN">（a）$\bQ_{\bz}(\bI) = \tilde\bA\,\diag(3, 3)\,\tilde\bA^\top = 3\tilde\bA\tilde\bA^\top = 3\bI$。任何正交矩阵 $\bU$ 都给出对角阵 $\bU(3\bI)\bU^\top = 3\bI$，所以这个矩阵不含有关旋转的任何信息（这正是<a class="ref" data-ref="lem-joint-diagonalization"></a>的逆命题部分）。（b）此时 $\bQ_{\bz}(\bI) = \tilde\bA\,\diag(-1.2, 3)\,\tilde\bA^\top$ 的特征值互不相同，其单位特征向量就是 $\tilde\bA$ 的各列（相差正负号）。（c）能。两个峭度都不为零，由<a class="ref" data-ref="prop-jade-contrast"></a>，JADE 准则的最大值点恰好是分离旋转。具体地，$\bQ_{\bz}(\tilde\ba_1\tilde\ba_1^\top) = \tilde\bA\,\diag(3, 0)\,\tilde\bA^\top$ 就能区分这两个源。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-sobi-ar" data-level="basic">
+  <p lang="en">(a) Let $s(t) = a\,s(t - 1) + e(t)$ with $|a| &lt; 1$ and white noise $e$ independent of the past of $s$, and let $s$ be stationary. Show that $\rho(\tau) = a^\tau$ for $\tau \ge 0$ (normalizing $\rho(0) = 1$). (b) For two such sources with $a_1 = 0.5$ and $a_2 = -0.5$, for which lags does AMUSE separate them? (c) What happens to SOBI when the sources are i.i.d.?</p>
+  <p lang="zh-CN">（a）设 $s(t) = a\,s(t - 1) + e(t)$，$|a| &lt; 1$，白噪声 $e$ 与 $s$ 的过去独立，且 $s$ 平稳。证明 $\tau \ge 0$ 时 $\rho(\tau) = a^\tau$（归一化使 $\rho(0) = 1$）。（b）对两个这样的源，$a_1 = 0.5$，$a_2 = -0.5$，AMUSE 在哪些时滞下能分离它们？（c）如果源是独立同分布的，SOBI 会怎样？</p>
+  <details class="solution">
+    <p lang="en">(a) For $\tau \ge 1$, multiply $s(t + \tau) = a\,s(t + \tau - 1) + e(t + \tau)$ by $s(t)$ and take expectations; $e(t + \tau)$ is independent of $s(t)$ and has zero mean, so $\rho(\tau) = a\,\rho(\tau - 1)$, and with $\rho(0) = 1$ this gives $\rho(\tau) = a^\tau$. (b) $\rho_1(\tau) = 0.5^\tau$ and $\rho_2(\tau) = (-0.5)^\tau$ are equal for even $\tau$ and opposite for odd $\tau$. AMUSE separates the sources with any odd lag and fails with every even lag; SOBI with the lags $\{1, 2\}$ works because lag 1 distinguishes the pair. (c) For i.i.d. sources $\rho_i(\tau) = 0$ for every $\tau \ne 0$, so all lagged covariance matrices vanish in the model. Every rotation diagonalizes them, no pair is distinguished, and SOBI returns an arbitrary rotation of the whitened data.</p>
+    <p lang="zh-CN">（a）对 $\tau \ge 1$，把 $s(t + \tau) = a\,s(t + \tau - 1) + e(t + \tau)$ 两边乘以 $s(t)$ 并取期望；$e(t + \tau)$ 与 $s(t)$ 独立且均值为零，所以 $\rho(\tau) = a\,\rho(\tau - 1)$，再由 $\rho(0) = 1$ 得 $\rho(\tau) = a^\tau$。（b）$\rho_1(\tau) = 0.5^\tau$ 与 $\rho_2(\tau) = (-0.5)^\tau$ 在 $\tau$ 为偶数时相等，为奇数时互为相反数。AMUSE 用任何奇数时滞都能分离这两个源，用任何偶数时滞都会失败；SOBI 取时滞 $\{1, 2\}$ 即可，因为时滞 1 能区分这一对。（c）对独立同分布的源，所有 $\tau \ne 0$ 都有 $\rho_i(\tau) = 0$，所以在模型中全部时滞协方差矩阵都为零。任何旋转都能对角化它们，没有一对源能被区分，SOBI 给出的只是白化数据的一个任意旋转。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-jade-moment" data-level="intermediate">
+  <p lang="en">Derive part (b) of <a class="ref" data-ref="prop-cumulant-matrices"></a> from the definition of the fourth-order cumulant, and deduce that $\E[\|\bz\|^2\bz\bz^\top] = \tilde\bA\,\diag(\kappa_p + n + 2)\,\tilde\bA^\top$. Check the trace of both sides for Gaussian data.</p>
+  <p lang="zh-CN">由四阶累积量的定义推出<a class="ref" data-ref="prop-cumulant-matrices"></a>的（b），并推出 $\E[\|\bz\|^2\bz\bz^\top] = \tilde\bA\,\diag(\kappa_p + n + 2)\,\tilde\bA^\top$。对高斯数据检验两边的迹。</p>
+  <details class="solution">
+    <p lang="en">For whitened zero-mean $\bz$, $\cum(z_i, z_j, z_k, z_l) = \E[z_iz_jz_kz_l] - \delta_{ij}\delta_{kl} - \delta_{ik}\delta_{jl} - \delta_{il}\delta_{jk}$. Multiplying by $m_{kl}$ and summing over $k, l$: $\sum_{kl}m_{kl}\E[z_iz_jz_kz_l] = \E[z_iz_j\,\bz^\top\bM\bz]$, $\sum_{kl}m_{kl}\delta_{ij}\delta_{kl} = \delta_{ij}\tr\bM$, $\sum_{kl}m_{kl}\delta_{ik}\delta_{jl} = m_{ij}$ and $\sum_{kl}m_{kl}\delta_{il}\delta_{jk} = m_{ji}$, which is (b). With $\bM = \bI$, $\E[\|\bz\|^2\bz\bz^\top] = \bQ_{\bz}(\bI) + (n + 2)\bI = \tilde\bA\,\diag(\kappa_p)\,\tilde\bA^\top + (n + 2)\tilde\bA\tilde\bA^\top$, as claimed. For Gaussian $\bz \sim \Ncal(\bzero, \bI)$ all $\kappa_p = 0$; the trace of the right side is $n(n + 2)$, and the left side has trace $\E\|\bz\|^4 = \E[(\chi^2_n)^2] = \Var(\chi^2_n) + n^2 = 2n + n^2$, in agreement.</p>
+    <p lang="zh-CN">对白化的零均值 $\bz$，有 $\cum(z_i, z_j, z_k, z_l) = \E[z_iz_jz_kz_l] - \delta_{ij}\delta_{kl} - \delta_{ik}\delta_{jl} - \delta_{il}\delta_{jk}$。乘以 $m_{kl}$ 并对 $k, l$ 求和：$\sum_{kl}m_{kl}\E[z_iz_jz_kz_l] = \E[z_iz_j\,\bz^\top\bM\bz]$，$\sum_{kl}m_{kl}\delta_{ij}\delta_{kl} = \delta_{ij}\tr\bM$，$\sum_{kl}m_{kl}\delta_{ik}\delta_{jl} = m_{ij}$，$\sum_{kl}m_{kl}\delta_{il}\delta_{jk} = m_{ji}$，这就是（b）。取 $\bM = \bI$，得 $\E[\|\bz\|^2\bz\bz^\top] = \bQ_{\bz}(\bI) + (n + 2)\bI = \tilde\bA\,\diag(\kappa_p)\,\tilde\bA^\top + (n + 2)\tilde\bA\tilde\bA^\top$，即所求。对高斯数据 $\bz \sim \Ncal(\bzero, \bI)$，所有 $\kappa_p = 0$，右边的迹为 $n(n + 2)$；左边的迹为 $\E\|\bz\|^4 = \E[(\chi^2_n)^2] = \Var(\chi^2_n) + n^2 = 2n + n^2$，两者一致。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-jacobi-single" data-level="intermediate">
+  <p lang="en">(a) Show that for a single symmetric matrix ($K = 1$) the angle <a class="ref" data-ref="eq-jacobi-angle"></a> makes the rotated entry $[\bQ']_{pq}$ zero and agrees with the classical rule $\tan2\theta = 2[\bQ]_{pq}/([\bQ]_{pp} - [\bQ]_{qq})$. (b) For general $K$, show that the part of $\mathcal{C}$ that depends on $\theta$ equals $c_0 - c_1\cos\bigl(4(\theta - \theta^\star)\bigr)$ with $c_1 \ge 0$, which explains the shape of <a class="ref" data-ref="fig-sobi"></a>(b).</p>
+  <p lang="zh-CN">（a）证明对单个对称矩阵（$K = 1$），角度 <a class="ref" data-ref="eq-jacobi-angle"></a> 使旋转后的元素 $[\bQ']_{pq}$ 为零，并且与经典规则 $\tan2\theta = 2[\bQ]_{pq}/([\bQ]_{pp} - [\bQ]_{qq})$ 一致。（b）对一般的 $K$，证明 $\mathcal{C}$ 中依赖于 $\theta$ 的部分等于 $c_0 - c_1\cos\bigl(4(\theta - \theta^\star)\bigr)$，其中 $c_1 \ge 0$，这解释了<a class="ref" data-ref="fig-sobi"></a>（b）的形状。</p>
+  <details class="solution">
+    <p lang="en">(a) Write $\mathbf{h} = (h_1, h_2) = \varrho(\cos\phi, \sin\phi)$ with $\varrho = \|\mathbf{h}\| &gt; 0$. Then $(h_1^2 - h_2^2,\ 2h_1h_2) = \varrho^2(\cos2\phi, \sin2\phi)$, so <a class="ref" data-ref="eq-jacobi-angle"></a> gives $4\theta^\star \equiv 2\phi$, that is, $2\theta^\star \equiv \phi \pmod{\pi}$ and $\mathbf{v} = (\cos2\theta^\star, \sin2\theta^\star) = \pm\mathbf{h}/\varrho$. This is $\tan2\theta^\star = h_2/h_1 = \beta/\alpha$, and $\beta' = 2[\bQ']_{pq} = \mathbf{h}^\top\mathbf{v}^\perp = 0$ because $\mathbf{v}^\perp = (-\sin2\theta^\star, \cos2\theta^\star)$ is orthogonal to $\mathbf{h}$. (b) The $\theta$-dependent part is $\tfrac12\sum_r(\|\mathbf{h}_r\|^2 - (\mathbf{h}_r^\top\mathbf{v})^2) = \tfrac12\tr\mathbf{G} - \tfrac12\mathbf{v}^\top\mathbf{G}\mathbf{v}$. Using the expansion of $\mathbf{v}^\top\mathbf{G}\mathbf{v}$ in the text, this is $\tfrac14(g_{11} + g_{22}) - \tfrac12\bigl[\tfrac12(g_{11} - g_{22})\cos4\theta + g_{12}\sin4\theta\bigr] = c_0 - c_1\cos(4\theta - 4\theta^\star)$ with $c_0 = \tfrac14(g_{11} + g_{22})$ and $c_1 = \tfrac12\sqrt{\tfrac14(g_{11} - g_{22})^2 + g_{12}^2} \ge 0$, where $4\theta^\star$ is the angle of the vector $(\tfrac12(g_{11} - g_{22}), g_{12})$, as in <a class="ref" data-ref="eq-jacobi-angle"></a>. The rest of $\mathcal{C}$ does not depend on $\theta$, so $\mathcal{C}(\theta)$ is a constant minus a sinusoid of period $\pi/2$ with its minimum at $\theta^\star$.</p>
+    <p lang="zh-CN">（a）写 $\mathbf{h} = (h_1, h_2) = \varrho(\cos\phi, \sin\phi)$，其中 $\varrho = \|\mathbf{h}\| &gt; 0$。则 $(h_1^2 - h_2^2,\ 2h_1h_2) = \varrho^2(\cos2\phi, \sin2\phi)$，所以由 <a class="ref" data-ref="eq-jacobi-angle"></a> 得 $4\theta^\star \equiv 2\phi$，即 $2\theta^\star \equiv \phi \pmod{\pi}$，且 $\mathbf{v} = (\cos2\theta^\star, \sin2\theta^\star) = \pm\mathbf{h}/\varrho$。这就是 $\tan2\theta^\star = h_2/h_1 = \beta/\alpha$；又因 $\mathbf{v}^\perp = (-\sin2\theta^\star, \cos2\theta^\star)$ 与 $\mathbf{h}$ 正交，有 $\beta' = 2[\bQ']_{pq} = \mathbf{h}^\top\mathbf{v}^\perp = 0$。（b）依赖于 $\theta$ 的部分为 $\tfrac12\sum_r(\|\mathbf{h}_r\|^2 - (\mathbf{h}_r^\top\mathbf{v})^2) = \tfrac12\tr\mathbf{G} - \tfrac12\mathbf{v}^\top\mathbf{G}\mathbf{v}$。利用正文中 $\mathbf{v}^\top\mathbf{G}\mathbf{v}$ 的展开，它等于 $\tfrac14(g_{11} + g_{22}) - \tfrac12\bigl[\tfrac12(g_{11} - g_{22})\cos4\theta + g_{12}\sin4\theta\bigr] = c_0 - c_1\cos(4\theta - 4\theta^\star)$，其中 $c_0 = \tfrac14(g_{11} + g_{22})$，$c_1 = \tfrac12\sqrt{\tfrac14(g_{11} - g_{22})^2 + g_{12}^2} \ge 0$，而 $4\theta^\star$ 是向量 $(\tfrac12(g_{11} - g_{22}), g_{12})$ 的辐角，与 <a class="ref" data-ref="eq-jacobi-angle"></a> 一致。$\mathcal{C}$ 的其余部分与 $\theta$ 无关，所以 $\mathcal{C}(\theta)$ 是一个常数减去周期为 $\pi/2$ 的正弦曲线，在 $\theta^\star$ 处取最小值。</p>
+  </details>
+</div>
+
+<div class="exercise" id="ex-jade-eigenmatrix" data-level="advanced">
+  <p lang="en">Let $(\lambda_r, \bM_r)$, $r = 1, \dots, n(n + 1)/2$, be orthonormal eigenpairs of the self-adjoint map $\bM \mapsto \bQ_{\bz}(\bM)$ on symmetric matrices, computed from exact or from sample cumulants (both are fully symmetric in their four indices). Prove that for every orthogonal $\bU$</p>
+  <p lang="zh-CN">设 $(\lambda_r, \bM_r)$，$r = 1, \dots, n(n + 1)/2$，是对称矩阵空间上自伴映射 $\bM \mapsto \bQ_{\bz}(\bM)$ 的标准正交特征对，可以由精确累积量或样本累积量算出（两者对四个下标都是完全对称的）。证明对每个正交矩阵 $\bU$ 有</p>
+  <div class="eq">$$\sum_{k,l}\bigl\|\diag\bigl(\bU\bQ_{kl}\bU^\top\bigr)\bigr\|^2 = \sum_r \lambda_r^2\,\bigl\|\diag\bigl(\bU\bM_r\bU^\top\bigr)\bigr\|^2,$$</div>
+  <p lang="en">and explain why, in the model, jointly diagonalizing $n$ weighted eigenmatrices is equivalent to jointly diagonalizing all $n^2$ cumulant matrices.</p>
+  <p lang="zh-CN">并解释为什么在模型中，联合对角化 $n$ 个加权特征矩阵与联合对角化全部 $n^2$ 个累积量矩阵是等价的。</p>
+  <details class="solution">
+    <p lang="en">Let $\bu_i$ be the $i$-th row of $\bU$, as a column vector, and $\bB_i = \bu_i\bu_i^\top$, a symmetric matrix. Then $[\bU\bQ_{kl}\bU^\top]_{ii} = \sum_{a,b}u_{ia}u_{ib}\cum(z_a, z_b, z_k, z_l) = \sum_{a,b}\cum(z_k, z_l, z_a, z_b)\,[\bB_i]_{ab} = [\bQ_{\bz}(\bB_i)]_{kl}$, using the symmetry of the cumulants in their indices. Hence $\sum_{k,l}[\bU\bQ_{kl}\bU^\top]_{ii}^2 = \|\bQ_{\bz}(\bB_i)\|_F^2$. Expanding $\bB_i = \sum_r\langle\bM_r, \bB_i\rangle\bM_r$ in the orthonormal eigenbasis gives $\bQ_{\bz}(\bB_i) = \sum_r\lambda_r\langle\bM_r, \bB_i\rangle\bM_r$, so $\|\bQ_{\bz}(\bB_i)\|_F^2 = \sum_r\lambda_r^2\langle\bM_r, \bB_i\rangle^2$. Finally $\langle\bM_r, \bB_i\rangle = \bu_i^\top\bM_r\bu_i = [\bU\bM_r\bU^\top]_{ii}$; summing over $i$ proves the identity. In the model, part (c) of <a class="ref" data-ref="prop-cumulant-matrices"></a> says that only $n$ eigenvalues are nonzero, with eigenmatrices $\tilde\ba_p\tilde\ba_p^\top$, so the right side contains $n$ terms and the two criteria coincide as functions of $\bU$. With sample cumulants the remaining eigenvalues are of the order of the sampling error, and discarding them is a small approximation that saves a factor of $n$ in the size of the problem.</p>
+    <p lang="zh-CN">设 $\bu_i$ 为 $\bU$ 的第 $i$ 行（写成列向量），$\bB_i = \bu_i\bu_i^\top$ 为对称矩阵。利用累积量对下标的对称性，$[\bU\bQ_{kl}\bU^\top]_{ii} = \sum_{a,b}u_{ia}u_{ib}\cum(z_a, z_b, z_k, z_l) = \sum_{a,b}\cum(z_k, z_l, z_a, z_b)\,[\bB_i]_{ab} = [\bQ_{\bz}(\bB_i)]_{kl}$。因此 $\sum_{k,l}[\bU\bQ_{kl}\bU^\top]_{ii}^2 = \|\bQ_{\bz}(\bB_i)\|_F^2$。在标准正交特征基下展开 $\bB_i = \sum_r\langle\bM_r, \bB_i\rangle\bM_r$，得 $\bQ_{\bz}(\bB_i) = \sum_r\lambda_r\langle\bM_r, \bB_i\rangle\bM_r$，所以 $\|\bQ_{\bz}(\bB_i)\|_F^2 = \sum_r\lambda_r^2\langle\bM_r, \bB_i\rangle^2$。最后 $\langle\bM_r, \bB_i\rangle = \bu_i^\top\bM_r\bu_i = [\bU\bM_r\bU^\top]_{ii}$；对 $i$ 求和即证得恒等式。在模型中，<a class="ref" data-ref="prop-cumulant-matrices"></a>的（c）表明只有 $n$ 个特征值非零，对应的特征矩阵为 $\tilde\ba_p\tilde\ba_p^\top$，所以右边只有 $n$ 项，两个准则作为 $\bU$ 的函数完全相同。用样本累积量时，其余特征值与抽样误差同阶，舍去它们只是一个很小的近似，却使问题规模缩小为原来的 $1/n$。</p>
+  </details>
+</div>
+
+<h2 id="sec-jade-sobi-references"><span lang="en">References</span><span lang="zh-CN">参考文献</span></h2>
+
+<div class="references">
+  <ol>
+    <li>Belouchrani, A., Abed-Meraim, K., Cardoso, J.-F., &amp; Moulines, E. (1997). A blind source separation technique using second-order statistics. <i>IEEE Transactions on Signal Processing</i>, 45(2), 434–444.</li>
+    <li>Cardoso, J.-F. (1989). Source separation using higher order moments. In <i>Proceedings of the IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP-89)</i> (pp. 2109–2112).</li>
+    <li>Cardoso, J.-F. (1999). High-order contrasts for independent component analysis. <i>Neural Computation</i>, 11(1), 157–192.</li>
+    <li>Cardoso, J.-F., &amp; Souloumiac, A. (1993). Blind beamforming for non-Gaussian signals. <i>IEE Proceedings F (Radar and Signal Processing)</i>, 140(6), 362–370.</li>
+    <li>Cardoso, J.-F., &amp; Souloumiac, A. (1996). Jacobi angles for simultaneous diagonalization. <i>SIAM Journal on Matrix Analysis and Applications</i>, 17(1), 161–164.</li>
+    <li>Comon, P. (1994). Independent component analysis, a new concept? <i>Signal Processing</i>, 36(3), 287–314.</li>
+    <li>Molgedey, L., &amp; Schuster, H. G. (1994). Separation of a mixture of independent signals using time delayed correlations. <i>Physical Review Letters</i>, 72(23), 3634–3637.</li>
+    <li>Tong, L., Soon, V. C., Huang, Y.-F., &amp; Liu, R. (1990). AMUSE: A new blind identification algorithm. In <i>Proceedings of the IEEE International Symposium on Circuits and Systems</i> (pp. 1784–1787).</li>
+    <li>Tong, L., Liu, R.-W., Soon, V. C., &amp; Huang, Y.-F. (1991). Indeterminacy and identifiability of blind identification. <i>IEEE Transactions on Circuits and Systems</i>, 38(5), 499–509.</li>
+    <li>Ziehe, A., &amp; Müller, K.-R. (1998). TDSEP—an efficient algorithm for blind separation using time structure. In <i>Proceedings of the 8th International Conference on Artificial Neural Networks (ICANN 98)</i> (pp. 675–680). Springer.</li>
+  </ol>
+</div>
