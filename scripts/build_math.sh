@@ -63,3 +63,12 @@ mk heat-threshold-narrow '\begin{gathered} \Delta_C = 0,\; Q_X > 0 \;\Longrighta
 # VI. Two probes recover the bath heat
 mk probes-law '\frac{\dot{Q}_i}{k_B T_i} = \alpha_i - \beta'
 mk probes-tails 'r_{k} = R_{+}\,a_1^{\,k-1}, \qquad r_{-k} = R_{-}\,a_2^{\,k-1}, \qquad a_i = e^{-\alpha_i \Delta}'
+
+# VII. A study's own dual-regression maps cannot identify template mismatch
+mk own-maps-law '\hat{S}_i W = I \quad\Longleftrightarrow\quad \hat{S}_i = \mathcal{T} + E_i, \quad E_i \mathcal{T}^{\top} = 0'
+mk own-maps-spillover '\delta z_{kb} \approx \frac{1-\rho_{kl}^{2}}{1-\rho_{kb}^{2}}\,\bigl(G_{lb}-\rho_{kb}\,G_{lk}\bigr)\,\Delta z_{kl}'
+
+# VIII. Persistence under robustness checks cannot tell topography from coupling
+mk persistence-law '\Delta(\mathcal{T}^{\prime}) - \Delta(\mathcal{T}) = O(\varepsilon h), \qquad \Delta(\mathcal{T}) = O(\varepsilon)'
+mk persistence-remedy '\min_{u}\,\sum_{k}\bigl\|\bar{m}_{\mathrm{mov},k}(x)-\bar{m}_{\mathrm{fix},k}\bigl(x-u(x)\bigr)\bigr\|^{2}, \qquad \mathcal{T}_{u}(x) = \mathcal{T}\bigl(x-u(x)\bigr)'
+mk persistence-remedy-narrow '\begin{gathered} \min_{u}\,\sum_{k}\bigl\|\bar{m}_{\mathrm{mov},k}(x)-\bar{m}_{\mathrm{fix},k}\bigl(x-u(x)\bigr)\bigr\|^{2} \\[4pt] \mathcal{T}_{u}(x) = \mathcal{T}\bigl(x-u(x)\bigr) \end{gathered}'

@@ -118,6 +118,11 @@
     <li><a href="#heat-threshold"><span class="toc-num">5</span><span class="toc-title">Heat Constraints from Exponential Correlations and a Sharp Two-Temperature Threshold</span><span class="tag">Submitted &middot; 2026</span></a></li>
     <li><a href="#two-probes"><span class="toc-num">6</span><span class="toc-title">Two Probes Recover the Bath Heat That Neither Reveals Alone</span><span class="tag">Submitted &middot; 2026</span></a></li>
   </ol>
+  <p class="toc-group">Computational neuroscience</p>
+  <ol class="toc" start="7">
+    <li><a href="#template-mismatch"><span class="toc-num">7</span><span class="toc-title">A Study&rsquo;s Own Dual-Regression Maps Cannot Identify Template Mismatch</span><span class="tag">Submitted &middot; ISBI 2027</span></a></li>
+    <li><a href="#topography-coupling"><span class="toc-num">8</span><span class="toc-title">Persistence Under Robustness Checks Cannot Tell Topography from Coupling in Connectivity Group Differences</span><span class="tag">Submitted &middot; ISBI 2027</span></a></li>
+  </ol>
 </nav>
 
 <h2>ICA and statistical learning theory</h2>
@@ -485,10 +490,165 @@
   </div>
 </article>
 
+<h2>Computational neuroscience</h2>
+
+<!-- ============== 7. A Study's Own Dual-Regression Maps Cannot Identify Template Mismatch ============== -->
+<article class="paper" id="template-mismatch">
+  <header class="paper-head">
+  <h3><span class="num">7</span><span>A Study&rsquo;s Own Dual-Regression Maps Cannot Identify Template Mismatch</span></h3>
+  <p class="byline"><span class="me">Yuda Bi</span>, Zhuolin Li, Jiaxiao Cai, Vince D. Calhoun</p>
+  <p class="venue-line"><span class="tag">Submitted</span><i>IEEE International Symposium on Biomedical Imaging</i> (ISBI), 2027 &middot; companion to <a href="#topography-coupling">paper 8</a></p>
+  </header>
+
+  <div class="paper-body">
+  <div class="display">
+    <p class="display-label">Central identity</p>
+    <img src="assets/math/own-maps-law.svg" width="317" height="19" alt="S hat i times W equals the identity; equivalently, S hat i equals the template T plus E i, with E i times T transpose equal to zero">
+    <p class="gloss">In dual regression, <var>W</var> is the stage-1 regression onto the template, and every subject&rsquo;s own stage-2 maps <var>S&#770;</var><sub><var>i</var></sub> reproduce the template exactly within its span whenever the extracted time courses have full rank, for every subject, template, and sample size. Only the in-span part of a mismatch sets the cross-talk that alters connectivity, and that is exactly the part the own maps replace by the template.</p>
+    <img src="assets/math/own-maps-spillover.svg" width="258" height="50" alt="delta z k b is approximately one minus rho k l squared over one minus rho k b squared, times G l b minus rho k b times G l k, times delta z k l">
+    <p class="gloss">To first order and without noise, a coupling change on edge (<var>k</var>,&nbsp;<var>l</var>) spills onto an edge (<var>k</var>,&nbsp;<var>b</var>) that shares network <var>k</var>; <var>&rho;</var> are latent correlations, and <var>G</var><sub><var>lb</var></sub> is the mean share of network <var>l</var>&rsquo;s signal that the template lets into network <var>b</var>&rsquo;s time course. With <var>&rho;</var> dropped, the spill is the fraction <var>G</var><sub><var>lb</var></sub> of the change. Edges that share no network receive only higher-order terms.</p>
+  </div>
+
+  <h4>The question</h4>
+  <p>Template-based ICA such as NeuroMark extracts every subject&rsquo;s networks and time courses with one fixed set of group maps, by dual regression (DR) or spatially constrained ICA, so that functional network connectivity (FNC) can be compared across studies. NeuroMark 1.0 was built from young adults, yet it is routinely applied to children and adolescents, whose network topography is still maturing. A study with an imperfect template needs to know how much of a true connectivity change the template keeps, where the rest goes, and whether its own maps can tell. Since networks are usually matched to templates by spatial similarity, <strong>the study&rsquo;s own maps seem the natural place to check the fit</strong>. The paper studies DR only; spatially constrained ICA, the NeuroMark default, is not covered.</p>
+
+  <h4>Results</h4>
+  <ul class="results">
+    <li><b>Proposition 2</b> <span class="thm-name">(Own maps cannot identify mismatch).</span> If the extracted time courses have full column rank, the stage-2 maps satisfy <span class="nowrap"><var>S&#770;</var><sub><var>i</var></sub><var>W</var>&nbsp;=&nbsp;<var>I</var></span> exactly. The time courses depend on the true maps only through the cross-talk <span class="nowrap"><var>M</var><sub><var>i</var></sub>&nbsp;=&nbsp;<var>S</var><sub><var>i</var></sub><var>W</var></span>, which ignores every part of the maps outside the template&rsquo;s span, so <strong>the part of a mismatch that alters FNC is exactly the part that the own maps replace by the template</strong>. Without noise, and with the template&rsquo;s networks present in the subject, any other cross-talk paired with suitably changed out-of-span maps gives the same own maps. Their spatial correlation with the template, the own-map check, depends only on the residual outside the span.</li>
+    <li><b>Exact injection</b> <span class="thm-name">(Sec.&nbsp;2.3).</span> Because stage&nbsp;1 is linear and the identity holds, adding <span class="nowrap">(<var>A</var>&prime;<sub><var>i</var></sub>&nbsp;&minus;&nbsp;<var>A&#770;</var><sub><var>i</var></sub>)<var>S&#770;</var><sub><var>i</var></sub></span> to a subject&rsquo;s scan changes its time courses under the template that produced <var>S&#770;</var><sub><var>i</var></sub> from <var>A&#770;</var><sub><var>i</var></sub> to <var>A</var>&prime;<sub><var>i</var></sub> exactly, and under any other template, with stage-1 matrix <var>W</var><sub><var>c</var></sub>, by <span class="nowrap">(<var>A</var>&prime;<sub><var>i</var></sub>&nbsp;&minus;&nbsp;<var>A&#770;</var><sub><var>i</var></sub>)<var>S&#770;</var><sub><var>i</var></sub><var>W</var><sub><var>c</var></sub></span>. <strong>A coupling change can thus be injected into real scans exactly, and its fate under every template follows from <var>q</var>&#8239;&times;&#8239;<var>q</var> algebra</strong>. Under the template that produced the maps, recoloring the time courses to the new correlation matrix leaves every other edge unchanged, to within 10<sup>&minus;13</sup> of the source change; under other templates the change spills (Proposition&nbsp;1).</li>
+    <li><b>Proposition 1</b> <span class="thm-name">(Spillover).</span> Writing the fit matrix as <span class="nowrap"><var>M</var><sub><var>i</var></sub>&nbsp;=&nbsp;<var>I</var>&nbsp;+&nbsp;<var>G</var>&nbsp;+&nbsp;<var>D</var><sub><var>i</var></sub></span>, with <var>G</var> its mean departure from the identity, a change on one edge reaches the edges that share a network with it as in the second display; <strong>edges that share no network receive only higher-order terms</strong>. At first order the diagonal of <var>G</var> cancels in the retention of the changed edge itself, yet the losses are not small: a heuristic in the form of Spearman&rsquo;s attenuation formula puts the retention of edge (<var>k</var>,&nbsp;<var>l</var>) near <span class="nowrap">&radic;(<var>o</var><sub><var>k</var></sub><var>o</var><sub><var>l</var></sub>)</span>, where <var>o</var><sub><var>k</var></sub> is the share of network <var>k</var>&rsquo;s extracted signal that is its own. An independent template <var>P</var> of the cohort estimates the mismatch as <span class="nowrap"><var>G&#770;</var>&nbsp;=&nbsp;<var>PW</var>&nbsp;&minus;&nbsp;<var>I</var></span>, which the paper calls the audit.</li>
+  </ul>
+
+  <h4>Evidence</h4>
+  <p>The evaluation uses resting-state fMRI from the Philadelphia Neurodevelopmental Cohort (8&ndash;21&nbsp;years, 119 volumes, 1,224 participants after quality control). Group ICAs of two disjoint sets of 350 participants, matched to the 53 NeuroMark 1.0 networks, provide the audit template <var>P</var><sub><var>A</var></sub> and the reference <var>P</var><sub><var>B</var></sub> through which changes are injected. Eight external templates are then scored on the other 524 participants over 300 injection settings: NeuroMark 1.0 and three perturbed versions of it (smoothed, thresholded, and displaced), NeuroMark 2.1, and the NeuroMark 3.0 development, aging, and infant templates, the last two as wrong-age controls.</p>
+  <p>The own-map check followed the residual, not the cross-talk. With every template reduced to its 53 matched components, it ranged only 0.33&ndash;0.40, and its ranking of the eight templates correlated with their retention at Spearman &minus;0.24; it was highest for NeuroMark 2.1, which retained only 0.49. Entered with all their components, the four newer templates fell to 0.21&ndash;0.24 whatever their retention, and the check then ranked the templates at Spearman 0.81, <strong>by the number of components fitted to 119 volumes rather than by what each template loses</strong>. These analyses were added after the first held-out results.</p>
+  <p>On the 20 common networks, identified by both cohort ICAs and counted for every candidate, NeuroMark 1.0 retained 0.73 of an injected change and <var>P</var><sub><var>A</var></sub> 0.84, while NeuroMark 2.1 and the development, aging, and infant templates retained 0.49, 0.62, 0.49, and 0.48. <strong>The newer templates stayed below NeuroMark 1.0 in every variant tested</strong>: entered with all their components, with the reference also entered with all of its components, with the two cohort ICAs swapped, and with network labels from the development maps. NeuroMark 1.0 trailed the cohort ICA only when templates were reduced to matched components (0.87 and 0.87 with all components), and its lead over the development template (0.103, subject-bootstrap 95% interval 0.098 to 0.108) halved with development labels, so part of the adult advantage comes from labeling the networks with adult maps.</p>
+  <p>Spillover went where Proposition&nbsp;1 puts it: for NeuroMark 1.0, edges that share a network with a changed edge held 91% of all spillover targets but made up only 34% of the other edges. Among them, the audit ranked the targets with an average precision of 0.55, against 0.51 for the template&rsquo;s own spatial overlap and 0.30 for flagging every such edge. The paper concludes that a template&rsquo;s fit should not be judged from the study&rsquo;s own DR maps, and that in DR a newer or age-matched template need not keep more of a connectivity change. It is explicit about the limits: retention is measured against a group ICA of the same cohort matched to NeuroMark 1.0, a yardstick that favors templates close to NeuroMark 1.0; the restriction to common networks was adopted after the first held-out results; and only groups that differ in coupling were studied, whereas groups whose maps differ, as across ages, also create spurious differences, the subject of <a href="#topography-coupling">paper 8</a>.</p>
+
+  <details class="table">
+    <summary>Table 1 of the paper: outcomes by candidate template</summary>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th scope="col">Template</th><th scope="col">nets</th><th scope="col"><var>r&#771;</var></th><th scope="col"><var>r</var><sub>own</sub></th><th scope="col"><var>g</var> (%)</th><th scope="col"><var>o&#770;</var></th><th scope="col"><var>&kappa;</var><sub>com</sub></th><th scope="col">AP</th><th scope="col"><var>&kappa;</var><sub>dev</sub></th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">NM1.0 (adult)</th><td>34</td><td>1.00</td><td>0.35</td><td>3.9</td><td>0.81</td><td>0.73</td><td>0.55</td><td>0.77</td></tr>
+          <tr><th scope="row">NM1.0 smoothed 6&nbsp;mm</th><td>34</td><td>0.99</td><td>0.35</td><td>4.0</td><td>0.81</td><td>0.75</td><td>0.56</td><td>0.78</td></tr>
+          <tr><th scope="row">NM1.0 thresholded 20%</th><td>34</td><td>0.89</td><td>0.34</td><td>4.0</td><td>0.84</td><td>0.76</td><td>0.51</td><td>0.78</td></tr>
+          <tr><th scope="row">NM1.0 displaced 2&nbsp;mm</th><td>34</td><td>0.98</td><td>0.35</td><td>4.0</td><td>0.80</td><td>0.72</td><td>0.55</td><td>0.77</td></tr>
+          <tr><th scope="row">NM2.1 (53 matched)</th><td>29</td><td>0.75</td><td>0.40</td><td>5.4</td><td>0.58</td><td>0.49</td><td>0.57</td><td>0.48</td></tr>
+          <tr><th scope="row">NM3.0 development</th><td>29</td><td>0.77</td><td>0.36</td><td>3.7</td><td>0.73</td><td>0.62</td><td>0.55</td><td>0.72</td></tr>
+          <tr><th scope="row">NM3.0 aging</th><td>25</td><td>0.69</td><td>0.37</td><td>4.2</td><td>0.61</td><td>0.49</td><td>0.58</td><td>0.55</td></tr>
+          <tr><th scope="row">NM3.0 infant</th><td>29</td><td>0.60</td><td>0.33</td><td>4.9</td><td>0.62</td><td>0.48</td><td>0.60</td><td>0.48</td></tr>
+          <tr><th scope="row"><var>P</var><sub><var>A</var></sub> (own cohort ICA)</th><td>34</td><td>&ndash;</td><td>0.35</td><td>0</td><td>&ndash;</td><td>0.84</td><td>&ndash;</td><td>0.86</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Held-out set C (<var>n</var>&nbsp;=&nbsp;524). nets: networks identified by <var>P</var><sub><var>A</var></sub> and <var>P</var><sub><var>B</var></sub> and counted for the candidate; <var>r&#771;</var>: median correlation of the template with NeuroMark 1.0; <var>r</var><sub>own</sub>: own-map check; <var>g</var>: RMS off-diagonal of the audit <var>G&#770;</var><sub><var>A</var></sub> (<var>P</var><sub><var>A</var></sub> against <var>P</var><sub><var>B</var></sub>: 3.0%, a floor); <var>o&#770;</var>: retention predicted by the own-signal share from the audit; <var>&kappa;</var><sub>com</sub>: retention on the 20 common networks; AP: audit average precision for spillover targets (chance 26&ndash;32%); <var>&kappa;</var><sub>dev</sub>: retention with development network labels (22 common networks). <var>r</var><sub>own</sub>, <var>g</var>, <var>o&#770;</var>, and AP use the common networks. For <var>P</var><sub><var>A</var></sub>, <var>G&#770;</var>&nbsp;=&nbsp;0 by construction.</p>
+  </details>
+
+  <figure class="figure">
+    <div class="fig-scroll">
+      <a href="assets/fig/template-mismatch.png" aria-label="Open the figure at full size">
+        <img src="assets/fig/template-mismatch.png" width="1987" height="692" loading="lazy" decoding="async" alt="Four panels: retention against the own-map check, with the cohort ICA highest, the NeuroMark 1.0 family next and the newer templates lower, and arrows showing the check falling when the newer templates enter with all their components; bars of retention on the 20 common networks for nine templates; cross-talk matrices of the audit for NeuroMark 1.0 and 2.1; and average precision for spillover targets rising from chance through the template's own overlap, the audit and the semi-oracle to the oracle.">
+      </a>
+    </div>
+    <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
+    <figcaption><b>Fig. 2.</b> Held-out evaluation on PNC (network labels from NeuroMark 1.0). (a) Own-map check <var>r</var><sub>own</sub> against retention for the NeuroMark 1.0 family (black), the other external templates with 53 matched components (red) and with all components (hollow, arrows), and <var>P</var><sub><var>A</var></sub> (blue); <var>&rho;</var> is the Spearman correlation over the eight external templates. (b) Retention on the 20 common networks (bars), and the own-signal share computed from the set-C mean fit matrix (gray; a consistency check) and from the audit <var>G&#770;</var><sub><var>A</var></sub> (blue). (c) Cross-talk matrices of the audit, off-diagonal <var>G&#770;</var><sub><var>A</var></sub> in %, NeuroMark 1.0 below and NeuroMark 2.1 above the diagonal, NeuroMark 1.0 domains outlined; a change on <var>k</var>&ndash;<var>l</var> reaches <var>k</var>&ndash;<var>b</var> in proportion to <var>G&#770;</var><sub><var>lb</var></sub>. (d) Average precision for spillover targets among network-sharing edges for NeuroMark 1.0: flagging all edges (chance), the template&rsquo;s own spatial overlap, the audit, the semi-oracle <var>G&#770;</var><sub><var>B</var></sub> (from the injection template), and the oracle. Error bars: bootstrap 95% intervals where shown.</figcaption>
+  </figure>
+    <p class="to-top"><a href="#top">Back to top &uarr;</a></p>
+  </div>
+</article>
+
+<!-- ============== 8. Persistence Under Robustness Checks ============== -->
+<article class="paper" id="topography-coupling">
+  <header class="paper-head">
+  <h3><span class="num">8</span><span>Persistence Under Robustness Checks Cannot Tell Topography from Coupling in Connectivity Group Differences</span></h3>
+  <p class="byline">Zhuolin Li, Jiaxiao Cai, Vince D. Calhoun, <span class="me">Yuda Bi</span>&dagger;</p>
+  <p class="venue-line"><span class="tag">Submitted</span><i>IEEE International Symposium on Biomedical Imaging</i> (ISBI), 2027 &middot; companion to <a href="#template-mismatch">paper 7</a></p>
+  <p class="note">&dagger; Corresponding author.</p>
+  </header>
+
+  <div class="paper-body">
+  <div class="display">
+    <p class="display-label">Central result</p>
+    <img src="assets/math/persistence-law.svg" width="310" height="17" alt="Delta of T prime minus Delta of T is of order epsilon h, while Delta of T is of order epsilon">
+    <p class="gloss">A shared check, such as template smoothing or a swap to another template, re-extracts both groups with a new template. Its effect on the group contrast &Delta; is a mixed second difference: if group-mean FNC depends smoothly on the template and on a group difference of size <var>&epsilon;</var> (in maps, coupling, or both), the change is of order <var>&epsilon;h</var> for a small template change of relative size <var>h</var>. The relative change is <var>O</var>(<var>h</var>) whatever the origin of the difference, so a small shared check can leave both kinds intact.</p>
+    <picture>
+      <source media="(max-width: 480px)" srcset="assets/math/persistence-remedy-narrow.svg" width="278" height="73">
+      <img src="assets/math/persistence-remedy.svg" width="468" height="39" alt="Minimize over u the sum over k of the squared norm of m bar moving k of x minus m bar fixed k of x minus u of x; the warped template T u of x equals T of x minus u of x">
+    </picture>
+    <p class="gloss">Differential alignment changes the template of one group only. It fits a smooth displacement <var>u</var> between the groups&rsquo; mean stage-2 maps and re-extracts the moving group with the warped template. Its effect is first order, and because <var>u</var> is fitted to the group difference, it changes the contrast by an amount comparable to the contrast itself.</p>
+  </div>
+
+  <h4>The question</h4>
+  <p>Group differences in functional network connectivity (FNC) from template-based ICA can reflect where networks lie (topography) rather than how they interact (coupling). Groups can differ in topography through atrophy, development, disease, or residual misregistration, and personalizing network locations has reduced the hypoconnectivity found in autism. The usual defense is a robustness check: the finding is shown to persist with another network template, such as another NeuroMark version, and thresholded dual regression (DR), proposed against the bias from overlapping networks, is a further candidate. These checks re-extract both groups alike, although thresholded DR changes each subject&rsquo;s own maps and so might follow a group&rsquo;s topography. The paper asks whether <strong>persistence under them shows that a difference reflects coupling</strong>, and answers with a semi-synthetic benchmark built from real data, in which the origin of every difference is known.</p>
+
+  <h4>Results</h4>
+  <ul class="results">
+    <li><b>Shared checks</b> <span class="thm-name">(Sec.&nbsp;2.2).</span> If group-mean FNC depends smoothly on the template and on the group difference, a check that replaces the template for both groups changes the contrast only at second order (first display), so <strong>a small shared check can leave either kind of difference intact</strong>; the argument bounds only the order, and the constants may differ by origin. Template smoothing by 6&nbsp;mm is such a small check (<var>h</var>&nbsp;=&nbsp;0.13), a NeuroMark 2.1 swap (<var>h</var>&nbsp;=&nbsp;0.87) is not, and thresholded DR, which gives each subject its own effective template, is outside the argument. For any check, <strong>persistence raises the odds of a coupling origin by at most 1/<var>P</var>(persist&nbsp;|&nbsp;topographic)</strong>, a bound reached when every coupling edge stays significant.</li>
+    <li><b>Differential alignment</b> <span class="thm-name">(Sec.&nbsp;2.3).</span> If one group&rsquo;s topography is a deformation of the other&rsquo;s, re-extracting that group with the template deformed the same way removes the topographic contrast exactly when the deformation acts as a voxel permutation and the noise is exchangeable, and approximately otherwise. The procedure takes as moving group the one whose mean maps deviate more from the template, fits the displacement in the lowest five cosine functions per axis (375 parameters) by damped Gauss&ndash;Newton, re-extracts, and refits; three such updates are the default. <strong>Updates are needed because stage-2 maps reproduce the template within its span</strong> (the identity of <a href="#template-mismatch">paper 7</a>), so a single fit sees only the out-of-span part of the change. A coupling difference that reaches the maps also biases the fitted field.</li>
+    <li><b>Edge-level reading and screen</b> <span class="thm-name">(Sec.&nbsp;3.1).</span> Each significant edge&rsquo;s surviving contrast is read against how much a re-extraction shrinks FNC itself in a group without a difference: a re-extraction is topography-specific when it shrinks topographic contrasts well below FNC while sparing coupling contrasts, and survival near the FNC shrinkage leaves the origin open. This reading was defined after the discovery counts were known. A screen gates differential alignment: the size of the first fitted field must exceed its null from 1,000 site-stratified label permutations (<var>p</var>&nbsp;&lt; 0.05).</li>
+  </ul>
+
+  <h4>Evidence</h4>
+  <p>The benchmark draws eight pseudo-group studies from UK Biobank resting-state fMRI (17,584 participants after quality control), each a block of 1,200 participants split into two groups of 600, balanced on site, sex, and age, and into discovery and test halves. Every subject&rsquo;s data receive an individual smooth random warp, and five arms share subjects and data: zero; a matched sham; S-only, in which group&nbsp;1 also receives a smooth group displacement (brain RMS 2.8&nbsp;mm); T-only, in which ten cross-domain edges of group&nbsp;1 change by <span class="nowrap">&Delta;<var>z</var>&nbsp;=&nbsp;&plusmn;0.1</span>, injected through each subject&rsquo;s NeuroMark 1.0 stage-2 maps using the identity of <a href="#template-mismatch">paper 7</a>; and Both. All 1,378 edges are tested on the test half at a false discovery rate of 0.05.</p>
+  <p>Persistence was weak evidence of coupling. In the S-only arm, standard DR made 258&nbsp;&plusmn;&nbsp;66 discoveries, all topographic, and <strong>template smoothing still made 252&nbsp;&plusmn;&nbsp;68</strong> while keeping the injected coupling edges of the T-only arm. The NeuroMark 2.1 swap made 303&nbsp;&plusmn;&nbsp;88 and found only 1.0 of the ten coupling edges, partly because the injection is defined in NeuroMark 1.0 space; thresholded DR cut the topographic discoveries by 39% and kept every coupling edge. On the significant edges of the Both arm, <strong>persistence raised the odds of a coupling origin only 1.1-, 1.8-, and 1.8-fold</strong> under smoothing, the swap, and thresholded DR, with 88% and 56% of topographic edges persisting under smoothing and thresholded DR.</p>
+  <p>Thresholded DR separated the two kinds of edge (AUC 0.90) only through a gain: it shrank FNC itself to 0.78 and topographic contrasts about as much (median survival 0.73), while injected coupling gained (1.21), for reasons the paper could not settle. <strong>Differential alignment removed topographic contrast specifically</strong>: it left FNC nearly unchanged without a displacement (shrinkage 1.00) and kept a median 0.63 of topographic and 1.02 of coupling contrasts (AUC 0.83). In the S-only arm it removed 58&nbsp;&plusmn;&nbsp;5% of the topographic contrast, against 78&nbsp;&plusmn;&nbsp;5% for the true field, and left 80&nbsp;&plusmn;&nbsp;36 discoveries. It has costs. In the T-only arm, updates created off-target discoveries (5.0&nbsp;&plusmn;&nbsp;7.3 after three); gating on the screen removed them all, since no T-only block passed it, but a matched sham passed in 5 of 8 blocks. In the Both arm the fitted field was poorer, removal fell to 44&nbsp;&plusmn;&nbsp;8%, and re-extraction made 70 new off-target discoveries per block (52 for thresholded DR), leaving 169&nbsp;&plusmn;&nbsp;66 against 197&nbsp;&plusmn;&nbsp;46 for thresholded DR, which found more of the injected edges.</p>
+  <p>In FBIRN schizophrenia data (151 patients, 160 controls), the first fitted field was within its permutation null (<var>p</var>&nbsp;=&nbsp;0.57, descriptive), and the frozen field, applied ungated to the test half, changed the result little (192 significant edges before, 199 after). Under thresholded DR, the 192 edges kept a median 0.85 of their contrast while FNC in the controls shrank to 0.76; relative to that shrinkage (1.12), they fall between the benchmark&rsquo;s topographic edges (0.94) and its injected coupling (1.55), so <strong>their origin remains open</strong>. The paper&rsquo;s rules follow: persistence under a template swap, smoothing, or thresholding is not sufficient evidence of coupling; survival under a re-extraction that keeps the FNC pattern should be read against how much it shrinks FNC in the study&rsquo;s controls; and the first fitted field should be reported with its permutation null. A field above the null shows that the groups&rsquo; maps differ, not that they are displaced; only then is differential alignment applied, with a fixed budget. It is explicit about the limits: the main displacement is one smooth global field, of the class the estimator fits, and a field confined to the default-mode networks was removed about half as well as by the true field; the update budget and other settings were tuned on four of the eight evaluated blocks; and only DR was studied.</p>
+
+  <details class="table">
+    <summary>Table 2 of the paper: edge-level readings in the Both arm</summary>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col" rowspan="2">Re-extraction</th>
+            <th scope="col" rowspan="2">FNC</th>
+            <th scope="colgroup" colspan="2" class="group">Survival</th>
+            <th scope="col" rowspan="2">AUC</th>
+            <th scope="colgroup" colspan="2" class="group">Survival rule</th>
+            <th scope="colgroup" colspan="2" class="group">Significance</th>
+          </tr>
+          <tr>
+            <th scope="col">coupling</th>
+            <th scope="col">topographic</th>
+            <th scope="col">flag</th>
+            <th scope="col">keep</th>
+            <th scope="col">lost</th>
+            <th scope="col">kept</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Template smoothing</th><td>0.95</td><td>1.02</td><td>0.97</td><td>0.66</td><td>54</td><td>73</td><td>12</td><td>100</td></tr>
+          <tr><th scope="row">NeuroMark 2.1 swap</th><td>&ndash;</td><td>0.43</td><td>0.22</td><td>0.59</td><td>29</td><td>88</td><td>77</td><td>41</td></tr>
+          <tr><th scope="row">Thresholded DR</th><td>0.78</td><td>1.21</td><td>0.73</td><td>0.90</td><td>82</td><td>84</td><td>44</td><td>100</td></tr>
+          <tr><th scope="row">Differential alignment</th><td>1.00</td><td>1.02</td><td>0.63</td><td>0.83</td><td>64</td><td>86</td><td>62</td><td>95</td></tr>
+          <tr><th scope="row">True field</th><td>&ndash;</td><td>1.08</td><td>0.26</td><td>0.96</td><td>86</td><td>94</td><td>98</td><td>94</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Pooled over 8 blocks: 66 injected coupling edges (the same ten in every block) and 2,084 topographic edges, all significant under standard DR. FNC: shrinkage of FNC itself without a group difference (&ndash;: not defined; the swap changes the FNC pattern, <var>r</var>&nbsp;=&nbsp;0.26; the true field&rsquo;s template gave 0.95&ndash;1.00 on four undisplaced groups). Survival: median fraction of the contrast kept. AUC: survival separating the two classes. Flag/keep: % of topographic edges flagged and of coupling edges kept by a threshold calibrated on the other blocks. Significance: % of topographic edges no longer significant with the same sign, and of coupling edges still significant with the same sign.</p>
+  </details>
+
+  <figure class="figure">
+    <div class="fig-scroll">
+      <a href="assets/fig/topography-coupling.png" aria-label="Open the figure at full size">
+        <img src="assets/fig/topography-coupling.png" width="1977" height="669" loading="lazy" decoding="async" alt="Four panels: the left-right component of the true and the fitted group field on an axial brain slice, with similar patterns; a matrix of each edge's topographic contrast before differential alignment below the diagonal and, weaker, after it above; histograms of the contrast kept by topographic and coupling edges under thresholded dual regression (AUC 0.90) and differential alignment (AUC 0.83); and off-target discoveries against the number of updates, flat for the Both arm, falling for S-only, and rising from near zero for T-only.">
+      </a>
+    </div>
+    <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
+    <figcaption><b>Fig. 1.</b> UK Biobank pseudo-groups. (a) Left&ndash;right component of the true and the fitted group field on an axial slice. (b) Topographic contrast of each edge (paired difference with versus without the group field, in group-test SE units) before (lower triangle) and after (upper) differential alignment; NeuroMark 1.0 domains outlined. Panels (a) and (b) show the S-only arm of the block with the median removal. (c) Survival of the group contrast for the significant Both-arm edges, pooled over blocks, under thresholded DR (top) and differential alignment (bottom); values are clipped to [&minus;0.25, 1.75], and differential alignment reversed the sign of 5% of the topographic edges; dotted: median leave-one-block-out threshold; dashed: FNC shrinkage. (d) Off-target discoveries against the number of updates (mean over blocks; symmetric-log axis; dotted: three updates).</figcaption>
+  </figure>
+    <p class="to-top"><a href="#top">Back to top &uarr;</a></p>
+  </div>
+</article>
+
 </main>
 
 <footer class="site-footer">
-  <p>&copy; 2026 Yuda Bi &middot; Figures are reproduced from the papers &middot; Updated October 2026</p>
+  <p>&copy; 2026 Yuda Bi &middot; Figures are reproduced from the papers &middot; Updated November 2026</p>
   <p class="visit" id="visit" hidden>Visitors since October 2026: <span class="count" id="visit-count">&hellip;</span></p>
 </footer>
 
