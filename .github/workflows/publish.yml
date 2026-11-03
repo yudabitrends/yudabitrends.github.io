@@ -49,6 +49,7 @@ jobs:
           python scripts/tests_performance_figure.py
           python scripts/tests_beginner.py
           node scripts/tests_beginner_lab.cjs
+          node scripts/tests_book_rendering.cjs
 
       - name: Validate site quality
         run: python3 scripts/check_site_quality.py

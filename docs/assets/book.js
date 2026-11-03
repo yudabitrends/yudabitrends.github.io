@@ -5,7 +5,22 @@
   var langButtons = document.querySelectorAll('.lang-switch button');
   function language() { return d.getAttribute('data-lang') || 'en'; }
   function label(en, zh) { return language() === 'zh' ? zh : language() === 'both' ? en + ' / ' + zh : en; }
+  // Offscreen auto-rendered blocks stay in the accessibility tree. Mirror
+  // the language CSS explicitly, without overwriting KaTeX's aria-hidden.
+  var languageNodes = Array.from(document.body.querySelectorAll('[lang="en"], [lang="zh-CN"]')).map(function (node) {
+    var lang = node.getAttribute('lang');
+    return { node: node, lang: lang, originalHidden: node.getAttribute('aria-hidden'),
+      nestedOpposite: !!node.parentElement.closest(lang === 'en' ? 'body [lang="zh-CN"]' : 'body [lang="en"]') };
+  });
   function markLanguage() {
+    languageNodes.forEach(function (item) {
+      var hidden = item.nestedOpposite || (language() === 'en' && item.lang === 'zh-CN') || (language() === 'zh' && item.lang === 'en');
+      if (hidden) item.node.setAttribute('aria-hidden', 'true');
+      else if (item.originalHidden === null) item.node.removeAttribute('aria-hidden');
+      else item.node.setAttribute('aria-hidden', item.originalHidden);
+    });
+    // Without JavaScript the complete static chapter uses ordinary rendering.
+    d.classList.add('book-render-ready');
     langButtons.forEach(function (button) { button.setAttribute('aria-pressed', String(button.dataset.setLang === language())); });
     document.querySelectorAll('.code-copy').forEach(function (button) { button.textContent = label('Copy code', '复制代码'); });
     if (searchDialog && searchDialog.open) renderSearch();
@@ -46,7 +61,8 @@
     solutionToggle.hidden = false;
     function updateSolutions() {
       var allOpen = solutions.every(function (item) { return item.open; });
-      solutionToggle.innerHTML = '<span lang="en">' + (allOpen ? 'Collapse all solutions' : 'Expand all solutions') + '</span><span lang="zh-CN">' + (allOpen ? '收起全部解答' : '展开全部解答') + '</span>';
+      solutionToggle.querySelector('[lang="en"]').textContent = allOpen ? 'Collapse all solutions' : 'Expand all solutions';
+      solutionToggle.querySelector('[lang="zh-CN"]').textContent = allOpen ? '收起全部解答' : '展开全部解答';
       solutionToggle.setAttribute('aria-expanded', String(allOpen));
     }
     solutionToggle.addEventListener('click', function () {
@@ -60,7 +76,19 @@
   function revealFragment() {
     var id; try { id = decodeURIComponent(location.hash.slice(1)); } catch (_) { return; }
     var target = id && document.getElementById(id);
-    if (target) { var details = target.closest('details'); if (details) details.open = true; }
+    function stillCurrent() { try { return decodeURIComponent(location.hash.slice(1)) === id; } catch (_) { return false; } }
+    if (target) {
+      var details = target.closest('details'); if (details) details.open = true;
+      // Native fragment scrolling can precede the layout of nearby auto blocks.
+      // Settle that layout before aligning the target under the sticky header.
+      requestAnimationFrame(function () {
+        if (!stillCurrent()) return;
+        target.scrollIntoView({ block: 'start', behavior: 'instant' });
+        requestAnimationFrame(function () {
+          if (document.getElementById(id) === target && stillCurrent()) target.scrollIntoView({ block: 'start', behavior: 'instant' });
+        });
+      });
+    }
   }
   window.addEventListener('hashchange', revealFragment); revealFragment();
   // Copy only runnable examples; a blocked clipboard leaves selectable source intact.

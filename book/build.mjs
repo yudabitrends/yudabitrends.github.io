@@ -295,7 +295,14 @@ function renderChapter(c) {
     }
     const cls = at.class ? ` class="${at.class}"` : '';
     const id = at.id ? ` id="${at.id}"` : '';
-    return `<figure${cls}${id}>${body}</figure>`;
+    // Keep authored dimensions/alt text; diagrams below the reading position
+    // need not compete with the first screen for bandwidth or decoding.
+    const lazyBody = body.replace(/<img\b([^>]*?)(\/?)>/g, (tag, attributes, slash) => {
+      const loading = /\bloading=/.test(attributes) ? '' : ' loading="lazy"';
+      const decoding = /\bdecoding=/.test(attributes) ? '' : ' decoding="async"';
+      return `<img${attributes}${loading}${decoding}${slash}>`;
+    });
+    return `<figure${cls}${id}>${lazyBody}</figure>`;
   });
 
   // cross-references

@@ -22,6 +22,7 @@ Create a virtual environment and install the pinned numerical dependencies:
     python scripts/tests_performance_figure.py
     python scripts/tests_beginner.py
     node scripts/tests_beginner_lab.cjs
+    node scripts/tests_book_rendering.cjs
     python scripts/check_site_quality.py
     python -m http.server 8000 --bind 127.0.0.1 --directory docs
 
@@ -84,3 +85,19 @@ The four-point experiment is an exact finite probability model, not an estimator
 The JavaScript tests check its moments, inverse rotation, allowed ambiguities and
 explicit zero-covariance dependence counterexample. Static text remains usable
 when JavaScript is unavailable.
+
+## Long-chapter rendering
+
+The reader progressively skips layout and paint of offscreen top-level blocks on
+supporting browsers. Source text, MathML, links and IDs remain in the static HTML.
+The enhancement is screen-only and starts after language accessibility attributes
+are synchronized; print and no-JavaScript reading retain ordinary rendering.
+Figures retain authored dimensions and alternative text and load lazily.
+
+The rendering regression executes the shipped reader script with a small DOM
+fixture: three initial languages, switches, nested language labels, existing ARIA
+values, answer controls, print restoration and fragment settling. It also checks
+the CSS fallback boundary and generated figure attributes. Browser checks should
+include a cold deep link, long proofs, expanded answers, language switching,
+search and a narrow screen. Do not equate raw HTML size with compressed transfer
+size or local rendering timings with real-world network latency.

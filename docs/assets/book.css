@@ -30,7 +30,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+/* Direct jumps avoid racing deferred block heights during smooth scrolling. */ html { scroll-behavior: auto; }
 
 body {
   margin: 0;
@@ -91,10 +91,8 @@ html[data-lang="both"] h2 > span[lang="zh-CN"] { padding-left: 2.6rem; }
   top: 0;
   z-index: 40;
   height: var(--bar-h);
-  background: rgba(255, 255, 255, 0.96);
+  background: #fff;
   border-bottom: 1px solid var(--rule);
-  -webkit-backdrop-filter: saturate(1.4) blur(6px);
-  backdrop-filter: saturate(1.4) blur(6px);
 }
 .bar-inner {
   display: flex;
@@ -152,6 +150,26 @@ html[data-lang="both"] .bar span[lang="zh-CN"]::before { content: " · "; }
 }
 .content { min-width: 0; padding: 2.4rem 2.5rem 3rem; }
 .chapter, .cover, .pager, .book-home .content > :not(.cover) { max-width: var(--measure); margin-left: auto; margin-right: auto; }
+
+/* Skip layout/paint for distant reading blocks while keeping native find,
+   selection and fragment navigation. Existing blocks preserve document order;
+   no virtual scrolling, removed content or scroll-event layout work is needed.
+   Language accessibility is synchronized before book-render-ready is set.
+   auto remembers the measured height after a block has been read. */
+@media screen {
+  @supports (content-visibility: auto) and (contain-intrinsic-block-size: auto 1px) {
+    .book-render-ready .chapter > :is(p, ul, ol, .eq, .env, .proof, .exercise, figure, .keypoints, .references) {
+      content-visibility: auto;
+      contain-intrinsic-block-size: auto 16rem;
+    }
+    .book-render-ready .chapter > p { contain-intrinsic-block-size: auto 6rem; }
+    .book-render-ready .chapter > .eq { contain-intrinsic-block-size: auto 4rem; }
+    .book-render-ready .chapter > .proof { contain-intrinsic-block-size: auto 36rem; }
+    .book-render-ready .chapter > figure { contain-intrinsic-block-size: auto 22rem; }
+    .book-render-ready .chapter > :is(:target, :focus-within),
+    .book-render-ready .chapter > :has(:target) { content-visibility: visible; }
+  }
+}
 
 /* ---------- Contents sidebar ---------- */
 
@@ -447,7 +465,8 @@ html[data-lang="both"] .toc-chapters p[lang="zh-CN"] { border-left: 2px solid va
     bottom: 0;
     z-index: 35;
     width: min(22rem, 88vw);
-    height: auto;
+    height: calc(100vh - var(--bar-h));
+    height: calc(100dvh - var(--bar-h));
     background: #fff;
     border-right: 1px solid var(--frame);
     box-shadow: 0 0 40px -12px rgba(16, 32, 64, 0.35);

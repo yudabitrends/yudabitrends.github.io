@@ -16,7 +16,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/katex/katex.min.css">
-  <link rel="stylesheet" href="../assets/book.css?v=c6549e6c">
+  <link rel="stylesheet" href="../assets/book.css?v=0de50969">
   <script>(function(){var v=null;try{v=localStorage.getItem('ica-book-lang')}catch(e){}if(v!=='en'&&v!=='zh'&&v!=='both'){v=/^zh/i.test(navigator.language||'')?'zh':'en'}var d=document.documentElement;d.setAttribute('data-lang',v);if(v==='zh')d.setAttribute('lang','zh-CN')})();</script>
 </head>
 <body class="book">
@@ -521,7 +521,7 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
 <p lang="zh-CN"><a class="ref" href="#fig-whitening"><span lang="en">Figure 3.1</span><span lang="zh-CN">图 3.1</span></a> 把这三种变换用于两个均匀分布源的混合。每个白化后的点云都是一个正方形，即源所在的正方形在某个正交矩阵下的像，而三个正方形之间只差旋转。</p>
 
 <figure id="fig-whitening">
-  <img src="fig/ch03-whitening.svg" width="660" height="178" alt="Four scatter plots: a parallelogram-shaped mixture of two uniform sources with its two principal axes, and three whitened versions of it (PCA, ZCA and Cholesky whitening), each a square rotated by a different angle, with two orthogonal arrows along its edges.">
+  <img src="fig/ch03-whitening.svg" width="660" height="178" alt="Four scatter plots: a parallelogram-shaped mixture of two uniform sources with its two principal axes, and three whitened versions of it (PCA, ZCA and Cholesky whitening), each a square rotated by a different angle, with two orthogonal arrows along its edges." loading="lazy" decoding="async">
   <figcaption><span lang="en"><b>Figure 3.1.</b> A mixture of two independent uniform sources with the principal axes of its covariance (a), and three whitened versions computed from the sample covariance (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>=</mo><mn>1500</mn></mrow><annotation encoding="application/x-tex">T = 1500</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1500</span></span></span></span>): PCA whitening (b), ZCA whitening (c) and Cholesky whitening (d). The arrows mark the columns of the whitened mixing matrix <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">V</mi><mi mathvariant="bold">A</mi></mrow><annotation encoding="application/x-tex">\bV\bA</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord mathbf">VA</span></span></span></span>, which are orthogonal and parallel to the edges of each square. The three squares differ only by rotations; ICA must still find the rotation that aligns the arrows with the axes.</span><span lang="zh-CN"><b>图 3.1</b> 两个独立均匀分布源的混合及其协方差的主轴（a），以及由样本协方差（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>=</mo><mn>1500</mn></mrow><annotation encoding="application/x-tex">T = 1500</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1500</span></span></span></span>）算出的三种白化结果：PCA 白化（b）、ZCA 白化（c）与 Cholesky 白化（d）。箭头标出白化后混合矩阵 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">V</mi><mi mathvariant="bold">A</mi></mrow><annotation encoding="application/x-tex">\bV\bA</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord mathbf">VA</span></span></span></span> 的列，它们相互正交，并与各正方形的边平行。三个正方形之间只差旋转；ICA 仍需找到把箭头转到坐标轴上的那个旋转。</span></figcaption>
 </figure>
 
@@ -1301,6 +1301,6 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
     <ol id="book-search-results"></ol>
   </dialog>
 </footer>
-<script src="../assets/book.js?v=e94d3fbf" defer></script>
+<script src="../assets/book.js?v=097670c5" defer></script>
 </body>
 </html>
