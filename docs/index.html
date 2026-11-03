@@ -26,6 +26,8 @@
 
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/site.css?v=20261103b">
+  <link rel="stylesheet" href="assets/visitor-stats.css?v=20261103a">
+  <script defer src="assets/visitor-stats.js?v=20261103a"></script>
 
   <script type="application/ld+json">
   {
@@ -82,6 +84,36 @@
   <span class="book-bar-title">Independent Component Analysis: From Foundations to Frontiers</span>
   <span class="book-bar-cta">Read the book &rarr;</span>
 </a>
+
+<section class="visitor-stats" id="visitor-stats" aria-labelledby="visitor-stats-title" aria-busy="true">
+  <div class="visitor-stats-heading">
+    <h2 id="visitor-stats-title">Page views <span lang="zh-CN">访问统计</span></h2>
+    <span class="visitor-stats-status" id="visitor-stats-status" role="status">Loading <span lang="zh-CN">正在读取</span></span>
+  </div>
+  <div class="visitor-stats-grid">
+    <div class="visitor-stats-total">
+      <strong id="visitor-stats-count">&mdash;</strong>
+      <p>Homepage page views<br><span lang="zh-CN">首页访问次数（非独立访客数）</span></p>
+      <p class="visitor-stats-reloads">Page reloads count again.<br><span lang="zh-CN">刷新页面会再次计数。</span></p>
+      <p class="visitor-stats-since" id="visitor-stats-since">From the day counting starts<br><span lang="zh-CN">自统计启用日起累计</span></p>
+    </div>
+    <div class="visitor-stats-regions">
+      <h3>Top regions <span lang="zh-CN">主要访问地区</span></h3>
+      <p class="visitor-stats-empty" id="visitor-stats-empty">Regional totals will appear here.<br><span lang="zh-CN">地区汇总将在此显示。</span></p>
+      <ol class="visitor-region-list" id="visitor-region-list" hidden aria-label="Main regions by homepage page views / 按首页访问次数排列的主要地区"></ol>
+      <details class="visitor-stats-more" id="visitor-stats-more" hidden>
+        <summary>More regions <span lang="zh-CN">更多地区</span></summary>
+        <ol class="visitor-region-list" id="visitor-region-more" start="6" aria-label="Additional regions / 其他地区"></ol>
+      </details>
+      <p class="visitor-stats-other" id="visitor-stats-other" hidden></p>
+    </div>
+  </div>
+  <div class="visitor-stats-bottom">
+    <p>Visits are grouped by approximate IP location; full IP addresses are not displayed.<br><span lang="zh-CN">按访问次数与 IP 推断地区汇总，不展示完整 IP；地区可能受 VPN 或网络出口影响。</span></p>
+    <button class="visitor-stats-refresh" id="visitor-stats-refresh" type="button" hidden>Refresh totals <span lang="zh-CN">刷新统计</span></button>
+  </div>
+  <noscript><p class="visitor-stats-noscript">Enable JavaScript to view the live totals. <span lang="zh-CN">启用 JavaScript 后可查看实时统计。</span></p></noscript>
+</section>
 
 <blockquote class="motto">
   <p>&ldquo;Even in the darkest of times we have the right to expect some illumination.&rdquo;</p>
@@ -667,23 +699,9 @@
 
 <footer class="site-footer">
   <p>&copy; 2026 Yuda Bi &middot; Figures are reproduced from the papers &middot; Updated November 2026</p>
-  <p class="visit" id="visit" hidden>Visitors since October 2026: <span class="count" id="visit-count">&hellip;</span></p>
 </footer>
 
 </div>
 
-<!-- Visits: GoatCounter — no cookies, no personal data. Replace "yuda-bi" with your own site code. -->
-<script data-goatcounter="https://yuda-bi.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
-<script>
-(function () {
-  var line = document.getElementById('visit');
-  var out = document.getElementById('visit-count');
-  if (!line || !out) return;
-  fetch('https://yuda-bi.goatcounter.com/counter/TOTAL.json', { mode: 'cors' })
-    .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error(r.status)); })
-    .then(function (d) { if (d && d.count) { out.textContent = d.count; line.hidden = false; } })
-    .catch(function () { /* not signed up yet, or blocked by an ad blocker: keep the line hidden */ });
-})();
-</script>
 </body>
 </html>

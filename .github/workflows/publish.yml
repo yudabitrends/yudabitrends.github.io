@@ -54,6 +54,12 @@ jobs:
       - name: Validate site quality
         run: python3 scripts/check_site_quality.py
 
+      - name: Validate homepage visit statistics
+        run: |
+          node --test scripts/tests_site_stats.cjs
+          node --test workers/site-stats/worker.test.mjs
+          python workers/site-stats/test_sql.py
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

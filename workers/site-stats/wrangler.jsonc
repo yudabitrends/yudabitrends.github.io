@@ -1,0 +1,20 @@
+{
+  "name": "yuda-homepage-stats",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-03",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "yuda-bi.com/api/site-stats*",
+      "zone_name": "yuda-bi.com"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "homepage-site-stats",
+      "database_id": "3dd38d17-dd23-44b5-a0e5-8cb0bef3e186"
+    }
+  ]
+}

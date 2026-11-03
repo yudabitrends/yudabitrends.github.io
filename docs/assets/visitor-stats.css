@@ -1,0 +1,54 @@
+/* Public, aggregate homepage statistics. No fonts or third-party assets. */
+.visitor-stats {
+  margin: 1.1rem 0 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--frame);
+  border-radius: 6px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+.visitor-stats [hidden] { display: none !important; }
+.visitor-stats [lang="zh-CN"] { font-size: 0.92em; }
+.visitor-stats-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 0.4rem 1rem; flex-wrap: wrap; margin-bottom: 0.85rem; }
+.visitor-stats h2, .visitor-stats h3 { margin: 0; padding: 0; border: 0; font-weight: 700; letter-spacing: 0; text-transform: none; }
+.visitor-stats h2 { font-size: 1rem; color: var(--ink); }
+.visitor-stats h2 span, .visitor-stats h3 span { margin-left: 0.4em; font-weight: 400; color: var(--muted); }
+.visitor-stats h3 { font-size: 0.8125rem; margin-bottom: 0.35rem; }
+.visitor-stats-status { color: var(--faint); font-size: 0.75rem; }
+.visitor-stats[data-state="unavailable"] .visitor-stats-status { color: #8a3b13; }
+.visitor-stats-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.55fr); gap: 1.15rem; }
+.visitor-stats-total { border-right: 1px solid var(--frame-soft); padding-right: 1.1rem; min-width: 0; }
+.visitor-stats-total strong { display: block; margin: -0.12rem 0 0.1rem; font-size: 2.45rem; line-height: 1.15; font-weight: 400; font-variant-numeric: tabular-nums; color: var(--accent); overflow-wrap: anywhere; }
+.visitor-stats-total p { margin: 0 0 0.55rem; color: var(--muted); }
+.visitor-stats-total .visitor-stats-since { margin: 0; color: var(--faint); font-size: 0.75rem; }
+.visitor-stats-total .visitor-stats-reloads { font-size: 0.7rem; color: var(--faint); }
+.visitor-stats-regions { min-width: 0; min-height: 7.6rem; }
+.visitor-stats-empty { color: var(--faint); margin: 0.5rem 0 0; }
+.visitor-region-list { padding: 0; margin: 0; list-style: none; }
+.visitor-region-list li { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.8rem; align-items: baseline; margin-top: 0.25rem; padding: 0.16rem 0.3rem; isolation: isolate; }
+.visitor-region-bar { position: absolute; z-index: -1; inset: 0 auto 0 0; border-radius: 2px; background: #e6edf7; max-width: 100%; }
+.visitor-region-name { overflow-wrap: anywhere; }
+.visitor-region-value { font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--muted); }
+.visitor-region-value small { font-size: 0.7rem; color: var(--faint); margin-left: 0.35em; }
+.visitor-stats-more { margin-top: 0.45rem; color: var(--muted); }
+.visitor-stats-more summary { cursor: pointer; color: var(--link); font-size: 0.75rem; }
+.visitor-stats-more .visitor-region-list { max-height: 15rem; overflow: auto; margin-top: 0.4rem; }
+.visitor-stats-other { margin: 0.45rem 0 0; font-size: 0.75rem; color: var(--faint); }
+.visitor-stats-bottom { margin-top: 0.8rem; padding-top: 0.65rem; border-top: 1px solid var(--frame-soft); display: flex; gap: 0.6rem; align-items: flex-start; justify-content: space-between; }
+.visitor-stats-bottom p { margin: 0; font-size: 0.7rem; color: var(--faint); }
+.visitor-stats-refresh { flex: none; background: #fff; border: 1px solid var(--frame); border-radius: 4px; color: var(--link); font: inherit; font-size: 0.7rem; line-height: 1.4; padding: 0.25rem 0.45rem; cursor: pointer; }
+.visitor-stats-refresh span { display: block; }
+.visitor-stats-refresh:hover { background: var(--head); border-color: var(--accent); }
+.visitor-stats-refresh:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+.visitor-stats-refresh:disabled { opacity: 0.6; cursor: wait; }
+.visitor-stats-noscript { margin: 0.65rem 0 0; color: var(--muted); }
+@media (max-width: 420px) {
+  .visitor-stats { padding: 0.85rem; }
+  .visitor-stats-grid { grid-template-columns: minmax(0, 1fr); gap: 0.85rem; }
+  .visitor-stats-total { border-right: 0; border-bottom: 1px solid var(--frame-soft); padding: 0 0 0.7rem; }
+  .visitor-stats-total strong { font-size: 2rem; }
+  .visitor-stats-bottom { flex-wrap: wrap; }
+}
+@media print { .visitor-stats { display: none !important; } }
