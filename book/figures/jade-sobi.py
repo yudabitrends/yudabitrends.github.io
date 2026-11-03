@@ -2,14 +2,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from figstyle import figure, save, clean_axes, ACCENT, RED, GREEN, GRAY, LIGHT
+from figstyle import figure, save, clean_axes, whiten, ACCENT, RED, GREEN, GRAY, LIGHT
 
 
 def _whiten(X):
-    X = X - X.mean(axis=1, keepdims=True)
-    d, E = np.linalg.eigh(np.cov(X))
-    V = E @ np.diag(d ** -0.5) @ E.T
-    return V @ X
+    return whiten(X)[0]
 
 
 def _sources(rng, T):

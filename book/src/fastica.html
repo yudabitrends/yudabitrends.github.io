@@ -1,9 +1,55 @@
 <!-- Chapter 8. FastICA. Source format: book/AUTHORING.md -->
 
+<aside class="chapter-guide" id="guide-fastica">
+<h3><span lang="en">First pass</span><span lang="zh-CN">第一次读这一章</span></h3>
+<p lang="en"><b>One sentence.</b> FastICA repeatedly proposes a better projection direction and restores its length, using non-Gaussian structure that whitening leaves unresolved.</p>
+<p lang="zh-CN"><b>一句话直觉。</b>FastICA 反复提出一个更合适的投影方向，再把长度归一化；它利用的是白化之后仍然留下的非高斯结构。</p>
+<p lang="en"><b>By the end, you should be able to:</b></p>
+<p lang="zh-CN"><b>读完后，你应能：</b></p>
+<ul lang="en">
+  <li>calculate one cubic update and its normalization;</li>
+  <li>explain why opposite signs can represent the same recovered component;</li>
+  <li>identify a zero or rank-deficient update instead of silently normalizing it.</li>
+</ul>
+<ul lang="zh-CN">
+  <li>算出一次三次非线性更新，并完成归一化；</li>
+  <li>解释为什么相反符号可以表示同一个恢复成分；</li>
+  <li>识别零更新或秩亏更新，而不是不加检查地归一化。</li>
+</ul>
+<p lang="en"><b>Route.</b> Review <a href="whitening.html#sec-whitened-model">the whitened model</a> and <a href="kurtosis.html#sec-kurtosis-combination">kurtosis of a mixture</a>. Read <a href="#sec-fastica-derivation">the update rule</a>, <a href="#sec-fastica-multiunit">multiple components</a> and <a href="#sec-fastica-diagnostics">diagnostics</a>. First understand the iteration; the approximate-Newton derivation and <a href="#sec-fastica-convergence">convergence proof</a> can follow later. The <a href="start-here.html#guide-run-code">code guide</a> explains how to reproduce the example.</p>
+<p lang="zh-CN"><b>路线。</b>先复习<a href="whitening.html#sec-whitened-model">白化后的模型</a>与<a href="kurtosis.html#sec-kurtosis-combination">混合的峭度</a>。先读<a href="#sec-fastica-derivation">更新规则</a>、<a href="#sec-fastica-multiunit">多个成分</a>及<a href="#sec-fastica-diagnostics">诊断</a>。先理解迭代操作，近似牛顿法推导和<a href="#sec-fastica-convergence">收敛证明</a>可以稍后读。<a href="start-here.html#guide-run-code">代码指南</a>说明怎样复现实例。</p>
+<p lang="en"><b>Small calculation: a direction becomes less mixed.</b> Consider independent unit-variance sources with kurtoses $\kappa_1=-2$ and $\kappa_2=3$, such as a symmetric binary source and a Laplace source. In source coordinates, the unit vector $\bq=(0.6,0.8)^\top$ makes $y=0.6s_1+0.8s_2$. These coordinates are for analysis: real data do not reveal the sources to the algorithm.</p>
+<p lang="zh-CN"><b>手算：一个方向怎样变得混合更少？</b>考虑两个相互独立、单位方差的源，峭度分别为 $\kappa_1=-2$ 与 $\kappa_2=3$，例如对称二值源和拉普拉斯源。在源坐标中，单位向量 $\bq=(0.6,0.8)^\top$ 给出 $y=0.6s_1+0.8s_2$。这只是分析坐标；真实数据不会把源直接告诉算法。</p>
+<ol lang="en">
+  <li>For the cubic choice $g(u)=u^3$, the exact population update has coordinates $q_i^+=\kappa_i q_i^3$. Thus $\bq^+=(-2\cdot0.6^3,3\cdot0.8^3)^\top=(-0.432,1.536)^\top$.</li>
+  <li>Its length is about $1.596$. Divide both entries by that length to obtain approximately $(-0.271,0.963)^\top$; normalization keeps the search on the unit sphere.</li>
+  <li>The absolute unwanted-to-target coefficient ratio falls from $0.6/0.8=0.75$ to $0.432/1.536=0.28125$. The projection is closer to source 2, even though the first coefficient changed sign.</li>
+  <li>This exact calculation uses independence, whitening and population moments. Replacing expectations by sample averages introduces error; the local convergence theorem is not a promise for every data set or starting direction.</li>
+</ol>
+<ol lang="zh-CN">
+  <li>取三次非线性 $g(u)=u^3$ 时，精确总体更新为 $q_i^+=\kappa_i q_i^3$，所以 $\bq^+=(-2\cdot0.6^3,3\cdot0.8^3)^\top=(-0.432,1.536)^\top$。</li>
+  <li>它的长度约为 $1.596$。两项一起除以这个长度，得到约 $(-0.271,0.963)^\top$；归一化让搜索始终留在单位球面上。</li>
+  <li>非目标与目标系数的绝对比值，从 $0.6/0.8=0.75$ 降到 $0.432/1.536=0.28125$。虽然第一项变了符号，投影仍然更接近源 2。</li>
+  <li>这个精确计算使用了独立性、白化和总体矩。用样本平均代替期望会引入误差；局部收敛定理不是对任意数据集或初始方向的保证。</li>
+</ol>
+<p lang="en"><b>Quick check 1.</b> If a new iterate is exactly $-\bw$, is it a different component?</p>
+<p lang="zh-CN"><b>自测 1。</b>若新迭代恰好等于 $-\bw$，它是不是另一个成分？</p>
+<details class="solution beginner-answer"><summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+<p lang="en">No. Its output is only the sign-reversed version of the old output. ICA cannot identify source signs, so the stopping comparison must allow this equivalence.</p>
+<p lang="zh-CN">不是。它的输出只是原输出反号。ICA 无法辨识源的符号，所以停止比较必须允许这种等价性。</p>
+</details>
+<p lang="en"><b>Quick check 2.</b> If both kurtoses are zero, can this cubic update be normalized? Does that prove both sources Gaussian?</p>
+<p lang="zh-CN"><b>自测 2。</b>若两个峭度都为零，这个三次更新能否归一化？是否由此证明两个源都高斯？</p>
+<details class="solution beginner-answer"><summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+<p lang="en">The raw population update is zero, so normalization is undefined. Zero kurtosis does not prove Gaussianity; a different contrast may detect non-Gaussian structure missed by this one.</p>
+<p lang="zh-CN">总体原始更新为零，无法定义归一化。零峭度不能证明高斯性；其他对比函数可能察觉这个对比函数漏掉的非高斯结构。</p>
+</details>
+</aside>
+
 <h2 id="sec-fastica-fixed-point"><span lang="en">A fixed-point view</span><span lang="zh-CN">不动点的视角</span></h2>
 
-<p lang="en">The gradient algorithms of <a class="ref" data-ref="natural-gradient"></a> need a step size, and near a solution they converge only linearly, at a rate set by the smallest eigenvalue of their linearization. FastICA (Hyvärinen &amp; Oja, 1997; Hyvärinen, 1999) takes another route. It works on whitened data, estimates one direction at a time on the unit sphere, and replaces the gradient step by a fixed-point iteration obtained from Newton's method. The result has no step size, converges quadratically or even cubically, and usually needs fewer than ten iterations. This chapter derives the iteration, proves its convergence in source coordinates, builds the versions that estimate several components, and discusses the choice of nonlinearity.</p>
-<p lang="zh-CN"><a class="ref" data-ref="natural-gradient"></a>中的梯度算法需要选择步长，而且在解附近只是线性收敛，收敛速度由线性化的最小特征值决定。FastICA（Hyvärinen &amp; Oja, 1997; Hyvärinen, 1999）走的是另一条路：它在白化数据上工作，在单位球面上一次估计一个方向，并用由牛顿法导出的不动点迭代代替梯度步。这样得到的算法没有步长，二次甚至三次收敛，通常不到十次迭代就够了。本章推导这一迭代，在源坐标下证明其收敛性，构造同时估计多个成分的版本，并讨论非线性函数的选择。</p>
+<p lang="en">The gradient algorithms of <a class="ref" data-ref="natural-gradient"></a> need a step size, and near a solution they converge only linearly, at a rate set by the smallest eigenvalue of their linearization. FastICA (Hyvärinen &amp; Oja, 1997; Hyvärinen, 1999) takes another route. It works on whitened data, estimates one direction at a time on the unit sphere, and replaces the gradient step by a fixed-point iteration obtained from Newton's method. The result has no step size, has local quadratic or even cubic convergence in the population model, and can need only a few iterations on well-conditioned examples. This is not a global or finite-sample iteration guarantee. This chapter derives the iteration, proves its convergence in source coordinates, builds the versions that estimate several components, and discusses the choice of nonlinearity.</p>
+<p lang="zh-CN"><a class="ref" data-ref="natural-gradient"></a>中的梯度算法需要选择步长，而且在解附近只是线性收敛，收敛速度由线性化的最小特征值决定。FastICA（Hyvärinen &amp; Oja, 1997; Hyvärinen, 1999）走的是另一条路：它在白化数据上工作，在单位球面上一次估计一个方向，并用由牛顿法导出的不动点迭代代替梯度步。这样得到的算法没有步长，在总体模型下局部二次甚至三次收敛，在条件良好的例子中只需少数几次迭代；这不是全局或有限样本的迭代次数保证。本章推导这一迭代，在源坐标下证明其收敛性，构造同时估计多个成分的版本，并讨论非线性函数的选择。</p>
 
 <p lang="en">The setting is that of <a class="ref" data-ref="whitening"></a>: the data are whitened, $\bz = \bV\bx = \tilde\bA\bs$ with $\tilde\bA$ orthogonal (<a class="ref" data-ref="prop-whitened-mixing-orthogonal"></a>), and the sources have zero mean and unit variance. A one-unit method looks for a unit vector $\bw$ such that $y = \bw^\top\bz$ is one of the sources. In source coordinates, $\bq = \tilde\bA^\top\bw$ is again a unit vector and $y = \bq^\top\bs$; the direction $\bw$ recovers source $i$ exactly when $\bq = \pm\be_i$, where $\be_i$ is the $i$-th standard basis vector.</p>
 <p lang="zh-CN">问题的设定与<a class="ref" data-ref="whitening"></a>相同：数据已经白化，$\bz = \bV\bx = \tilde\bA\bs$，其中 $\tilde\bA$ 是正交矩阵（<a class="ref" data-ref="prop-whitened-mixing-orthogonal"></a>），源均值为零、方差为一。单单元方法寻找一个单位向量 $\bw$，使 $y = \bw^\top\bz$ 恰好是某一个源。在源坐标下，$\bq = \tilde\bA^\top\bw$ 仍是单位向量，且 $y = \bq^\top\bs$；方向 $\bw$ 恢复出源 $i$，当且仅当 $\bq = \pm\be_i$，这里 $\be_i$ 是第 $i$ 个标准基向量。</p>
@@ -15,8 +61,8 @@
 
 <div class="eq" id="eq-fastica-contrast">$$J_G(\bw) = \bigl[\E\,G(\bw^\top\bz) - \E\,G(\nu)\bigr]^2, \qquad \|\bw\| = 1,$$</div>
 
-<p lang="en">where $\nu$ is a standard Gaussian variable and $G$ is a smooth function. Because $\bz$ is white, every $y = \bw^\top\bz$ with $\|\bw\| = 1$ has unit variance, so $J_G$ compares $y$ with a Gaussian of the same variance. The algorithm uses the derivative $g = G'$ and its derivative $g'$. <a class="ref" data-ref="tab-fastica-g"></a> lists the three standard choices. For $G(u) = u^4/4$, $\E\,G(y) - \E\,G(\nu) = \kurt(y)/4$, and $J_G$ is the squared kurtosis of <a class="ref" data-ref="kurtosis"></a>.</p>
-<p lang="zh-CN">其中 $\nu$ 是标准高斯变量，$G$ 是光滑函数。由于 $\bz$ 是白的，每个满足 $\|\bw\| = 1$ 的 $y = \bw^\top\bz$ 都是单位方差，所以 $J_G$ 是在把 $y$ 与同方差的高斯变量作比较。算法用到导数 $g = G'$ 及其导数 $g'$。<a class="ref" data-ref="tab-fastica-g"></a>列出了三种标准选择。对 $G(u) = u^4/4$，有 $\E\,G(y) - \E\,G(\nu) = \kurt(y)/4$，此时 $J_G$ 就是<a class="ref" data-ref="kurtosis"></a>中的峭度平方。</p>
+<p lang="en">where $\nu$ is a standard Gaussian variable and $G$ is a smooth even function, so $g=G^{\prime}$ is odd and changing the sign of an iterate changes only the sign of its update. Because $\bz$ is white, every $y = \bw^\top\bz$ with $\|\bw\| = 1$ has unit variance, so $J_G$ compares $y$ with a Gaussian of the same variance. The algorithm uses the derivative $g = G'$ and its derivative $g'$. <a class="ref" data-ref="tab-fastica-g"></a> lists the three standard choices. For $G(u) = u^4/4$, $\E\,G(y) - \E\,G(\nu) = \kurt(y)/4$, and $J_G$ is the squared kurtosis of <a class="ref" data-ref="kurtosis"></a>.</p>
+<p lang="zh-CN">其中 $\nu$ 是标准高斯变量，$G$ 是光滑偶函数，因此 $g=G^{\prime}$ 为奇函数，迭代向量变号时更新也只变号。由于 $\bz$ 是白的，每个满足 $\|\bw\| = 1$ 的 $y = \bw^\top\bz$ 都是单位方差，所以 $J_G$ 是在把 $y$ 与同方差的高斯变量作比较。算法用到导数 $g = G'$ 及其导数 $g'$。<a class="ref" data-ref="tab-fastica-g"></a>列出了三种标准选择。对 $G(u) = u^4/4$，有 $\E\,G(y) - \E\,G(\nu) = \kurt(y)/4$，此时 $J_G$ 就是<a class="ref" data-ref="kurtosis"></a>中的峭度平方。</p>
 
 <figure class="table" id="tab-fastica-g">
   <figcaption><span lang="en">Standard contrast functions of FastICA ($1 \le a \le 2$ is a constant, often $a = 1$) and the quantity $\lambda = \E[s\,g(s) - g'(s)]$ that governs their behaviour, for unit-variance uniform and Laplace sources (computed with $a = 1$ by numerical quadrature). For a Gaussian source $\lambda = 0$ for every $g$.</span><span lang="zh-CN">FastICA 的标准对比函数（$1 \le a \le 2$ 为常数，常取 $a = 1$），以及决定其行为的量 $\lambda = \E[s\,g(s) - g'(s)]$ 在单位方差均匀源和拉普拉斯源下的取值（取 $a = 1$，用数值积分计算）。对高斯源，任何 $g$ 都有 $\lambda = 0$。</span></figcaption>
@@ -38,8 +84,8 @@
 <p lang="zh-CN">源方向都是 $\E\,G(\bw^\top\bz)$ 在球面上的临界点，而 $\lambda_i = \E[s_i\,g(s_i) - g'(s_i)]$ 的符号决定临界点的类型。</p>
 
 <div class="env" data-kind="proposition" id="prop-fastica-extrema" data-en="critical points of the one-unit contrast" data-zh="单单元对比函数的临界点">
-  <p lang="en">Let $G$ be twice continuously differentiable, and let the sources be independent with zero mean, unit variance and finite moments of the orders needed below. On the unit sphere, $f(\bq) = \E\,G(\bq^\top\bs)$ has a critical point at every $\pm\be_i$. It is a strict local maximum if $\lambda_i &gt; 0$ and a strict local minimum if $\lambda_i &lt; 0$ (Hyvärinen, 1999).</p>
-  <p lang="zh-CN">设 $G$ 二阶连续可微，各源相互独立、均值为零、方差为一，且下面用到的各阶矩有限。在单位球面上，$f(\bq) = \E\,G(\bq^\top\bs)$ 在每个 $\pm\be_i$ 处取临界点。若 $\lambda_i &gt; 0$，它是严格局部极大值点；若 $\lambda_i &lt; 0$，它是严格局部极小值点（Hyvärinen, 1999）。</p>
+  <p lang="en">Let $G$ be even and twice continuously differentiable, and let the sources be independent with zero mean, unit variance and finite moments of the orders needed below. On the unit sphere, $f(\bq) = \E\,G(\bq^\top\bs)$ has a critical point at every $\pm\be_i$. It is a strict local maximum if $\lambda_i &gt; 0$ and a strict local minimum if $\lambda_i &lt; 0$ (Hyvärinen, 1999).</p>
+  <p lang="zh-CN">设 $G$ 为二阶连续可微的偶函数，各源相互独立、均值为零、方差为一，且下面用到的各阶矩有限。在单位球面上，$f(\bq) = \E\,G(\bq^\top\bs)$ 在每个 $\pm\be_i$ 处取临界点。若 $\lambda_i &gt; 0$，它是严格局部极大值点；若 $\lambda_i &lt; 0$，它是严格局部极小值点（Hyvärinen, 1999）。</p>
 </div>
 <div class="proof">
   <p lang="en">The Euclidean gradient of $f$ is $\E[\bs\,g(\bq^\top\bs)]$. At $\bq = \be_i$ its $j$-th component is $\E[s_j]\,\E[g(s_i)] = 0$ for $j \ne i$, so the gradient is parallel to $\be_i$ and $\be_i$ is a critical point on the sphere (the Lagrange condition). For the second order, take $i = 1$ and move along the sphere: $\bq = (\sqrt{1 - \|\boldsymbol{\delta}\|^2}, \boldsymbol{\delta})$ with $\boldsymbol{\delta} \in \R^{n-1}$ small, so $y = s_1 + h$ with $h = (\sqrt{1 - \|\boldsymbol{\delta}\|^2} - 1)\,s_1 + \sum_{j \ge 2}\delta_js_j$. Expanding $G(s_1 + h) = G(s_1) + g(s_1)h + \tfrac12 g'(s_1)h^2 + o(h^2)$ and using independence, zero means and unit variances,</p>
@@ -53,6 +99,11 @@
 <p lang="zh-CN">对峭度对比函数，$\lambda_i = \kappa_i$，这与<a class="ref" data-ref="thm-kurtosis-maxima"></a>一致：$\E\,y^4$ 在超高斯源处取局部极大，在亚高斯源处取局部极小。对 $\log\cosh$ 和高斯形的 $G$，<a class="ref" data-ref="tab-fastica-g"></a>中的分布符号正好相反。<a class="ref" data-ref="eq-fastica-contrast"></a> 中的平方使我们无须事先知道符号：当 $(\E\,G(s_i) - \E\,G(\nu))\,\lambda_i &gt; 0$ 时，$f$ 的临界点 $\be_i$ 是 $J_G$ 的局部极大值点；这就是 Hyvärinen（1999）的定理 1，原文假设 $G$ 为偶函数。对峭度，这个乘积等于 $\kappa_i^2/4$，只要 $\kappa_i \ne 0$ 就为正；对表中另两种 $G$，它在均匀、拉普拉斯和 logistic 分布下都为正（我们用数值积分验证过）。后面几节将表明，FastICA 迭代本身根本不在乎这个符号。</p>
 
 <h2 id="sec-fastica-derivation"><span lang="en">Derivation as an approximate Newton method</span><span lang="zh-CN">作为近似牛顿法的推导</span></h2>
+
+<aside class="beginner-bridge">
+<p lang="en"><b>Reading the two terms.</b> $\E[\bz g(y)]$ points toward directions emphasized by the nonlinearity. The subtracted multiple of $\bw$ accounts for the unit-length constraint and the approximate curvature. The result is a proposed direction, not yet a unit vector; normalization is a separate essential step.</p>
+<p lang="zh-CN"><b>怎样读更新中的两项。</b>$\E[\bz g(y)]$ 指向被非线性函数强调的方向；减去 $\bw$ 的一个倍数，是为了处理单位长度约束与近似曲率。算出的只是候选方向，还不是单位向量；归一化是另一个不可省略的步骤。</p>
+</aside>
 
 <p lang="en">The optima of $\E\,G(\bw^\top\bz)$ under $\|\bw\|^2 = 1$ satisfy the Lagrange condition</p>
 <p lang="zh-CN">$\E\,G(\bw^\top\bz)$ 在约束 $\|\bw\|^2 = 1$ 下的最优点满足 Lagrange 条件</p>
@@ -83,7 +134,7 @@
     <li>Choose $G$ from <a class="ref" data-ref="tab-fastica-g"></a> and a random unit vector $\bw$.</li>
     <li>Compute $\bw^+ = \hat\E[\bz\,g(\bw^\top\bz)] - \hat\E[g'(\bw^\top\bz)]\,\bw$, with sample averages $\hat\E$ over $t$.</li>
     <li>Set $\bw_{\text{new}} = \bw^+/\|\bw^+\|$.</li>
-    <li>If $1 - |\bw_{\text{new}}^\top\bw|$ is below a tolerance, stop; otherwise set $\bw = \bw_{\text{new}}$ and return to step 3.</li>
+    <li>If $1 - |\bw_{\text{new}}^\top\bw|$ is below a tolerance, stop with $\bw = \bw_{\text{new}}$; otherwise set $\bw = \bw_{\text{new}}$ and return to step 3.</li>
     <li>Output $y(t) = \bw^\top\bz(t)$, the estimated source, and $\bw^\top\bV$, the corresponding row of the unmixing matrix.</li>
   </ol>
   <ol lang="zh-CN">
@@ -91,7 +142,7 @@
     <li>从<a class="ref" data-ref="tab-fastica-g"></a>中选取 $G$，并随机取一个单位向量 $\bw$。</li>
     <li>计算 $\bw^+ = \hat\E[\bz\,g(\bw^\top\bz)] - \hat\E[g'(\bw^\top\bz)]\,\bw$，其中 $\hat\E$ 表示对 $t$ 的样本平均。</li>
     <li>令 $\bw_{\text{new}} = \bw^+/\|\bw^+\|$。</li>
-    <li>若 $1 - |\bw_{\text{new}}^\top\bw|$ 小于容差则停止；否则令 $\bw = \bw_{\text{new}}$，回到第 3 步。</li>
+    <li>若 $1 - |\bw_{\text{new}}^\top\bw|$ 小于容差则以 $\bw = \bw_{\text{new}}$ 停止；否则令 $\bw = \bw_{\text{new}}$，回到第 3 步。</li>
     <li>输出估计的源 $y(t) = \bw^\top\bz(t)$，以及解混矩阵中对应的行 $\bw^\top\bV$。</li>
   </ol>
 </div>
@@ -109,10 +160,10 @@
 <div class="env" data-kind="theorem" id="thm-fastica-convergence" data-en="convergence of one-unit FastICA" data-zh="单单元 FastICA 的收敛性">
   <p lang="en">Let the sources be independent with zero mean and unit variance, and consider the population iteration $\bq^+ = \E[\bs\,g(\bq^\top\bs)] - \E[g'(\bq^\top\bs)]\,\bq$, $\bq \leftarrow \bq^+/\|\bq^+\|$.</p>
   <p lang="zh-CN">设各源相互独立、均值为零、方差为一，考虑总体迭代 $\bq^+ = \E[\bs\,g(\bq^\top\bs)] - \E[g'(\bq^\top\bs)]\,\bq$，$\bq \leftarrow \bq^+/\|\bq^+\|$。</p>
-  <p lang="en"><b>(a) Kurtosis</b> (Hyvärinen &amp; Oja, 1997). For $g(u) = u^3$ and sources with finite fourth moments, $q_i^+ = \kappa_iq_i^3$ for every $i$. If the index $i^\star$ that maximizes $\sqrt{|\kappa_i|}\,|q_i^{(0)}|$ is unique, the iterates converge to $\pm\be_{i^\star}$ up to sign, and for every $j \ne i^\star$ the ratios $\rho_j^{(k)} = |q_j^{(k)}/q_{i^\star}^{(k)}|$ satisfy $\rho_j^{(k+1)} = (|\kappa_j|/|\kappa_{i^\star}|)\,(\rho_j^{(k)})^3$: the convergence is cubic.</p>
-  <p lang="zh-CN"><b>（a）峭度</b>（Hyvärinen &amp; Oja, 1997）。对 $g(u) = u^3$ 且源的四阶矩有限，对每个 $i$ 都有 $q_i^+ = \kappa_iq_i^3$。若使 $\sqrt{|\kappa_i|}\,|q_i^{(0)}|$ 最大的下标 $i^\star$ 唯一，则迭代在相差符号的意义下收敛到 $\pm\be_{i^\star}$，并且对每个 $j \ne i^\star$，比值 $\rho_j^{(k)} = |q_j^{(k)}/q_{i^\star}^{(k)}|$ 满足 $\rho_j^{(k+1)} = (|\kappa_j|/|\kappa_{i^\star}|)\,(\rho_j^{(k)})^3$：收敛是三次的。</p>
-  <p lang="en"><b>(b) General $g$</b> (convergence rates: Hyvärinen, 1999; the constant $c_{ij}$ is computed in the proof below). Let $g$ be three times differentiable with bounded third derivative, let the sources have finite fourth moments, and let $\lambda_i = \E[s_i\,g(s_i) - g'(s_i)] \ne 0$. Then $\be_i$ is a fixed point up to sign, and near it the ratios $r_j = q_j/q_i$, $j \ne i$, satisfy</p>
-  <p lang="zh-CN"><b>（b）一般的 $g$</b>（收敛阶见 Hyvärinen, 1999；常数 $c_{ij}$ 由下面的证明给出）。设 $g$ 三阶可微且三阶导数有界，源的四阶矩有限，且 $\lambda_i = \E[s_i\,g(s_i) - g'(s_i)] \ne 0$。则 $\be_i$ 在相差符号的意义下是不动点，且在其附近，比值 $r_j = q_j/q_i$（$j \ne i$）满足</p>
+  <p lang="en"><b>(a) Kurtosis</b> (Hyvärinen &amp; Oja, 1997). For $g(u) = u^3$ and sources with finite fourth moments, $q_i^+ = \kappa_iq_i^3$ for every $i$. If at least one $\kappa_i q_i^{(0)}$ is nonzero and the index $i^\star$ that maximizes $\sqrt{|\kappa_i|}\,|q_i^{(0)}|$ is unique, the iterates converge to $\pm\be_{i^\star}$ up to sign, and for every $j \ne i^\star$ the ratios $\rho_j^{(k)} = |q_j^{(k)}/q_{i^\star}^{(k)}|$ satisfy $\rho_j^{(k+1)} = (|\kappa_j|/|\kappa_{i^\star}|)\,(\rho_j^{(k)})^3$: the convergence is cubic.</p>
+  <p lang="zh-CN"><b>（a）峭度</b>（Hyvärinen &amp; Oja, 1997）。对 $g(u) = u^3$ 且源的四阶矩有限，对每个 $i$ 都有 $q_i^+ = \kappa_iq_i^3$。若至少一个 $\kappa_i q_i^{(0)}$ 非零，且使 $\sqrt{|\kappa_i|}\,|q_i^{(0)}|$ 最大的下标 $i^\star$ 唯一，则迭代在相差符号的意义下收敛到 $\pm\be_{i^\star}$，并且对每个 $j \ne i^\star$，比值 $\rho_j^{(k)} = |q_j^{(k)}/q_{i^\star}^{(k)}|$ 满足 $\rho_j^{(k+1)} = (|\kappa_j|/|\kappa_{i^\star}|)\,(\rho_j^{(k)})^3$：收敛是三次的。</p>
+  <p lang="en"><b>(b) General $g$</b> (convergence rates: Hyvärinen, 1999; the constant $c_{ij}$ is computed in the proof below). Let $g$ be odd and three times differentiable with bounded third derivative, let the sources have finite fourth moments, and let $\lambda_i = \E[s_i\,g(s_i) - g'(s_i)] \ne 0$. Then $\be_i$ is a fixed point up to sign, and near it the ratios $r_j = q_j/q_i$, $j \ne i$, satisfy</p>
+  <p lang="zh-CN"><b>（b）一般的 $g$</b>（收敛阶见 Hyvärinen, 1999；常数 $c_{ij}$ 由下面的证明给出）。设 $g$ 为三阶可微且三阶导数有界的奇函数，源的四阶矩有限，且 $\lambda_i = \E[s_i\,g(s_i) - g'(s_i)] \ne 0$。则 $\be_i$ 在相差符号的意义下是不动点，且在其附近，比值 $r_j = q_j/q_i$（$j \ne i$）满足</p>
   <div class="eq" id="eq-fastica-quadratic">$$r_j^+ = c_{ij}\,r_j^2 + O(\|\mathbf{r}\|^3), \qquad c_{ij} = \frac{\E[g''(s_i)]\;\E[s_j^3]}{2\,\lambda_i}.$$</div>
   <p lang="en">The convergence is therefore at least quadratic, and cubic if $\E[g''(s_i)]\,\E[s_j^3] = 0$ for all $j \ne i$, for example when $g$ is odd and $s_i$ is symmetric, or when all other sources are symmetric.</p>
   <p lang="zh-CN">因此收敛至少是二次的；若对所有 $j \ne i$ 都有 $\E[g''(s_i)]\,\E[s_j^3] = 0$，则是三次的，例如 $g$ 为奇函数且 $s_i$ 对称，或者其余各源都对称。</p>
@@ -145,6 +196,11 @@
 
 <h2 id="sec-fastica-multiunit"><span lang="en">Estimating several components</span><span lang="zh-CN">估计多个成分</span></h2>
 
+<aside class="beginner-bridge">
+<p lang="en"><b>From one component to several.</b> Repeating a good one-unit search can repeatedly find the same source. Deflation excludes directions already found; symmetric orthogonalization adjusts all rows together. Orthogonality prevents duplication in the whitened geometry, but by itself does not certify statistical independence.</p>
+<p lang="zh-CN"><b>从一个成分到多个成分。</b>重复一次有效的单成分搜索，可能反复找到同一个源。逐个提取会排除已找到的方向；对称正交化则同时调整所有行。白化坐标中的正交性可以避免方向重复，但它本身不证明统计独立。</p>
+</aside>
+
 <p lang="en">Running the one-unit algorithm $n$ times from random starts would often find the same source several times. Since the columns of $\tilde\bA$ are orthonormal, the rows $\bw_i^\top$ of the orthogonal unmixing matrix $\bU$ must be orthonormal too, and FastICA enforces this in one of two ways. In this section, as in the FastICA literature, $\bW$ denotes the matrix with rows $\bw_i^\top$, which acts on whitened data and is the orthogonal matrix $\bU$ of <a class="ref" data-ref="tab-notation"></a>; the unmixing matrix for $\bx$ is $\bW\bV$.</p>
 <p lang="zh-CN">从随机起点把单单元算法独立运行 $n$ 次，往往会多次找到同一个源。由于 $\tilde\bA$ 的列是标准正交的，正交解混矩阵 $\bU$ 的各行 $\bw_i^\top$ 也必须标准正交，FastICA 用以下两种方式之一来保证这一点。本节沿用 FastICA 文献的习惯，用 $\bW$ 表示以 $\bw_i^\top$ 为行、作用于白化数据的矩阵，即<a class="ref" data-ref="tab-notation"></a>中的正交矩阵 $\bU$；对 $\bx$ 的解混矩阵是 $\bW\bV$。</p>
 
@@ -174,7 +230,7 @@
     <li>Choose $G$ and a random $n \times n$ matrix $\bW$; orthogonalize it with <a class="ref" data-ref="eq-symmetric-orthogonalization"></a>.</li>
     <li>For every row, $\bw_i^+ = \hat\E[\bz\,g(\bw_i^\top\bz)] - \hat\E[g'(\bw_i^\top\bz)]\,\bw_i$; let $\bW^+$ have rows $\bw_i^{+\top}$.</li>
     <li>Set $\bW_{\text{new}} = (\bW^+\bW^{+\top})^{-1/2}\bW^+$.</li>
-    <li>If $1 - \min_i|\bw_{i,\text{new}}^\top\bw_i|$ is below a tolerance, stop; otherwise set $\bW = \bW_{\text{new}}$ and return to step 3.</li>
+    <li>If $1 - \min_i|\bw_{i,\text{new}}^\top\bw_i|$ is below a tolerance, stop with $\bW = \bW_{\text{new}}$; otherwise set $\bW = \bW_{\text{new}}$ and return to step 3.</li>
     <li>Output the estimated sources $\by(t) = \bW\bz(t)$ and the unmixing matrix $\bW\bV$.</li>
   </ol>
   <ol lang="zh-CN">
@@ -182,7 +238,7 @@
     <li>选取 $G$ 和一个随机的 $n \times n$ 矩阵 $\bW$，并用 <a class="ref" data-ref="eq-symmetric-orthogonalization"></a> 把它正交化。</li>
     <li>对每一行计算 $\bw_i^+ = \hat\E[\bz\,g(\bw_i^\top\bz)] - \hat\E[g'(\bw_i^\top\bz)]\,\bw_i$；令 $\bW^+$ 的各行为 $\bw_i^{+\top}$。</li>
     <li>令 $\bW_{\text{new}} = (\bW^+\bW^{+\top})^{-1/2}\bW^+$。</li>
-    <li>若 $1 - \min_i|\bw_{i,\text{new}}^\top\bw_i|$ 小于容差则停止；否则令 $\bW = \bW_{\text{new}}$，回到第 3 步。</li>
+    <li>若 $1 - \min_i|\bw_{i,\text{new}}^\top\bw_i|$ 小于容差则以 $\bW = \bW_{\text{new}}$ 停止；否则令 $\bW = \bW_{\text{new}}$，回到第 3 步。</li>
     <li>输出估计的源 $\by(t) = \bW\bz(t)$ 以及解混矩阵 $\bW\bV$。</li>
   </ol>
 </div>
@@ -190,50 +246,64 @@
 <p lang="en">The script below is a complete implementation, applied to four sources of different types: uniform, Laplace, binary $\pm1$ and Student-$t$ with 5 degrees of freedom, all with unit variance.</p>
 <p lang="zh-CN">下面的脚本是一个完整的实现，用于四个不同类型的源：均匀分布、拉普拉斯分布、取值 $\pm1$ 的二值分布，以及自由度为 5 的 Student-$t$ 分布，全部为单位方差。</p>
 
-<pre class="code"><code>import numpy as np
+<pre class="code" data-code="python"><code>import numpy as np
 
 def whiten(X):
-    """Center the rows of X; return Z = V X (identity sample covariance) and V."""
-    X = X - X.mean(axis=1, keepdims=True)
-    d, E = np.linalg.eigh(np.cov(X))
-    V = E @ np.diag(d ** -0.5) @ E.T
-    return V @ X, V
+    """Rows are channels; use covariance / T, matching all sample expectations."""
+    X = np.asarray(X, dtype=float)
+    if X.ndim != 2 or not np.isfinite(X).all():
+        raise ValueError("X must be a finite channels-by-samples matrix")
+    n, T = X.shape
+    if n &lt; 1 or T &lt;= n:
+        raise ValueError("Need more samples than channels; reduce rank first")
+    mean = X.mean(axis=1, keepdims=True)
+    Xc = X - mean
+    E, d, _ = np.linalg.svd(Xc / np.sqrt(T), full_matrices=False)
+    if d[-1] &lt;= 1e-12 * d[0]:
+        raise ValueError("Rank-deficient data: select a signal subspace first")
+    V = (E / d) @ E.T
+    return V @ Xc, V, mean
 
 def sym_orth(W):
-    """Symmetric orthogonalization W &lt;- (W W^T)^{-1/2} W."""
-    d, E = np.linalg.eigh(W @ W.T)
-    return E @ np.diag(d ** -0.5) @ E.T @ W
+    """Polar factor by SVD, avoiding squaring the condition number."""
+    if not np.isfinite(W).all():
+        raise ValueError("Nonfinite FastICA update")
+    L, d, Rt = np.linalg.svd(W, full_matrices=False)
+    if d[-1] &lt;= 1e-12 * d[0]:
+        raise ValueError("Degenerate update: change contrast or handle Gaussian residual")
+    return L @ Rt
 
 def fastica_symmetric(X, g, dg, max_iter=100, tol=1e-12, seed=0):
-    Z, V = whiten(X)
+    Z, V, mean = whiten(X)
     n, T = Z.shape
     W = sym_orth(np.random.default_rng(seed).standard_normal((n, n)))
     for it in range(1, max_iter + 1):
         Y = W @ Z
-        # row i: E[z g(y_i)] - E[g'(y_i)] w_i; then orthogonalize all rows together
         W_new = sym_orth(g(Y) @ Z.T / T - dg(Y).mean(axis=1)[:, None] * W)
-        change = 1 - np.min(np.abs(np.sum(W_new * W, axis=1)))
+        change = np.clip(1 - np.min(np.abs(np.sum(W_new * W, axis=1))), 0, 1)
         W = W_new
         print(f"iteration {it}: 1 - min|&lt;w_new, w_old&gt;| = {change:.1e}")
         if change &lt; tol:
-            break
-    return W @ V                               # unmixing matrix for the raw data
+            return W @ V, mean
+    raise RuntimeError("FastICA did not converge; inspect rank, contrast and starts")
 
 rng = np.random.default_rng(1)
 T = 10000
-S = np.vstack([rng.uniform(-np.sqrt(3), np.sqrt(3), T),      # sub-Gaussian
-               rng.laplace(0, 1 / np.sqrt(2), T),             # super-Gaussian
-               np.sign(rng.standard_normal(T)),               # binary +-1
-               rng.standard_t(5, T) / np.sqrt(5 / 3)])        # heavy-tailed
+S = np.vstack([rng.uniform(-np.sqrt(3), np.sqrt(3), T),
+               rng.laplace(0, 1 / np.sqrt(2), T),
+               np.sign(rng.standard_normal(T)),
+               rng.standard_t(5, T) / np.sqrt(5 / 3)])
 A = rng.standard_normal((4, 4))
-W = fastica_symmetric(A @ S, np.tanh, lambda y: 1 - np.tanh(y) ** 2)
+X = A @ S
+W, mean = fastica_symmetric(X, np.tanh, lambda y: 1 - np.tanh(y) ** 2)
+Y = W @ (X - mean)                          # apply the fitted centering as well
 P = W @ A
 print(np.round(P / np.abs(P).max(axis=1, keepdims=True), 2) + 0.0)</code></pre>
 
 <p lang="en">It prints</p>
 <p lang="zh-CN">它的输出为</p>
 
-<pre class="code"><code>iteration 1: 1 - min|&lt;w_new, w_old&gt;| = 6.9e-01
+<pre class="code" data-code="output"><code>iteration 1: 1 - min|&lt;w_new, w_old&gt;| = 6.9e-01
 iteration 2: 1 - min|&lt;w_new, w_old&gt;| = 1.7e-01
 iteration 3: 1 - min|&lt;w_new, w_old&gt;| = 3.1e-03
 iteration 4: 1 - min|&lt;w_new, w_old&gt;| = 5.3e-06
@@ -250,11 +320,11 @@ iteration 7: 1 - min|&lt;w_new, w_old&gt;| = 2.3e-14
 
 <h2 id="sec-fastica-choosing-g"><span lang="en">Choosing the nonlinearity</span><span lang="zh-CN">非线性函数的选择</span></h2>
 
-<p lang="en"><b>Robustness.</b> Each observation enters the update through $\bz\,g(\bw^\top\bz)$. For the kurtosis contrast $g(u) = u^3$ is unbounded: a single outlier at $y = 10$ weighs as much as a thousand typical samples at $y = 1$, and the estimate inherits the fragility of the sample kurtosis discussed in <a class="ref" data-ref="sec-kurtosis-robustness"></a>. For $\log\cosh$, $|g| \le 1$; for the Gaussian-shaped $G$, $|g(u)| \le e^{-1/2}$ and $g(u) \to 0$ as $|u| \to \infty$, so extreme values are effectively ignored.</p>
-<p lang="zh-CN"><b>稳健性。</b>每个观测通过 $\bz\,g(\bw^\top\bz)$ 进入更新。对峭度对比函数，$g(u) = u^3$ 无界：位于 $y = 10$ 的一个离群点，其分量相当于一千个位于 $y = 1$ 的典型样本，估计因而继承了<a class="ref" data-ref="sec-kurtosis-robustness"></a>所讨论的样本峭度的脆弱性。对 $\log\cosh$，$|g| \le 1$；对高斯形的 $G$，$|g(u)| \le e^{-1/2}$，且当 $|u| \to \infty$ 时 $g(u) \to 0$，所以极端值实际上被忽略了。</p>
+<p lang="en"><b>Robustness.</b> Each observation enters through $\bz\,g(\bw^\top\bz)$. The cubic $g$ amplifies large projections; bounded $g$, such as $\tanh$ or $u e^{-u^2/2}$, reduces that amplification. It does not bound the whole vector contribution: an observation can have a moderate projection but arbitrarily large coordinates orthogonal to $\bw$. Moreover, ordinary sample-mean centering and covariance whitening are themselves sensitive to outliers. Hyvärinen (1999, Theorem 3) explicitly assumes robust whitening and obtains a restricted influence bound, not a globally bounded influence function. Diagnose contamination in the full observation space and in preprocessing; changing $g$ alone does not make the complete pipeline robust.</p>
+<p lang="zh-CN"><b>稳健性。</b>每个观测通过 $\bz\,g(\bw^\top\bz)$ 进入更新。三次函数 $g$ 会放大大的投影值；$\tanh$ 或 $u e^{-u^2/2}$ 这样的有界 $g$ 可以减弱这种放大，但不能限制整个向量的贡献：一个观测的投影可以适中，而与 $\bw$ 正交的坐标任意大。此外，普通样本均值中心化和协方差白化本身也对离群值敏感。Hyvärinen（1999）的定理 3 明确假定采用稳健白化，并只给出受限的影响界，而不是全局有界的影响函数。因此应在完整观测空间和预处理中诊断污染；只替换 $g$ 并不能使整条分析流程都稳健。</p>
 
-<p lang="en"><b>Accuracy.</b> The asymptotic variance of the one-unit estimator (<a class="ref" data-ref="thm-asymptotic-one-unit"></a>) has $\lambda_i^2 = (\E[s_i\,g(s_i) - g'(s_i)])^2$ in its denominator. A source with $\lambda_i$ close to zero for the chosen $g$ is estimated poorly and, with finite data, found slowly or not at all; a non-Gaussian source can even have $\lambda_i = 0$ for one particular $g$ (a source with zero kurtosis is invisible to $g(u) = u^3$), and then another $g$ must be used. The variance is smallest when $g$ is an affine function of the score of the source (<a class="ref" data-ref="prop-optimal-nonlinearity"></a>). Since one fixed $g$ cannot be optimal for sources of different types, the EFICA algorithm of Koldovský, Tichavský and Oja (2006) adapts the nonlinearity to each component after a symmetric FastICA run; <a class="ref" data-ref="performance"></a> returns to it.</p>
-<p lang="zh-CN"><b>精度。</b>单单元估计量的渐近方差（<a class="ref" data-ref="thm-asymptotic-one-unit"></a>）的分母中含有 $\lambda_i^2 = (\E[s_i\,g(s_i) - g'(s_i)])^2$。对所选的 $g$，若某个源的 $\lambda_i$ 接近零，它的估计就很差，在有限数据下找到它也很慢，甚至找不到；一个非高斯源对某个特定的 $g$ 甚至可能恰好有 $\lambda_i = 0$（峭度为零的源对 $g(u) = u^3$ 不可见），这时必须换用别的 $g$。当 $g$ 是源得分函数的仿射函数时，方差最小（<a class="ref" data-ref="prop-optimal-nonlinearity"></a>）。由于一个固定的 $g$ 不可能对不同类型的源都最优，Koldovský、Tichavský 与 Oja（2006）的 EFICA 算法在对称 FastICA 运行之后为每个成分自适应地选择非线性函数；<a class="ref" data-ref="performance"></a>会再回到这一点。</p>
+<p lang="en"><b>Accuracy.</b> The asymptotic variance of the one-unit estimator (<a class="ref" data-ref="thm-asymptotic-one-unit"></a>) has $\lambda_i^2 = (\E[s_i\,g(s_i) - g'(s_i)])^2$ in its denominator. A source with $\lambda_i$ close to zero for the chosen $g$ is estimated poorly and, with finite data, found slowly or not at all; a non-Gaussian source can even have $\lambda_i = 0$ for one particular $g$ (a source with zero kurtosis is invisible to $g(u) = u^3$), and then another $g$ must be used. The variance is smallest when $g$ is a linear combination of the source score and the identity function (with an arbitrary added constant if sample centering is used) (<a class="ref" data-ref="prop-optimal-nonlinearity"></a>). Since one fixed $g$ cannot be optimal for sources of different types, the EFICA algorithm of Koldovský, Tichavský and Oja (2006) adapts the nonlinearity to each component after a symmetric FastICA run; <a class="ref" data-ref="performance"></a> returns to it.</p>
+<p lang="zh-CN"><b>精度。</b>单单元估计量的渐近方差（<a class="ref" data-ref="thm-asymptotic-one-unit"></a>）的分母中含有 $\lambda_i^2 = (\E[s_i\,g(s_i) - g'(s_i)])^2$。对所选的 $g$，若某个源的 $\lambda_i$ 接近零，它的估计就很差，在有限数据下找到它也很慢，甚至找不到；一个非高斯源对某个特定的 $g$ 甚至可能恰好有 $\lambda_i = 0$（峭度为零的源对 $g(u) = u^3$ 不可见），这时必须换用别的 $g$。当 $g$ 是源得分函数与恒等函数的线性组合时（采用样本中心化时还可加任意常数），方差最小（<a class="ref" data-ref="prop-optimal-nonlinearity"></a>）。由于一个固定的 $g$ 不可能对不同类型的源都最优，Koldovský、Tichavský 与 Oja（2006）的 EFICA 算法在对称 FastICA 运行之后为每个成分自适应地选择非线性函数；<a class="ref" data-ref="performance"></a>会再回到这一点。</p>
 
 <p lang="en"><b>Speed.</b> Kurtosis gives cubic convergence for any sources, the other two nonlinearities give cubic convergence for symmetric sources and quadratic convergence otherwise. In practice the difference amounts to at most an iteration or two (<a class="ref" data-ref="fig-fastica-convergence"></a>). Each iteration costs one pass over the data, of order $nT$ operations per unit; evaluating $\tanh$ or an exponential is slower than a cube, but rarely enough to matter.</p>
 <p lang="zh-CN"><b>速度。</b>峭度对任何源都给出三次收敛；另两种非线性函数对对称源三次收敛，否则二次收敛。实践中两者的差别至多一两次迭代（<a class="ref" data-ref="fig-fastica-convergence"></a>）。每次迭代需要遍历一次数据，每个单元的计算量为 $nT$ 量级；计算 $\tanh$ 或指数函数比计算立方慢，但很少慢到值得在意的程度。</p>
@@ -262,24 +332,51 @@ iteration 7: 1 - min|&lt;w_new, w_old&gt;| = 2.3e-14
 <p lang="en">These considerations lead to the usual practice, recommended by Hyvärinen (1999): $\log\cosh$ with $a = 1$ as the default; the Gaussian-shaped $G$ when the sources are strongly super-Gaussian or the data contain outliers; kurtosis mainly for sub-Gaussian sources in clean data, where its fourth-moment estimates are stable. Whatever the choice, the sign of $\lambda_i$ need not be known in advance.</p>
 <p lang="zh-CN">由这些考虑得到通常的做法，这也是 Hyvärinen（1999）的建议：默认使用 $a = 1$ 的 $\log\cosh$；当源是强超高斯的或数据含有离群点时，使用高斯形的 $G$；峭度主要用于不含离群点的数据中的亚高斯源，此时四阶矩的估计是稳定的。无论选哪一种，都无须事先知道 $\lambda_i$ 的符号。</p>
 
+<h2 id="sec-fastica-diagnostics"><span lang="en">Rank, convergence and reproducible use</span><span lang="zh-CN">秩、收敛诊断与可复现使用</span></h2>
+<p lang="en"><b>Use one covariance convention.</b> All sample expectations in the fixed-point update use $1/T$. Whitening with $\hat\bC=\bX_c\bX_c^\top/T$ therefore gives $\bZ\bZ^\top/T=\bI$ exactly up to round-off. NumPy's default <code>np.cov</code> uses $1/(T-1)$, which instead gives $(T-1)\bI/T$ under the later averaging convention. The difference is small for large $T$, but the implementation should match its own derivation. The SVD above also avoids forming a covariance matrix whose condition number is the square of that of the centered data.</p>
+<p lang="zh-CN"><b>统一协方差约定。</b>不动点更新中的样本期望全部使用 $1/T$，所以应以 $\hat\bC=\bX_c\bX_c^\top/T$ 白化，使 $\bZ\bZ^\top/T=\bI$ 在舍入误差以内成立。NumPy 默认的 <code>np.cov</code> 使用 $1/(T-1)$，按后续平均约定得到的会是 $(T-1)\bI/T$。大样本时差别虽小，实现仍应与推导一致。上面的 SVD 也避免了显式形成协方差矩阵；后者的条件数是中心化数据矩阵条件数的平方。</p>
+<p lang="en"><b>Do not hide rank failure.</b> Repeated channels, constant channels, or retaining more dimensions than the centered data rank make whitening impossible. Reduce to a justified signal subspace; replacing every tiny eigenvalue by an arbitrary constant changes the model and can amplify noise. A zero one-unit update cannot be normalized. A rank-deficient simultaneous update has no unique invertible polar factor. In particular, an exactly Gaussian population component has a zero update; recover the identifiable non-Gaussian components and explicitly complete a remaining one-dimensional orthogonal complement instead of asserting that the inverse square root remains defined.</p>
+<p lang="zh-CN"><b>不要掩盖秩亏。</b>重复通道、常数通道，或保留维数超过中心化数据的秩，都会使白化不可能。应降到有依据的信号子空间；将所有小特征值任意截成一个常数会改变模型并可能放大噪声。单单元更新为零时无法归一化；同时更新矩阵秩亏时，也不存在唯一的可逆极分解因子。特别地，精确高斯总体成分的更新为零：应恢复可辨识的非高斯成分，再显式补全剩余的一维正交补，不能声称逆平方根在这里仍有定义。</p>
+<p lang="en"><b>Convergence is numerical, not scientific validation.</b> If $c=1-|\bw_{\rm new}^\top\bw|$, the small acute angle between the iterates is approximately $\sqrt{2c}$ radians, not $c$. A tolerance of $10^{-12}$ corresponds to roughly $1.4\times10^{-6}$ radians. This only checks that an iterate has stopped changing. Compare multiple starts after one-to-one component matching, inspect the retained rank and the nonlinearity, and assess stability on resampled data. Keep failure rates as well as successful runs; never count an iteration limit as convergence.</p>
+<p lang="zh-CN"><b>数值收敛不是科学验证。</b>若 $c=1-|\bw_{\rm new}^\top\bw|$，两次迭代之间的小锐角约为 $\sqrt{2c}$ 弧度，而不是 $c$。容差 $10^{-12}$ 对应约 $1.4\times10^{-6}$ 弧度。它只表示迭代变化已经很小。应在成分一一匹配后比较多个初值，检查保留秩与非线性函数，并用重抽样评价稳定性。既要报告成功结果，也要报告失败率；达到迭代上限不能算作收敛。</p>
+<p lang="en"><b>Save the fitted transformation.</b> The code returns both $\bW$ and the training mean. Apply them unchanged to new observations; refitting the mean or whitening separately on each test block changes the transform being evaluated. Because sign and order are arbitrary, store any later sign flips and permutations with the transform. These are conventions for reporting, not additional information recovered from the observations.</p>
+<p lang="zh-CN"><b>保存已拟合的变换。</b>代码同时返回 $\bW$ 与训练均值，对新观测应原样使用；在每个测试块上重新拟合均值或白化会改变正在评价的变换。符号与顺序本来就是任意的，因此后续采用的符号翻转与置换也应与变换一起保存。这些是报告约定，不是从观测中额外恢复的信息。</p>
+
 <div class="keypoints">
   <p class="kp-title" lang="en">Key points</p>
   <p class="kp-title" lang="zh-CN">本章要点</p>
   <ul lang="en">
     <li>On whitened data, FastICA iterates $\bw \leftarrow \E[\bz\,g(\bw^\top\bz)] - \E[g'(\bw^\top\bz)]\,\bw$ followed by normalization: an approximate Newton step for the Lagrange condition, in which whiteness makes the Jacobian diagonal. There is no step size.</li>
-    <li>In source coordinates the kurtosis iteration is exactly $q_i^+ = \kappa_iq_i^3$: it converges globally and cubically to the source that maximizes $\sqrt{|\kappa_i|}\,|q_i^{(0)}|$.</li>
-    <li>For a general $g$, every source with $\lambda_i = \E[s_i\,g(s_i) - g'(s_i)] \ne 0$ is a fixed point with at least quadratic convergence (cubic for symmetric sources). Sub- and super-Gaussian sources are found with the same $g$; Gaussian sources are never fixed points.</li>
+    <li>In source coordinates the kurtosis iteration is exactly $q_i^+ = \kappa_iq_i^3$: when the largest weighted initial coordinate is unique and positive, it converges cubically to the source that maximizes $\sqrt{|\kappa_i|}\,|q_i^{(0)}|$.</li>
+    <li>For an odd smooth $g$ satisfying the theorem, every source with $\lambda_i = \E[s_i\,g(s_i) - g'(s_i)] \ne 0$ is a fixed point with at least quadratic convergence (cubic for symmetric sources). Sub- and super-Gaussian sources are found with the same $g$; Gaussian sources are never fixed points.</li>
     <li>Several components are obtained by deflation, which accumulates errors along the sequence, or by symmetric orthogonalization $\bW \leftarrow (\bW\bW^\top)^{-1/2}\bW$, the closest orthogonal matrix, which treats all units alike.</li>
-    <li>Bounded nonlinearities ($\log\cosh$, Gaussian) are robust to outliers; the accuracy for each source is governed by $\lambda_i$, and the best $g$ is the score of the source.</li>
+    <li>Bounded $g$ reduces sensitivity to extreme projections, but does not guarantee robustness of whitening or of the whole estimator; the accuracy for each source is governed by $\lambda_i$, and the best $g$ is the score of the source.</li>
   </ul>
   <ul lang="zh-CN">
     <li>在白化数据上，FastICA 迭代 $\bw \leftarrow \E[\bz\,g(\bw^\top\bz)] - \E[g'(\bw^\top\bz)]\,\bw$ 并归一化：这是对 Lagrange 条件的近似牛顿步，白化使雅可比矩阵成为对角阵。算法没有步长。</li>
-    <li>在源坐标下，峭度迭代恰好是 $q_i^+ = \kappa_iq_i^3$：它全局地、三次地收敛到使 $\sqrt{|\kappa_i|}\,|q_i^{(0)}|$ 最大的那个源。</li>
-    <li>对一般的 $g$，每个满足 $\lambda_i = \E[s_i\,g(s_i) - g'(s_i)] \ne 0$ 的源都是不动点，收敛至少是二次的（对称源时为三次）。同一个 $g$ 能找到亚高斯源和超高斯源；高斯源永远不是不动点。</li>
+    <li>在源坐标下，峭度迭代恰好是 $q_i^+ = \kappa_iq_i^3$：当加权初始坐标的最大绝对值唯一且为正时，它三次收敛到使 $\sqrt{|\kappa_i|}\,|q_i^{(0)}|$ 最大的那个源。</li>
+    <li>对满足定理条件的光滑奇函数 $g$，每个满足 $\lambda_i = \E[s_i\,g(s_i) - g'(s_i)] \ne 0$ 的源都是不动点，收敛至少是二次的（对称源时为三次）。同一个 $g$ 能找到亚高斯源和超高斯源；高斯源永远不是不动点。</li>
     <li>多个成分可以用逐个提取（紧缩）得到，但误差会沿序列累积；也可以用对称正交化 $\bW \leftarrow (\bW\bW^\top)^{-1/2}\bW$ 得到，它给出最近的正交矩阵，并对所有单元一视同仁。</li>
-    <li>有界的非线性函数（$\log\cosh$、高斯形）对离群点稳健；每个源的估计精度由 $\lambda_i$ 决定，最优的 $g$ 是该源的得分函数。</li>
+    <li>有界 $g$ 可减弱极端投影的影响，但不保证白化或整个估计量都稳健；每个源的估计精度由 $\lambda_i$ 决定，最优的 $g$ 是该源的得分函数。</li>
   </ul>
 </div>
+
+<aside class="chapter-recap">
+<p lang="en"><b>Before the exercises</b></p>
+<p lang="zh-CN"><b>开始习题前</b></p>
+<ul lang="en">
+  <li>Whiten first, update a direction, then normalize with a degeneracy check.</li>
+  <li>Compare directions up to sign and distinguish local theory from finite-sample behavior.</li>
+  <li>Multiple rows need a mechanism that prevents repeatedly finding one direction.</li>
+</ul>
+<ul lang="zh-CN">
+  <li>先白化，再更新方向，检查退化情况后才归一化。</li>
+  <li>在允许反号的意义下比较方向，并区分局部理论与有限样本行为。</li>
+  <li>多行估计需要防止反复找到同一方向的机制。</li>
+</ul>
+<p lang="en">Start with <a href="#ex-fastica-kurtosis">the cubic-update exercise</a>, then <a href="#ex-fastica-symorth">parts (a) and (b) of the orthogonalization exercise</a>. Next try <a href="#ex-fastica-gaussian">the Gaussian-source exercise</a>; save the Newton proof for a second pass.</p>
+<p lang="zh-CN">先做<a href="#ex-fastica-kurtosis">三次更新习题</a>，再做<a href="#ex-fastica-symorth">正交化习题的（a）（b）</a>，随后尝试<a href="#ex-fastica-gaussian">高斯源习题</a>；牛顿法证明留到第二遍。</p>
+</aside>
 
 <h2 id="sec-fastica-exercises"><span lang="en">Exercises</span><span lang="zh-CN">习题</span></h2>
 
@@ -296,8 +393,8 @@ iteration 7: 1 - min|&lt;w_new, w_old&gt;| = 2.3e-14
   <p lang="en">Suppose source 1 is Gaussian and the others are not. (a) Using Stein's lemma (<a class="ref" data-ref="ex-ng-gaussian"></a>), show that $\lambda_1 = 0$ for every $g$. (b) With the kurtosis nonlinearity, what happens to the coordinate $q_1$ after one iteration? (c) Can the one-unit iteration converge to $\pm\be_1$?</p>
   <p lang="zh-CN">设源 1 是高斯的，其余的源不是。（a）利用 Stein 引理（<a class="ref" data-ref="ex-ng-gaussian"></a>）证明：对任何 $g$ 都有 $\lambda_1 = 0$。（b）使用峭度非线性时，坐标 $q_1$ 经过一次迭代后会怎样？（c）单单元迭代能否收敛到 $\pm\be_1$？</p>
   <details class="solution">
-    <p lang="en">(a) For $s_1 \sim \Ncal(0, 1)$, Stein's lemma gives $\E[s_1g(s_1)] = \E[g'(s_1)]$, so $\lambda_1 = 0$. (b) $\kappa_1 = 0$, so $q_1^+ = \kappa_1q_1^3 = 0$: the Gaussian coordinate is removed in a single step, and the iteration continues among the non-Gaussian sources. (c) No. At $\bq = \be_1$ the unnormalized update is $\lambda_1\be_1 = \bzero$, so $\be_1$ is not even a well-defined fixed point; for kurtosis, part (a) of <a class="ref" data-ref="thm-fastica-convergence"></a> shows that the limit is the non-Gaussian source maximizing $\sqrt{|\kappa_i|}\,|q_i^{(0)}|$. This is how FastICA copes with one Gaussian source: it finds the others, and in the symmetric version the Gaussian one is what remains in the orthogonal complement.</p>
-    <p lang="zh-CN">（a）对 $s_1 \sim \Ncal(0, 1)$，Stein 引理给出 $\E[s_1g(s_1)] = \E[g'(s_1)]$，所以 $\lambda_1 = 0$。（b）$\kappa_1 = 0$，所以 $q_1^+ = \kappa_1q_1^3 = 0$：高斯坐标一步就被消去，迭代此后只在非高斯源之间进行。（c）不能。在 $\bq = \be_1$ 处，未归一化的更新为 $\lambda_1\be_1 = \bzero$，所以 $\be_1$ 连定义良好的不动点都不是；对峭度，<a class="ref" data-ref="thm-fastica-convergence"></a>的（a）表明极限是使 $\sqrt{|\kappa_i|}\,|q_i^{(0)}|$ 最大的那个非高斯源。FastICA 就是这样处理一个高斯源的：它找到其余的源，而在对称版本中，高斯源就是正交补空间中剩下的那个方向。</p>
+    <p lang="en">(a) For $s_1 \sim \Ncal(0, 1)$, Stein's lemma gives $\E[s_1g(s_1)] = \E[g'(s_1)]$, so $\lambda_1 = 0$. (b) $\kappa_1 = 0$, so $q_1^+ = \kappa_1q_1^3 = 0$: the Gaussian coordinate is removed in a single step, and the iteration continues among the non-Gaussian sources. (c) No. At $\bq = \be_1$ the unnormalized update is $\lambda_1\be_1 = \bzero$, so $\be_1$ is not even a well-defined fixed point; for kurtosis, part (a) of <a class="ref" data-ref="thm-fastica-convergence"></a> shows that the limit is the non-Gaussian source maximizing $\sqrt{|\kappa_i|}\,|q_i^{(0)}|$. This is how FastICA copes with one Gaussian source: it finds the others, then explicitly completes the remaining one-dimensional orthogonal complement. At exact population separation the Gaussian row has a zero update, so the full symmetric inverse-square-root step is singular and needs special handling; finite-sample implementations may instead return a noise-determined row.</p>
+    <p lang="zh-CN">（a）对 $s_1 \sim \Ncal(0, 1)$，Stein 引理给出 $\E[s_1g(s_1)] = \E[g'(s_1)]$，所以 $\lambda_1 = 0$。（b）$\kappa_1 = 0$，所以 $q_1^+ = \kappa_1q_1^3 = 0$：高斯坐标一步就被消去，迭代此后只在非高斯源之间进行。（c）不能。在 $\bq = \be_1$ 处，未归一化的更新为 $\lambda_1\be_1 = \bzero$，所以 $\be_1$ 连定义良好的不动点都不是；对峭度，<a class="ref" data-ref="thm-fastica-convergence"></a>的（a）表明极限是使 $\sqrt{|\kappa_i|}\,|q_i^{(0)}|$ 最大的那个非高斯源。FastICA 就是这样处理一个高斯源的：它先找到其余的源，随后显式补全剩余的一维正交补。在精确总体分离点，高斯行的更新为零，因此完整对称逆平方根步骤奇异，需要专门处理；有限样本实现也可能返回一个由抽样噪声决定的行。</p>
   </details>
 </div>
 

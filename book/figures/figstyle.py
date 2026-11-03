@@ -45,16 +45,27 @@ def figure(fn):
 def save(fig, name):
     """Write docs/ica/fig/<name>.svg. Text becomes paths; dense scatters should use rasterized=True."""
     path = OUT / f"{name}.svg"
-    fig.savefig(path, format="svg", dpi=220, metadata={"Date": None})
+    with plt.rc_context({"svg.hashsalt": name}):
+        fig.savefig(path, format="svg", dpi=220, metadata={"Date": None})
     plt.close(fig)
     print(f"wrote docs/ica/fig/{path.name}")
 
 
 def whiten(X):
-    """Center the rows of X (n x T) and whiten with the symmetric inverse square root."""
+    """Center and ZCA-whiten n x T data using the book's /T covariance.
+
+    SVD avoids squaring the condition number when determining numerical rank.
+    Rank-deficient input needs an explicit retained PCA subspace, not this helper.
+    """
+    X = np.asarray(X, dtype=float)
+    if X.ndim != 2 or min(X.shape) < 1 or X.shape[1] < 2 or not np.all(np.isfinite(X)):
+        raise ValueError("Expected finite n x T data with T >= 2.")
     X = X - X.mean(axis=1, keepdims=True)
-    d, E = np.linalg.eigh(np.cov(X))
-    V = E @ np.diag(d ** -0.5) @ E.T
+    U, s, _ = np.linalg.svd(X, full_matrices=False)
+    cutoff = np.finfo(float).eps * max(X.shape) * s[0]
+    if len(s) != X.shape[0] or s[-1] <= cutoff:
+        raise ValueError("Centered data must have full numerical row rank.")
+    V = (U * (np.sqrt(X.shape[1]) / s)) @ U.T
     return V @ X, V
 
 

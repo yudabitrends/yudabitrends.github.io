@@ -1,5 +1,19 @@
 <!-- Chapter 3. Whitening and the geometry of ICA. Source format: book/AUTHORING.md -->
 
+<aside class="chapter-guide" id="guide-whitening">
+<h3><span lang="en">First pass</span><span lang="zh-CN">第一次读这一章</span></h3>
+<p lang="en">Whitening puts every retained direction on a comparable variance scale and removes linear correlation. Think “fix the ruler and straighten the covariance ellipse,” not “discover the hidden sources.” ICA still has to choose an orientation after that preparation.</p>
+<p lang="zh-CN">白化把每个保留方向调到可比较的方差尺度，并去掉线性相关。可以把它理解为“统一尺子、整理协方差椭圆”，而不是“发现隐藏源”。完成这一步后，ICA 仍需选择方向。</p>
+<p lang="en"><b>After this pass, you should be able to:</b></p>
+<p lang="zh-CN"><b>读完这一遍，你应该能：</b></p>
+<ul lang="en"><li>Whiten two uncorrelated coordinates with variances four and nine.</li><li>Explain what identity covariance guarantees, and what it does not.</li><li>Recognize why a zero-variance direction cannot be rescaled to variance one.</li></ul>
+<ul lang="zh-CN"><li>能白化方差分别为四和九的两个不相关坐标。</li><li>能说明单位协方差保证什么、不保证什么。</li><li>能识别为什么零方差方向不能靠缩放变成单位方差。</li></ul>
+<p lang="en"><b>Before you start:</b> review <a href="ica-problem.html#sec-model">matrix mixing</a>, covariance in <a href="probability.html#sec-independence">the independence section</a>, and <a href="start-here.html#guide-notation">transpose notation</a>. Standard deviation is the square root of variance.</p>
+<p lang="zh-CN"><b>先备知识：</b>回看<a href="ica-problem.html#sec-model">矩阵混合</a>、<a href="probability.html#sec-independence">独立性一节中的协方差</a>和<a href="start-here.html#guide-notation">转置符号</a>。标准差是方差的平方根。</p>
+<p lang="en"><b>Read first:</b> <a href="#sec-covariance">centering</a>, <a href="#sec-whitening-matrices">whitening matrices</a>, the <a href="#sec-whitened-model">whitened model</a>, then <a href="#sec-whitening-svd-practice">the SVD implementation</a>. Read <a href="#sec-pca-reduction">rank reduction</a> before real-data work. The asymptotic lower-bound proof in <a href="#sec-finite-sample-whitening">finite-sample whitening</a> can wait for the statistics chapter; keep its warning that sample whitening is not population whitening.</p>
+<p lang="zh-CN"><b>先读路线：</b><a href="#sec-covariance">中心化</a>→<a href="#sec-whitening-matrices">白化矩阵</a>→<a href="#sec-whitened-model">白化后的模型</a>→<a href="#sec-whitening-svd-practice">SVD 实现</a>。处理真实数据前读<a href="#sec-pca-reduction">降秩</a>。<a href="#sec-finite-sample-whitening">有限样本白化</a>中的渐近下界证明可等到统计理论章，但要先记住样本白化不等于总体白化。</p>
+</aside>
+
 <h2 id="sec-whitening-overview"><span lang="en">What the covariance can do</span><span lang="zh-CN">协方差能做什么</span></h2>
 
 <p lang="en"><a class="ref" data-ref="ica-problem"></a> counted parameters. For a square model with unit-variance sources, the covariance $\bC_{\bx} = \bA\bA^\top$ supplies $n(n+1)/2$ numbers about the $n^2$ entries of $\bA$, and every $\bA\bQ$ with $\bQ$ orthogonal has the same covariance (<a class="ref" data-ref="sec-pca-vs-ica"></a>). This chapter turns the count into a procedure. Whitening uses the covariance to remove everything except a rotation: after whitening, the mixing matrix is orthogonal, and ICA reduces to a search over orthogonal matrices.</p>
@@ -34,6 +48,32 @@
 <p lang="en">A random vector is <em>white</em> if its components are uncorrelated and have unit variance. Whitening transforms the data linearly so that they become white.</p>
 <p lang="zh-CN">若一个随机向量的各分量互不相关且方差为一，则称它是<em>白</em>的。白化就是对数据作线性变换，使之变白。</p>
 
+<aside class="beginner-example" id="beginner-whitening-example">
+<h3><span lang="en">Micro example: divide by standard deviation, not variance</span><span lang="zh-CN">微型手算：除以标准差，而不是方差</span></h3>
+<p lang="en">Assume $x_1,x_2$ have mean zero, variances $4,9$, and covariance zero. Thus $\bC_{\bx}=\diag(4,9)$.</p>
+<p lang="zh-CN">设 $x_1,x_2$ 均值为零、方差为 $4,9$，协方差为零，因此 $\bC_{\bx}=\diag(4,9)$。</p>
+<ol lang="en"><li>The standard deviations are $2$ and $3$. Set $z_1=x_1/2$ and $z_2=x_2/3$.</li><li>Variances scale by the square of the multiplier: $\Var(z_1)=4/2^2=1$ and $\Var(z_2)=9/3^2=1$. Their covariance remains zero.</li><li>So $\bV=\diag(1/2,1/3)$ gives $\bV\bC_{\bx}\bV^\top=\bI$. One observation $(2,6)$ becomes $(1,2)$.</li></ol>
+<ol lang="zh-CN"><li>标准差是 $2$ 和 $3$。令 $z_1=x_1/2$、$z_2=x_2/3$。</li><li>方差按乘数的平方缩放：$\Var(z_1)=4/2^2=1$、$\Var(z_2)=9/3^2=1$，二者的协方差仍为零。</li><li>所以 $\bV=\diag(1/2,1/3)$ 满足 $\bV\bC_{\bx}\bV^\top=\bI$。一个观测 $(2,6)$ 被变为 $(1,2)$。</li></ol>
+<p lang="en">This proves whiteness for the specified covariance. It does not prove independence, and it does not require each observation to have length one. Variance describes a distribution across observations, not the size of one vector.</p>
+<p lang="zh-CN">这证明了对给定协方差的白化，却没有证明独立，也不要求每个观测的长度为一。方差描述许多观测构成的分布，不是单个向量的大小。</p>
+<div class="beginner-check" id="beginner-whitening-check-1">
+<p lang="en"><b>Quick check 1.</b> If the covariance is $\diag(4,0)$, can a two-dimensional linear transform make it $\bI_2$?</p>
+<p lang="zh-CN"><b>自测 1。</b>若协方差是 $\diag(4,0)$，能否用二维线性变换把它变成 $\bI_2$？</p>
+<details class="solution beginner-answer"><summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+<p lang="en">No. Its rank is one and a linear transform cannot increase that rank. Retain the varying coordinate and whiten it by dividing by two; the constant coordinate contains no second direction to recover.</p>
+<p lang="zh-CN">不能。它的秩为一，线性变换不能增加这个秩。可保留有变化的坐标并除以二来白化；常数坐标并不包含可恢复的第二个方向。</p>
+</details>
+</div>
+<div class="beginner-check" id="beginner-whitening-check-2">
+<p lang="en"><b>Quick check 2.</b> If $\bz$ is white and $\bQ$ is orthogonal, is $\bQ\bz$ also white?</p>
+<p lang="zh-CN"><b>自测 2。</b>若 $\bz$ 是白的、$\bQ$ 正交，$\bQ\bz$ 也一定白吗？</p>
+<details class="solution beginner-answer"><summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+<p lang="en">Yes: its covariance is $\bQ\bI\bQ^\top=\bI$. This is precisely why whitening leaves an orientation undecided; it does not show the rotated coordinates are independent.</p>
+<p lang="zh-CN">是。它的协方差是 $\bQ\bI\bQ^\top=\bI$。这恰好解释了为什么白化还留有未决定的方向，却不能说明旋转后的坐标独立。</p>
+</details>
+</div>
+</aside>
+
 <div class="env" data-kind="definition" id="def-whitening" data-en="whitening" data-zh="白化">
   <p lang="en">Let $\bx \in \R^m$ have zero mean and covariance $\bC_{\bx}$. A matrix $\bV \in \R^{k \times m}$ is a <em>whitening matrix</em> for $\bx$ if $\bz = \bV\bx$ satisfies $\E[\bz\bz^\top] = \bV\bC_{\bx}\bV^\top = \bI_k$. The vector $\bz$ is then called <em>white</em>, or <em>sphered</em>.</p>
   <p lang="zh-CN">设 $\bx \in \R^m$ 均值为零，协方差为 $\bC_{\bx}$。若 $\bz = \bV\bx$ 满足 $\E[\bz\bz^\top] = \bV\bC_{\bx}\bV^\top = \bI_k$，则称矩阵 $\bV \in \R^{k \times m}$ 为 $\bx$ 的<em>白化矩阵</em>，称 $\bz$ 是<em>白</em>的，或<em>球化</em>的。</p>
@@ -41,6 +81,11 @@
 
 <p lang="en">Since $\rank(\bV\bC_{\bx}\bV^\top) \le \rank\bC_{\bx}$, necessarily $k \le \rank\bC_{\bx}$. In the noise-free model $\rank\bC_{\bx} = n$, and whitening to $k = n$ components loses no information, because $\bx$ lies almost surely in the $n$-dimensional column space of $\bC_{\bx}$. Write the eigendecomposition of the covariance as $\bC_{\bx} = \mathbf{E}\bLambda\mathbf{E}^\top$, with $\mathbf{E}$ orthogonal and $\bLambda = \diag(\lambda_1, \dots, \lambda_m)$, $\lambda_1 \ge \dots \ge \lambda_m \ge 0$ (<a class="ref" data-ref="sec-symmetric-matrices"></a>). Suppose first that $m = n$, so that all eigenvalues are positive. Three whitening matrices are in common use:</p>
 <p lang="zh-CN">由于 $\rank(\bV\bC_{\bx}\bV^\top) \le \rank\bC_{\bx}$，必有 $k \le \rank\bC_{\bx}$。在无噪声模型中 $\rank\bC_{\bx} = n$，而白化到 $k = n$ 个分量不会丢失任何信息，因为 $\bx$ 几乎必然落在 $\bC_{\bx}$ 的 $n$ 维列空间里。把协方差的特征分解写成 $\bC_{\bx} = \mathbf{E}\bLambda\mathbf{E}^\top$，其中 $\mathbf{E}$ 正交，$\bLambda = \diag(\lambda_1, \dots, \lambda_m)$，$\lambda_1 \ge \dots \ge \lambda_m \ge 0$（<a class="ref" data-ref="sec-symmetric-matrices"></a>）。先设 $m = n$，于是所有特征值都为正。常用的白化矩阵有三种：</p>
+<aside class="beginner-bridge">
+<p lang="en"><b>Decode the product from right to left.</b> $\mathbf{E}^\top$ expresses each observation along the covariance eigenvectors. Each $\lambda_i$ is the variance on one such axis; $\lambda_i^{-1/2}$ means divide by its standard deviation. Thus PCA whitening first changes coordinates and then rescales them. A zero eigenvalue blocks the second step and signals the need to restrict the subspace.</p>
+<p lang="zh-CN"><b>从右向左拆开这个乘积。</b>$\mathbf{E}^\top$ 把每个观测改写到协方差特征向量的坐标系中。$\lambda_i$ 是该轴上的方差，$\lambda_i^{-1/2}$ 表示除以它的标准差。因此 PCA 白化是先换坐标、再缩放；特征值为零时不能进行第二步，需要先限制到有变化的子空间。</p>
+</aside>
+
 <ul lang="en">
   <li><b>PCA whitening</b>, $\bV = \bLambda^{-1/2}\mathbf{E}^\top$. The data are projected onto the principal axes, and each principal component is divided by its standard deviation.</li>
   <li><b>Symmetric (ZCA) whitening</b>, $\bV = \bC_{\bx}^{-1/2} = \mathbf{E}\bLambda^{-1/2}\mathbf{E}^\top$: PCA whitening followed by the rotation $\mathbf{E}$ back to the original axes. Bell and Sejnowski (1997) named it ZCA, for zero-phase component analysis. Among all whitening matrices it changes the data least, in the sense that it minimizes $\E\|\bV\bx - \bx\|^2$ (<a class="ref" data-ref="ex-zca-optimal"></a>; Kessy, Lewin and Strimmer (2018) discuss this and other optimality properties).</li>
@@ -133,8 +178,8 @@
 <p lang="en">Between the two extremes, <a class="ref" data-ref="identifiability"></a> shows that a single Gaussian source does no harm, whereas with $k \ge 2$ Gaussian sources any rotation within the subspace they span leaves the distribution of $\bz$ unchanged, so only that subspace can be identified (<a class="ref" data-ref="sec-gaussian-subspace"></a>). The special role of the Gaussian is no accident: if a random vector with $n \ge 2$ independent components has a distribution that is invariant under all rotations, its components are Gaussian with a common variance (<a class="ref" data-ref="ex-rotation-invariance"></a>).</p>
 <p lang="zh-CN">介于两种极端之间的情形，<a class="ref" data-ref="identifiability"></a>证明：单个高斯源无碍大局；而当有 $k \ge 2$ 个高斯源时，在它们张成的子空间内作任意旋转都不改变 $\bz$ 的分布，所以只能辨识出这个子空间（<a class="ref" data-ref="sec-gaussian-subspace"></a>）。高斯分布的这种特殊地位并非偶然：若一个具有 $n \ge 2$ 个独立分量的随机向量，其分布在一切旋转下不变，则它的各分量都是方差相同的高斯变量（<a class="ref" data-ref="ex-rotation-invariance"></a>）。</p>
 
-<p lang="en">Second-order statistics can do more when the samples are not i.i.d. If the sources are stationary time series, the lagged covariances of the whitened data are</p>
-<p lang="zh-CN">当样本不再独立同分布时，二阶统计量可以做得更多。若各源是平稳时间序列，白化数据的时滞协方差为</p>
+<p lang="en">Second-order statistics can do more when the samples are not i.i.d. If the sources are zero-mean stationary time series with cross-covariances zero at every lag (as holds for independent source processes), the lagged covariances of the whitened data are</p>
+<p lang="zh-CN">当样本不再独立同分布时，二阶统计量可以做得更多。若各源是零均值平稳时间序列，且不同源在每个时滞上的互协方差都为零（相互独立的源过程满足此条件），则白化数据的时滞协方差为</p>
 
 <div class="eq">$$\bC_{\bz}(\tau) = \E\bigl[\bz(t)\,\bz(t - \tau)^\top\bigr] = \tilde\bA\,\diag\bigl(\rho_1(\tau), \dots, \rho_n(\tau)\bigr)\,\tilde\bA^\top,$$</div>
 
@@ -190,10 +235,10 @@
   <p lang="zh-CN">中心化与左乘 $\bA$ 可交换，所以观测的样本协方差为 $\hat\bC_{\bx} = \bA\hat\bC_{\bs}\bA^\top$，于是 $\hat\bP\hat\bC_{\bs}\hat\bP^\top = \bU\hat\bV\hat\bC_{\bx}\hat\bV^\top\bU^\top = \bU\bU^\top = \bI$。记 $\hat\bC_{\bs} = \bI + \boldsymbol{\Delta}$。对 $i \ne j$，$\Delta_{ij} = \frac1T\sum_t s_i(t)s_j(t) - \bar s_i\bar s_j$。第一项是均值为 0、方差为 $\E[s_i^2]\,\E[s_j^2] = 1$ 的独立同分布变量的平均，由中心极限定理，它乘以 $\sqrt T$ 后收敛到 $\Ncal(0, 1)$；第二项是 $O_P(1/T)$。由大数定律，$\boldsymbol{\Delta}$ 依概率收敛到 $\bzero$。展开 $(\bI + \bepsilon)(\bI + \boldsymbol{\Delta})(\bI + \bepsilon)^\top = \bI$ 得 $\bepsilon + \bepsilon^\top + \boldsymbol{\Delta} = -(\bepsilon\boldsymbol{\Delta} + \boldsymbol{\Delta}\bepsilon^\top + \bepsilon\bepsilon^\top + \bepsilon\boldsymbol{\Delta}\bepsilon^\top)$，右端为 $o_P(T^{-1/2})$，因为其中每一项都是一个 $T^{-1/2}$ 量级的因子与一个趋于零的因子之积。因此 $\sqrt T(\varepsilon_{ij} + \varepsilon_{ji}) = -\sqrt T\,\Delta_{ij} + o_P(1)$，它收敛到 $\Ncal(0, 1)$。最后，若 $(\sqrt T\varepsilon_{ij}, \sqrt T\varepsilon_{ji})$ 收敛到 $(X, Y)$，则 $X + Y \sim \Ncal(0, 1)$；又因为 $\Var(X + Y) + \Var(X - Y) = 2\Var(X) + 2\Var(Y)$，所以 $1 = \Var(X + Y) \le 2\Var(X) + 2\Var(Y)$。</p>
 </div>
 
-<p lang="en">In the terms of <a class="ref" data-ref="performance"></a>, where the interference-to-signal ratio is $\mathrm{ISR}_{ij} = \E[\varepsilon_{ij}^2]$ (<a class="ref" data-ref="def-isr"></a>), every orthogonal method has $\mathrm{ISR}_{ij} + \mathrm{ISR}_{ji} \ge 1/(2T)$ to first order, whatever its contrast function and whatever the source distributions, and a method that treats the two entries alike has $\mathrm{ISR}_{ij} \ge 1/(4T)$. (Here $\bepsilon = \hat\bP - \bI$ keeps its diagonal; the gain error of <a class="ref" data-ref="def-gain-matrix"></a>, $\hat P_{ij}/\hat P_{ii}$, differs from $\varepsilon_{ij}$ by $O_P(1/T)$, so the two definitions give the same ISR to first order.) Cardoso (1994) pointed out this limit of orthogonal source separation (see also Cardoso, 1998). It is attained by an oracle that knows $\bA$: the rotation that brings $\bU\hat\bV\bA$ closest to $\bI$ gives $\hat\bP = \hat\bC_{\bs}^{-1/2}$, which for sources with finite fourth moments equals $\bI - \tfrac12\boldsymbol{\Delta} + O_P(1/T)$, so that $\varepsilon_{ij} \approx \varepsilon_{ji} \approx -\tfrac12\Delta_{ij}$ (<a class="ref" data-ref="ex-equivariance"></a>). The simulation below whitens a uniform and a Laplacian source with the sample covariance and applies this oracle rotation.</p>
-<p lang="zh-CN">用<a class="ref" data-ref="performance"></a>的语言来说，干扰信号比为 $\mathrm{ISR}_{ij} = \E[\varepsilon_{ij}^2]$（<a class="ref" data-ref="def-isr"></a>），那么在一阶近似下，任何正交方法都满足 $\mathrm{ISR}_{ij} + \mathrm{ISR}_{ji} \ge 1/(2T)$，与它采用的对比函数无关，也与源的分布无关；若方法对两个元素一视同仁，则 $\mathrm{ISR}_{ij} \ge 1/(4T)$。（这里 $\bepsilon = \hat\bP - \bI$ 保留了对角元；<a class="ref" data-ref="def-gain-matrix"></a>中的增益误差 $\hat P_{ij}/\hat P_{ii}$ 与 $\varepsilon_{ij}$ 只差 $O_P(1/T)$，所以两种定义在一阶近似下给出相同的 ISR。）Cardoso（1994）指出了正交源分离的这一极限（另见 Cardoso, 1998）。知道 $\bA$ 的“神谕”可以达到这个下限：使 $\bU\hat\bV\bA$ 最接近 $\bI$ 的旋转给出 $\hat\bP = \hat\bC_{\bs}^{-1/2}$；当源的四阶矩有限时，它等于 $\bI - \tfrac12\boldsymbol{\Delta} + O_P(1/T)$，于是 $\varepsilon_{ij} \approx \varepsilon_{ji} \approx -\tfrac12\Delta_{ij}$（<a class="ref" data-ref="ex-equivariance"></a>）。下面的模拟用样本协方差白化一个均匀源和一个拉普拉斯源，然后施加这个神谕旋转。</p>
+<p lang="en">In the terms of <a class="ref" data-ref="performance"></a>, where the interference-to-signal ratio is $\mathrm{ISR}_{ij} = \E[\varepsilon_{ij}^2]$ (<a class="ref" data-ref="def-isr"></a>), every orthogonal method has $\mathrm{ISR}_{ij} + \mathrm{ISR}_{ji} \ge 1/(2T)$ to first order, whatever its contrast function and whatever the source distributions, and a method that treats the two entries alike has $\mathrm{ISR}_{ij} \ge 1/(4T)$. (Here $\bepsilon = \hat\bP - \bI$ keeps its diagonal; the gain error of <a class="ref" data-ref="def-gain-matrix"></a>, $\hat P_{ij}/\hat P_{ii}$, differs from $\varepsilon_{ij}$ by $O_P(1/T)$, so the two definitions give the same limiting distribution. Passing from this distributional expansion to the stated mean-square ISR approximation additionally requires convergence of second moments, for example uniform integrability of the scaled squared errors.) Cardoso (1994) pointed out this limit of orthogonal source separation (see also Cardoso, 1998). It is attained by an oracle that knows $\bA$: the rotation that brings $\bU\hat\bV\bA$ closest to $\bI$ gives $\hat\bP = \hat\bC_{\bs}^{-1/2}$, which for sources with finite fourth moments equals $\bI - \tfrac12\boldsymbol{\Delta} + O_P(1/T)$, so that $\varepsilon_{ij} \approx \varepsilon_{ji} \approx -\tfrac12\Delta_{ij}$ (<a class="ref" data-ref="ex-equivariance"></a>). The simulation below whitens a uniform and a Laplacian source with the sample covariance and applies this oracle rotation.</p>
+<p lang="zh-CN">用<a class="ref" data-ref="performance"></a>的语言来说，干扰信号比为 $\mathrm{ISR}_{ij} = \E[\varepsilon_{ij}^2]$（<a class="ref" data-ref="def-isr"></a>），那么在一阶近似下，任何正交方法都满足 $\mathrm{ISR}_{ij} + \mathrm{ISR}_{ji} \ge 1/(2T)$，与它采用的对比函数无关，也与源的分布无关；若方法对两个元素一视同仁，则 $\mathrm{ISR}_{ij} \ge 1/(4T)$。（这里 $\bepsilon = \hat\bP - \bI$ 保留了对角元；<a class="ref" data-ref="def-gain-matrix"></a>中的增益误差 $\hat P_{ij}/\hat P_{ii}$ 与 $\varepsilon_{ij}$ 只差 $O_P(1/T)$，所以两种定义有相同的极限分布。要进一步把这一依分布展开换成所述均方 ISR 近似，还需要二阶矩收敛，例如缩放后平方误差的一致可积性。）Cardoso（1994）指出了正交源分离的这一极限（另见 Cardoso, 1998）。知道 $\bA$ 的“神谕”可以达到这个下限：使 $\bU\hat\bV\bA$ 最接近 $\bI$ 的旋转给出 $\hat\bP = \hat\bC_{\bs}^{-1/2}$；当源的四阶矩有限时，它等于 $\bI - \tfrac12\boldsymbol{\Delta} + O_P(1/T)$，于是 $\varepsilon_{ij} \approx \varepsilon_{ji} \approx -\tfrac12\Delta_{ij}$（<a class="ref" data-ref="ex-equivariance"></a>）。下面的模拟用样本协方差白化一个均匀源和一个拉普拉斯源，然后施加这个神谕旋转。</p>
 
-<pre class="code"><code>import numpy as np
+<pre class="code" data-code="python"><code>import numpy as np
 
 rng = np.random.default_rng(1)
 A = np.array([[1.0, 0.6],
@@ -218,8 +263,46 @@ print(f"T * E[eps12^2 + eps21^2] = {mean:.3f} +/- {se:.3f}")</code></pre>
 <p lang="en">It prints $T\,\E[\varepsilon_{12}^2 + \varepsilon_{21}^2] = 0.512 \pm 0.007$, in agreement with the predicted $\tfrac12$ up to Monte Carlo error and terms of order $1/T$. An algorithm that must estimate the rotation from the data cannot do better, and in general it does worse: it attains the floor only when its estimate of the rotation has no first-order error of its own. Symmetric FastICA with $g(u) = u^3$ applied to binary sources is such a case, because $s^3 = s$ reduces its estimating equations, to first order, to $\varepsilon_{ij} = \varepsilon_{ji}$; for other sources it is less accurate (<a class="ref" data-ref="eq-sym-fastica"></a>). Methods that are not constrained to be orthogonal, such as maximum likelihood with the natural gradient (<a class="ref" data-ref="natural-gradient"></a>), have no such floor, and for sources with large Fisher information the Cramér–Rao bound (<a class="ref" data-ref="thm-crb"></a>) lies far below it. For nearly Gaussian sources, in contrast, the error of estimating the rotation dominates and the floor matters little.</p>
 <p lang="zh-CN">程序输出 $T\,\E[\varepsilon_{12}^2 + \varepsilon_{21}^2] = 0.512 \pm 0.007$，在蒙特卡罗误差与 $1/T$ 量级的项之内与预言值 $\tfrac12$ 一致。必须从数据中估计旋转的算法不可能做得更好，一般还会更差：只有当它对旋转的估计本身没有一阶误差时，才能达到这个下限。对二值源使用 $g(u) = u^3$ 的对称 FastICA 就是这样的例子：由于 $s^3 = s$，它的估计方程在一阶近似下化为 $\varepsilon_{ij} = \varepsilon_{ji}$；对其他源，它的精度要差一些（<a class="ref" data-ref="eq-sym-fastica"></a>）。不受正交约束的方法，例如用自然梯度求最大似然（<a class="ref" data-ref="natural-gradient"></a>），没有这个下限；对 Fisher 信息很大的源，Cramér–Rao 界（<a class="ref" data-ref="thm-crb"></a>）远低于它。反之，对接近高斯的源，估计旋转本身的误差占主导，这个下限就无关紧要了。</p>
 
-<p lang="en"><b>Conditioning.</b> In the noise-free model, the conditioning of $\bA$ plays no role for orthogonal methods: whatever $\bA$ is, the whitened data are $\hat\bV\bA\bs = \bQ\hat\bC_{\bs}^{-1/2}\bs$ for some orthogonal $\bQ$ (<a class="ref" data-ref="ex-equivariance"></a>). Noise changes this. In the setting of <a class="ref" data-ref="prop-pca-noise"></a> with $m = n$, ordinary whitening leaves noise with covariance $\sigma^2\bLambda^{-1}$ in the whitened data, so the share of noise along the $i$-th principal direction is $\sigma^2/\lambda_i$. If $\bA$ is ill-conditioned, for example because two of its columns are nearly collinear, some $\lambda_i$ is small, and the corresponding whitened coordinate is dominated by noise. A large ratio $\lambda_1/\lambda_n$ is therefore a warning sign, and a reason to reconsider the number of components (<a class="ref" data-ref="model-order"></a>).</p>
-<p lang="zh-CN"><b>条件数。</b>在无噪声模型中，$\bA$ 的条件数对正交方法没有影响：无论 $\bA$ 是什么，白化后的数据都是 $\hat\bV\bA\bs = \bQ\hat\bC_{\bs}^{-1/2}\bs$，其中 $\bQ$ 为某个正交矩阵（<a class="ref" data-ref="ex-equivariance"></a>）。噪声会改变这一点。在<a class="ref" data-ref="prop-pca-noise"></a>的设定下取 $m = n$，普通白化后数据中残留的噪声协方差为 $\sigma^2\bLambda^{-1}$，所以第 $i$ 个主方向上噪声所占的比例为 $\sigma^2/\lambda_i$。若 $\bA$ 病态，例如它有两列几乎共线，则某个 $\lambda_i$ 很小，相应的白化坐标几乎全是噪声。因此 $\lambda_1/\lambda_n$ 很大是一个警示信号，提醒我们重新考虑成分的个数（<a class="ref" data-ref="model-order"></a>）。</p>
+<p lang="en"><b>Conditioning.</b> In the noise-free model and exact arithmetic, the statistical error of an orthogonally equivariant method does not depend on the conditioning of $\bA$: whatever $\bA$ is, the whitened data are $\hat\bV\bA\bs = \bQ\hat\bC_{\bs}^{-1/2}\bs$ for some orthogonal $\bQ$ (<a class="ref" data-ref="ex-equivariance"></a>). This requires the equivariance assumption in that exercise; an arbitrary orthogonal optimizer need not have it. Floating-point errors and noise change the conclusion. In the setting of <a class="ref" data-ref="prop-pca-noise"></a> with $m = n$, ordinary whitening leaves noise with covariance $\sigma^2\bLambda^{-1}$ in the whitened data, so the share of noise along the $i$-th principal direction is $\sigma^2/\lambda_i$. If $\bA$ is ill-conditioned, for example because two of its columns are nearly collinear, some $\lambda_i$ is small, and the corresponding whitened coordinate is dominated by noise. A large ratio $\lambda_1/\lambda_n$ is therefore a warning sign, and a reason to reconsider the number of components (<a class="ref" data-ref="model-order"></a>).</p>
+<p lang="zh-CN"><b>条件数。</b>在无噪声模型与精确算术下，正交等变方法的统计误差不依赖于 $\bA$ 的条件数：无论 $\bA$ 是什么，白化后的数据都是 $\hat\bV\bA\bs = \bQ\hat\bC_{\bs}^{-1/2}\bs$，其中 $\bQ$ 为某个正交矩阵（<a class="ref" data-ref="ex-equivariance"></a>）。这里需要该习题中的等变假设，任意一个正交优化器未必满足。浮点误差和噪声都会改变结论。在<a class="ref" data-ref="prop-pca-noise"></a>的设定下取 $m = n$，普通白化后数据中残留的噪声协方差为 $\sigma^2\bLambda^{-1}$，所以第 $i$ 个主方向上噪声所占的比例为 $\sigma^2/\lambda_i$。若 $\bA$ 病态，例如它有两列几乎共线，则某个 $\lambda_i$ 很小，相应的白化坐标几乎全是噪声。因此 $\lambda_1/\lambda_n$ 很大是一个警示信号，提醒我们重新考虑成分的个数（<a class="ref" data-ref="model-order"></a>）。</p>
+
+
+<h2 id="sec-whitening-svd-practice"><span lang="en">A rank-aware SVD implementation</span><span lang="zh-CN">显式检查秩的 SVD 实现</span></h2>
+<p lang="en">For centered data $\tilde\bX=\bE\bD\bF^\top$, retain $r$ nonzero singular values and use the divisor $T$ consistently. The whitening and reconstruction identities are</p>
+<p lang="zh-CN">对中心化数据 $\tilde\bX=\bE\bD\bF^\top$，保留 $r$ 个非零奇异值，并统一采用分母 $T$。白化与重构恒等式为</p>
+<div class="eq" id="eq-whitening-svd-practice">$$\bV=\sqrt T\,\bD_r^{-1}\bE_r^\top,\qquad \bZ=\bV\tilde\bX=\sqrt T\,\bF_r^\top,\qquad \frac{\bZ\bZ^\top}{T}=\bI_r,\qquad \bV^+\bZ=\bE_r\bE_r^\top\tilde\bX.$$</div>
+<p lang="en">The rank tolerance below detects numerical zeros; it is not a scientific model-order selector. Choosing $r$ smaller than the available rank discards data and must be justified separately (<a class="ref" data-ref="model-order"></a>). The returned mean and whitening matrix should be reused when transforming new observations.</p>
+<p lang="zh-CN">下列秩阈值用于识别数值上的零奇异值，并不是科学意义上的模型阶数选择准则。若选择的 $r$ 小于可用秩，就会丢弃数据，必须另行说明理由（<a class="ref" data-ref="model-order"></a>）。变换新观测时，应复用函数返回的均值和白化矩阵。</p>
+<pre class="code" data-code="python"><code>import numpy as np
+
+def whiten_svd(X, rank=None):
+    X = np.asarray(X, dtype=float)           # sensors by observations
+    if X.ndim != 2 or X.shape[0] &lt; 1 or X.shape[1] &lt; 2 or not np.isfinite(X).all():
+        raise ValueError("Expected finite 2-D data with at least two observations")
+    mean = X.mean(axis=1, keepdims=True)
+    Xc = X - mean
+    E, d, _ = np.linalg.svd(Xc, full_matrices=False)
+    tol = np.finfo(float).eps * max(Xc.shape) * d[0]
+    available = int(np.count_nonzero(d &gt; tol))
+    r = available if rank is None else rank
+    if not isinstance(r, (int, np.integer)) or not 1 &lt;= r &lt;= available:
+        raise ValueError("Requested rank exceeds the numerical signal rank")
+    V = (np.sqrt(X.shape[1]) / d[:r, None]) * E[:, :r].T
+    Z = V @ Xc
+    return mean, V, Z
+
+rng = np.random.default_rng(23)
+S = rng.standard_normal((2, 2000))
+A = np.array([[1., .4], [.2, 1.], [1.2, 1.4]])
+X = A @ S
+mean, V, Z = whiten_svd(X)
+assert Z.shape == (2, X.shape[1])
+assert np.allclose(Z @ Z.T / X.shape[1], np.eye(2))
+assert np.allclose(np.linalg.pinv(V) @ Z + mean, X)
+print("rank-aware whitening and reconstruction checks passed")
+</code></pre>
+<p lang="en"><b>Regularization changes the target.</b> Replacing a small eigenvalue $\lambda_i$ by $\lambda_i+\alpha$ can improve numerical stability, but $(\bC+\alpha\bI)^{-1/2}$ gives transformed covariance eigenvalues $\lambda_i/(\lambda_i+\alpha)$, not one. Such shrinkage is useful in some problems, but it is not exact whitening and the orthogonal-mixing proofs cannot be applied unchanged. Never silently divide by zero, clip a negative covariance eigenvalue into a large inverse weight, or treat a dropped direction as a recovered source.</p>
+<p lang="zh-CN"><b>正则化会改变目标。</b>用 $\lambda_i+\alpha$ 替代很小的特征值 $\lambda_i$ 可以提高数值稳定性，但 $(\bC+\alpha\bI)^{-1/2}$ 使变换后协方差的特征值成为 $\lambda_i/(\lambda_i+\alpha)$，而不是一。此类收缩在某些问题中有用，却不是精确白化，不能原样套用正交混合的证明。不要静默地除以零，把负的协方差特征值裁成极小正数再赋予巨大逆权重，或把丢弃的方向当作已经恢复的源。</p>
 
 <div class="keypoints">
   <p class="kp-title" lang="en">Key points</p>
@@ -239,6 +322,14 @@ print(f"T * E[eps12^2 + eps21^2] = {mean:.3f} +/- {se:.3f}")</code></pre>
     <li>在有限样本下，正交方法继承了样本协方差的误差：在一阶近似下 $\mathrm{ISR}_{ij} + \mathrm{ISR}_{ji} \ge 1/(2T)$，与对比函数无关。</li>
   </ul>
 </div>
+
+<aside class="chapter-recap">
+<h3><span lang="en">Carry these three ideas forward</span><span lang="zh-CN">带走这三点</span></h3>
+<ul lang="en"><li>Center first; divide by standard deviations in decorrelated coordinates.</li><li>Identity covariance leaves an unknown orthogonal orientation.</li><li>Small eigenvalues, rank loss and noise need explicit decisions.</li></ul>
+<ul lang="zh-CN"><li>先中心化，在去相关的坐标上除以标准差。</li><li>单位协方差仍留有未知的正交方向。</li><li>小特征值、降秩和噪声需要明确处理。</li></ul>
+<p lang="en">Begin with <a href="#ex-cholesky">Cholesky as regression</a>; set the correlation to zero first to recover the simple case. Then try <a href="#ex-pca-noise">the one-source noise example</a> to see why signal whitening and data whitening differ.</p>
+<p lang="zh-CN">先做<a href="#ex-cholesky">Cholesky 与回归题</a>，先把相关系数设为零以得到简单情形；再做<a href="#ex-pca-noise">单源含噪题</a>，理解信号白化与数据白化的区别。</p>
+</aside>
 
 <h2 id="sec-whitening-exercises"><span lang="en">Exercises</span><span lang="zh-CN">习题</span></h2>
 
@@ -300,6 +391,7 @@ print(f"T * E[eps12^2 + eps21^2] = {mean:.3f} +/- {se:.3f}")</code></pre>
 
 <div class="references">
   <ol>
+    <li>Hyvärinen, A., &amp; Oja, E. (2000). Independent component analysis: Algorithms and applications. <i>Neural Networks</i>, 13(4–5), 411–430. <a href="https://www.cs.helsinki.fi/u/ahyvarin/papers/NN00new.pdf">Author manuscript (PDF)</a>.</li>
     <li>Bell, A. J., &amp; Sejnowski, T. J. (1997). The “independent components” of natural scenes are edge filters. <i>Vision Research</i>, 37(23), 3327–3338.</li>
     <li>Cardoso, J.-F. (1994). On the performance of orthogonal source separation algorithms. In <i>Proceedings of EUSIPCO-94</i> (pp. 776–779). Edinburgh.</li>
     <li>Cardoso, J.-F. (1998). Blind signal separation: statistical principles. <i>Proceedings of the IEEE</i>, 86(10), 2009–2025.</li>

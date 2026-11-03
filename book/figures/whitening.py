@@ -47,7 +47,7 @@ def ch03_whitening():
             for k in range(2):
                 _arrow(ax, 1.6 * np.sqrt(d[k]) * E[:, k], ACCENT, lw=1.5)
         else:
-            At = V @ A                                    # whitened mixing matrix (orthogonal)
+            At = V @ A  # approximately orthogonal: finite-sample whitening
             for k in range(2):
                 _arrow(ax, 2.2 * At[:, k] / np.linalg.norm(At[:, k]), GREEN)
     axes[0].set_xlabel("$x_1$", labelpad=1)

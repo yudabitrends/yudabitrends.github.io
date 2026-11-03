@@ -68,27 +68,52 @@ def ch11_order():
         save(fig, "ch11-order")
 
 
-def _sym_fastica(Z, rng, iters=500):
+def _sym_fastica(Z, rng, iters=500, tol=1e-10):
+    """Return the last orthogonal iterate and explicit convergence diagnostics."""
+    if Z.ndim != 2 or not np.isfinite(Z).all() or not Z.size:
+        raise ValueError("Z must be a nonempty finite matrix.")
+    if not isinstance(iters, (int, np.integer)) or iters < 1 or not np.isfinite(tol) or tol <= 0:
+        raise ValueError("Use a positive iteration budget and tolerance.")
     k, T = Z.shape
     W = np.linalg.qr(rng.normal(size=(k, k)))[0]
-    for _ in range(iters):
+    delta = float("inf")
+    for step in range(1, iters + 1):
         Y = W @ Z
-        Wn = np.tanh(Y) @ Z.T / T - np.diag((1 - np.tanh(Y) ** 2).mean(1)) @ W
-        d, E = np.linalg.eigh(Wn @ Wn.T)
-        Wn = E @ np.diag(d ** -0.5) @ E.T @ Wn
-        done = np.max(1 - np.abs(np.sum(Wn * W, 1))) < 1e-10
+        G = np.tanh(Y)
+        Wn = G @ Z.T / T - np.diag((1 - G ** 2).mean(1)) @ W
+        L, singular, Rt = np.linalg.svd(Wn, full_matrices=False)
+        rank_tol = np.finfo(Wn.dtype).eps * max(Wn.shape) * singular[0]
+        if np.count_nonzero(singular > rank_tol) < k:
+            return W, {"converged": False, "n_iter": step - 1,
+                       "delta": delta, "reason": "rank_deficient_update"}
+        Wn = L @ Rt  # polar factor, without squaring the condition number
+        delta = float(np.max(np.abs(np.abs(np.diag(Wn @ W.T)) - 1)))
         W = Wn
-        if done:
-            break
-    return W
+        if delta < tol:
+            return W, {"converged": True, "n_iter": step,
+                       "delta": delta, "reason": "converged"}
+    return W, {"converged": False, "n_iter": iters,
+               "delta": delta, "reason": "iteration_limit"}
 
 
-def _pca_ica(X, k, seed):
+def _pca_ica(X, k, seed, iters=500, tol=1e-10):
+    """PCA-whiten with 1/T normalization and retain diagnostic information."""
+    X = np.asarray(X, dtype=float)
+    if X.ndim != 2 or not X.size or X.shape[1] < 2 or not np.isfinite(X).all():
+        raise ValueError("X must be finite with at least two samples.")
     Xc = X - X.mean(1, keepdims=True)
-    d, E = np.linalg.eigh(np.cov(Xc))
-    idx = np.argsort(d)[::-1][:k]
-    Z = np.diag(d[idx] ** -0.5) @ E[:, idx].T @ Xc
-    return _sym_fastica(Z, np.random.default_rng(seed)) @ Z
+    L, singular, Rt = np.linalg.svd(Xc, full_matrices=False)
+    rank_tol = np.finfo(Xc.dtype).eps * max(Xc.shape) * singular[0]
+    rank = int(np.count_nonzero(singular > rank_tol))
+    if not isinstance(k, (int, np.integer)) or not 1 <= k <= rank:
+        raise ValueError(f"Requested order {k} exceeds the admissible numerical rank {rank}.")
+    # Xc = L diag(singular) Rt; whitening uses lambda_i = singular_i**2 / T.
+    Z = np.sqrt(Xc.shape[1]) * Rt[:k]
+    whitening_error = float(np.max(np.abs(Z @ Z.T / Z.shape[1] - np.eye(k))))
+    W, diagnostics = _sym_fastica(Z, np.random.default_rng(seed), iters=iters, tol=tol)
+    diagnostics.update({"rank": rank, "whitening_error": whitening_error,
+                        "tolerance": tol, "budget": iters})
+    return W @ Z, diagnostics
 
 
 @figure
@@ -109,7 +134,7 @@ def ch11_split():
     orders = [5, 6, 9]
     fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.35), gridspec_kw={"width_ratios": orders})
     for ax, k in zip(axes, orders):
-        Y = _pca_ica(X, k, seed=7)
+        Y, diagnostics = _pca_ica(X, k, seed=7)
         C = np.abs(np.corrcoef(np.vstack([S, Y]))[:n, n:])
         order = sorted(range(k), key=lambda j: (C[:, j].argmax() if C[:, j].max() > 0.5 else n, -C[:, j].max()))
         C = C[:, order]
@@ -124,10 +149,12 @@ def ch11_split():
         ax.set_yticks(range(n))
         ax.set_yticklabels([f"$s_{{{i + 1}}}$" for i in range(n)], fontsize=8)
         ax.tick_params(length=0)
-        ax.set_title(f"$k={k}$", pad=4)
+        status = "converged" if diagnostics["converged"] else "not converged"
+        ax.set_title(f"$k={k}$\n{status} ({diagnostics['n_iter']} iters)", fontsize=9, pad=6)
         for side in ax.spines.values():
             side.set_visible(False)
         print(f"  k={k}: best |corr| per source {np.round(C.max(1), 2)}")
+        print(f"    {diagnostics}")
     fig.subplots_adjust(wspace=0.25)
     with plt.rc_context({"svg.hashsalt": "ch11-split"}):   # stable element ids
         save(fig, "ch11-split")

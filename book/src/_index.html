@@ -1,9 +1,18 @@
+<section class="beginner-welcome" aria-labelledby="beginner-start-title">
+<h2 id="beginner-start-title"><span lang="en">New to ICA? Start with the idea.</span><span lang="zh-CN">第一次学 ICA？先从直觉开始。</span></h2>
+<p lang="en">You observe several mixtures and want to recover the hidden ingredients. Start with a two-signal example, learn how to read the symbols, then follow the first-pass guide in each chapter. You do not need to master every proof before running your first example.</p>
+<p lang="zh-CN">你能看到几路混合信号，想找出背后各自独立的来源。先算一个两路信号的小例子，学会读符号，再按每章的“第一次读这一章”前进；不必先攻克所有证明，才能运行第一个例子。</p>
+<p class="start-actions"><a class="start-primary" href="start-here.html"><span lang="en">Open the beginner guide →</span><span lang="zh-CN">从新手指南开始 →</span></a><a href="start-here.html#guide-mixing-lab"><span lang="en">Try the mixing experiment</span><span lang="zh-CN">动手玩混合实验</span></a></p>
+<p lang="en">Already comfortable with matrices and probability? Go straight to <a href="ica-problem.html">Chapter 1</a>. The original theory, proofs and advanced exercises remain available.</p>
+<p lang="zh-CN">已经熟悉矩阵与概率？可以直接读<a href="ica-problem.html">第 1 章</a>。原有理论、证明与进阶习题仍完整保留。</p>
+</section>
+
 <!-- Front page of the book (between the cover and the contents). -->
 
 <h2 id="about"><span lang="en">About this book</span><span lang="zh-CN">关于本书</span></h2>
 
-<p lang="en">Independent component analysis recovers hidden signals from their linear mixtures using two assumptions: the signals are statistically independent, and at most one of them is Gaussian. These two assumptions lead to a remarkably complete theory, with a sharp identifiability theorem, a family of contrast functions linked by information theory, algorithms with provable convergence, exact asymptotic error formulas and a Cramér–Rao bound, and clear limits once the model is stretched to more sources than sensors or to nonlinear mixing. It is also one of the workhorses of brain imaging.</p>
-<p lang="zh-CN">独立成分分析只依靠两个假设，即各信号相互统计独立、且其中至多一个服从高斯分布，就能从线性混合中恢复隐藏的信号。这两个假设引出了一套相当完整的理论：一个精确的可辨识性定理，一族由信息论联系起来的对比函数，可证明收敛的算法，精确的渐近误差公式与 Cramér–Rao 界，以及当模型推广到源多于传感器或非线性混合时清晰的边界。它也是脑影像分析的主力工具之一。</p>
+<p lang="en">In the classical noiseless linear ICA model, independent, nondegenerate sources mixed by a fixed full-column-rank matrix are identifiable up to scaling and permutation when at most one source is Gaussian. These assumptions describe a model, not a guarantee that any algorithm will recover every finite dataset. This book develops the corresponding identifiability theory, contrasts, algorithms and statistical limits, then explains which conclusions change with noise, temporal structure, more sources than sensors, nonlinear mixing, and brain-imaging data.</p>
+<p lang="zh-CN">在经典的无噪线性 ICA 模型中，若各源独立且非退化、混合矩阵固定且满列秩、至多一个源服从高斯分布，则模型在尺度与置换意义下可辨识。这些假设描述的是一个模型，并不保证任意算法都能从有限数据中准确恢复源。本书从可辨识性理论、对比函数、算法和统计极限出发，再解释加入噪声、时间结构、过完备混合、非线性混合或脑影像数据后，哪些结论仍然成立，哪些需要改变。</p>
 
 <p lang="en">This book develops the subject from first principles to research level. Every chapter states its results precisely, proves the central ones or points to where the proofs can be found, and checks the theory against small numerical experiments that readers can run themselves. Each chapter closes with exercises, from routine checks to derivations of published results, with worked solutions.</p>
 <p lang="zh-CN">本书从基本原理一直讲到研究前沿。每一章都精确陈述结论，对核心结果给出证明或指出证明的出处，并用读者可以自己运行的小型数值实验来检验理论。每章末尾配有习题，从常规练习到已发表结果的推导，都附有完整解答。</p>
@@ -13,16 +22,32 @@
 <p lang="en">The prerequisites are linear algebra (eigendecompositions, orthogonal matrices) and probability at the level of an undergraduate course. The chapters on statistical theory also use basic asymptotic statistics; Appendix A collects what is needed. Two paths through the book work well:</p>
 <p lang="zh-CN">预备知识是线性代数（特征分解、正交矩阵）和本科程度的概率论。统计理论各章还会用到基本的渐近统计，所需内容汇集在附录 A。推荐两条阅读路线：</p>
 <ul lang="en">
-  <li><b>Practice first.</b> Chapters 1, 3, 5 and 8, then Part VI on fMRI.</li>
+  <li><b>Practice first.</b> Chapters 1, 3, 5 and 8, then Chapter 11 on noise and reliability, followed by Part VI on fMRI.</li>
   <li><b>Theory first.</b> Parts I and II in order, then Chapters 7, 10, 12 and 13.</li>
 </ul>
 <ul lang="zh-CN">
-  <li><b>应用优先。</b>第 1、3、5、8 章，然后读第六部分（fMRI）。</li>
+  <li><b>应用优先。</b>第 1、3、5、8 章，再读第 11 章的噪声与可靠性，最后进入第六部分（fMRI）。</li>
   <li><b>理论优先。</b>按顺序读第一、二部分，再读第 7、10、12、13 章。</li>
 </ul>
 
 <p lang="en">Use the switch at the top of every page to read in English, in Chinese, or in both languages paragraph by paragraph; the choice is remembered. Links jump between chapters, theorems, equations and exercises, and the contents panel on the left (behind the <i>Contents</i> button on a phone) follows you through the book.</p>
 <p lang="zh-CN">每页顶部的切换按钮可以选择英文、中文，或者中英逐段对照阅读，选择会被记住。链接可以在章节、定理、公式和习题之间跳转；左侧的目录栏（手机上点<i>目录</i>按钮打开）在全书中随时可用。</p>
+
+<h2 id="learning-checkpoints"><span lang="en">Learning checkpoints</span><span lang="zh-CN">学习检查点</span></h2>
+<ul lang="en">
+<li><b>Before running an algorithm:</b> write down the data orientation, source assumptions, retained dimension and whitening convention. Distinguish population assumptions from sample diagnostics.</li>
+<li><b>Before interpreting results:</b> distinguish convergence, independence, stability and scientific validity. A small reconstruction error or orthogonal output does not establish successful source separation.</li>
+<li><b>Before comparing methods:</b> use one-to-one component matching and the same preprocessing, sample budget and scale convention. Repeat initializations and report failures as well as successful runs.</li>
+<li><b>Before reporting uncertainty:</b> check finite moments, dependence across observations and estimated preprocessing. Appendix A explains numerical rank, long-run covariance and the second-order behavior of squared errors.</li>
+</ul>
+<ul lang="zh-CN">
+<li><b>运行算法前：</b>写清数据朝向、源假设、保留维数与白化归一化约定，区分总体假设与样本诊断。</li>
+<li><b>解释结果前：</b>区分收敛、独立性、稳定性与科学有效性。重建误差很小或输出正交，都不足以证明源分离成功。</li>
+<li><b>比较方法前：</b>使用一一成分匹配，统一预处理、样本预算与尺度约定；重复随机初始化，同时报告失败与成功运行。</li>
+<li><b>报告不确定性前：</b>检查矩是否有限、观测是否相关、预处理是否由数据估计。附录 A 补充了数值秩、长期协方差以及平方误差的二阶行为。</li>
+</ul>
+<p lang="en">Search the whole book by keyword with the Search button or Ctrl/Cmd+K. Each chapter provides a Python download generated from its runnable examples; blocks share the chapter namespace and run in reading order. Copy buttons exclude printed output. Solutions can be expanded together and are included when printing.</p>
+<p lang="zh-CN">点击搜索按钮或按 Ctrl/Cmd+K，可以按关键词检索全书。每章提供由可运行示例自动生成的 Python 下载；同章代码块共享变量，并按阅读顺序执行。复制按钮不会把示例输出混入代码。解答可以全部展开，打印时也会包含解答。</p>
 
 <h2 id="further-reading"><span lang="en">Further reading</span><span lang="zh-CN">延伸阅读</span></h2>
 

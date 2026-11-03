@@ -1,5 +1,19 @@
 <!-- Chapter 2. Independence, cumulants and entropy. Source format: book/AUTHORING.md -->
 
+<aside class="chapter-guide" id="guide-probability">
+<h3><span lang="en">First pass</span><span lang="zh-CN">第一次读这一章</span></h3>
+<p lang="en">Correlation asks whether two variables move together in a linear way. Independence asks whether learning one changes any probabilities for the other. ICA needs the second question; this chapter builds several ways of asking it without confusing a useful diagnostic with a proof.</p>
+<p lang="zh-CN">相关性问两个变量是否以线性方式共同变化，独立性则问：知道其中一个后，另一个的任何概率会不会改变？ICA 需要回答后一个问题。本章提供多种检验视角，同时区分有用的诊断和严格证明。</p>
+<p lang="en"><b>After this pass, you should be able to:</b></p>
+<p lang="zh-CN"><b>读完这一遍，你应该能：</b></p>
+<ul lang="en"><li>Check independence in a finite probability table by multiplying marginals.</li><li>Compute a zero covariance for a pair that is still dependent.</li><li>Explain why a zero fourth cumulant does not certify a Gaussian law.</li></ul>
+<ul lang="zh-CN"><li>能在有限概率表中用边缘概率乘积检查独立性。</li><li>能为一对仍然依赖的变量算出零协方差。</li><li>能解释为什么四阶累积量为零不能证明分布是高斯的。</li></ul>
+<p lang="en"><b>Before you start:</b> review the <a href="ica-problem.html#asm-ica">source assumptions</a> and the <a href="start-here.html#guide-notation">expectation notation</a>. In a finite example, an expectation is just a probability-weighted average.</p>
+<p lang="zh-CN"><b>先备知识：</b>回看<a href="ica-problem.html#asm-ica">源的假设</a>和<a href="start-here.html#guide-notation">期望符号</a>。在有限取值例子中，期望就是按概率加权的平均值。</p>
+<p lang="en"><b>Read first:</b> <a href="#sec-independence">independence</a> and <a href="#sec-kurtosis-skewness">skewness/kurtosis</a>; then <a href="#sec-entropy">entropy</a> and <a href="#sec-mutual-information">mutual information</a> if following the likelihood route. Defer the derivatives in <a href="#sec-charfun">characteristic functions</a> and <a href="#sec-cumulants">cumulants</a> until you need the identifiability proof. Keep the <a href="#sec-probability-conditions">existence conditions</a> on the first pass.</p>
+<p lang="zh-CN"><b>先读路线：</b>先读<a href="#sec-independence">独立性</a>和<a href="#sec-kurtosis-skewness">偏度/峭度</a>；若准备读似然路线，再读<a href="#sec-entropy">熵</a>与<a href="#sec-mutual-information">互信息</a>。<a href="#sec-charfun">特征函数</a>和<a href="#sec-cumulants">累积量</a>中的求导可等到需要可辨识性证明时再细读，但第一遍就要看<a href="#sec-probability-conditions">存在条件</a>。</p>
+</aside>
+
 <h2 id="sec-probability-overview"><span lang="en">From uncorrelated to independent</span><span lang="zh-CN">从不相关到独立</span></h2>
 
 <p lang="en">Panel (c) of <a class="ref" data-ref="fig-scatter"></a> shows a mixture of two uniform sources after whitening. The two coordinates are uncorrelated and have unit variance, yet they are plainly not independent: the cloud is a tilted square, so the range of values open to one coordinate depends on the value of the other. The covariance cannot see this dependence. ICA therefore needs a notion stronger than correlation, together with quantities that detect dependence and non-Gaussianity beyond second order.</p>
@@ -15,6 +29,11 @@
 
 <p lang="en">Two random quantities are independent when knowing the value of one tells us nothing about the other. The definition applies to scalars and vectors alike; independence between groups of variables appears later, for the Gaussian subspace in <a class="ref" data-ref="identifiability"></a> and for independent vector analysis in <a class="ref" data-ref="group-ica"></a>.</p>
 <p lang="zh-CN">两个随机量独立，是指知道其中一个的取值，对另一个不提供任何信息。这一定义对标量和向量同样适用；变量组之间的独立性在后文还会出现，例如<a class="ref" data-ref="identifiability"></a>中的高斯子空间，以及<a class="ref" data-ref="group-ica"></a>中的独立向量分析。</p>
+
+<aside class="beginner-bridge">
+<p lang="en"><b>Reading the definition.</b> A set $B_i$ describes an event such as “variable $i$ lies between zero and one.” The product sign $\prod$ means multiply the separate probabilities. Independence requires this equality for every such choice, not merely one event or one correlation coefficient.</p>
+<p lang="zh-CN"><b>怎样读定义。</b>集合 $B_i$ 表示一个事件，例如“第 $i$ 个变量落在零与一之间”。乘积符号 $\prod$ 表示把各自的概率相乘。独立要求每一种这样的事件选择都满足等式，而不是只检查一个事件或一个相关系数。</p>
+</aside>
 
 <div class="env" data-kind="definition" id="def-independence" data-en="independence" data-zh="独立性">
   <p lang="en">Random vectors $\by_1, \dots, \by_k$, with $\by_i \in \R^{d_i}$, are (mutually) <em>independent</em> if $P(\by_1 \in B_1, \dots, \by_k \in B_k) = \prod_{i=1}^k P(\by_i \in B_i)$ for all Borel sets $B_i \subseteq \R^{d_i}$. The components of $\by = (y_1, \dots, y_n)^\top$ are independent when the scalars $y_1, \dots, y_n$ are; equivalently, the joint distribution function factorizes, $F_{\by}(\bu) = \prod_{i=1}^n F_{y_i}(u_i)$ for all $\bu \in \R^n$.</p>
@@ -68,6 +87,32 @@
 
 <p lang="en">For jointly Gaussian vectors the two notions coincide (<a class="ref" data-ref="prop-gaussian-uncorrelated"></a> below). Gaussian marginals are not enough: <a class="ref" data-ref="ex-sign-flip"></a> constructs two uncorrelated standard Gaussian variables that are dependent.</p>
 <p lang="zh-CN">对联合高斯向量而言，这两个概念是一回事（见下文<a class="ref" data-ref="prop-gaussian-uncorrelated"></a>）。仅有高斯的边缘分布是不够的：<a class="ref" data-ref="ex-sign-flip"></a>构造了两个不相关、却不独立的标准高斯变量。</p>
+
+<aside class="beginner-example" id="beginner-probability-example">
+<h3><span lang="en">Micro example: three outcomes defeat correlation</span><span lang="zh-CN">微型手算：三个取值就能骗过相关性</span></h3>
+<p lang="en">Let $X$ take $-1,0,1$, each with probability $1/3$, and set $Y=X^2$. The possible pairs are $(-1,1),(0,0),(1,1)$.</p>
+<p lang="zh-CN">设 $X$ 以各 $1/3$ 的概率取 $-1,0,1$，令 $Y=X^2$。可能的数对是 $(-1,1),(0,0),(1,1)$。</p>
+<ol lang="en"><li>Average the three rows: $\E[X]=0$, $\E[Y]=2/3$.</li><li>The products $XY$ are $-1,0,1$, so $\E[XY]=0$ and $\Cov(X,Y)=0-0(2/3)=0$.</li><li>Yet $P(X=0,Y=0)=1/3$, while $P(X=0)P(Y=0)=1/9$. The factorization fails.</li></ol>
+<ol lang="zh-CN"><li>对三行取平均：$\E[X]=0$、$\E[Y]=2/3$。</li><li>乘积 $XY$ 为 $-1,0,1$，所以 $\E[XY]=0$，$\Cov(X,Y)=0-0(2/3)=0$。</li><li>但 $P(X=0,Y=0)=1/3$，而 $P(X=0)P(Y=0)=1/9$，概率分解失败。</li></ol>
+<p lang="en">This is an exact population counterexample, not a noisy sample coincidence. It disproves “uncorrelated implies independent.” It does not contradict the jointly Gaussian result: this pair is discrete and not jointly Gaussian.</p>
+<p lang="zh-CN">这是精确的总体反例，不是样本噪声造成的巧合。它否定了“不相关就独立”，却不反驳联合高斯情形的结论：这里的数对是离散的，并非联合高斯。</p>
+<div class="beginner-check" id="beginner-probability-check-1">
+<p lang="en"><b>Quick check 1.</b> For a fair random sign $U=\pm1$, what is $\kurt(U)$?</p>
+<p lang="zh-CN"><b>自测 1。</b>若 $U$ 等概率取 $\pm1$，$\kurt(U)$ 是多少？</p>
+<details class="solution beginner-answer"><summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+<p lang="en">$\E[U]=0$, $\E[U^2]=\E[U^4]=1$, so $\kurt(U)=1-3=-2$. Here variance is one, so normalized and unnormalized kurtosis agree.</p>
+<p lang="zh-CN">$\E[U]=0$，$\E[U^2]=\E[U^4]=1$，故 $\kurt(U)=1-3=-2$。方差为一，因此归一化与未归一化峭度相同。</p>
+</details>
+</div>
+<div class="beginner-check" id="beginner-probability-check-2">
+<p lang="en"><b>Quick check 2.</b> Can a non-Gaussian variable have variance one and kurtosis zero?</p>
+<p lang="zh-CN"><b>自测 2。</b>非高斯变量能否方差为一、峭度为零？</p>
+<details class="solution beginner-answer"><summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+<p lang="en">Yes. Take $U=0$ with probability $2/3$ and each of $\pm\sqrt3$ with probability $1/6$. Then $\E[U]=0$, $\E[U^2]=1$, $\E[U^4]=3$, and $\kurt(U)=0$. A three-point law is not Gaussian.</p>
+<p lang="zh-CN">能。令 $U=0$ 的概率为 $2/3$，取 $\pm\sqrt3$ 的概率各为 $1/6$。于是 $\E[U]=0$、$\E[U^2]=1$、$\E[U^4]=3$，$\kurt(U)=0$，但三点分布不是高斯分布。</p>
+</details>
+</div>
+</aside>
 
 <h2 id="sec-charfun"><span lang="en">Characteristic functions</span><span lang="zh-CN">特征函数</span></h2>
 
@@ -123,6 +168,11 @@
 <p lang="en">If $\E|y|^k &lt; \infty$, the characteristic function of a scalar $y$ is $k$ times continuously differentiable, with $\varphi_y^{(j)}(0) = i^j\,\E[y^j]$ for $j \le k$, so that $\varphi_y(\omega) = \sum_{j=0}^{k} \E[y^j]\,(i\omega)^j/j! + o(|\omega|^k)$ as $\omega \to 0$. Moments are the Taylor coefficients of $\varphi_y$. Cumulants are the Taylor coefficients of its logarithm, which is well defined near $\omega = 0$ because $\varphi_y(0) = 1$ and $\varphi_y$ is continuous.</p>
 <p lang="zh-CN">若 $\E|y|^k &lt; \infty$，则标量 $y$ 的特征函数 $k$ 次连续可微，且对 $j \le k$ 有 $\varphi_y^{(j)}(0) = i^j\,\E[y^j]$，于是当 $\omega \to 0$ 时 $\varphi_y(\omega) = \sum_{j=0}^{k} \E[y^j]\,(i\omega)^j/j! + o(|\omega|^k)$。矩是 $\varphi_y$ 的 Taylor 系数，累积量则是其对数的 Taylor 系数。由于 $\varphi_y(0) = 1$ 且 $\varphi_y$ 连续，这个对数在 $\omega = 0$ 附近有定义。</p>
 
+<aside class="beginner-bridge">
+<p lang="en"><b>Why introduce another family of numbers?</b> Moments average powers such as $y^2$ and $y^4$. Cumulants reorganize those same moments so independent contributions add cleanly. On a first pass, retain mean, variance, third central moment and “fourth central moment minus three times variance squared”; the log-characteristic function is the systematic machinery behind that list.</p>
+<p lang="zh-CN"><b>为什么再引入一组数？</b>矩是 $y^2$、$y^4$ 等幂次的平均；累积量重新组合这些矩，让独立贡献可以直接相加。第一遍先记住均值、方差、三阶中心矩，以及“四阶中心矩减去三倍方差平方”；对数特征函数是系统地产生这张清单的工具。</p>
+</aside>
+
 <div class="env" data-kind="definition" id="def-cumulant" data-en="cumulants" data-zh="累积量">
   <p lang="en">Let $v_1, \dots, v_j$ be random variables, not necessarily distinct, with finite moments of order $j$, and let $\bv = (v_1, \dots, v_j)^\top$. Their (joint) <em>cumulant</em> is</p>
   <p lang="zh-CN">设随机变量 $v_1, \dots, v_j$（不必互不相同）的 $j$ 阶矩有限，记 $\bv = (v_1, \dots, v_j)^\top$。它们的（联合）<em>累积量</em>定义为</p>
@@ -152,7 +202,7 @@
   <p lang="zh-CN">设出现的各阶矩都有限，则：</p>
   <ol lang="en">
     <li><b>Symmetry.</b> $\cum(v_1, \dots, v_j)$ is invariant under permutations of its arguments.</li>
-    <li><b>Multilinearity.</b> For constants $m_{rp}$, $\cum\bigl(\sum_p m_{1p}x_p, \dots, \sum_p m_{jp}x_p\bigr) = \sum_{p_1, \dots, p_j} m_{1p_1}\cdots m_{jp_j}\,\cum(x_{p_1}, \dots, x_{p_j})$.</li>
+    <li><b>Multilinearity.</b> For constants $m_{rp}$, <div class="eq">$$\begin{aligned}&amp;\cum\bigl(\sum_p m_{1p}x_p, \dots, \sum_p m_{jp}x_p\bigr) \\ &amp;= \sum_{p_1, \dots, p_j} m_{1p_1}\cdots m_{jp_j}\,\cum(x_{p_1}, \dots, x_{p_j}).\end{aligned}$$</div></li>
     <li><b>Shift invariance.</b> For $j \ge 2$ and a constant $c$, $\cum(v_1 + c, v_2, \dots, v_j) = \cum(v_1, v_2, \dots, v_j)$.</li>
     <li><b>Additivity.</b> If the vectors $(u_1, \dots, u_j)$ and $(v_1, \dots, v_j)$ are independent, then $\cum(u_1 + v_1, \dots, u_j + v_j) = \cum(u_1, \dots, u_j) + \cum(v_1, \dots, v_j)$. In particular $\kappa_j(y_1 + y_2) = \kappa_j(y_1) + \kappa_j(y_2)$ for independent $y_1$ and $y_2$.</li>
     <li><b>Independent groups.</b> If the arguments $v_1, \dots, v_j$ can be split into two nonempty groups that are independent of each other, then $\cum(v_1, \dots, v_j) = 0$.</li>
@@ -160,7 +210,7 @@
   </ol>
   <ol lang="zh-CN">
     <li><b>对称性。</b>$\cum(v_1, \dots, v_j)$ 在自变量的任意置换下不变。</li>
-    <li><b>多重线性。</b>对常数 $m_{rp}$，$\cum\bigl(\sum_p m_{1p}x_p, \dots, \sum_p m_{jp}x_p\bigr) = \sum_{p_1, \dots, p_j} m_{1p_1}\cdots m_{jp_j}\,\cum(x_{p_1}, \dots, x_{p_j})$。</li>
+    <li><b>多重线性。</b>对常数 $m_{rp}$，<div class="eq">$$\begin{aligned}&amp;\cum\bigl(\sum_p m_{1p}x_p, \dots, \sum_p m_{jp}x_p\bigr) \\ &amp;= \sum_{p_1, \dots, p_j} m_{1p_1}\cdots m_{jp_j}\,\cum(x_{p_1}, \dots, x_{p_j}).\end{aligned}$$</div></li>
     <li><b>平移不变性。</b>当 $j \ge 2$ 且 $c$ 为常数时，$\cum(v_1 + c, v_2, \dots, v_j) = \cum(v_1, v_2, \dots, v_j)$。</li>
     <li><b>可加性。</b>若向量 $(u_1, \dots, u_j)$ 与 $(v_1, \dots, v_j)$ 独立，则 $\cum(u_1 + v_1, \dots, u_j + v_j) = \cum(u_1, \dots, u_j) + \cum(v_1, \dots, v_j)$。特别地，对独立的 $y_1$ 与 $y_2$，$\kappa_j(y_1 + y_2) = \kappa_j(y_1) + \kappa_j(y_2)$。</li>
     <li><b>独立分组。</b>若自变量 $v_1, \dots, v_j$ 能分成两个非空且相互独立的组，则 $\cum(v_1, \dots, v_j) = 0$。</li>
@@ -260,7 +310,7 @@
 <p lang="en">The following script draws a million samples from six of these laws, scaled to unit variance, estimates their kurtosis, and then checks the cumulant computation for the rotated uniform pair of <a class="ref" data-ref="exm-rotated-uniform"></a>.</p>
 <p lang="zh-CN">下面的脚本从其中六个分布（缩放到单位方差）各抽取一百万个样本，估计它们的峭度，然后检验<a class="ref" data-ref="exm-rotated-uniform"></a>中旋转后的均匀分布对的累积量计算。</p>
 
-<pre class="code"><code>import numpy as np
+<pre class="code" data-code="python"><code>import numpy as np
 
 rng = np.random.default_rng(0)
 T = 1_000_000
@@ -305,8 +355,8 @@ print(f"cum(s1, s1, s2, s2) = {cum22(s1, s2):+.3f}")</code></pre>
   <p lang="zh-CN">设 $\by \in \R^d$ 有密度 $p$。它的<em>微分熵</em>定义为 $H(\by) = -\int p(\bu)\log p(\bu)\,d\bu = -\E[\log p(\by)]$（只要该积分存在）。对多个随机向量，$H(\by_1, \dots, \by_k)$ 指把它们堆叠成一个向量后的熵。</p>
 </div>
 
-<p lang="en">Three examples follow directly from the definition. A uniform density on an interval of length $L$ has $H = \log L$; for the unit-variance uniform law, $L = 2\sqrt3$ and $H = \log(2\sqrt3) \approx 1.2425$. For $\Ncal(\mu, \sigma^2)$, $-\log p(y) = \tfrac12\log(2\pi\sigma^2) + (y - \mu)^2/(2\sigma^2)$, whose expectation gives $H = \tfrac12\log(2\pi e\sigma^2)$, or $1.4189$ at unit variance; in the same way a Gaussian vector with covariance $\bSigma$ has $H = \tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr)$. For the Laplace density $e^{-|y|/b}/(2b)$, $-\log p(y) = \log(2b) + |y|/b$ and $\E|y| = b$, so $H = 1 + \log(2b)$, or $1 + \tfrac12\log 2 \approx 1.3466$ at unit variance.</p>
-<p lang="zh-CN">由定义可以直接算出三个例子。长度为 $L$ 的区间上的均匀密度，$H = \log L$；单位方差的均匀分布 $L = 2\sqrt3$，$H = \log(2\sqrt3) \approx 1.2425$。对 $\Ncal(\mu, \sigma^2)$，$-\log p(y) = \tfrac12\log(2\pi\sigma^2) + (y - \mu)^2/(2\sigma^2)$，取期望得 $H = \tfrac12\log(2\pi e\sigma^2)$，单位方差时为 $1.4189$；同理，协方差为 $\bSigma$ 的高斯向量有 $H = \tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr)$。对拉普拉斯密度 $e^{-|y|/b}/(2b)$，$-\log p(y) = \log(2b) + |y|/b$，且 $\E|y| = b$，所以 $H = 1 + \log(2b)$，单位方差时为 $1 + \tfrac12\log 2 \approx 1.3466$。</p>
+<p lang="en">Three examples follow directly from the definition. A uniform density on an interval of length $L$ has $H = \log L$; for the unit-variance uniform law, $L = 2\sqrt3$ and $H = \log(2\sqrt3) \approx 1.2425$. For $\Ncal(\mu, \sigma^2)$, $-\log p(y) = \tfrac12\log(2\pi\sigma^2) + (y - \mu)^2/(2\sigma^2)$, whose expectation gives $H = \tfrac12\log(2\pi e\sigma^2)$, or $1.4189$ at unit variance; in the same way a Gaussian vector with positive-definite covariance $\bSigma$ has $H = \tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr)$. For the Laplace density $e^{-|y|/b}/(2b)$, $-\log p(y) = \log(2b) + |y|/b$ and $\E|y| = b$, so $H = 1 + \log(2b)$, or $1 + \tfrac12\log 2 \approx 1.3466$ at unit variance.</p>
+<p lang="zh-CN">由定义可以直接算出三个例子。长度为 $L$ 的区间上的均匀密度，$H = \log L$；单位方差的均匀分布 $L = 2\sqrt3$，$H = \log(2\sqrt3) \approx 1.2425$。对 $\Ncal(\mu, \sigma^2)$，$-\log p(y) = \tfrac12\log(2\pi\sigma^2) + (y - \mu)^2/(2\sigma^2)$，取期望得 $H = \tfrac12\log(2\pi e\sigma^2)$，单位方差时为 $1.4189$；同理，协方差 $\bSigma$ 正定的高斯向量有 $H = \tfrac12\log\bigl((2\pi e)^d\det\bSigma\bigr)$。对拉普拉斯密度 $e^{-|y|/b}/(2b)$，$-\log p(y) = \log(2b) + |y|/b$，且 $\E|y| = b$，所以 $H = 1 + \log(2b)$，单位方差时为 $1 + \tfrac12\log 2 \approx 1.3466$。</p>
 
 <p lang="en">Differential entropy differs from discrete entropy in two ways. It can be negative (the uniform density on $[0, \tfrac12]$ has entropy $-\log 2$), and it depends on scale: $H(\alpha y) = H(y) + \log|\alpha|$. Both facts are special cases of the next proposition. The quantities that ICA uses, mutual information and negentropy, are combinations of entropies in which these changes cancel.</p>
 <p lang="zh-CN">微分熵与离散熵有两点不同。它可以为负（$[0, \tfrac12]$ 上的均匀密度的熵为 $-\log 2$），而且依赖于尺度：$H(\alpha y) = H(y) + \log|\alpha|$。这两点都是下一命题的特例。ICA 所用的量，即互信息与负熵，都是若干熵的组合，在组合中这些变化恰好相互抵消。</p>
@@ -413,6 +463,15 @@ print(f"cum(s1, s1, s2, s2) = {cum22(s1, s2):+.3f}")</code></pre>
 <p lang="en">(<a class="ref" data-ref="ex-mi-negentropy"></a>). If $\by = \bU\bz$ with $\bz$ white and $\bU$ orthogonal, the last term vanishes and $J(\by) = J(\bz)$ does not depend on $\bU$, so minimizing the mutual information of the outputs is the same as maximizing the sum of their negentropies. <a class="ref" data-ref="likelihood"></a> develops this equivalence (<a class="ref" data-ref="prop-mi-negentropy"></a>), connects it with maximum likelihood, and replaces negentropy, which requires a density, by approximations that can be estimated from samples (<a class="ref" data-ref="sec-negentropy-approx"></a>).</p>
 <p lang="zh-CN">（<a class="ref" data-ref="ex-mi-negentropy"></a>）。若 $\by = \bU\bz$，其中 $\bz$ 是白的、$\bU$ 正交，则最后一项为零，且 $J(\by) = J(\bz)$ 与 $\bU$ 无关，所以最小化输出的互信息等价于最大化它们的负熵之和。<a class="ref" data-ref="likelihood"></a>会展开这一等价关系（<a class="ref" data-ref="prop-mi-negentropy"></a>），把它与最大似然联系起来，并用可以从样本估计的近似来代替需要密度的负熵（<a class="ref" data-ref="sec-negentropy-approx"></a>）。</p>
 
+
+<h2 id="sec-probability-conditions"><span lang="en">Check existence before using a statistic</span><span lang="zh-CN">使用统计量前先检查存在条件</span></h2>
+<p lang="en">The tools in this chapter require different assumptions. Independence and characteristic functions make sense for discrete, continuous and singular laws without any moment assumption. Covariance needs second moments, fourth cumulants need fourth moments, and the usual $T^{-1/2}$ normal approximation for an empirical fourth cumulant needs eighth moments. For a Student $t_\nu$ variable, $\E|y|^r&lt;\infty$ exactly when $r&lt;\nu$: $t_6$ has a well-defined kurtosis, but its empirical fourth moment has infinite variance. A finite statistic and a reliable standard error are different claims.</p>
+<p lang="zh-CN">本章各工具的假设强度不同。独立性和特征函数对离散、连续及奇异分布都有意义，不要求任何矩存在。协方差需要二阶矩，四阶累积量需要四阶矩，而经验四阶累积量通常的 $T^{-1/2}$ 正态近似需要八阶矩。对 Student $t_\nu$ 变量，$\E|y|^r&lt;\infty$ 当且仅当 $r&lt;\nu$：$t_6$ 的峭度存在，但其经验四阶矩的方差为无穷大。“统计量有定义”与“标准误可靠”是两件事。</p>
+<p lang="en">Differential entropy requires a density on the stated ambient space. A Gaussian vector supported on a line in $\R^2$ has no two-dimensional density, so substituting $\det\bSigma=0$ into the Gaussian formula is not a valid calculation of an ordinary finite differential entropy. In noiseless ICA with $m&gt;n$, use coordinates on the $n$-dimensional signal subspace before writing density-based likelihoods. Discrete binary sources, which are legitimate ICA sources, likewise require probability masses rather than a continuous density.</p>
+<p lang="zh-CN">微分熵要求在所声明的环境空间中存在密度。一个只落在 $\R^2$ 内某条直线上的高斯向量没有二维密度，因此不能把 $\det\bSigma=0$ 直接代入高斯公式，当作普通有限微分熵的计算。在 $m&gt;n$ 的无噪声 ICA 中，写基于密度的似然之前应先转到 $n$ 维信号子空间。二值离散源也是合法的 ICA 源，但应使用概率质量而非连续密度。</p>
+<p lang="en">For more than two components, the nonnegative quantity $D(p_{\by}\,\|\,\prod_i p_{y_i})$ used here is also called <em>total correlation</em> or multi-information. It is not the alternating-sum quantity sometimes called interaction information, which can be negative. Nor does zero covariance, or a few zero cross-cumulants, establish mutual independence. Exact independence requires the full factorization, whereas finite-data diagnostics can only test selected departures from it.</p>
+<p lang="zh-CN">对两个以上的分量，本书使用的非负量 $D(p_{\by}\,\|\,\prod_i p_{y_i})$ 也称为<em>总相关</em>或多信息。它不同于有时称为交互信息的交替求和量，后者可以为负。协方差为零或若干交叉累积量为零，也不能证明相互独立。严格独立要求完整的分解性质，而有限数据诊断只能检验某些偏离这一性质的方式。</p>
+
 <div class="keypoints">
   <p class="kp-title" lang="en">Key points</p>
   <p class="kp-title" lang="zh-CN">本章要点</p>
@@ -433,6 +492,14 @@ print(f"cum(s1, s1, s2, s2) = {cum22(s1, s2):+.3f}")</code></pre>
     <li>互信息 $I(\by) = \sum_i H(y_i) - H(\by) \ge 0$，当且仅当各分量独立时为零；负熵 $J \ge 0$，当且仅当向量是高斯的时为零，并在可逆线性变换下不变。</li>
   </ul>
 </div>
+
+<aside class="chapter-recap">
+<h3><span lang="en">Carry these three ideas forward</span><span lang="zh-CN">带走这三点</span></h3>
+<ul lang="en"><li>Independence concerns the whole joint distribution.</li><li>Zero covariance or kurtosis settles only a limited question.</li><li>Check the required moments or densities before using a formula.</li></ul>
+<ul lang="zh-CN"><li>独立性针对完整的联合分布。</li><li>协方差或峭度为零只能回答有限的问题。</li><li>套公式前检查所需的矩或密度是否存在。</li></ul>
+<p lang="en">Start with <a href="#ex-uniform-kurtosis">the uniform-kurtosis calculation</a>, then <a href="#ex-sign-flip">the sign-flip counterexample</a>. Return to the exponential cumulant derivation after characteristic functions feel familiar.</p>
+<p lang="zh-CN">先做<a href="#ex-uniform-kurtosis">均匀分布峭度计算</a>，再做<a href="#ex-sign-flip">符号翻转反例</a>。熟悉特征函数后，再回到指数分布累积量的推导。</p>
+</aside>
 
 <h2 id="sec-probability-exercises"><span lang="en">Exercises</span><span lang="zh-CN">习题</span></h2>
 
@@ -497,6 +564,7 @@ print(f"cum(s1, s1, s2, s2) = {cum22(s1, s2):+.3f}")</code></pre>
 
 <div class="references">
   <ol>
+    <li>Hyvärinen, A., &amp; Oja, E. (2000). Independent component analysis: Algorithms and applications. <i>Neural Networks</i>, 13(4–5), 411–430. <a href="https://www.cs.helsinki.fi/u/ahyvarin/papers/NN00new.pdf">Author manuscript (PDF)</a>.</li>
     <li>Bell, A. J., &amp; Sejnowski, T. J. (1997). The “independent components” of natural scenes are edge filters. <i>Vision Research</i>, 37(23), 3327–3338.</li>
     <li>Billingsley, P. (1995). <i>Probability and Measure</i> (3rd ed.). Wiley.</li>
     <li>Comon, P. (1994). Independent component analysis, a new concept? <i>Signal Processing</i>, 36(3), 287–314.</li>

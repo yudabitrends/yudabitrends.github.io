@@ -1,5 +1,19 @@
 <!-- Chapter 4. Identifiability. Source format: book/AUTHORING.md -->
 
+<aside class="chapter-guide" id="guide-identifiability">
+<h3><span lang="en">First pass</span><span lang="zh-CN">第一次读这一章</span></h3>
+<p lang="en">Before designing an algorithm, ask whether the observations could ever distinguish the proposed answers. Identifiability imagines knowing the entire distribution, with unlimited noiseless data. It is a question about what information the model contains, not whether a particular program converges.</p>
+<p lang="zh-CN">设计算法之前，先问观测究竟能不能区分候选答案。可辨识性假想你有无限多无噪声数据，知道整个分布。它问的是模型含有哪些信息，而不是某个程序是否收敛。</p>
+<p lang="en"><b>After this pass, you should be able to:</b></p>
+<p lang="zh-CN"><b>读完这一遍，你应该能：</b></p>
+<ul lang="en"><li>Separate unavoidable sign/scale/order changes from a genuinely different mixing.</li><li>Explain the obstruction created by two independent Gaussian sources.</li><li>State the source and rank assumptions before invoking Comon’s theorem.</li></ul>
+<ul lang="zh-CN"><li>能把允许的符号、尺度、顺序变化与真正不同的混合区分开。</li><li>能解释两个独立高斯源造成的障碍。</li><li>使用 Comon 定理前能说出对源和秩的假设。</li></ul>
+<p lang="en"><b>Before you start:</b> revisit <a href="ica-problem.html#sec-ambiguities">ambiguities</a>, <a href="whitening.html#sec-whitened-model">orthogonal mixing after whitening</a>, and the <a href="probability.html#sec-charfun">jointly Gaussian result</a>. Matrix multiplication is enough for the first example.</p>
+<p lang="zh-CN"><b>先备知识：</b>回看<a href="ica-problem.html#sec-ambiguities">不确定性</a>、<a href="whitening.html#sec-whitened-model">白化后的正交混合</a>和<a href="probability.html#sec-charfun">联合高斯的结论</a>。第一个例子只需矩阵乘法。</p>
+<p lang="en"><b>Read first:</b> <a href="#sec-identifiability-meaning">the meaning</a>, the statement of <a href="#thm-darmois-skitovich">Darmois–Skitovich</a>, <a href="#sec-comon-theorem">Comon’s theorem</a>, and <a href="#sec-gaussian-subspace">Gaussian subspaces</a>. Read <a href="#sec-identifiability-estimation">finite-sample difficulty</a> before interpreting results. Return to the cumulant/Vandermonde proof after the probability chapter; the theorem’s conclusion can be used first, but its assumptions cannot be skipped.</p>
+<p lang="zh-CN"><b>先读路线：</b><a href="#sec-identifiability-meaning">含义</a>→<a href="#thm-darmois-skitovich">Darmois–Skitovich 的陈述</a>→<a href="#sec-comon-theorem">Comon 定理</a>→<a href="#sec-gaussian-subspace">高斯子空间</a>。解释结果之前读<a href="#sec-identifiability-estimation">有限样本难度</a>。累积量/Vandermonde 证明可在概率章之后回读；可以先使用结论，但不能跳过假设。</p>
+</aside>
+
 <h2 id="sec-identifiability-meaning"><span lang="en">What identifiability means</span><span lang="zh-CN">可辨识性的含义</span></h2>
 
 <p lang="en">Chapter 1 showed that the order and the scale of the sources can never be recovered (<a class="ref" data-ref="prop-indeterminacy"></a>), and <a class="ref" data-ref="whitening"></a> showed that second-order statistics determine the mixing matrix only up to a rotation. This chapter answers the question that these two facts raise: is anything else lost? Suppose we knew the distribution of $\bx$ exactly, as if we had infinitely many noiseless samples. Would it determine $\bA$ up to the unavoidable order and scale? The answer is the central theorem of ICA: yes, provided at most one source is Gaussian. Without that proviso the answer is no, and we will see exactly what is lost.</p>
@@ -19,6 +33,32 @@
 <p lang="en">Two facts frame the problem. First, if all sources are Gaussian, identifiability fails completely: for $\bs \sim \Ncal(\bzero, \bI)$ and every orthogonal $\bQ$, the pair $(\bA\bQ^\top, \bQ\bs)$ produces the same observations as $(\bA, \bs)$ (<a class="ref" data-ref="sec-gaussian-rotation"></a>). Second, for unit-variance sources the covariance $\bC_{\bx} = \bA\bA^\top$ determines $\bA$ up to a right orthogonal factor: if $\bB\bB^\top = \bA\bA^\top$ then $\bB = \bA\bQ$ with $\bQ$ orthogonal. The question is therefore whether the non-Gaussian structure of the sources forces $\bQ$ to be a signed permutation. The key tool is a classical characterization of the Gaussian law.</p>
 <p lang="zh-CN">有两个事实界定了问题的范围。其一，如果所有源都是高斯的，可辨识性完全失效：对 $\bs \sim \Ncal(\bzero, \bI)$ 与任意正交矩阵 $\bQ$，$(\bA\bQ^\top, \bQ\bs)$ 与 $(\bA, \bs)$ 产生相同的观测（<a class="ref" data-ref="sec-gaussian-rotation"></a>）。其二，对单位方差的源，协方差 $\bC_{\bx} = \bA\bA^\top$ 把 $\bA$ 确定到右乘一个正交因子：若 $\bB\bB^\top = \bA\bA^\top$，则 $\bB = \bA\bQ$，其中 $\bQ$ 为正交矩阵。于是问题归结为：源的非高斯结构能否迫使 $\bQ$ 成为带符号的置换矩阵？关键工具是高斯分布的一个经典刻画。</p>
 
+<aside class="beginner-example" id="beginner-identifiability-example">
+<h3><span lang="en">Micro example: two equally valid Gaussian descriptions</span><span lang="zh-CN">微型手算：两种同样有效的高斯描述</span></h3>
+<p lang="en">Let $s_1,s_2$ be independent standard Gaussians and observe $\bx=\bs$. Consider $u=(s_1+s_2)/\sqrt2$ and $v=(s_1-s_2)/\sqrt2$.</p>
+<p lang="zh-CN">设 $s_1,s_2$ 是独立标准高斯变量，观测为 $\bx=\bs$。另取 $u=(s_1+s_2)/\sqrt2$、$v=(s_1-s_2)/\sqrt2$。</p>
+<ol lang="en"><li>Both variances are $(1+1)/2=1$, and $\Cov(u,v)=(1-1)/2=0$.</li><li>They are jointly Gaussian, so zero covariance makes them independent. They form another valid pair of independent sources.</li><li>Invert the change: $s_1=(u+v)/\sqrt2$, $s_2=(u-v)/\sqrt2$. The same observations now have a different mixing matrix, not merely swapped or rescaled columns.</li></ol>
+<ol lang="zh-CN"><li>两个方差均为 $(1+1)/2=1$，且 $\Cov(u,v)=(1-1)/2=0$。</li><li>二者联合高斯，因此零协方差推出独立；它们组成另一对有效的独立源。</li><li>反解变换：$s_1=(u+v)/\sqrt2$、$s_2=(u-v)/\sqrt2$。同样的观测现在对应不同的混合矩阵，且不只是交换或缩放原来的列。</li></ol>
+<p lang="en">This proves a population ambiguity for two Gaussian sources in the stated model. It does not say that one Gaussian source prevents recovery, or that a merely near-Gaussian source is unidentifiable. Near-Gaussianity instead raises estimation difficulty.</p>
+<p lang="zh-CN">这证明了所述模型中两个高斯源的总体歧义，却不表示一个高斯源就无法恢复，也不表示只是近似高斯的源不可辨识。近似高斯主要增加估计难度。</p>
+<div class="beginner-check" id="beginner-identifiability-check-1">
+<p lang="en"><b>Quick check 1.</b> Do independent unit-variance uniform and Gaussian sources violate the “at most one Gaussian” condition?</p>
+<p lang="zh-CN"><b>自测 1。</b>一个单位方差均匀源和一个独立标准高斯源，是否违反“至多一个高斯源”的条件？</p>
+<details class="solution beginner-answer"><summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+<p lang="en">No. There is exactly one Gaussian. With full-column-rank noiseless mixing and the stated nondegeneracy assumptions, the standard theorem allows this pair.</p>
+<p lang="zh-CN">不违反。这里恰好有一个高斯源。在无噪声、混合矩阵列满秩以及所述非退化假设下，标准定理允许这一对源。</p>
+</details>
+</div>
+<div class="beginner-check" id="beginner-identifiability-check-2">
+<p lang="en"><b>Quick check 2.</b> Two programs return the same components in different orders and signs. Does this disprove identifiability?</p>
+<p lang="zh-CN"><b>自测 2。</b>两个程序给出同样的成分，但顺序和符号不同，这是否反驳可辨识性？</p>
+<details class="solution beginner-answer"><summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+<p lang="en">No. They represent the same allowed equivalence class. Align signs and order before comparing; only differences beyond the allowed ambiguities call for investigating sampling, optimization or model mismatch.</p>
+<p lang="zh-CN">不反驳。它们属于同一个允许的等价类。比较前先对齐符号与顺序；超出允许歧义的差别才需要进一步检查抽样、优化或模型失配。</p>
+</details>
+</div>
+</aside>
+
 <h2 id="sec-darmois-skitovich"><span lang="en">The Darmois–Skitovich theorem</span><span lang="zh-CN">Darmois–Skitovich 定理</span></h2>
 
 <p lang="en">When can two linear combinations of the same independent variables be independent of each other? Trivially, when they share no variable. For Gaussian variables sharing is allowed: if $s_1, s_2$ are independent $\Ncal(0, 1)$, then $s_1 + s_2$ and $s_1 - s_2$ are jointly Gaussian and uncorrelated, hence independent. The theorem of Darmois (1953) and Skitovich (1953) says that the Gaussian is the only law with this property.</p>
@@ -29,8 +69,8 @@
   <p lang="zh-CN">设 $s_1, \dots, s_n$ 是相互独立的随机变量，$a_1, \dots, a_n$ 与 $b_1, \dots, b_n$ 是实数。若线性形式 $L_1 = \sum_{i=1}^n a_i s_i$ 与 $L_2 = \sum_{i=1}^n b_i s_i$ 相互独立，则凡满足 $a_i b_i \neq 0$ 的 $s_i$ 都是高斯的。</p>
 </div>
 
-<p lang="en">Here and below a constant counts as a degenerate Gaussian. The theorem restricts only the variables that appear in <em>both</em> forms. With $s_1$ Laplacian, $s_2$ uniform and $g_1, g_2$ independent standard Gaussians, the forms $L_1 = s_1 + g_1 + g_2$ and $L_2 = s_2 + g_1 - g_2$ are independent: $g_1 + g_2$ and $g_1 - g_2$ are independent Gaussians, and each form adds to one of them a variable that the other form does not contain. The shared variables $g_1$ and $g_2$ are Gaussian, as the theorem demands. Uncorrelatedness, by contrast, is cheap: for independent $s_1, s_2$ with unit variance and kurtosis $\kappa$, the forms $y_1 = s_1 + s_2$ and $y_2 = s_1 - s_2$ are always uncorrelated, but their cross-cumulant $\cum(y_1, y_1, y_2, y_2)$ equals $2\kappa$ (<a class="ref" data-ref="ex-cross-cumulant"></a>), which is $-2.4$ for uniform and $6$ for Laplacian sources.</p>
-<p lang="zh-CN">这里以及下文都把常数视为退化的高斯变量。定理只约束<em>同时</em>出现在两个线性形式中的变量。设 $s_1$ 服从拉普拉斯分布，$s_2$ 服从均匀分布，$g_1, g_2$ 是独立的标准高斯变量，则 $L_1 = s_1 + g_1 + g_2$ 与 $L_2 = s_2 + g_1 - g_2$ 相互独立：$g_1 + g_2$ 与 $g_1 - g_2$ 是独立的高斯变量，而两个形式各自在其中一个上加了一个另一形式不含的变量。被共享的 $g_1$ 与 $g_2$ 正是高斯的，与定理一致。相比之下，不相关是很廉价的性质：对方差为一、峭度为 $\kappa$ 的独立变量 $s_1, s_2$，$y_1 = s_1 + s_2$ 与 $y_2 = s_1 - s_2$ 总是不相关，但它们的交叉累积量 $\cum(y_1, y_1, y_2, y_2)$ 等于 $2\kappa$（<a class="ref" data-ref="ex-cross-cumulant"></a>），对均匀源为 $-2.4$，对拉普拉斯源为 $6$。</p>
+<p lang="en">Here and below a constant counts as a degenerate Gaussian. The theorem restricts only the variables that appear in <em>both</em> forms. With all four variables mutually independent, $s_1$ Laplacian, $s_2$ uniform and $g_1, g_2$ standard Gaussian, the forms $L_1 = s_1 + g_1 + g_2$ and $L_2 = s_2 + g_1 - g_2$ are independent: $g_1 + g_2$ and $g_1 - g_2$ are independent Gaussians, and each form adds to one of them a variable that the other form does not contain. The shared variables $g_1$ and $g_2$ are Gaussian, as the theorem demands. Uncorrelatedness, by contrast, is cheap: for independent $s_1, s_2$ with unit variance and kurtosis $\kappa$, the forms $y_1 = s_1 + s_2$ and $y_2 = s_1 - s_2$ are always uncorrelated, but their cross-cumulant $\cum(y_1, y_1, y_2, y_2)$ equals $2\kappa$ (<a class="ref" data-ref="ex-cross-cumulant"></a>), which is $-2.4$ for uniform and $6$ for Laplacian sources.</p>
+<p lang="zh-CN">这里以及下文都把常数视为退化的高斯变量。定理只约束<em>同时</em>出现在两个线性形式中的变量。设 $s_1$ 服从拉普拉斯分布，$s_2$ 服从均匀分布，$g_1, g_2$ 是独立的标准高斯变量，则 $L_1 = s_1 + g_1 + g_2$ 与 $L_2 = s_2 + g_1 - g_2$ 相互独立：$g_1 + g_2$ 与 $g_1 - g_2$ 是独立的高斯变量，而两个形式各自在其中一个上加了一个另一形式不含的变量。被共享的 $g_1$ 与 $g_2$ 正是高斯的，与定理一致。相比之下，不相关是很廉价的性质：对方差为一、峭度为 $\kappa$ 的独立变量 $s_1, s_2$，$y_1 = s_1 + s_2$ 与 $y_2 = s_1 - s_2$ 总是不相关，但它们的交叉累积量 $\cum(y_1, y_1, y_2, y_2)$ 等于 $2\kappa$（<a class="ref" data-ref="ex-cross-cumulant"></a>），对均匀源为 $-2.4$，对拉普拉斯源为 $6$。 此例假定 $s_1,s_2,g_1,g_2$ 四个变量相互独立，而不仅仅是两个高斯变量彼此独立。</p>
 
 <h3><span lang="en">Two facts about the Gaussian law</span><span lang="zh-CN">关于高斯分布的两个事实</span></h3>
 
@@ -86,6 +126,11 @@
 
 <p lang="en">Comon (1994) observed that the Darmois–Skitovich theorem settles the identifiability of ICA. The argument works directly with the global matrix $\bP = \bW\bA$, which maps the sources to the outputs, $\by = \bP\bs$.</p>
 <p lang="zh-CN">Comon（1994）注意到，Darmois–Skitovich 定理解决了 ICA 的可辨识性问题。论证直接针对把源映射到输出的全局矩阵 $\bP = \bW\bA$ 进行，即 $\by = \bP\bs$。</p>
+
+<aside class="beginner-bridge">
+<p lang="en"><b>What the theorem is checking.</b> $\bP=\bW\bA$ describes the full trip from true sources to estimated outputs. An invertible $\bP$ has not compressed away a source dimension. The theorem assumes exact pairwise independence of its outputs—not small sample correlations—and concludes that each output uses exactly one source. The proof explains why a non-Gaussian source cannot be shared between two independent outputs.</p>
+<p lang="zh-CN"><b>定理究竟在检查什么？</b>$\bP=\bW\bA$ 描述从真实源到估计输出的完整过程。$\bP$ 可逆表示没有压掉任何一个源维度。定理假设输出严格两两独立，而不是样本相关很小；结论是每个输出恰好使用一个源。证明解释了为什么两个独立输出不能共享一个非高斯源。</p>
+</aside>
 
 <div class="env" data-kind="theorem" id="thm-comon" data-en="Comon" data-zh="Comon">
   <p lang="en">Let $\bs = (s_1, \dots, s_n)^\top$ have mutually independent, non-degenerate components with finite variances, at most one of which is Gaussian, and let $\bP \in \R^{n \times n}$ be invertible. If the components of $\by = \bP\bs$ are pairwise independent, then $\bP = \bPi\bD$ for some permutation matrix $\bPi$ and invertible diagonal matrix $\bD$. In particular, the components of $\by$ are then mutually independent.</p>
@@ -147,8 +192,8 @@
   <p lang="zh-CN">反过来，$\bPi\bP\bs$ 的前 $n - k$ 个输出是 $d_l s_l$，分别只依赖于不同的非高斯源；其余输出 $\bM\bs_G$ 只依赖于高斯源。后者联合高斯且互不相关，因而相互独立，所以全部 $n$ 个输出相互独立。</p>
 </div>
 
-<p lang="en">In terms of the mixing matrix, write $\bA = [\bA_N \ \bA_G]$ with the columns of the non-Gaussian and the Gaussian sources. A matrix $\bW$ that produces pairwise independent outputs with $\bP = \bW\bA$ invertible implies the mixing matrix $\bA\bP^{-1} = [\bA_N\bD^{-1} \ \ \bA_G\bM^{-1}]\,\bPi$, because $\bx = \bA\bP^{-1}\by$. The non-Gaussian columns are recovered individually, up to scale and order, exactly as in <a class="ref" data-ref="cor-one-gaussian"></a>. The Gaussian columns are replaced by $\bA_G\bM^{-1}$, which spans the same subspace as $\bA_G$ but is otherwise arbitrary. Only the <em>Gaussian subspace</em> $\mathrm{span}(\bA_G)$ is identified. After whitening, with unit-variance outputs, $\bM$ is orthogonal: any rotation inside the Gaussian subspace is as good as any other. The case $k = 1$ is <a class="ref" data-ref="thm-comon"></a> again, since a $1 \times 1$ block is diagonal.</p>
-<p lang="zh-CN">用混合矩阵的语言来说，把 $\bA$ 按非高斯源与高斯源分块为 $\bA = [\bA_N \ \bA_G]$。若 $\bW$ 使输出两两独立且 $\bP = \bW\bA$ 可逆，则由 $\bx = \bA\bP^{-1}\by$，它所对应的混合矩阵为 $\bA\bP^{-1} = [\bA_N\bD^{-1} \ \ \bA_G\bM^{-1}]\,\bPi$。非高斯列被逐个恢复，只差尺度与顺序，与<a class="ref" data-ref="cor-one-gaussian"></a>完全相同。高斯列则被替换成 $\bA_G\bM^{-1}$：它与 $\bA_G$ 张成同一个子空间，除此之外是任意的。能被辨识的只有<em>高斯子空间</em> $\mathrm{span}(\bA_G)$。白化并把输出归一化为单位方差之后，$\bM$ 是正交矩阵：高斯子空间内的任何旋转都同样合格。$k = 1$ 时，$1 \times 1$ 的块自然是对角的，结论又回到<a class="ref" data-ref="thm-comon"></a>。</p>
+<p lang="en">In terms of the mixing matrix, write $\bA = [\bA_N \ \bA_G]$ with the columns of the non-Gaussian and the Gaussian sources. A matrix $\bW$ that produces pairwise independent outputs with $\bP = \bW\bA$ invertible implies the mixing matrix $\bA\bP^{-1} = [\bA_N\bD^{-1} \ \ \bA_G\bM^{-1}]\,\bPi$, because $\bx = \bA\bP^{-1}\by$. The non-Gaussian columns are recovered individually, up to scale and order, exactly as in <a class="ref" data-ref="cor-one-gaussian"></a>. The Gaussian columns are replaced by $\bA_G\bM^{-1}$, which spans the same subspace as $\bA_G$ but is otherwise arbitrary. Only the <em>Gaussian subspace</em> $\mathrm{span}(\bA_G)$ is identified. With unit-variance Gaussian outputs, $\bM\bSigma_G^{1/2}$ is orthogonal. After standardizing both Gaussian sources and outputs, the remaining freedom is therefore any orthogonal transformation within the Gaussian subspace. The case $k = 1$ is <a class="ref" data-ref="thm-comon"></a> again, since a $1 \times 1$ block is diagonal.</p>
+<p lang="zh-CN">用混合矩阵的语言来说，把 $\bA$ 按非高斯源与高斯源分块为 $\bA = [\bA_N \ \bA_G]$。若 $\bW$ 使输出两两独立且 $\bP = \bW\bA$ 可逆，则由 $\bx = \bA\bP^{-1}\by$，它所对应的混合矩阵为 $\bA\bP^{-1} = [\bA_N\bD^{-1} \ \ \bA_G\bM^{-1}]\,\bPi$。非高斯列被逐个恢复，只差尺度与顺序，与<a class="ref" data-ref="cor-one-gaussian"></a>完全相同。高斯列则被替换成 $\bA_G\bM^{-1}$：它与 $\bA_G$ 张成同一个子空间，除此之外是任意的。能被辨识的只有<em>高斯子空间</em> $\mathrm{span}(\bA_G)$。若要求高斯输出的方差为一，则 $\bM\bSigma_G^{1/2}$ 正交。因此，把高斯源与输出都标准化后，剩余自由度是高斯子空间内部的任意正交变换。$k = 1$ 时，$1 \times 1$ 的块自然是对角的，结论又回到<a class="ref" data-ref="thm-comon"></a>。</p>
 
 <p lang="en">In practice this means that an ICA algorithm applied to data with several Gaussian sources returns <em>some</em> basis of the Gaussian subspace, chosen by its initialization and by sampling noise. Such components change from run to run, while the non-Gaussian components stay put. This situation arises, for instance, when the model order is overestimated and several noise dimensions, often close to Gaussian, enter the decomposition; <a class="ref" data-ref="model-order"></a> discusses how to detect it (<a class="ref" data-ref="sec-icasso"></a>).</p>
 <p lang="zh-CN">在实践中，这意味着：对含多个高斯源的数据运行 ICA，算法会返回高斯子空间的<em>某一组</em>基，具体是哪一组取决于初始化和抽样噪声。这些成分每次运行都会变化，而非高斯成分保持不变。例如，当模型阶数估计过高、若干往往接近高斯的噪声维度进入分解时，就会出现这种情况；<a class="ref" data-ref="model-order"></a>讨论如何发现它（<a class="ref" data-ref="sec-icasso"></a>）。</p>
@@ -173,15 +218,15 @@
 
 <h3><span lang="en">Other models, other answers</span><span lang="zh-CN">换一个模型，换一个答案</span></h3>
 
-<p lang="en">Identifiability always refers to a model class, and changing the class changes the answer. The standard model treats the samples as independent draws (<a class="ref" data-ref="asm-ica"></a>, item 4), and the Gaussian obstruction is a consequence of ignoring time. If the sources are stationary time series with unit variance and autocorrelations $\rho_i(\tau) = \E[s_i(t)s_i(t-\tau)]$, the lagged covariances $\E[\bx(t)\bx(t-\tau)^\top] = \bA\,\diag(\rho_1(\tau), \dots, \rho_n(\tau))\,\bA^\top$ identify $\bA$ even when every source is Gaussian, provided that for each pair of sources some lag distinguishes their autocorrelations (<a class="ref" data-ref="thm-sobi-identifiability"></a>). In the other direction, a general nonlinear mixture $\bx = \mathbf{f}(\bs)$ is not identifiable at all: independent components can be manufactured from any random vector by a suitable nonlinear map (Hyvärinen &amp; Pajunen, 1999; <a class="ref" data-ref="thm-nonlinear-nonidentifiable"></a>). Identifiability returns, up to componentwise transformations, when the sources are modulated by an observed auxiliary variable and suitable variability conditions hold (<a class="ref" data-ref="thm-auxiliary-identifiability"></a>).</p>
-<p lang="zh-CN">可辨识性总是相对于某一类模型而言的，换一类模型，答案就会改变。标准模型把样本视为独立抽样（<a class="ref" data-ref="asm-ica"></a>第 4 条），高斯源造成的障碍正是忽略时间顺序的后果。如果源是方差为一的平稳时间序列，自相关为 $\rho_i(\tau) = \E[s_i(t)s_i(t-\tau)]$，那么滞后协方差 $\E[\bx(t)\bx(t-\tau)^\top] = \bA\,\diag(\rho_1(\tau), \dots, \rho_n(\tau))\,\bA^\top$ 即使在所有源都是高斯时也能辨识 $\bA$，只要对每一对源都有某个滞后能区分它们的自相关（<a class="ref" data-ref="thm-sobi-identifiability"></a>）。反方向上，一般的非线性混合 $\bx = \mathbf{f}(\bs)$ 完全不可辨识：从任何随机向量出发，都可以用适当的非线性映射造出独立成分（Hyvärinen &amp; Pajunen, 1999；<a class="ref" data-ref="thm-nonlinear-nonidentifiable"></a>）。当源受一个可观测的辅助变量调制、且满足适当的变化性条件时，可辨识性又在逐分量变换的意义下恢复（<a class="ref" data-ref="thm-auxiliary-identifiability"></a>）。</p>
+<p lang="en">Identifiability always refers to a model class, and changing the class changes the answer. The standard model treats the samples as independent draws (<a class="ref" data-ref="asm-ica"></a>, item 4), and the Gaussian obstruction is a consequence of ignoring time. If the sources are mutually independent, zero-mean stationary processes with unit variance and autocorrelations $\rho_i(\tau) = \E[s_i(t)s_i(t-\tau)]$, the lagged covariances $\E[\bx(t)\bx(t-\tau)^\top] = \bA\,\diag(\rho_1(\tau), \dots, \rho_n(\tau))\,\bA^\top$ identify $\bA$ even when every source is Gaussian, provided that for each pair of sources some lag distinguishes their autocorrelations (<a class="ref" data-ref="thm-sobi-identifiability"></a>). In the other direction, a general nonlinear mixture $\bx = \mathbf{f}(\bs)$ is not identifiable at all: under suitable continuous-density and invertibility conditions, independent components can be manufactured by a suitable nonlinear map (Hyvärinen &amp; Pajunen, 1999; <a class="ref" data-ref="thm-nonlinear-nonidentifiable"></a>). Identifiability returns, up to componentwise transformations, when the sources are modulated by an observed auxiliary variable and suitable variability conditions hold (<a class="ref" data-ref="thm-auxiliary-identifiability"></a>).</p>
+<p lang="zh-CN">可辨识性总是相对于某一类模型而言的，换一类模型，答案就会改变。标准模型把样本视为独立抽样（<a class="ref" data-ref="asm-ica"></a>第 4 条），高斯源造成的障碍正是忽略时间顺序的后果。如果源是相互独立、均值为零且方差为一的平稳过程，自相关为 $\rho_i(\tau) = \E[s_i(t)s_i(t-\tau)]$，那么滞后协方差 $\E[\bx(t)\bx(t-\tau)^\top] = \bA\,\diag(\rho_1(\tau), \dots, \rho_n(\tau))\,\bA^\top$ 即使在所有源都是高斯时也能辨识 $\bA$，只要对每一对源都有某个滞后能区分它们的自相关（<a class="ref" data-ref="thm-sobi-identifiability"></a>）。反方向上，一般的非线性混合 $\bx = \mathbf{f}(\bs)$ 完全不可辨识：在适当的连续密度与可逆性条件下，可以用非线性映射造出独立成分（Hyvärinen &amp; Pajunen, 1999；<a class="ref" data-ref="thm-nonlinear-nonidentifiable"></a>）。当源受一个可观测的辅助变量调制、且满足适当的变化性条件时，可辨识性又在逐分量变换的意义下恢复（<a class="ref" data-ref="thm-auxiliary-identifiability"></a>）。</p>
 
 <h2 id="sec-identifiability-estimation"><span lang="en">Identifiable is not the same as easy to estimate</span><span lang="zh-CN">可辨识不等于容易估计</span></h2>
 
 <p lang="en">Identifiability is a statement about infinite data and says nothing about how many samples are needed. A source that is non-Gaussian but close to Gaussian is identifiable, yet the statistics that tell it apart from a Gaussian are small and must be estimated from data. The experiment below makes this visible. Each source is a normalized sum of $k$ independent uniform variables; it has unit variance and kurtosis $-1.2/k$ (cumulants add over independent summands), and it approaches a Gaussian as $k$ grows. Two such sources are rotated by a random angle, and the angle is recovered by maximizing the absolute kurtosis of a projection over a grid of directions, as in <a class="ref" data-ref="sec-first-look"></a>; the fourth moments of all projections are computed from the five fourth-order moments of $\bz$.</p>
 <p lang="zh-CN">可辨识性是关于无穷多数据的论断，对需要多少样本只字未提。一个非高斯但接近高斯的源是可辨识的，但把它与高斯区分开的那些统计量很小，而且必须从数据中估计。下面的实验让这一点一目了然。每个源是 $k$ 个独立均匀变量的归一化和：方差为一，峭度为 $-1.2/k$（累积量对独立加项可加），$k$ 越大越接近高斯。把两个这样的源旋转一个随机角度，再像<a class="ref" data-ref="sec-first-look"></a>那样，在一组方向上搜索投影峭度绝对值的最大值来恢复这个角度；所有投影的四阶矩都由 $\bz$ 的五个四阶矩算出。</p>
 
-<pre class="code"><code>import numpy as np
+<pre class="code" data-code="python"><code>import numpy as np
 
 rng = np.random.default_rng(0)
 T, runs = 5000, 500
@@ -212,6 +257,16 @@ for k in [1, 2, 4, 8]:
 <p lang="en">The script prints root-mean-square angle errors of 0.95, 2.09, 5.51 and 13.33 degrees for $k = 1, 2, 4, 8$. Each halving of the kurtosis multiplies the error by a little more than two, and at $k = 8$ the error is already half of what a random guess gives: an angle error uniform on $[0, \pi/4]$ has root-mean-square $(\pi/4)/\sqrt{3} \approx 26$ degrees. Better contrasts than kurtosis (<a class="ref" data-ref="likelihood"></a>) change the numbers but cannot remove the effect. <a class="ref" data-ref="performance"></a> makes this precise: the Cramér–Rao bound on the separation error of two sources grows without bound as their Fisher informations approach the Gaussian value (<a class="ref" data-ref="thm-crb"></a>). It is the finite-sample counterpart of <a class="ref" data-ref="exa-gaussian-continuum"></a>: exactly Gaussian sources cannot be separated at all, and nearly Gaussian sources can be separated only with many samples.</p>
 <p lang="zh-CN">脚本对 $k = 1, 2, 4, 8$ 分别输出 0.95、2.09、5.51 和 13.33 度的均方根角度误差。峭度每减半，误差就变为原来的两倍多；到 $k = 8$ 时，误差已达随机猜测水平的一半：在 $[0, \pi/4]$ 上均匀分布的角度误差，其均方根为 $(\pi/4)/\sqrt{3} \approx 26$ 度。换用比峭度更好的对比函数（<a class="ref" data-ref="likelihood"></a>）会改变这些数字，但消除不了这一效应。<a class="ref" data-ref="performance"></a>将把这一点说得更精确：当两个源的 Fisher 信息趋于高斯分布的取值时，分离误差的 Cramér–Rao 界趋于无穷（<a class="ref" data-ref="thm-crb"></a>）。这正是<a class="ref" data-ref="exa-gaussian-continuum"></a>在有限样本下的对应：严格高斯的源根本无法分离，接近高斯的源只有在样本很多时才能分离。</p>
 
+
+<h2 id="sec-identifiability-operators"><span lang="en">Identifying sources does not uniquely identify every operator</span><span lang="zh-CN">源可辨识不等于每个算子都唯一</span></h2>
+<p lang="en">When $m&gt;n$, even a known full-column-rank mixing matrix has infinitely many left inverses. After fixing source signs, scales and order, every unmixing matrix satisfying $\bW\bA=\bI_n$ has the form</p>
+<p lang="zh-CN">当 $m&gt;n$ 时，即使混合矩阵已知且列满秩，它也有无穷多个左逆。固定源的符号、尺度与顺序之后，满足 $\bW\bA=\bI_n$ 的全部解混矩阵都可写成</p>
+<div class="eq" id="eq-identifiability-left-inverses">$$\bW=\bA^+ + \bK(\bI_m-\bA\bA^+),\qquad \bK\in\R^{n\times m}.$$</div>
+<p lang="en">The second term annihilates $\bA$, so every such matrix recovers $\bs$ on the signal subspace. Conversely, if $\bW\bA=\bI_n$, then $\bW=\bA^++\bW(\bI_m-\bA\bA^+)$. For $\bA=(1,1)^\top$, every row $\bW=(a,1-a)$ recovers the same scalar source. Thus noiseless observations identify the action of the separator on the signal subspace, not its arbitrary extension to sensor directions never observed. With noise, those extensions can have different noise amplification; the pseudoinverse is one particular convention.</p>
+<p lang="zh-CN">第二项乘以 $\bA$ 后为零，所以这些矩阵在信号子空间上都恢复同一个 $\bs$。反之，若 $\bW\bA=\bI_n$，便有 $\bW=\bA^++\bW(\bI_m-\bA\bA^+)$。例如 $\bA=(1,1)^\top$ 时，任意行向量 $\bW=(a,1-a)$ 都恢复同一个标量源。因此，无噪声观测确定的是分离器在信号子空间上的作用，而不是它在从未被观测激发的传感器方向上的任意延伸。加入噪声后，不同延伸可能产生不同的噪声放大；伪逆只是其中一种约定。</p>
+<p lang="en"><b>Unknown noise changes the model class.</b> Let $u$ be non-Gaussian and let independent Gaussian variables $g,n$ have variances $a,b$, with all three independent. The observation $x=u+g+n$ depends on the Gaussian terms only through $a+b$. Calling $u+g$ the source and $n$ the noise cannot identify the two variances separately without additional restrictions. The noiseless Comon theorem therefore does not by itself prove identifiability of an unrestricted noisy model. Likewise, an identifiable latent direction does not attach a physical name or a causal interpretation to that direction.</p>
+<p lang="zh-CN"><b>未知噪声改变了模型类。</b>设 $u$ 非高斯，$g,n$ 分别是方差为 $a,b$ 的高斯变量，三者相互独立。观测 $x=u+g+n$ 对两个高斯项只通过 $a+b$ 发生依赖。把 $u+g$ 称作源、把 $n$ 称作噪声，并不能在没有额外约束时分别辨识两个方差。因此，无噪声 Comon 定理本身不能证明任意含噪模型的可辨识性。同样，一个潜在方向可辨识，也不意味着这个方向自动获得了物理名称或因果含义。</p>
+
 <div class="keypoints">
   <p class="kp-title" lang="en">Key points</p>
   <p class="kp-title" lang="zh-CN">本章要点</p>
@@ -230,6 +285,14 @@ for k in [1, 2, 4, 8]:
     <li>超出方阵模型后，可辨识性、可分离性与唯一性各不相同；时间结构与辅助变量会改变哪些量可辨识；接近高斯的源虽然可辨识，却需要大量样本。</li>
   </ul>
 </div>
+
+<aside class="chapter-recap">
+<h3><span lang="en">Carry these three ideas forward</span><span lang="zh-CN">带走这三点</span></h3>
+<ul lang="en"><li>Identify a model class before claiming identifiability.</li><li>The standard conclusion is uniqueness up to scale and permutation.</li><li>Population uniqueness does not guarantee accurate finite-data estimation.</li></ul>
+<ul lang="zh-CN"><li>先说明模型类，再谈可辨识性。</li><li>标准结论是在尺度与置换意义下唯一。</li><li>总体唯一不保证有限数据估计准确。</li></ul>
+<p lang="en">Try <a href="#ex-cross-cumulant">the sum-and-difference exercise</a> first, then <a href="#ex-gaussian-plane">one Laplace source plus a Gaussian plane</a>. The latter checks exactly what remains recoverable when the Gaussian condition fails.</p>
+<p lang="zh-CN">先做<a href="#ex-cross-cumulant">和与差的题</a>，再做<a href="#ex-gaussian-plane">一个拉普拉斯源加高斯平面的题</a>；后者检查高斯条件失效后究竟还有什么能恢复。</p>
+</aside>
 
 <h2 id="sec-identifiability-exercises"><span lang="en">Exercises</span><span lang="zh-CN">习题</span></h2>
 
@@ -282,6 +345,7 @@ for k in [1, 2, 4, 8]:
 
 <div class="references">
   <ol>
+    <li>Hyvärinen, A., &amp; Oja, E. (2000). Independent component analysis: Algorithms and applications. <i>Neural Networks</i>, 13(4–5), 411–430. <a href="https://www.cs.helsinki.fi/u/ahyvarin/papers/NN00new.pdf">Author manuscript (PDF)</a>.</li>
     <li>Comon, P. (1994). Independent component analysis, a new concept? <i>Signal Processing</i>, 36(3), 287–314.</li>
     <li>Cramér, H. (1936). Über eine Eigenschaft der normalen Verteilungsfunktion. <i>Mathematische Zeitschrift</i>, 41(1), 405–414.</li>
     <li>Darmois, G. (1953). Analyse générale des liaisons stochastiques: étude particulière de l'analyse factorielle linéaire. <i>Revue de l'Institut International de Statistique</i>, 21(1/2), 2–8.</li>

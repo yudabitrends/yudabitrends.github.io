@@ -1,5 +1,38 @@
 <!-- Chapter 13. Nonlinear ICA. Source format: book/AUTHORING.md -->
 
+<aside class="chapter-guide" id="guide-nonlinear">
+<h3><span lang="en">First pass</span><span lang="zh-CN">第一次读这一章</span></h3>
+<p lang="en">Replacing a mixing matrix by a flexible nonlinear function makes the model more expressive, but also gives it more ways to explain the same observations. Independence alone no longer selects the original coordinates. This chapter studies which extra restrictions can make “recovering a source” a meaningful, testable claim.</p>
+<p lang="zh-CN">把混合矩阵换成灵活的非线性函数，模型表达能力更强，也获得更多解释同一观测的方式。仅有独立性不再足以选出原来的坐标。本章研究哪些额外限制能使“恢复了源”成为有明确意义、可以检验前提的结论。</p>
+<p lang="en"><b>After this pass, you can:</b></p>
+<p lang="zh-CN"><b>读完这一遍，你应能：</b></p>
+<ul lang="en"><li>Invert a small nonlinear example when its mixing function is known.</li><li>Explain why invertible changes of individual sources preserve independence.</li><li>Name the auxiliary-variable assumptions that a classifier score alone cannot verify.</li></ul>
+<ul lang="zh-CN"><li>在混合函数已知时，反解一个小型非线性例子。</li><li>解释逐个源的可逆变换为什么保持独立性。</li><li>说出分类准确率本身无法验证的辅助变量假设。</li></ul>
+<p lang="en">Use <a href="probability.html#sec-independence">independence</a> and <a href="identifiability.html#sec-identifiability-meaning">identifiability</a> as your two starting definitions. You do not need to know variational autoencoders to enter the chapter; unfamiliar terms can wait in the <a href="start-here.html#guide-glossary">glossary</a>.</p>
+<p lang="zh-CN">从<a href="probability.html#sec-independence">独立性</a>与<a href="identifiability.html#sec-identifiability-meaning">可辨识性</a>这两个定义出发。进入本章不需要先会变分自编码器；陌生术语可暂记下并查<a href="start-here.html#guide-glossary">术语表</a>。</p>
+<p lang="en"><b>Read first:</b> <a href="#sec-nonlinear-model">the model</a> → the examples in <a href="#sec-nonlinear-nonidentifiability">independence is not enough</a> → the opening of <a href="#sec-auxiliary">auxiliary variables</a>. <b>Return later:</b> <a href="#sec-tcl">TCL/PCL</a>, the derivative-based proofs and <a href="#sec-ivae">iVAE</a>. Read assumptions before interpreting any theorem conclusion.</p>
+<p lang="zh-CN"><b>先读：</b><a href="#sec-nonlinear-model">模型</a> → <a href="#sec-nonlinear-nonidentifiability">仅有独立性不够</a>中的例子 → <a href="#sec-auxiliary">辅助变量</a>开头。<b>进阶后读：</b><a href="#sec-tcl">TCL/PCL</a>、涉及导数的证明和 <a href="#sec-ivae">iVAE</a>。解释定理结论前，先读清假设。</p>
+<h4><span lang="en">Undoing a bend does not fix the source scale</span><span lang="zh-CN">撤销弯曲，不代表源尺度也确定了</span></h4>
+<ol lang="en"><li>Let $s_1,s_2$ be independent uniform variables on $(0,1)$. Observe $x_1=s_1$ and $x_2=s_2+s_1^2$. There are two source coordinates and two measured coordinates; the square makes this a nonlinear mixing function.</li><li>If that function is known, undo it with $s_1=x_1$ and $s_2=x_2-x_1^2$. For $(x_1,x_2)=(1/2,1/2)$ this gives $(s_1,s_2)=(1/2,1/4)$.</li><li>Now report $y_1=s_1$ and $y_2=s_2^3$ instead. The outputs are still independent, since each depends on only one independent source. Cubing is invertible on $(0,1)$, but the same sample is now $(1/2,1/64)$. Independence did not fix its numerical scale.</li></ol>
+<ol lang="zh-CN"><li>设 $s_1,s_2$ 相互独立，均匀分布于 $(0,1)$。观测为 $x_1=s_1$、$x_2=s_2+s_1^2$。源与观测各有两个坐标；平方项使混合函数成为非线性的。</li><li>如果已知这个函数，就用 $s_1=x_1$、$s_2=x_2-x_1^2$ 反解。$(x_1,x_2)=(1/2,1/2)$ 对应 $(s_1,s_2)=(1/2,1/4)$。</li><li>现在改为输出 $y_1=s_1$、$y_2=s_2^3$。每个输出只依赖一个独立源，所以输出仍然独立。立方在 $(0,1)$ 上可逆，但同一样本变成了 $(1/2,1/64)$。独立性没有固定其数值尺度。</li></ol>
+<p lang="en">This illustrates the allowed componentwise ambiguity, not the full impossibility proof. The main text shows a stronger problem: unrestricted nonlinear alternatives can mix several sources while preserving independence. Successful theory must restrict the competing models too.</p>
+<p lang="zh-CN">这个例子说明允许存在的逐分量歧义，并不是完整的不可辨识性证明。正文展示更强的问题：不受限制的非线性替代解可以混合多个源，同时保持独立。成功的理论也必须约束这些竞争模型。</p>
+<p lang="en"><b>Quick check 1.</b> Under the same known mixing function, what sources give observations $(0.2,0.34)$?</p>
+<p lang="zh-CN"><b>自测 1。</b>在同一已知混合函数下，观测 $(0.2,0.34)$ 对应什么源？</p>
+<details class="solution beginner-answer">
+<summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+<p lang="en">$s_1=0.2$ and $s_2=0.34-0.2^2=0.30$. Both are in the permitted interval. The transformed second output would be $0.30^3=0.027$.</p>
+<p lang="zh-CN">$s_1=0.2$，$s_2=0.34-0.2^2=0.30$，二者均在允许区间内。经过立方变换后的第二个输出为 $0.30^3=0.027$。</p>
+</details>
+<p lang="en"><b>Quick check 2.</b> A model predicts the scanner site perfectly. Does that establish auxiliary-variable source recovery?</p>
+<p lang="zh-CN"><b>自测 2。</b>模型能完美预测扫描中心，是否就证明了辅助变量方法恢复了源？</p>
+<details class="solution beginner-answer">
+<summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+<p lang="en">No. Site may change the measurement function itself. Conditional independence, sufficiently different source modulation and the stated function-class/optimization assumptions still need justification; prediction accuracy alone supplies none of these guarantees.</p>
+<p lang="zh-CN">没有。扫描中心可能改变测量函数本身。仍需论证条件独立、足够不同的源调制，以及所述函数类和优化假设；分类准确率本身不提供这些保证。</p>
+</details>
+</aside>
+
 <h2 id="sec-nonlinear-model"><span lang="en">Nonlinear mixing</span><span lang="zh-CN">非线性混合</span></h2>
 
 <p lang="en">The linear model $\bx = \bA\bs$ is an idealization. Sensors saturate, images are formed through occlusion, shading and perspective, and the factors that generate natural data are rarely added together with fixed weights. The natural generalization keeps independent sources but replaces the matrix by a function:</p>
@@ -14,8 +47,8 @@
 <p lang="zh-CN">某种不确定性是无法避免的，而且比线性情形更大。设 $\pi$ 是 $\{1, \dots, n\}$ 的一个置换，$h_1, \dots, h_n$ 是可逆的标量函数，令 $\tilde s_i = h_i(s_{\pi(i)})$。每个 $\tilde s_i$ 只是某一个源的函数，且所涉及的源各不相同，因此 $\tilde s_i$ 仍然相互独立。记 $\mathbf h$ 为可逆映射 $\bs \mapsto \tilde\bs$，则 $\bx = \mathbf f(\bs) = \tilde{\mathbf f}(\tilde\bs)$，其中 $\tilde{\mathbf f} = \mathbf f \circ \mathbf h^{-1}$。数据无法区分 $(\mathbf f, \bs)$ 与 $(\tilde{\mathbf f}, \tilde\bs)$，所以最理想的结果也只能是下面这种意义下的分离。</p>
 
 <div class="env" data-kind="definition" id="def-nonlinear-separation" data-en="separation and identifiability" data-zh="分离与可辨识性">
-  <p lang="en">A function $\mathbf g$ <em>separates</em> the sources of the model <a class="ref" data-ref="eq-nonlinear-model"></a> if there are a permutation $\pi$ and invertible scalar functions $\phi_1, \dots, \phi_n$ such that $g_i(\bx) = \phi_i(s_{\pi(i)})$ for every $i$. Nonlinear ICA is <em>identifiable</em> within a class of models if, for every model in the class, every invertible $\mathbf g$ whose outputs are independent separates the sources.</p>
-  <p lang="zh-CN">若存在置换 $\pi$ 与可逆标量函数 $\phi_1, \dots, \phi_n$，使得对每个 $i$ 都有 $g_i(\bx) = \phi_i(s_{\pi(i)})$，则称函数 $\mathbf g$ <em>分离</em>了模型 <a class="ref" data-ref="eq-nonlinear-model"></a> 的源。若在某一类模型中，对其中每个模型，每个使输出相互独立的可逆函数 $\mathbf g$ 都能分离源，则称非线性 ICA 在这一类模型中<em>可辨识</em>。</p>
+  <p lang="en">A function $\mathbf g$ <em>separates</em> the sources if $g_i(\bx)=\phi_i(s_{\pi(i)})$ for a permutation $\pi$ and invertible scalar functions $\phi_i$. Identifiability <em>within a specified model class</em> means that any two admissible representations giving the same observable distribution differ only by these transformations. Competing representations must obey <em>all</em> restrictions defining the class, not merely independence. With auxiliary variables below, the observable law is that of $(\bx,\bu)$ and the source assumption is conditional independence given $\bu$.</p>
+<p lang="zh-CN">若存在置换 $\pi$ 与可逆标量函数 $\phi_i$，使 $g_i(\bx)=\phi_i(s_{\pi(i)})$，则称 $\mathbf g$ <em>分离</em>了源。<em>在指定模型类中的可辨识性</em>，是指任何产生相同可观测分布的两种允许表示，只能相差这些变换。替代表示必须满足定义该模型类的<em>全部</em>限制，而不只是独立性。在下文的辅助变量模型中，可观测分布是 $(\bx,\bu)$ 的联合分布，源的假设则是给定 $\bu$ 的条件独立性。</p>
 </div>
 
 <p lang="en">Two features of this definition matter later. First, the marginal distributions of the sources carry no information. With $F_i$ the cumulative distribution function (CDF) of $s_i$ and $\Phi$ the standard Gaussian CDF, the map $h_i = \Phi^{-1}\circ F_i$ turns any source with a continuous, strictly increasing CDF into a standard Gaussian variable (<a class="ref" data-ref="ex-componentwise"></a>). Non-Gaussianity of the marginals, the basis of linear ICA, is therefore useless here. Second, since one may as well assume Gaussian sources, the rotational ambiguity of Gaussian vectors from <a class="ref" data-ref="sec-pca-vs-ica"></a> is never far away. The next section turns this observation into a theorem.</p>
@@ -23,17 +56,17 @@
 
 <h2 id="sec-nonlinear-nonidentifiability"><span lang="en">Independence is not enough</span><span lang="zh-CN">仅有独立性是不够的</span></h2>
 
-<p lang="en">The basic tool is the probability integral transform: if a random variable $u$ has a continuous CDF $F$, then $F(u)$ is uniform on $(0, 1)$. Applying it one coordinate at a time, each time conditionally on the coordinates already processed, turns any random vector into one with independent uniform components. Write $F_{k\mid 1:k-1}(\cdot \mid x_1, \dots, x_{k-1})$ for the conditional CDF of $x_k$ given $x_1, \dots, x_{k-1}$, and define</p>
-<p lang="zh-CN">基本工具是概率积分变换：若随机变量 $u$ 的 CDF $F$ 是连续的，则 $F(u)$ 在 $(0, 1)$ 上均匀分布。逐个坐标地使用这一变换，每次都以已经处理过的坐标为条件，就能把任何随机向量变成分量独立且均匀分布的向量。记 $F_{k\mid 1:k-1}(\cdot \mid x_1, \dots, x_{k-1})$ 为给定 $x_1, \dots, x_{k-1}$ 时 $x_k$ 的条件 CDF，定义</p>
+<p lang="en">The basic tool is the probability integral transform: if a random variable $u$ has a continuous CDF $F$, then $F(u)$ is uniform on $(0, 1)$. Applying it one coordinate at a time, each time conditionally on the coordinates already processed, turns a vector with continuous conditional distributions into one with independent uniform components. Write $F_{k\mid 1:k-1}(\cdot \mid x_1, \dots, x_{k-1})$ for the conditional CDF of $x_k$ given $x_1, \dots, x_{k-1}$, and define</p>
+<p lang="zh-CN">基本工具是概率积分变换：若随机变量 $u$ 的 CDF $F$ 是连续的，则 $F(u)$ 在 $(0, 1)$ 上均匀分布。逐个坐标地使用这一变换，每次都以已经处理过的坐标为条件，在条件分布连续的假设下，就能把随机向量变成分量独立且均匀分布的向量。记 $F_{k\mid 1:k-1}(\cdot \mid x_1, \dots, x_{k-1})$ 为给定 $x_1, \dots, x_{k-1}$ 时 $x_k$ 的条件 CDF，定义</p>
 
 <div class="eq" id="eq-darmois">$$g_1(\bx) = F_1(x_1), \qquad g_k(\bx) = F_{k\mid 1:k-1}(x_k \mid x_1, \dots, x_{k-1}), \quad k = 2, \dots, n,$$</div>
 
-<p lang="en">where $F_1$ is the CDF of $x_1$. This triangular map is often called the <em>Darmois construction</em>; Hyvärinen and Pajunen (1999) used it to show that nonlinear ICA always has solutions, and far too many of them. It is a nonlinear counterpart of Gram–Schmidt orthogonalization: the $k$-th output keeps only what $x_k$ adds to the coordinates before it, and for a Gaussian vector the construction reduces to Cholesky whitening followed by $\Phi$ (<a class="ref" data-ref="ex-darmois-gaussian"></a>).</p>
-<p lang="zh-CN">其中 $F_1$ 是 $x_1$ 的 CDF。这个三角形映射通常称为 <em>Darmois 构造</em>；Hyvärinen 与 Pajunen（1999）用它证明了非线性 ICA 总是有解，而且解多得过了头。它相当于 Gram–Schmidt 正交化的非线性版本：第 $k$ 个输出只保留 $x_k$ 相对于前面各坐标新增的部分；对高斯向量而言，这一构造就退化为 Cholesky 白化再接上 $\Phi$（<a class="ref" data-ref="ex-darmois-gaussian"></a>）。</p>
+<p lang="en">where $F_1$ is the CDF of $x_1$. This triangular map is often called the <em>Darmois construction</em>; Hyvärinen and Pajunen (1999) used it to show that nonlinear ICA has far too many solutions under these continuous-distribution assumptions. It is a nonlinear counterpart of Gram–Schmidt orthogonalization: the $k$-th output keeps only what $x_k$ adds to the coordinates before it, and for a Gaussian vector the construction reduces to Cholesky whitening followed by $\Phi$ (<a class="ref" data-ref="ex-darmois-gaussian"></a>).</p>
+<p lang="zh-CN">其中 $F_1$ 是 $x_1$ 的 CDF。这个三角形映射通常称为 <em>Darmois 构造</em>；Hyvärinen 与 Pajunen（1999）用它证明了在这些连续分布假设下，非线性 ICA 的解多得过了头。它相当于 Gram–Schmidt 正交化的非线性版本：第 $k$ 个输出只保留 $x_k$ 相对于前面各坐标新增的部分；对高斯向量而言，这一构造就退化为 Cholesky 白化再接上 $\Phi$（<a class="ref" data-ref="ex-darmois-gaussian"></a>）。</p>
 
 <div class="env" data-kind="theorem" id="thm-nonlinear-nonidentifiable" data-en="non-identifiability of nonlinear ICA" data-zh="非线性 ICA 的不可辨识性">
-  <p lang="en">(a) Let $\bx$ be a random vector in $\R^n$ whose density is positive on an open convex set $\mathcal{X}$ and zero outside it. Then the map $\mathbf g$ of <a class="ref" data-ref="eq-darmois"></a> is a bijection from $\mathcal X$ onto $(0,1)^n$, and $\by = \mathbf g(\bx)$ is uniformly distributed on $(0,1)^n$. In particular $y_1, \dots, y_n$ are independent.</p>
-  <p lang="zh-CN">(a) 设随机向量 $\bx \in \R^n$ 的密度在某个开凸集 $\mathcal{X}$ 上处处为正、在其外为零。则 <a class="ref" data-ref="eq-darmois"></a> 定义的映射 $\mathbf g$ 是从 $\mathcal X$ 到 $(0,1)^n$ 的双射，且 $\by = \mathbf g(\bx)$ 在 $(0,1)^n$ 上均匀分布。特别地，$y_1, \dots, y_n$ 相互独立。</p>
+  <p lang="en">(a) Let $\bx$ be a random vector in $\R^n$ whose density is positive on an open convex set $\mathcal{X}$ and zero outside it, with each prefix marginal density finite and positive at every point of its projected support. Then the map $\mathbf g$ of <a class="ref" data-ref="eq-darmois"></a> is a bijection from $\mathcal X$ onto $(0,1)^n$, and $\by = \mathbf g(\bx)$ is uniformly distributed on $(0,1)^n$. In particular $y_1, \dots, y_n$ are independent.</p>
+  <p lang="zh-CN">(a) 设随机向量 $\bx \in \R^n$ 的密度在某个开凸集 $\mathcal{X}$ 上处处为正、在其外为零，并且每个前缀边缘密度在其投影支撑的每一点都有限且为正。则 <a class="ref" data-ref="eq-darmois"></a> 定义的映射 $\mathbf g$ 是从 $\mathcal X$ 到 $(0,1)^n$ 的双射，且 $\by = \mathbf g(\bx)$ 在 $(0,1)^n$ 上均匀分布。特别地，$y_1, \dots, y_n$ 相互独立。</p>
   <p lang="en">(b) Let $n \ge 2$ and let $s_1, \dots, s_n$ be independent, each with a CDF that is continuous and strictly increasing on an open interval carrying all of its probability. Then there is an invertible map $\mathbf h$ such that $\mathbf h(\bs)$ has the same distribution as $\bs$, so that its components are independent, while its first component is strictly increasing in $s_1$ and strictly decreasing in $s_2$. Consequently, for every invertible mixing function $\mathbf f$, the map $\mathbf g = \mathbf h \circ \mathbf f^{-1}$ produces independent outputs without separating the sources, and nonlinear ICA is not identifiable.</p>
   <p lang="zh-CN">(b) 设 $n \ge 2$，$s_1, \dots, s_n$ 相互独立，且每个 $s_i$ 的 CDF 在某个承载其全部概率的开区间上连续且严格递增。则存在可逆映射 $\mathbf h$，使 $\mathbf h(\bs)$ 与 $\bs$ 同分布（因而其分量相互独立），而它的第一个分量关于 $s_1$ 严格递增、关于 $s_2$ 严格递减。于是，对任何可逆混合函数 $\mathbf f$，映射 $\mathbf g = \mathbf h \circ \mathbf f^{-1}$ 的输出相互独立，却并没有分离源：非线性 ICA 不可辨识。</p>
 </div>
@@ -49,8 +82,8 @@
   <p lang="zh-CN">(b) 记 $F_i$ 为 $s_i$ 的 CDF。由概率积分变换，$z_i = \Phi^{-1}(F_i(s_i))$ 服从标准高斯分布，所以 $\bz = (z_1, \dots, z_n)^\top \sim \Ncal(\bzero, \bI)$。令 $\bQ$ 把前两个坐标旋转 $\pi/4$ 角、其余坐标不变，则同样有 $\bQ\bz \sim \Ncal(\bzero, \bI)$（<a class="ref" data-ref="ex-gaussian-rotation"></a>）。令 $h_i(\bs) = F_i^{-1}\bigl(\Phi((\bQ\bz)_i)\bigr)$，其中 $F_i^{-1}$ 是 $F_i$ 在其区间上的反函数。由于 $\bQ\bz$ 的分量相互独立，$\mathbf h(\bs)$ 的分量也相互独立，且第 $i$ 个分量的 CDF 为 $F_i$，所以 $\mathbf h(\bs)$ 与 $\bs$ 同分布。$\mathbf h$ 是若干双射的复合，因而可逆。最后，$(\bQ\bz)_1 = (z_1 - z_2)/\sqrt 2$，所以 $h_1(\bs) = F_1^{-1}\bigl(\Phi((\bQ\bz)_1)\bigr)$ 关于 $z_1$ 严格递增，从而关于 $s_1$ 严格递增；关于 $z_2$ 严格递减，从而关于 $s_2$ 严格递减。由于 $\mathbf g(\bx) = \mathbf h(\bs)$，$\mathbf g$ 的输出相互独立，但 $g_1(\bx)$ 不是任何单个源的函数。</p>
 </div>
 
-<p lang="en">Part (a) applies to any random vector, mixture or not. Independent outputs therefore cannot certify that a nonlinear unmixing has found the sources, even when the mixing happens to be linear.</p>
-<p lang="zh-CN">(a) 部分适用于任何随机向量，不论它是否来自混合。因此，即使混合恰好是线性的，输出相互独立也不能证明一个非线性解混找到了源。</p>
+<p lang="en">Part (a) applies to any vector satisfying its density and support assumptions, whether or not it came from a source model. It does not cover arbitrary discrete or singular distributions. Independent outputs therefore cannot certify recovery of physical sources, even when the true mixing happens to be linear.</p>
+<p lang="zh-CN">第一部分适用于满足其密度与支持集条件的任意向量，无论它是否来自源模型；它不涵盖任意离散或奇异分布。因此，即使真实混合恰好是线性的，输出独立也不能证明恢复了物理源。</p>
 
 <div class="env" data-kind="example" id="example-darmois" data-en="the Darmois construction on a linear mixture" data-zh="对线性混合做 Darmois 构造">
   <p lang="en">Let $s_1, s_2$ be independent and uniform on $(0,1)$, and observe the linear mixture $x_1 = s_1$, $x_2 = s_1 + s_2$, which linear ICA would separate. Apply the Darmois construction taking $x_2$ first. The sum of two independent uniforms has the triangular CDF $F(c) = c^2/2$ for $0 \le c \le 1$ and $F(c) = 1 - (2 - c)^2/2$ for $1 \le c \le 2$, and given $x_2 = c$, the variable $x_1$ is uniform on $[\max(0, c-1), \min(1, c)]$. Hence</p>
@@ -63,7 +96,7 @@
 <p lang="en">The following script checks both claims on $10^5$ samples.</p>
 <p lang="zh-CN">下面的脚本在 $10^5$ 个样本上检验这两点。</p>
 
-<pre class="code"><code>import numpy as np
+<pre class="code" data-code="python"><code>import numpy as np
 from scipy import stats
 
 rng = np.random.default_rng(1)
@@ -112,11 +145,11 @@ print(np.round(np.corrcoef([y1, y2, s1, s2])[:2, 2:], 2))</code></pre>
 
 <div class="eq" id="eq-pnl">$$x_i = f_i\Bigl(\sum_{j=1}^n a_{ij}\,s_j\Bigr), \qquad i = 1, \dots, n,$$</div>
 
-<p lang="en">as happens when sensors respond nonlinearly, for instance by saturating. The separating structure mirrors the model: first a scalar nonlinearity $g_i$ in each channel, then a matrix, $\by = \bW\,\mathbf g(\bx)$, where $\mathbf g$ applies $g_i$ to the $i$-th coordinate. If every composition $g_i \circ f_i$ is affine, what remains is a linear ICA problem. Taleb and Jutten (1999) showed that, under conditions on $\bA$, the sources and the nonlinearities, independence of the outputs forces exactly this: each $g_i\circ f_i$ is affine and $\bW\bA$ is a scaled permutation, so the sources are recovered up to the usual scaling, permutation and additive constants. The conditions have been weakened in later work, and we do not state them precisely here.</p>
-<p lang="zh-CN">传感器响应非线性（例如饱和）时就是这种情形。分离结构与模型相对应：先在每个通道上作用一个标量非线性函数 $g_i$，再乘以一个矩阵，即 $\by = \bW\,\mathbf g(\bx)$，其中 $\mathbf g$ 把 $g_i$ 作用于第 $i$ 个坐标。如果每个复合函数 $g_i \circ f_i$ 都是仿射的，剩下的就是一个线性 ICA 问题。Taleb 与 Jutten（1999）证明，在关于 $\bA$、源和非线性函数的一定条件下，输出相互独立恰好迫使这一点成立：每个 $g_i\circ f_i$ 都是仿射的，且 $\bW\bA$ 是带尺度的置换矩阵，于是源可以在通常的尺度、置换以及加性常数的意义下恢复。后来的工作放宽了这些条件，这里不再精确陈述。</p>
+<p lang="en">This represents an invertible nonlinear sensor response. A strictly monotone compression can fit the model; hard clipping or quantization cannot, because lost information has no inverse. The separating structure first applies scalar functions $g_i$ and then a matrix, $\by=\bW\mathbf g(\bx)$. If $g_i(f_i(u))=d_i u+c_i$ with $d_i\ne0$, then $\by=\bW\bD\bA\bs+\bW\mathbf c$, where $\bD=\diag(d_i)$. After centering, separation requires $\bW\bD\bA$ to be a scaled permutation, <em>not</em> $\bW\bA$ unless the slopes have been absorbed into $\bW$. Taleb and Jutten (1999) establish identifiability under additional assumptions on the mixing, sources and nonlinearities; invertibility of the scalar functions alone is not their theorem.</p>
+<p lang="zh-CN">该模型描述可逆的非线性传感器响应。严格单调的压缩可符合模型；硬截断或量化则不符合，因为丢失的信息无法求逆。分离结构先施加标量函数 $g_i$，再乘矩阵，即 $\by=\bW\mathbf g(\bx)$。若 $g_i(f_i(u))=d_i u+c_i$，$d_i\ne0$，则 $\by=\bW\bD\bA\bs+\bW\mathbf c$，其中 $\bD=\diag(d_i)$。中心化后，分离要求 $\bW\bD\bA$ 是带尺度的置换；除非把斜率已吸收入 $\bW$，否则不能写成 $\bW\bA$。Taleb 与 Jutten（1999）在关于混合、源与非线性的附加条件下证明可辨识性；仅仅要求标量函数可逆，并不是该定理的完整条件。</p>
 
-<p lang="en">The PNL model <a class="ref" data-ref="eq-pnl"></a> escapes <a class="ref" data-ref="thm-nonlinear-nonidentifiable"></a> because its separating structure, $n$ scalar functions and one matrix, is too rigid to reproduce maps that act jointly on several coordinates, such as the Darmois map or the spiral of <a class="ref" data-ref="fig-swirl"></a>. Restricting $\mathbf f$ to conformal maps has a similar effect: Hyvärinen and Pajunen (1999) gave a uniqueness result in two dimensions, and Buchholz, Besserve and Schölkopf (2022) extended such results to higher dimensions, in each case up to a small group of simple transformations. The price is generality, since the processes behind images or neural recordings are neither post-nonlinear nor conformal. The rest of the chapter keeps $\mathbf f$ arbitrary and adds structure to the sources instead.</p>
-<p lang="zh-CN">PNL 模型 <a class="ref" data-ref="eq-pnl"></a> 之所以能躲开<a class="ref" data-ref="thm-nonlinear-nonidentifiable"></a>，是因为它的分离结构（$n$ 个标量函数加一个矩阵）过于刚性，无法复现同时作用于多个坐标的映射，例如 Darmois 映射或<a class="ref" data-ref="fig-swirl"></a> 中的螺旋映射。把 $\mathbf f$ 限制为共形映射也有类似效果：Hyvärinen 与 Pajunen（1999）给出了二维情形的唯一性结果，Buchholz、Besserve 与 Schölkopf（2022）把这类结果推广到更高维，两者都是在一个由简单变换构成的小群的意义下唯一。代价是一般性：图像或神经记录背后的生成过程既不是后非线性的，也不是共形的。本章其余部分对 $\mathbf f$ 不加限制，转而给源增加结构。</p>
+<p lang="en">The PNL model <a class="ref" data-ref="eq-pnl"></a> escapes <a class="ref" data-ref="thm-nonlinear-nonidentifiable"></a> because its separating structure, $n$ scalar functions and one matrix, is too rigid to reproduce maps that act jointly on several coordinates, such as the Darmois map or the spiral of <a class="ref" data-ref="fig-swirl"></a>. Restricting $\mathbf f$ to conformal maps has a similar effect: Hyvärinen and Pajunen (1999) gave a uniqueness result in two dimensions, and Buchholz, Besserve and Schölkopf (2022) extended such results to higher dimensions, in each case up to a small group of simple transformations. The price is generality, since the processes behind images or neural recordings are neither post-nonlinear nor conformal. The rest of the chapter keeps $\mathbf f$ flexible within the stated regularity class and adds structure to the sources instead.</p>
+<p lang="zh-CN">PNL 模型 <a class="ref" data-ref="eq-pnl"></a> 之所以能躲开<a class="ref" data-ref="thm-nonlinear-nonidentifiable"></a>，是因为它的分离结构（$n$ 个标量函数加一个矩阵）过于刚性，无法复现同时作用于多个坐标的映射，例如 Darmois 映射或<a class="ref" data-ref="fig-swirl"></a> 中的螺旋映射。把 $\mathbf f$ 限制为共形映射也有类似效果：Hyvärinen 与 Pajunen（1999）给出了二维情形的唯一性结果，Buchholz、Besserve 与 Schölkopf（2022）把这类结果推广到更高维，两者都是在一个由简单变换构成的小群的意义下唯一。代价是一般性：图像或神经记录背后的生成过程既不是后非线性的，也不是共形的。本章其余部分让 $\mathbf f$ 在所述正则性条件内保持灵活，转而给源增加结构。</p>
 
 <h2 id="sec-tcl"><span lang="en">Temporal structure: time-contrastive and permutation-contrastive learning</span><span lang="zh-CN">时间结构：时间对比学习与置换对比学习</span></h2>
 
@@ -182,6 +215,9 @@ print(np.round(np.corrcoef([y1, y2, s1, s2])[:2, 2:], 2))</code></pre>
 <p lang="zh-CN">平稳的高斯自回归过程的交叉导数是常数，因而是拟高斯的。对拟高斯的源，PCL 只能恢复变换后各源的一个可逆线性混合，还需要再做一步线性解混（Hyvärinen &amp; Morioka, 2017）。</p>
 
 <h2 id="sec-auxiliary"><span lang="en">Auxiliary variables and generalized contrastive learning</span><span lang="zh-CN">辅助变量与广义对比学习</span></h2>
+<p class="concept-bridge" lang="en"><b>Read “given” literally.</b> Sources can be independent within each value of an auxiliary variable yet dependent after those groups are pooled. Two independent noisy measurements of the same changing group mean share that mean in pooled data. Conditional independence therefore makes a different claim from ordinary marginal independence.</p>
+<p class="concept-bridge" lang="zh-CN"><b>认真理解“给定”。</b>在辅助变量每个取值内部，源可能独立；把这些组混在一起后，却可能相关。对同一个随组变化的均值做两次独立含噪测量，合并数据便会共享这个均值。所以条件独立与普通边缘独立是不同的命题。</p>
+
 
 <p lang="en">TCL and PCL share a structure. In both, an observed variable, the segment label $\tau$ in TCL and the past observation $\bx(t-1)$ in PCL, changes the distribution of the sources without changing the mixing function. Hyvärinen, Sasaki and Turner (2019) made this the definition of the model: the sources are <em>conditionally</em> independent given an observed <em>auxiliary variable</em> $\bu$,</p>
 <p lang="zh-CN">TCL 与 PCL 有共同的结构。两者都有一个观测到的变量（TCL 中是段标号 $\tau$，PCL 中是前一时刻的观测 $\bx(t-1)$），它改变源的分布，却不改变混合函数。Hyvärinen、Sasaki 与 Turner（2019）把这一点直接作为模型的定义：给定一个观测到的<em>辅助变量</em> $\bu$，各源<em>条件</em>独立，</p>
@@ -235,13 +271,13 @@ print(np.round(np.corrcoef([y1, y2, s1, s2])[:2, 2:], 2))</code></pre>
   <p lang="zh-CN">这对每个 $\by$ 以及每一对 $\bu$、$\bu_0$ 都成立；整个推导不需要 $p_{\bs}$ 或 $\beta_i$ 的任何光滑性。固定 $\by$，令 $\bs = \bv(\by)$，并对这个 $\bs$ 取假设 3 中的 $\bu_0, \dots, \bu_{2n}$。令 $\bu = \bu_1, \dots, \bu_{2n}$，上式说明 $\mathbf c$ 与 $2n$ 个线性无关的向量都正交，所以 $\mathbf c = \bzero$。特别地，对所有 $i$ 与所有 $j \neq j'$ 有 $\partial_j v_i\,\partial_{j'} v_i = 0$：Jacobian 矩阵 $\mathbf J_{\bv}(\by)$ 的每一行至多有一个非零元。由于 $\mathbf J_{\bv}(\by)$ 可逆，它每行每列恰有一个非零元，而且由连续性，这些非零元的位置对所有 $\by$ 都相同（<a class="ref" data-ref="ex-jacobian-pattern"></a>）。因此存在置换 $\sigma$，使每个 $s_i = v_i(\by)$ 都是单个坐标 $y_{\sigma(i)}$ 的严格单调函数；反过来，$h_j(\bx) = y_j$ 是单个源 $s_{\sigma^{-1}(j)}$ 的可逆函数，取 $\pi = \sigma^{-1}$ 即为所证。</p>
 </div>
 
-<p lang="en">The theorem places no restriction on $\mathbf f$. Its price is assumption 3: at every point, $\bu$ must act on the source distributions in at least $2n$ sufficiently different ways. This fails when each conditional log-density is an exponential family with a single sufficient statistic, as in <a class="ref" data-ref="eq-tcl-model"></a> with $\lambda_i(\tau)$ replaced by $\lambda_i(\bu)$: every difference $\bomega(\bs, \bu_k) - \bomega(\bs, \bu_0)$ is then a combination of the same $n$ vectors (Hyvärinen, Sasaki &amp; Turner, 2019; <a class="ref" data-ref="ex-variability-gaussian"></a>). This is the situation of TCL, which is why <a class="ref" data-ref="prop-tcl"></a> identified the sufficient statistics only up to a linear transformation. With two or more sufficient statistics per source, modulated in sufficiently independent ways, the assumption holds except in degenerate cases. TCL and PCL are special cases of GCL with $\bu = \tau$ and $\bu = \bx(t-1)$.</p>
-<p lang="zh-CN">这个定理对 $\mathbf f$ 没有任何限制，代价是假设 3：在每一点，$\bu$ 都必须以至少 $2n$ 种足够不同的方式作用于源的分布。若每个条件对数密度都是只有一个充分统计量的指数族，即把 <a class="ref" data-ref="eq-tcl-model"></a> 中的 $\lambda_i(\tau)$ 换成 $\lambda_i(\bu)$，这一点就不成立：此时每个差向量 $\bomega(\bs, \bu_k) - \bomega(\bs, \bu_0)$ 都是同样 $n$ 个向量的线性组合（Hyvärinen, Sasaki &amp; Turner, 2019；<a class="ref" data-ref="ex-variability-gaussian"></a>）。这正是 TCL 的情形，也解释了为什么<a class="ref" data-ref="prop-tcl"></a>只能在线性变换的意义下辨识充分统计量。若每个源有两个或更多充分统计量，且它们以足够独立的方式被调制，则除退化情形外该假设都成立。TCL 与 PCL 是 GCL 在 $\bu = \tau$ 与 $\bu = \bx(t-1)$ 时的特例。</p>
+<p lang="en">Beyond the smooth invertibility in assumption 1, the theorem imposes no parametric form on $\mathbf f$. Its main additional price is assumption 3: at every point, $\bu$ must act on the source distributions in at least $2n$ sufficiently different ways. This fails when each conditional log-density is an exponential family with a single sufficient statistic, as in <a class="ref" data-ref="eq-tcl-model"></a> with $\lambda_i(\tau)$ replaced by $\lambda_i(\bu)$: every difference $\bomega(\bs, \bu_k) - \bomega(\bs, \bu_0)$ is then a combination of the same $n$ vectors (Hyvärinen, Sasaki &amp; Turner, 2019; <a class="ref" data-ref="ex-variability-gaussian"></a>). This is the situation of TCL, which is why <a class="ref" data-ref="prop-tcl"></a> identified the sufficient statistics only up to a linear transformation. With two or more sufficient statistics per source, modulated in sufficiently independent ways, the assumption holds except in degenerate cases. TCL and PCL are special cases of GCL with $\bu = \tau$ and $\bu = \bx(t-1)$.</p>
+<p lang="zh-CN">除假设 1 中的光滑可逆性外，这个定理不限制 $\mathbf f$ 的参数形式；主要的额外代价是假设 3：在每一点，$\bu$ 都必须以至少 $2n$ 种足够不同的方式作用于源的分布。若每个条件对数密度都是只有一个充分统计量的指数族，即把 <a class="ref" data-ref="eq-tcl-model"></a> 中的 $\lambda_i(\tau)$ 换成 $\lambda_i(\bu)$，这一点就不成立：此时每个差向量 $\bomega(\bs, \bu_k) - \bomega(\bs, \bu_0)$ 都是同样 $n$ 个向量的线性组合（Hyvärinen, Sasaki &amp; Turner, 2019；<a class="ref" data-ref="ex-variability-gaussian"></a>）。这正是 TCL 的情形，也解释了为什么<a class="ref" data-ref="prop-tcl"></a>只能在线性变换的意义下辨识充分统计量。若每个源有两个或更多充分统计量，且它们以足够独立的方式被调制，则除退化情形外该假设都成立。TCL 与 PCL 是 GCL 在 $\bu = \tau$ 与 $\bu = \bx(t-1)$ 时的特例。</p>
 
 <h2 id="sec-ivae"><span lang="en">Identifiable variational autoencoders</span><span lang="zh-CN">可辨识的变分自编码器</span></h2>
 
-<p lang="en">Contrastive methods learn the demixing $\mathbf h$ but neither the mixing function nor the source densities, and they assume noiseless data. Khemakhem, Kingma, Monti and Hyvärinen (2020) placed the auxiliary-variable model inside a latent-variable model that can be fitted by maximum likelihood. In the <em>identifiable VAE</em> (iVAE), the observation is a noisy function of the sources, $\bx = \mathbf f(\bs) + \bepsilon$, where $\bx \in \R^d$ with $d \ge n$, $\mathbf f$ is injective and the noise $\bepsilon$ is independent of $\bs$. Given $\bu$, the sources are independent with exponential-family densities</p>
-<p lang="zh-CN">对比学习方法学到的是解混函数 $\mathbf h$，既不学混合函数，也不学源的密度，而且假设数据没有噪声。Khemakhem、Kingma、Monti 与 Hyvärinen（2020）把辅助变量模型放进一个可以用最大似然拟合的隐变量模型中。在<em>可辨识变分自编码器</em>（identifiable VAE, iVAE）中，观测是源的带噪函数 $\bx = \mathbf f(\bs) + \bepsilon$，其中 $\bx \in \R^d$，$d \ge n$，$\mathbf f$ 是单射，噪声 $\bepsilon$ 与 $\bs$ 独立。给定 $\bu$，各源相互独立，且服从指数族密度</p>
+<p lang="en">Contrastive methods learn the demixing $\mathbf h$ but neither the mixing function nor the source densities, and they assume noiseless data. Khemakhem, Kingma, Monti and Hyvärinen (2020) placed the auxiliary-variable model inside a latent-variable model that can be fitted by maximum likelihood. In the <em>identifiable VAE</em> (iVAE), the observation is a noisy function of the sources, $\bx = \mathbf f(\bs) + \bepsilon$, where $\bx \in \R^d$ with $d \ge n$, $\mathbf f$ is injective and the noise $\bepsilon$ is independent of $(\bs,\bu)$, with a fixed density shared by the competing parameterizations. Given $\bu$, the sources are independent with exponential-family densities</p>
+<p lang="zh-CN">对比学习方法学到的是解混函数 $\mathbf h$，既不学混合函数，也不学源的密度，而且假设数据没有噪声。Khemakhem、Kingma、Monti 与 Hyvärinen（2020）把辅助变量模型放进一个可以用最大似然拟合的隐变量模型中。在<em>可辨识变分自编码器</em>（identifiable VAE, iVAE）中，观测是源的带噪函数 $\bx = \mathbf f(\bs) + \bepsilon$，其中 $\bx \in \R^d$，$d \ge n$，$\mathbf f$ 是单射，噪声 $\bepsilon$ 与 $(\bs,\bu)$ 独立，且比较的参数化使用同一个固定噪声密度。给定 $\bu$，各源相互独立，且服从指数族密度</p>
 
 <div class="eq" id="eq-ivae-prior">$$p(\bs \mid \bu) = \prod_{i=1}^n \frac{Q_i(s_i)}{Z_i(\bu)}\exp\Bigl[\sum_{j=1}^k T_{i,j}(s_i)\,\lambda_{i,j}(\bu)\Bigr].$$</div>
 
@@ -252,19 +288,19 @@ print(np.round(np.corrcoef([y1, y2, s1, s2])[:2, 2:], 2))</code></pre>
   <p lang="en">Let two parameter values $(\mathbf f, \bT, \boldsymbol\lambda)$ and $(\tilde{\mathbf f}, \tilde\bT, \tilde{\boldsymbol\lambda})$ of this model give the same conditional distribution of $\bx$ given $\bu$, for every $\bu$. Assume that</p>
   <p lang="zh-CN">设该模型的两组参数 $(\mathbf f, \bT, \boldsymbol\lambda)$ 与 $(\tilde{\mathbf f}, \tilde\bT, \tilde{\boldsymbol\lambda})$ 对每个 $\bu$ 都给出相同的条件分布 $p(\bx \mid \bu)$。假设</p>
   <ol lang="en">
-    <li>the set of points where the characteristic function of the noise density vanishes has measure zero;</li>
+    <li>both parameterizations use the same fixed noise density, independent of $(\bs,\bu)$, and the zero set of its characteristic function has measure zero;</li>
     <li>$\mathbf f$ is injective;</li>
     <li>each $T_{i,j}$ is differentiable almost everywhere, and for each $i$ the functions $T_{i,1}, \dots, T_{i,k}$ are linearly independent on every set of positive measure;</li>
     <li>(<em>sufficient variability</em>) there are $nk + 1$ values $\bu^0, \dots, \bu^{nk}$ of the auxiliary variable such that the $nk \times nk$ matrix $\mathbf L$ with columns $\boldsymbol\lambda(\bu^l) - \boldsymbol\lambda(\bu^0)$, $l = 1, \dots, nk$, is invertible.</li>
   </ol>
   <ol lang="zh-CN">
-    <li>噪声密度的特征函数取零值的点集测度为零；</li>
+    <li>两组参数使用同一个固定噪声密度，噪声与 $(\bs,\bu)$ 独立，且其特征函数的零点集测度为零；</li>
     <li>$\mathbf f$ 是单射；</li>
     <li>每个 $T_{i,j}$ 几乎处处可微，且对每个 $i$，函数 $T_{i,1}, \dots, T_{i,k}$ 在任何正测度集上线性无关；</li>
     <li>（<em>充分变化性</em>）存在辅助变量的 $nk + 1$ 个取值 $\bu^0, \dots, \bu^{nk}$，使以 $\boldsymbol\lambda(\bu^l) - \boldsymbol\lambda(\bu^0)$（$l = 1, \dots, nk$）为列的 $nk \times nk$ 矩阵 $\mathbf L$ 可逆。</li>
   </ol>
-  <p lang="en">Then there are an invertible $nk \times nk$ matrix $\bM$ and a vector $\mathbf c$ such that, for all $\bx$ in the image of $\mathbf f$,</p>
-  <p lang="zh-CN">则存在可逆的 $nk \times nk$ 矩阵 $\bM$ 与向量 $\mathbf c$，使得对 $\mathbf f$ 值域中的所有 $\bx$ 都有</p>
+  <p lang="en">Then there are an invertible $nk \times nk$ matrix $\bM$ and a vector $\mathbf c$ such that, for noiseless points $\bx$ in the image of $\mathbf f$ (on the common support),</p>
+  <p lang="zh-CN">则存在可逆的 $nk \times nk$ 矩阵 $\bM$ 与向量 $\mathbf c$，使得对 $\mathbf f$ 值域中公共支持集上的无噪点 $\bx$ 有</p>
   <div class="eq">$$\bT\bigl(\mathbf f^{-1}(\bx)\bigr) = \bM\,\tilde\bT\bigl(\tilde{\mathbf f}^{-1}(\bx)\bigr) + \mathbf c.$$</div>
 </div>
 
@@ -287,12 +323,21 @@ print(np.round(np.corrcoef([y1, y2, s1, s2])[:2, 2:], 2))</code></pre>
 <p lang="en">Nonlinear ICA theory says which inductive biases suffice: an observed auxiliary variable that modulates the sources (TCL, PCL, GCL, iVAE), or a restricted class of mixing functions (post-nonlinear, conformal). The guarantees have limits. They are asymptotic, assuming infinite data, flexible enough function classes and a global optimum; assumptions such as conditional independence given $\bu$ or sufficient variability can rarely be verified from data; and the sources are recovered only up to permutation and componentwise invertible transformations, so their scale, units and sometimes their sign are lost. Hyvärinen, Khemakhem and Morioka (2023) review the field and its connections to self-supervised learning.</p>
 <p lang="zh-CN">非线性 ICA 理论回答了哪些归纳偏置是足够的：一个调制源分布的观测辅助变量（TCL、PCL、GCL、iVAE），或者一个受限的混合函数类（后非线性或共形映射）。这些保证都有局限。它们是渐近结论，假设数据无穷多、函数类足够灵活、优化达到全局最优；给定 $\bu$ 的条件独立、充分变化性之类的假设，很少能从数据中检验；而且源只能在置换与逐分量可逆变换的意义下恢复，其尺度、单位乃至符号都可能丢失。Hyvärinen、Khemakhem 与 Morioka（2023）综述了这一领域及其与自监督学习的联系。</p>
 
+
+<h3><span lang="en">Designing the auxiliary variable and checking the guarantee</span><span lang="zh-CN">辅助变量设计与理论保证的检查</span></h3>
+<p lang="en">Conditional independence is not marginal independence. For example, $s_1=u+e_1$ and $s_2=u+e_2$, with independent centered $u,e_1,e_2$, are independent conditional on $u$, but $\Cov(s_1,s_2)=\Var(u)$. Testing pooled independence would reject a valid conditional model. Conversely, a classifier that predicts $u$ accurately need not recover separate sources: it can exploit one strongly modulated source while the remaining modulation directions have deficient rank. Inspect the intended modulation mechanism, not just classification accuracy.</p>
+<p lang="zh-CN">条件独立不等于边缘独立。例如，若中心化的 $u,e_1,e_2$ 相互独立，令 $s_1=u+e_1$、$s_2=u+e_2$，则二者给定 $u$ 独立，却满足 $\Cov(s_1,s_2)=\Var(u)$。检验合并数据的独立性会拒绝一个正确的条件模型。反过来，分类器能准确预测 $u$，也不意味着恢复了不同源：它可能只利用一个调制很强的源，而其余调制方向秩不足。因此需要检查调制机制，而不只是分类准确率。</p>
+<p lang="en">The exact density-ratio assumption in the GCL theorem is substantive: universal function approximators for each $\beta_i$ do not automatically make their structured sum universal. When the sources are marginally dependent, the term $-\log p_{\bs}(\bs)$ need not split over coordinates. One can augment the classifier by an unrestricted $u$-independent term $a(\bx)$, using $r=a(\bx)+\sum_i\beta_i(h_i(\bx),\bu)$. At $\mathbf h=\mathbf f^{-1}$, choose $a(\bx)=-\log p_{\bs}(\mathbf f^{-1}(\bx))$ and $\beta_i=q_i$ to represent the exact ratio. The proof above still works: $a$ cancels when subtracting the equations at $\bu$ and $\bu_0$. This is an explicit extension of the stated classifier, not an assumption that approximation capacity alone supplies the missing term.</p>
+<p lang="zh-CN">GCL 定理中精确表示密度比的假设是实质性的：每个 $\beta_i$ 都使用通用函数逼近器，并不自动使受结构约束的总和通用。若源边缘相关，$-\log p_{\bs}(\bs)$ 未必能按坐标拆开。可向分类器加入不依赖 $u$ 的自由项 $a(\bx)$，使用 $r=a(\bx)+\sum_i\beta_i(h_i(\bx),\bu)$。在 $\mathbf h=\mathbf f^{-1}$ 时，取 $a(\bx)=-\log p_{\bs}(\mathbf f^{-1}(\bx))$、$\beta_i=q_i$ 即可表示精确密度比。上面的证明仍适用：将 $\bu$ 与 $\bu_0$ 处的等式相减时，$a$ 被消去。这是明确扩展分类器，而非假定逼近能力会自动补齐缺少的项。</p>
+<p lang="en">If $u$ changes the measurement process itself, so that $\bx=\mathbf f(\bs,u)$, the common-Jacobian cancellation no longer follows. Scanner/site labels are therefore not automatically valid auxiliary variables. Split training and evaluation by independent subjects or sessions, preserve dependence when constructing negative pairs, and check whether the same mixing mechanism is plausible across environments. In noisy iVAE, distributional deconvolution identifies model parameters up to the stated equivalence; it does not invert noise in each observed sample. Posterior uncertainty remains even with infinite training data. These are statistical identification results, not proofs that a learned factor is a causal mechanism (Hyvärinen, Sasaki &amp; Turner, 2019; Khemakhem et al., 2020).</p>
+<p lang="zh-CN">若 $u$ 改变测量过程本身，即 $\bx=\mathbf f(\bs,u)$，公共 Jacobian 的抵消便不再成立。因此扫描仪或站点标签不自动成为有效的辅助变量。应按独立被试或扫描划分训练与评估数据，构造负样本对时考虑依赖，并检查不同环境中是否可以假定相同混合机制。在含噪 iVAE 中，分布层面的反卷积使模型参数在所述等价意义下可辨识，并不是消除了每个观测样本中的噪声；即使训练数据无限多，后验不确定性仍然存在。这些是统计辨识结论，不是学到的因子具有因果机制意义的证明（Hyvärinen, Sasaki &amp; Turner, 2019；Khemakhem et al., 2020）。</p>
+
 <div class="keypoints">
   <p class="kp-title" lang="en">Key points</p>
   <p class="kp-title" lang="zh-CN">本章要点</p>
   <ul lang="en">
     <li>Nonlinear ICA models $\bx = \mathbf f(\bs)$ with an invertible $\mathbf f$. At best the sources are recovered up to permutation and componentwise invertible transformations, so the shape of their marginal distributions carries no information.</li>
-    <li>Without further assumptions the problem is not identifiable: the Darmois construction makes any random vector independent, and measure-preserving maps of $\Ncal(\bzero, \bI)$ yield a continuum of spurious solutions for sources with continuous, strictly increasing CDFs, smooth ones when the source densities are smooth and positive.</li>
+    <li>Without further assumptions the problem is not identifiable: the Darmois construction produces independent components under continuous conditional-distribution assumptions, and measure-preserving maps of $\Ncal(\bzero, \bI)$ yield a continuum of spurious solutions for sources with continuous, strictly increasing CDFs, smooth ones when the source densities are smooth and positive.</li>
     <li>Restricting the mixing function, as in post-nonlinear mixtures, restores identifiability at the cost of generality.</li>
     <li>An observed auxiliary variable that modulates the source distributions makes a log-density ratio free of the unknown Jacobian; contrastive learning then recovers the sources under a sufficient-variability condition (TCL, PCL, GCL).</li>
     <li>The iVAE gives comparable guarantees within a likelihood framework with noise; a VAE with an unconditional Gaussian prior is not identifiable.</li>
@@ -300,13 +345,21 @@ print(np.round(np.corrcoef([y1, y2, s1, s2])[:2, 2:], 2))</code></pre>
   </ul>
   <ul lang="zh-CN">
     <li>非线性 ICA 的模型是 $\bx = \mathbf f(\bs)$，其中 $\mathbf f$ 可逆。最好的结果也只是在置换与逐分量可逆变换的意义下恢复源，因此源的边缘分布形状不携带任何信息。</li>
-    <li>不加其他假设时问题不可辨识：Darmois 构造能把任何随机向量变得独立，$\Ncal(\bzero, \bI)$ 的保测映射对 CDF 连续且严格递增的源都能给出一整族伪解；当源密度光滑且为正时，这些伪解也是光滑的。</li>
+    <li>不加其他假设时问题不可辨识：Darmois 构造在条件分布连续的假设下能产生独立分量，$\Ncal(\bzero, \bI)$ 的保测映射对 CDF 连续且严格递增的源都能给出一整族伪解；当源密度光滑且为正时，这些伪解也是光滑的。</li>
     <li>限制混合函数（例如后非线性混合）可以恢复可辨识性，代价是失去一般性。</li>
     <li>若有一个调制源分布的观测辅助变量，对数密度比就不再含未知的 Jacobian；在充分变化性条件下，对比学习能够恢复源（TCL、PCL、GCL）。</li>
     <li>iVAE 在带噪声的似然框架中给出类似的保证；先验为与条件无关的高斯分布的 VAE 不可辨识。</li>
     <li>无监督解耦表示学习的不可能性结论，本质上就是同一种不可辨识性；辅助变量与受限的混合函数都是能消除它的归纳偏置。</li>
   </ul>
 </div>
+
+<aside class="chapter-recap" id="recap-nonlinear">
+<h3><span lang="en">Before the exercises</span><span lang="zh-CN">进入习题前</span></h3>
+<ul lang="en"><li>Flexible mixing requires explicit restrictions for recovery claims.</li><li>Componentwise invertible changes are part of the allowed ambiguity.</li><li>An auxiliary label is useful only through the model assumptions it supports.</li></ul>
+<ul lang="zh-CN"><li>灵活混合需要明确限制，才能谈恢复保证。</li><li>逐分量可逆变换属于允许存在的歧义。</li><li>辅助标签的作用来自它能支持哪些模型假设。</li></ul>
+<p lang="en">Start with part (a) of <a href="#ex-componentwise">the componentwise-transform exercise</a>. Then try the two-dimensional calculation in <a href="#ex-darmois-gaussian">the Gaussian Darmois exercise</a>; save the Jacobian-pattern proof for a later pass.</p>
+<p lang="zh-CN">先做<a href="#ex-componentwise">逐分量变换习题</a>的 (a) 问，再尝试<a href="#ex-darmois-gaussian">高斯 Darmois 习题</a>中的二维计算。Jacobian 非零模式证明留到以后。</p>
+</aside>
 
 <h2 id="sec-nonlinear-exercises"><span lang="en">Exercises</span><span lang="zh-CN">习题</span></h2>
 
@@ -387,10 +440,10 @@ print(np.round(np.corrcoef([y1, y2, s1, s2])[:2, 2:], 2))</code></pre>
     <li>Gutmann, M. U., &amp; Hyvärinen, A. (2012). Noise-contrastive estimation of unnormalized statistical models, with applications to natural image statistics. <i>Journal of Machine Learning Research</i>, 13, 307–361.</li>
     <li>Hyvärinen, A., Khemakhem, I., &amp; Morioka, H. (2023). Nonlinear independent component analysis for principled disentanglement in unsupervised deep learning. <i>Patterns</i>, 4(10), 100844.</li>
     <li>Hyvärinen, A., &amp; Morioka, H. (2016). Unsupervised feature extraction by time-contrastive learning and nonlinear ICA. In <i>Advances in Neural Information Processing Systems 29</i> (pp. 3765–3773).</li>
-    <li>Hyvärinen, A., &amp; Morioka, H. (2017). Nonlinear ICA of temporally dependent stationary sources. In <i>Proceedings of the 20th International Conference on Artificial Intelligence and Statistics</i> (PMLR 54, pp. 460–469).</li>
+    <li>Hyvärinen, A., &amp; Morioka, H. (2017). <a href="https://proceedings.mlr.press/v54/hyvarinen17a/hyvarinen17a.pdf">Nonlinear ICA of temporally dependent stationary sources.</a> In <i>Proceedings of the 20th International Conference on Artificial Intelligence and Statistics</i> (PMLR 54, pp. 460–469).</li>
     <li>Hyvärinen, A., &amp; Pajunen, P. (1999). Nonlinear independent component analysis: Existence and uniqueness results. <i>Neural Networks</i>, 12(3), 429–439.</li>
-    <li>Hyvärinen, A., Sasaki, H., &amp; Turner, R. E. (2019). Nonlinear ICA using auxiliary variables and generalized contrastive learning. In <i>Proceedings of the 22nd International Conference on Artificial Intelligence and Statistics</i> (PMLR 89, pp. 859–868).</li>
-    <li>Khemakhem, I., Kingma, D. P., Monti, R. P., &amp; Hyvärinen, A. (2020). Variational autoencoders and nonlinear ICA: A unifying framework. In <i>Proceedings of the 23rd International Conference on Artificial Intelligence and Statistics</i> (PMLR 108, pp. 2207–2217).</li>
+    <li>Hyvärinen, A., Sasaki, H., &amp; Turner, R. E. (2019). <a href="https://proceedings.mlr.press/v89/hyvarinen19a/hyvarinen19a.pdf">Nonlinear ICA using auxiliary variables and generalized contrastive learning.</a> In <i>Proceedings of the 22nd International Conference on Artificial Intelligence and Statistics</i> (PMLR 89, pp. 859–868).</li>
+    <li>Khemakhem, I., Kingma, D. P., Monti, R. P., &amp; Hyvärinen, A. (2020). <a href="https://proceedings.mlr.press/v108/khemakhem20a/khemakhem20a.pdf">Variational autoencoders and nonlinear ICA: A unifying framework.</a> In <i>Proceedings of the 23rd International Conference on Artificial Intelligence and Statistics</i> (PMLR 108, pp. 2207–2217).</li>
     <li>Kingma, D. P., &amp; Welling, M. (2014). Auto-encoding variational Bayes. In <i>International Conference on Learning Representations</i>.</li>
     <li>Locatello, F., Bauer, S., Lucic, M., Rätsch, G., Gelly, S., Schölkopf, B., &amp; Bachem, O. (2019). Challenging common assumptions in the unsupervised learning of disentangled representations. In <i>Proceedings of the 36th International Conference on Machine Learning</i> (PMLR 97, pp. 4114–4124).</li>
     <li>Taleb, A., &amp; Jutten, C. (1999). Source separation in post-nonlinear mixtures. <i>IEEE Transactions on Signal Processing</i>, 47(10), 2807–2820.</li>

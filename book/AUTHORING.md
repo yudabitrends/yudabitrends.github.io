@@ -150,7 +150,7 @@ algorithm in 15–40 lines, a numerical check of a formula). Code is shared by
 both languages, comments in English:
 
 ```html
-<pre class="code"><code>import numpy as np
+<pre class="code" data-code="python"><code>import numpy as np
 …</code></pre>
 ```
 
@@ -524,3 +524,18 @@ All other required IDs are listed in each chapter spec above. Chapters can alway
 referenced by slug: `ica-problem probability whitening identifiability kurtosis
 likelihood natural-gradient fastica jade-sobi performance model-order overcomplete
 nonlinear fmri-ica group-ica math-background`.
+
+
+## Automated validation and reading tools (2026-11-03)
+
+Use data-code="python" on runnable pre.code blocks, and data-code="output" on printed results. Python blocks share a namespace within a chapter; chapters execute in separate processes. The build derives downloadable docs/ica/code/*.py files and a local bilingual search index from the same sources; do not edit these generated files.
+
+Validation commands:
+
+    python -m pip install -r book/requirements-examples.txt
+    node book/build.mjs --strict
+    python scripts/check_book.py --run-code
+    python scripts/test_book_quality.py
+    python scripts/check_site_quality.py
+
+The example runner checks syntax and execution, not mathematical truth or every printed claim. Add numerical assertions and inspect outputs when changing an algorithm or example. Proofs, assumptions and bilingual equivalence still require substantive review. See book/VALIDATION.md.

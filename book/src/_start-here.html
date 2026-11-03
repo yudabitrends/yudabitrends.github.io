@@ -1,0 +1,319 @@
+<!-- Unnumbered reader guide. Keep chapter numbering unchanged. -->
+
+<h2 id="guide-purpose"><span lang="en">What are we trying to recover?</span><span lang="zh-CN">我们究竟想找回什么？</span></h2>
+
+<p lang="en">Imagine two microphones, each hearing a different blend of two voices. The recordings are visible; the original voices and their mixing weights are hidden. ICA tries to separate sources by exploiting a statistical assumption: the sources vary independently. It does not recognize voices by understanding speech.</p>
+<p lang="zh-CN">想象两只麦克风，各自录到两个人声音的不同比例混合。录音是已知的，原始声音和混合比例却未知。ICA 利用一个统计假设——各个来源独立变化——尝试把它们分开；它不是先听懂语音，再辨认说话人。</p>
+
+<p lang="en">For a first pass, keep three questions in view: <b>What is observed? What assumption makes separation possible? How would we check the result?</b> Real-room echoes and other departures from the simple model are separate issues, introduced in the chapters.</p>
+<p lang="zh-CN">第一遍只抓住三个问题：<b>看到了什么？凭什么能分开？怎样检查分离结果？</b>真实房间的回声等不满足简单模型的情况，会在后续章节单独说明。</p>
+
+<h2 id="guide-first-example"><span lang="en">A small example you can calculate by hand</span><span lang="zh-CN">先手算一个小例子</span></h2>
+
+<p lang="en"><b>1. Mix.</b> Suppose the source values at one instant are $s_1=2$ and $s_2=1$. One sensor adds them; another subtracts them.</p>
+<p lang="zh-CN"><b>1．混合。</b>设某一时刻的两个源值为 $s_1=2$、$s_2=1$。第一个传感器把它们相加，第二个传感器把它们相减。</p>
+
+<div class="eq">$$x_1=s_1+s_2=3,\qquad x_2=s_1-s_2=1.$$</div>
+
+<p lang="en"><b>2. Undo a known mix.</b> Add the recordings and divide by two to recover the first source. Subtract them and divide by two to recover the second.</p>
+<p lang="zh-CN"><b>2．撤销已知混合。</b>把两路录音相加再除以 2，得到第一个源；相减再除以 2，得到第二个源。</p>
+
+<div class="eq">$$s_1=\frac{x_1+x_2}{2}=2,\qquad s_2=\frac{x_1-x_2}{2}=1.$$</div>
+
+<p lang="en"><b>3. See the blind part.</b> These two arithmetic steps work because we were told the mixing rule. In ICA, that rule is unknown. We observe many pairs of measurements and use assumptions about the sources to estimate a separating rule. One pair of numbers cannot establish independence or solve a general blind separation problem.</p>
+<p lang="zh-CN"><b>3．看清“盲”在哪里。</b>上面能直接算回来，是因为题目告诉了混合规则。ICA 中这个规则未知；我们要观察许多组测量值，再利用源的假设估计分离规则。仅有一对数字，不能检验独立性，也不能解决一般的盲分离问题。</p>
+
+<p lang="en"><b>Your turn.</b> Under the same known mixing rule, the recordings are $x_1=1$ and $x_2=5$. What are the two source values?</p>
+<p lang="zh-CN"><b>换你试试。</b>沿用同一个已知混合规则，若 $x_1=1$、$x_2=5$，两个源分别是多少？</p>
+
+<details class="solution beginner-answer"><summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+
+<p lang="en">$s_1=(1+5)/2=3$, $s_2=(1-5)/2=-2$. Substitution gives $3+(-2)=1$ and $3-(-2)=5$. The negative sign is a valid signal value.</p>
+<p lang="zh-CN">$s_1=(1+5)/2=3$，$s_2=(1-5)/2=-2$。代回可得 $3+(-2)=1$、$3-(-2)=5$。信号出现负数完全正常。</p>
+
+</details>
+
+<h2 id="guide-paths"><span lang="en">A route through the book</span><span lang="zh-CN">三遍阅读，不必一次攻完</span></h2>
+
+<p lang="en">Treat the appendix as a reference shelf. Open it when a symbol blocks the next step; you do not need to finish it before Chapter 1. Each chapter now starts with an unnumbered first-pass guide, a worked mini-example and two short checks.</p>
+<p lang="zh-CN">把附录当工具架：某个符号挡住下一步时再去查，不必先读完附录才能进入第 1 章。每章开头都有不参与原有编号的导读、微型例子与两道短自测。</p>
+
+<div class="learning-paths">
+
+<p lang="en"><b>Pass 1 — understand the task.</b> Read <a href="ica-problem.html">1: the mixing model and ambiguities</a>, <a href="probability.html#sec-independence">2: independence versus correlation</a>, and <a href="whitening.html">3: what whitening does</a>. Stop when you can explain why whitening is useful but is not separation.</p>
+<p lang="zh-CN"><b>第一遍：知道问题是什么。</b>读<a href="ica-problem.html">第 1 章的混合模型与不确定性</a>、<a href="probability.html#sec-independence">第 2 章的独立与不相关</a>、<a href="whitening.html">第 3 章的白化</a>。能说清“白化有用，但白化不等于分离”，就可以继续。</p>
+
+<p lang="en"><b>Pass 2 — run and interpret an algorithm.</b> Continue with <a href="kurtosis.html">5: a non-Gaussianity measure</a>, <a href="fastica.html">8: FastICA</a>, and <a href="model-order.html">11: noise, dimension and reliability</a>. Run the examples and explain what a stopping message does and does not prove.</p>
+<p lang="zh-CN"><b>第二遍：会运行，也会解释。</b>接着读<a href="kurtosis.html">第 5 章的非高斯性度量</a>、<a href="fastica.html">第 8 章的 FastICA</a>、<a href="model-order.html">第 11 章的噪声、维数与可靠性</a>。运行示例，并解释“迭代停止”证明了什么、没有证明什么。</p>
+
+<p lang="en"><b>Pass 3 — choose a question.</b> For <em>why the model is identifiable</em>, read <a href="identifiability.html">4</a>. For <em>algorithm derivations</em>, read <a href="likelihood.html">6</a>, <a href="natural-gradient.html">7</a>, and <a href="jade-sobi.html">9</a>. For <em>uncertainty</em>, read <a href="performance.html">10</a>. For <em>new model classes</em>, read <a href="overcomplete.html">12</a> and <a href="nonlinear.html">13</a>. For <em>brain imaging</em>, go from 11 to <a href="fmri-ica.html">14</a> and <a href="group-ica.html">15</a>.</p>
+<p lang="zh-CN"><b>第三遍：按问题深入。</b>想知道<em>为什么模型可辨识</em>，读<a href="identifiability.html">第 4 章</a>；想推导<em>算法</em>，读<a href="likelihood.html">第 6 章</a>、<a href="natural-gradient.html">第 7 章</a>与<a href="jade-sobi.html">第 9 章</a>；关心<em>不确定性</em>，读<a href="performance.html">第 10 章</a>；关心<em>新模型</em>，读<a href="overcomplete.html">第 12 章</a>与<a href="nonlinear.html">第 13 章</a>；做<em>脑影像</em>，从第 11 章进入<a href="fmri-ica.html">第 14 章</a>和<a href="group-ica.html">第 15 章</a>。</p>
+
+</div>
+
+<p lang="en"><b>A useful reading loop:</b> read the question → predict the answer → follow one calculation → try the check → read the formal claim. A first-pass route postpones proofs; it does not remove the assumptions needed to use a result.</p>
+<p lang="zh-CN"><b>建议每次这样读：</b>先看问题 → 猜答案 → 跟算一步 → 做自测 → 再读正式结论。入门路线可以暂缓证明，但不能跳过使用结论所需的假设。</p>
+
+<h2 id="guide-notation"><span lang="en">Read the symbols as a data flow</span><span lang="zh-CN">把符号读成数据流</span></h2>
+
+<p lang="en">Lowercase bold letters are vectors: one observation across channels. Uppercase bold letters are matrices: many observations collected into a table, or a linear rule that transforms them. An index tells you which source, sensor or sample is being discussed.</p>
+<p lang="zh-CN">粗体小写字母通常是向量：同一次观测在各通道上的值。粗体大写字母通常是矩阵：许多次观测拼成的数据表，或变换数据的线性规则。下标告诉你正在说哪个源、传感器或样本。</p>
+
+<div class="table-wrap"><table class="notation-table"><caption><span lang="en">Core notation — keep this beside Chapter 1</span><span lang="zh-CN">核心符号：读第 1 章时可随时回查</span></caption><thead><tr><th scope="col"><span lang="en">Symbol</span><span lang="zh-CN">符号</span></th><th scope="col"><span lang="en">Read it as</span><span lang="zh-CN">怎么读</span></th></tr></thead><tbody>
+
+<tr><th scope="row">$m,n,T$</th><td><span lang="en">number of sensors, sources, observations</span><span lang="zh-CN">传感器数、源数、观测次数</span></td></tr>
+
+<tr><th scope="row">$\bX\in\R^{m\times T}$</th><td><span lang="en">observed data: m rows, T columns</span><span lang="zh-CN">观测数据：m 行、T 列</span></td></tr>
+
+<tr><th scope="row">$\bS\in\R^{n\times T}$</th><td><span lang="en">unknown sources: one source per row</span><span lang="zh-CN">未知源：每行一个源</span></td></tr>
+
+<tr><th scope="row">$\bA\in\R^{m\times n}$</th><td><span lang="en">mixing weights: source values → sensor values</span><span lang="zh-CN">混合权重：源值 → 传感器值</span></td></tr>
+
+<tr><th scope="row">$\bW\in\R^{n\times m}$</th><td><span lang="en">estimated separating rule; y = Wx</span><span lang="zh-CN">估计的分离规则；y = Wx</span></td></tr>
+
+<tr><th scope="row">$\bZ$</th><td><span lang="en">centered, whitened data used by many algorithms</span><span lang="zh-CN">许多算法使用的中心化、白化后数据</span></td></tr>
+
+<tr><th scope="row">$\bC_{\bx}$</th><td><span lang="en">covariance matrix: variances on its diagonal</span><span lang="zh-CN">协方差矩阵：对角线是各变量方差</span></td></tr>
+
+<tr><th scope="row">$\bA^\top$</th><td><span lang="en">transpose: exchange rows and columns, not inversion</span><span lang="zh-CN">转置：交换行和列，不是求逆</span></td></tr>
+
+<tr><th scope="row">$\bI$</th><td><span lang="en">identity matrix: leaves a vector unchanged</span><span lang="zh-CN">单位矩阵：乘上它后向量不变</span></td></tr>
+
+<tr><th scope="row">$\E[f(s)]$</th><td><span lang="en">population average of f(s), when it exists</span><span lang="zh-CN">f(s) 的总体平均，前提是该期望存在</span></td></tr>
+
+<tr><th scope="row">$\frac1T\sum_{t=1}^T f(s(t))$</th><td><span lang="en">average computed from T observations</span><span lang="zh-CN">用 T 次观测计算出来的样本平均</span></td></tr>
+
+<tr><th scope="row">$\hat\theta$</th><td><span lang="en">an estimate of an unknown quantity theta</span><span lang="zh-CN">未知量 theta 的估计值</span></td></tr>
+
+</tbody></table></div>
+
+<p lang="en"><b>Dimension check.</b> With 3 sensors, 2 sources and 100 observations, X is 3×100, A is 3×2 and S is 2×100. In AS, the inner dimensions (2) agree; the result is 3×100. A separating matrix W has shape 2×3, so WX has two output rows.</p>
+<p lang="zh-CN"><b>先检查尺寸。</b>若有 3 个传感器、2 个源、100 次观测，则 X 为 3×100，A 为 3×2，S 为 2×100。计算 AS 时，中间两个维度都是 2，结果为 3×100。分离矩阵 W 为 2×3，因此 WX 有两行输出。</p>
+
+<p lang="en">In the first chapters, columns are observations. In spatial fMRI ICA, columns can be voxels and rows can be time points: the word “sample” follows the model, not automatically the clock. Chapter 14 states that convention explicitly.</p>
+<p lang="zh-CN">前几章把每列当一次观测。在 fMRI 空间 ICA 中，列可以是体素、行可以是时间点：“样本”跟随模型的定义，并不总指一个时间点。第 14 章会明确该约定。</p>
+
+<h2 id="guide-mixing-lab"><span lang="en">Try it: zero correlation is not independence</span><span lang="zh-CN">动手实验：不相关，仍可能没有分离</span></h2>
+
+<p lang="en">Each source independently takes −1 or +1 with equal probability. The four source pairs therefore each have probability 1/4. We rotate the pair by a fixed 30° to form the observed mixture. Move the proposed undo angle and watch the outputs. Point labels A–D follow the same source pair across all three plots.</p>
+<p lang="zh-CN">两个源各自独立、等概率取 −1 或 +1，因此四种源组合的概率都为 1/4。我们把源向量固定旋转 30°，得到观测混合。调整你提出的“撤销角度”，观察输出；A–D 标记在三幅图中始终对应同一个源组合。</p>
+
+<div class="mixing-lab" id="mixing-lab"><div class="lab-controls"><label for="lab-angle"><span lang="en">Proposed undo angle</span><span lang="zh-CN">试着撤销多少度</span></label><input id="lab-angle" type="range" min="-60" max="120" value="0" step="1" disabled><output id="lab-angle-value" for="lab-angle">0°</output><div class="lab-presets"><button type="button" data-lab-angle="0" disabled><span lang="en">Keep the mixture</span><span lang="zh-CN">保持混合</span></button><button type="button" data-lab-angle="30" disabled><span lang="en">Undo 30°</span><span lang="zh-CN">撤销 30°</span></button><button type="button" data-lab-angle="75" disabled><span lang="en">Try 75°</span><span lang="zh-CN">试试 75°</span></button></div></div><div class="lab-plots">
+
+<div class="lab-plot"><p><span lang="en">Hidden sources (shown for teaching)</span><span lang="zh-CN">隐藏源（教学时显示）</span></p><svg id="lab-source" viewBox="0 0 220 220" role="img" aria-label="Hidden sources (shown for teaching) / 隐藏源（教学时显示）"><path d="M20 110H200 M110 20V200" class="lab-axis"/><text x="207" y="125" text-anchor="end">s₁</text><text x="114" y="25">s₂</text>
+
+<g data-point="0"><circle cx="60.0000" cy="160.0000" r="5"/><text x="67.0000" y="156.0000">A</text></g>
+
+<g data-point="1"><circle cx="60.0000" cy="60.0000" r="5"/><text x="67.0000" y="56.0000">B</text></g>
+
+<g data-point="2"><circle cx="160.0000" cy="160.0000" r="5"/><text x="167.0000" y="156.0000">C</text></g>
+
+<g data-point="3"><circle cx="160.0000" cy="60.0000" r="5"/><text x="167.0000" y="56.0000">D</text></g>
+
+</svg></div>
+
+<div class="lab-plot"><p><span lang="en">Observed mix: rotate 30°</span><span lang="zh-CN">观测混合：旋转 30°</span></p><svg id="lab-observed" viewBox="0 0 220 220" role="img" aria-label="Observed mix: rotate 30° / 观测混合：旋转 30°"><path d="M20 110H200 M110 20V200" class="lab-axis"/><text x="207" y="125" text-anchor="end">x₁</text><text x="114" y="25">x₂</text>
+
+<g data-point="0"><circle cx="91.6987" cy="178.3013" r="5"/><text x="98.6987" y="174.3013">A</text></g>
+
+<g data-point="1"><circle cx="41.6987" cy="91.6987" r="5"/><text x="48.6987" y="87.6987">B</text></g>
+
+<g data-point="2"><circle cx="178.3013" cy="128.3013" r="5"/><text x="185.3013" y="124.3013">C</text></g>
+
+<g data-point="3"><circle cx="128.3013" cy="41.6987" r="5"/><text x="135.3013" y="37.6987">D</text></g>
+
+</svg></div>
+
+<div class="lab-plot"><p><span lang="en">Output after your undo step</span><span lang="zh-CN">按你的角度撤销后的输出</span></p><svg id="lab-output" viewBox="0 0 220 220" role="img" aria-label="Output after your undo step / 按你的角度撤销后的输出"><path d="M20 110H200 M110 20V200" class="lab-axis"/><text x="207" y="125" text-anchor="end">y₁</text><text x="114" y="25">y₂</text>
+
+<g data-point="0"><circle cx="91.6987" cy="178.3013" r="5"/><text x="98.6987" y="174.3013">A</text></g>
+
+<g data-point="1"><circle cx="41.6987" cy="91.6987" r="5"/><text x="48.6987" y="87.6987">B</text></g>
+
+<g data-point="2"><circle cx="178.3013" cy="128.3013" r="5"/><text x="185.3013" y="124.3013">C</text></g>
+
+<g data-point="3"><circle cx="128.3013" cy="41.6987" r="5"/><text x="135.3013" y="37.6987">D</text></g>
+
+</svg></div>
+
+</div><dl class="lab-stats"><div><dt><span lang="en">Output covariance</span><span lang="zh-CN">输出之间的协方差</span></dt><dd id="lab-covariance">0.000</dd></div><div><dt><span lang="en">Excess kurtosis, each output</span><span lang="zh-CN">每路输出的超额峭度</span></dt><dd id="lab-kurtosis">−1.250</dd></div></dl><p class="lab-status" id="lab-status" role="status" aria-live="polite"><span lang="en">Still a mixture. Covariance alone does not reveal that.</span><span lang="zh-CN">仍然是混合；仅看协方差看不出来。</span></p></div>
+
+<p lang="en"><b>What to notice.</b> Covariance stays zero at every angle. At 30°, the output matches the sources; at −60° or 120°, it matches after a swap and sign changes, which ICA allows. At 75°, one output is nonzero only when the other is zero: that is dependence even though their covariance is zero.</p>
+<p lang="zh-CN"><b>重点观察。</b>所有角度的协方差都保持零。撤销 30° 时输出就是源；撤销 −60° 或 120° 时，输出只是交换了顺序并翻转符号，ICA 同样认可。在 75° 时，一路输出非零，另一路就一定为零：这显然有依赖，尽管协方差为零。</p>
+
+<p lang="en">The fourth-order statistic changes even when covariance does not. This is a preview of Chapter 5, not a rule that every non-Gaussian source has nonzero kurtosis. The plots enumerate an exact four-point probability model; they do not claim that four observations suffice for general ICA. The true mixing angle and sources are revealed here only for teaching. JavaScript enables the slider; the static plots and explanation still work without it.</p>
+<p lang="zh-CN">协方差不变时，四阶统计量仍会变化。这是在预览第 5 章，不是在说所有非高斯源的峭度都非零。这里穷举的是一个精确的四点概率模型，不表示只要四次观测就能完成一般 ICA。真实混合角度与源只为教学而展示。启用 JavaScript 后可拖动滑块；未启用时仍可阅读静态图和解释。</p>
+
+<h2 id="guide-glossary"><span lang="en">A small glossary, with somewhere to go next</span><span lang="zh-CN">术语速查：知道意思，再决定是否深挖</span></h2>
+
+<dl class="beginner-glossary">
+
+<dt id="term-source"><span lang="en">Source / component</span><span lang="zh-CN">源／成分</span></dt>
+
+<dd lang="en">A hidden variable or process we want to separate. An estimated component is an output of a method, not automatically a true physical source. <a href="ica-problem.html">Read more →</a></dd>
+<dd lang="zh-CN">希望分离的隐藏变量或过程。“估计成分”只是方法的输出，并不自动等于真实物理来源。 <a href="ica-problem.html">进一步阅读 →</a></dd>
+
+<dt id="term-mixing"><span lang="en">Mixing / unmixing</span><span lang="zh-CN">混合／解混</span></dt>
+
+<dd lang="en">Mixing maps sources to measurements; unmixing maps measurements to estimated sources. “Blind” means the source values and mixing weights are not given. <a href="ica-problem.html#sec-model">Read more →</a></dd>
+<dd lang="zh-CN">混合把源变成测量值；解混把测量值变成源估计。“盲”指源值与混合权重事先未知。 <a href="ica-problem.html#sec-model">进一步阅读 →</a></dd>
+
+<dt id="term-independence"><span lang="en">Independence</span><span lang="zh-CN">独立</span></dt>
+
+<dd lang="en">Knowing one variable does not change the probability distribution of the other. It concerns all statistical relationships, not only a straight-line trend. For several sources, the requirement is mutual independence, not merely independence of each pair. <a href="probability.html#sec-independence">Read more →</a></dd>
+<dd lang="zh-CN">知道一个变量的值，不会改变另一个变量的概率分布。它约束全部统计关系，而不只是一条直线趋势。源多于两个时，要求相互独立，不能只检查两两独立。 <a href="probability.html#sec-independence">进一步阅读 →</a></dd>
+
+<dt id="term-correlation"><span lang="en">Covariance / correlation</span><span lang="zh-CN">协方差／相关系数</span></dt>
+
+<dd lang="en">Covariance measures average co-movement around the means. Correlation divides it by the two standard deviations; it needs nonzero variances. Zero correlation is weaker than independence. <a href="probability.html#sec-independence">Read more →</a></dd>
+<dd lang="zh-CN">协方差衡量两个变量偏离各自均值时的共同变化。相关系数再除以双方标准差，需要方差非零。不相关比独立弱。 <a href="probability.html#sec-independence">进一步阅读 →</a></dd>
+
+<dt id="term-whitening"><span lang="en">Centering / whitening</span><span lang="zh-CN">中心化／白化</span></dt>
+
+<dd lang="en">Centering subtracts the mean. Whitening additionally changes scale and orientation so the chosen covariance convention becomes the identity; it does not finish ICA. <a href="whitening.html">Read more →</a></dd>
+<dd lang="zh-CN">中心化减去均值；白化再改变尺度与方向，使选定约定下的协方差成为单位阵。白化不等于完成 ICA。 <a href="whitening.html">进一步阅读 →</a></dd>
+
+<dt id="term-gaussian"><span lang="en">Gaussian / non-Gaussian</span><span lang="zh-CN">高斯／非高斯</span></dt>
+
+<dd lang="en">Gaussian names a probability distribution, often drawn as a bell. Non-Gaussian means a different distribution; it does not mean “noise-free” or “useful signal.” <a href="probability.html">Read more →</a></dd>
+<dd lang="zh-CN">高斯是一类常画成钟形的概率分布；非高斯表示不是该分布，不代表“没有噪声”或“有用信号”。 <a href="probability.html">进一步阅读 →</a></dd>
+
+<dt id="term-kurtosis"><span lang="en">Excess kurtosis / cumulant</span><span lang="zh-CN">超额峭度／累积量</span></dt>
+
+<dd lang="en">For a zero-mean unit-variance variable, excess kurtosis is its fourth moment minus three. Cumulants organize higher-order dependence; zero kurtosis alone does not prove Gaussianity. <a href="kurtosis.html">Read more →</a></dd>
+<dd lang="zh-CN">对零均值、单位方差变量，超额峭度是四阶矩减 3。累积量用来组织高阶依赖；峭度为零本身不能证明高斯性。 <a href="kurtosis.html">进一步阅读 →</a></dd>
+
+<dt id="term-contrast"><span lang="en">Contrast / objective</span><span lang="zh-CN">对比函数／目标函数</span></dt>
+
+<dd lang="en">A score an algorithm optimizes to seek separation. A larger or smaller objective is meaningful only for that specified criterion and its assumptions. <a href="likelihood.html">Read more →</a></dd>
+<dd lang="zh-CN">算法为寻找分离而优化的评分。分数变大或变小，必须结合具体目标与假设解释。 <a href="likelihood.html">进一步阅读 →</a></dd>
+
+<dt id="term-likelihood"><span lang="en">Likelihood / score function</span><span lang="zh-CN">似然／得分函数</span></dt>
+
+<dd lang="en">Likelihood rates observed data under a candidate density model. A score involves derivatives of log density; check the chapter’s sign convention. <a href="likelihood.html">Read more →</a></dd>
+<dd lang="zh-CN">似然评价某个候选密度模型对已观测数据的解释。得分函数涉及对数密度的导数；正负号请以该章约定为准。 <a href="likelihood.html">进一步阅读 →</a></dd>
+
+<dt id="term-identifiability"><span lang="en">Identifiability</span><span lang="zh-CN">可辨识性</span></dt>
+
+<dd lang="en">Whether different model parameters can produce the same population distribution. It is a statement about the model, not a promise that an algorithm converges. <a href="identifiability.html">Read more →</a></dd>
+<dd lang="zh-CN">不同模型参数能否产生同一个总体分布。这是模型层面的性质，不是算法必然收敛的承诺。 <a href="identifiability.html">进一步阅读 →</a></dd>
+
+<dt id="term-ambiguity"><span lang="en">Scale / sign / permutation ambiguity</span><span lang="zh-CN">尺度／符号／置换不确定性</span></dt>
+
+<dd lang="en">Changing a source’s scale and compensating in its mixing weights leaves the data unchanged. Source order can also change. These are allowed ambiguities, not automatic failure. <a href="ica-problem.html#sec-ambiguities">Read more →</a></dd>
+<dd lang="zh-CN">改变源的尺度，再反向补偿混合权重，观测不变；源的排列也可以改变。这些允许的不确定性不应直接判为失败。 <a href="ica-problem.html#sec-ambiguities">进一步阅读 →</a></dd>
+
+<dt id="term-rank"><span lang="en">Rank / model order</span><span lang="zh-CN">秩／模型阶数</span></dt>
+
+<dd lang="en">Rank counts independent linear directions. Model order is the chosen number of components. Numerical rank and scientifically appropriate model order need not coincide. <a href="model-order.html">Read more →</a></dd>
+<dd lang="zh-CN">秩计算线性上独立的方向数。模型阶数是选取的成分数。数值秩不一定等于科学问题中合适的模型阶数。 <a href="model-order.html">进一步阅读 →</a></dd>
+
+<dt id="term-convergence"><span lang="en">Convergence / stability</span><span lang="zh-CN">收敛／稳定性</span></dt>
+
+<dd lang="en">A stopping rule checks changes within a run. Stability compares repeated analyses. Neither alone proves that a recovered component is a true source. <a href="fastica.html#sec-fastica-diagnostics">Read more →</a></dd>
+<dd lang="zh-CN">停止准则检查单次运行的变化；稳定性比较重复分析。二者单独都不能证明恢复了真实源。 <a href="fastica.html#sec-fastica-diagnostics">进一步阅读 →</a></dd>
+
+<dt id="term-uncertainty"><span lang="en">Standard deviation / standard error</span><span lang="zh-CN">标准差／标准误</span></dt>
+
+<dd lang="en">Standard deviation describes variation of values. Standard error describes variation of an estimator across repeated data collection. Correlated observations require special care. <a href="performance.html">Read more →</a></dd>
+<dd lang="zh-CN">标准差描述数值本身的波动；标准误描述重复采集数据时估计量的波动。观测相关时尤其不能直接套独立样本公式。 <a href="performance.html">进一步阅读 →</a></dd>
+
+<dt id="term-fmri"><span lang="en">Spatial ICA / time course</span><span lang="zh-CN">空间 ICA／时间过程</span></dt>
+
+<dd lang="en">Spatial ICA seeks independent spatial maps while their time courses serve as mixing weights. Spatial overlap is not itself statistical dependence. <a href="fmri-ica.html">Read more →</a></dd>
+<dd lang="zh-CN">空间 ICA 寻找独立的空间图，而它们的时间过程充当混合权重。空间重叠本身不等于统计依赖。 <a href="fmri-ica.html">进一步阅读 →</a></dd>
+
+</dl>
+
+<h2 id="guide-prerequisites"><span lang="en">Three checks before the formulas</span><span lang="zh-CN">正式公式前的三个小检查</span></h2>
+
+<p lang="en"><b>Mean.</b> The observations are 1 and 3. What is their mean, and what remains after centering?</p>
+<p lang="zh-CN"><b>均值。</b>观测为 1 和 3。均值是多少？减去均值后剩下什么？</p>
+
+<details class="solution beginner-answer"><summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+
+<p lang="en">The mean is 2; centered observations are −1 and +1. Their mean is zero. Using the book’s /T convention, their variance is 1.</p>
+<p lang="zh-CN">均值是 2；中心化后为 −1 和 +1，其均值为零。按本书的 /T 约定，方差为 1。</p>
+
+</details>
+
+<p lang="en"><b>Dimensions.</b> X has 4 rows and 200 columns. W has 3 rows and 4 columns. What is the shape of WX?</p>
+<p lang="zh-CN"><b>尺寸。</b>X 有 4 行、200 列，W 有 3 行、4 列。WX 的尺寸是什么？</p>
+
+<details class="solution beginner-answer"><summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+
+<p lang="en">3×200. Each of 200 observation columns becomes a three-component output. This only checks the multiplication; it does not establish source recovery.</p>
+<p lang="zh-CN">3×200。200 列观测各自被变成三成分输出。这只检查了矩阵乘法是否合法，不表示已经成功恢复源。</p>
+
+</details>
+
+<p lang="en"><b>Independence.</b> Two fair coins are tossed independently. What is the probability that both show heads? How does the answer change if the second always copies the first?</p>
+<p lang="zh-CN"><b>独立。</b>两枚公平硬币独立抛掷，同时正面的概率是多少？如果第二枚总是复制第一枚的结果呢？</p>
+
+<details class="solution beginner-answer"><summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+
+<p lang="en">For independent coins it is (1/2)×(1/2)=1/4. For a perfect copy it is 1/2. Both individual coins are still fair, so checking marginal distributions alone misses the dependence.</p>
+<p lang="zh-CN">独立时为 (1/2)×(1/2)=1/4；完全复制时为 1/2。两枚硬币各自仍然公平，因此只看各自的边缘分布会漏掉依赖关系。</p>
+
+</details>
+
+<h2 id="guide-run-code"><span lang="en">Run your first example, then read its output</span><span lang="zh-CN">运行第一个例子，并看懂输出</span></h2>
+
+<p lang="en">The browser experiment requires no installation. For the Python examples, use Python 3.12 and install the tested numerical dependencies. Download <a href="code/ica-problem.py" download>the Chapter 1 script</a> and <a href="code/requirements.txt" download>requirements.txt</a> into the same new folder. Open a terminal in that folder. The commands below create an isolated environment; they do not require changing the system Python packages.</p>
+<p lang="zh-CN">浏览器实验无需安装。运行 Python 示例则需要 Python 3.12 和已验证的数值依赖。把<a href="code/ica-problem.py" download>第 1 章脚本</a>与<a href="code/requirements.txt" download>requirements.txt</a>下载到同一个新文件夹，并在该文件夹打开终端。下面的命令创建独立环境，无须修改系统 Python 包。</p>
+
+<h3><span lang="en">Windows PowerShell (Python launcher installed)</span><span lang="zh-CN">Windows PowerShell（已安装 Python 启动器）</span></h3><pre class="terminal"><code>py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe ica-problem.py</code></pre>
+
+<h3><span lang="en">macOS / Linux (python3 is Python 3.12)</span><span lang="zh-CN">macOS / Linux（python3 指向 Python 3.12）</span></h3><pre class="terminal"><code>python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python ica-problem.py</code></pre>
+
+<p lang="en">Run the complete downloaded file, not only its final lines: later blocks can use variables defined earlier in the same chapter. A chapter’s printed-output block is something to compare against, not code to paste into Python.</p>
+<p lang="zh-CN">运行完整下载文件，不要只复制最后几行：同章后面的代码可能使用前面定义的变量。正文中的“示例输出”用于对照，不是要粘贴运行的 Python 代码。</p>
+
+<p lang="en">The first example prints a normalized gain matrix. A result near [[0.03, 1.00], [−1.00, 0.02]] means that the first output mostly matches the second source and the second output mostly matches the negative first source. The order and sign changes are allowed; the small unwanted entries measure residual mixing. The true sources and mixing matrix are known here because the data are synthetic. On real data you cannot normally compute this truth-based check.</p>
+<p lang="zh-CN">第一个例子会打印归一化增益矩阵。若结果接近 [[0.03, 1.00], [−1.00, 0.02]]，表示第一路输出主要对应第二个源，第二路输出主要对应第一个源的负值。顺序交换和符号翻转是允许的，小的非目标项反映残余混合。这里之所以能对照真实源与混合矩阵，是因为数据由我们合成；真实数据通常不能直接计算这种依赖真值的检查。</p>
+
+<p lang="en">Change one thing at a time: sample count, mixing weights or random seed. First predict what might change, then compare the output. Keep the original script so that an error is easy to reproduce.</p>
+<p lang="zh-CN">一次只改一个量：样本数、混合权重或随机种子。先预测结果可能怎样变，再运行比较，并保留原脚本以便复现问题。</p>
+
+<h2 id="guide-troubleshooting"><span lang="en">When you get stuck</span><span lang="zh-CN">卡住时，从这里排查</span></h2>
+
+<dl class="beginner-glossary">
+
+<dt><span lang="en">A symbol stops me</span><span lang="zh-CN">符号看不懂</span></dt>
+
+<dd lang="en">Check the <a href="#guide-notation">notation table</a>, read its dimensions and say what the operation does in words before deriving anything.</dd>
+<dd lang="zh-CN">先查<a href="#guide-notation">符号表</a>，读出尺寸，再用一句话说明运算在做什么。</dd>
+
+<dt><span lang="en">The proof feels too steep</span><span lang="zh-CN">证明跨度太大</span></dt>
+
+<dd lang="en">Read the claim, its assumptions and the chapter’s mini-example first. Use the first-pass route to return to the proof after the idea is familiar.</dd>
+<dd lang="zh-CN">先读结论、适用条件和该章微型例子，再按导读路线回到证明。</dd>
+
+<dt><span lang="en">Python cannot find NumPy or SciPy</span><span lang="zh-CN">提示找不到 NumPy 或 SciPy</span></dt>
+
+<dd lang="en">Install requirements with the same environment executable used to run the script. If installation fails, read the first error line; a network or Python-version problem is not an ICA failure.</dd>
+<dd lang="zh-CN">使用运行脚本的同一个环境解释器安装 requirements。安装失败先看第一条错误；网络或 Python 版本问题并不是 ICA 算法失败。</dd>
+
+<dt><span lang="en">The file is not found</span><span lang="zh-CN">提示找不到文件</span></dt>
+
+<dd lang="en">Check the terminal’s working folder and the actual filename. The script and requirements.txt should be in the folder where you ran the commands.</dd>
+<dd lang="zh-CN">检查终端当前文件夹及实际文件名。脚本和 requirements.txt 应放在执行上述命令的文件夹里。</dd>
+
+<dt><span lang="en">I get a rank or convergence error</span><span lang="zh-CN">提示秩不足或没有收敛</span></dt>
+
+<dd lang="en">Read the error instead of replacing it with zero. Check data orientation, duplicate channels, retained dimension and sample count. Then consult the chapter’s diagnostics; changing seeds does not repair an invalid model.</dd>
+<dd lang="zh-CN">不要把报错替换成零。先检查数据方向、重复通道、保留维数和样本数，再读该章诊断部分；换随机种子不能修复不成立的模型。</dd>
+
+<dt><span lang="en">The components have different signs or order</span><span lang="zh-CN">成分符号或顺序不同</span></dt>
+
+<dd lang="en">Use a one-to-one match and account for sign/scale ambiguities. Do not compare output row numbers as if their identities were fixed.</dd>
+<dd lang="zh-CN">进行一一匹配，并考虑符号与尺度不确定性；不要默认输出行号就是固定的成分身份。</dd>
+
+</dl>
+
+<p lang="en"><b>You are ready to continue when</b> you can name the observed and hidden quantities, explain why zero correlation is not enough, and interpret a sign/permutation change. Continue to <a href="ica-problem.html">Chapter 1 →</a>.</p>
+<p lang="zh-CN"><b>能做到这些就可以继续：</b>说出哪些量已知、哪些量隐藏，解释为什么不相关还不够，并正确理解符号／顺序变化。接着读<a href="ica-problem.html">第 1 章 →</a>。</p>

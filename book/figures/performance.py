@@ -33,8 +33,16 @@ def _predicted(law, g, dg):
     return (E(g(s) ** 2) - Esg ** 2) / (Esg - Edg) ** 2
 
 
-def _one_unit_isr(rng, target, other, g, dg, T, R):
-    """T * mean(eps^2) for one-unit FastICA started at the target direction (n = 2)."""
+def _one_unit_isr(rng, target, other, g, dg, T, R, max_iter=200, tol=1e-12):
+    """Per-run T*ISR and exhaustive diagnostics for a bounded-memory batch.
+
+    Only converged runs whose target gain exceeds the other gain contribute.
+    A finite-iteration estimate is never silently treated as converged. Runs
+    freeze individually at the sign-invariant tolerance; zero/nonfinite
+    updates are numerical failures. R is the batch size, not the plotted n.
+    """
+    if T < 3 or R < 1 or max_iter < 0 or tol <= 0:
+        raise ValueError("Need T >= 3, R >= 1, max_iter >= 0 and tol > 0")
     S = np.stack([_draw(rng, target, (R, T)), _draw(rng, other, (R, T))], 1)
     A = np.array([[1.0, 0.6], [0.4, 1.0]])
     X = A @ S
@@ -45,17 +53,60 @@ def _one_unit_isr(rng, target, other, g, dg, T, R):
     VA = V @ A
     w = np.linalg.inv(VA).transpose(0, 2, 1)[:, :, 0]
     w /= np.linalg.norm(w, axis=1, keepdims=True)
-    for _ in range(200):
-        y = np.einsum("ri,rit->rt", w, Z)
-        wn = np.einsum("rit,rt->ri", Z, g(y)) / T - dg(y).mean(1)[:, None] * w
-        wn /= np.linalg.norm(wn, axis=1, keepdims=True)
-        delta = np.max(1 - np.abs(np.sum(wn * w, 1)))
-        w = wn
-        if delta < 1e-12:
+    converged = np.zeros(R, dtype=bool)
+    numerical_failure = np.zeros(R, dtype=bool)
+    iterations = np.zeros(R, dtype=int)
+    for iteration in range(1, max_iter + 1):
+        active = np.flatnonzero(~converged & ~numerical_failure)
+        if active.size == 0:
             break
+        Za = Z[active]
+        wa = w[active]
+        y = np.einsum("ri,rit->rt", wa, Za)
+        with np.errstate(over="ignore", invalid="ignore", divide="ignore"):
+            wn = np.einsum("rit,rt->ri", Za, g(y)) / T - dg(y).mean(1)[:, None] * wa
+            norms = np.linalg.norm(wn, axis=1)
+        good = np.isfinite(wn).all(axis=1) & np.isfinite(norms) & (norms > 0)
+        numerical_failure[active[~good]] = True
+        iterations[active] = iteration
+        wn = wn[good] / norms[good, None]
+        delta = np.clip(1 - np.abs(np.sum(wn * wa[good], axis=1)), 0, 1)
+        w[active[good]] = wn
+        converged[active[good][delta < tol]] = True
     q = np.einsum("ri,rij->rj", w, VA)
-    ok = np.abs(q[:, 0]) > np.abs(q[:, 1])      # converged to the target, not the other source
-    return T * (q[ok, 1] / q[ok, 0]) ** 2, np.count_nonzero(~ok)
+    numerical_failure |= ~np.isfinite(q).all(axis=1)
+    converged &= ~numerical_failure
+    target_dominant = np.abs(q[:, 0]) > np.abs(q[:, 1])
+    accepted = converged & target_dominant
+    nonconverged = ~converged & ~numerical_failure
+    wrong_target = converged & ~target_dominant
+    stats = {
+        "attempted": R,
+        "converged": int(converged.sum()),
+        "effective": int(accepted.sum()),
+        "nonconverged": int(nonconverged.sum()),
+        "wrong_target": int(wrong_target.sum()),
+        "numerical_failure": int(numerical_failure.sum()),
+        "max_iterations": int(iterations.max()),
+    }
+    assert stats["attempted"] == sum(stats[key] for key in
+                                    ("effective", "nonconverged", "wrong_target", "numerical_failure"))
+    assert stats["converged"] == stats["effective"] + stats["wrong_target"]
+    return T * (q[accepted, 1] / q[accepted, 0]) ** 2, stats
+
+
+def _summarize_isr(batches):
+    """Conditional mean/Monte Carlo SE plus all attempted-run outcomes."""
+    vals = np.concatenate([values for values, _ in batches])
+    keys = ("attempted", "converged", "effective", "nonconverged", "wrong_target", "numerical_failure")
+    stats = {key: sum(batch[key] for _, batch in batches) for key in keys}
+    stats["max_iterations"] = max(batch["max_iterations"] for _, batch in batches)
+    assert vals.size == stats["effective"]
+    assert stats["attempted"] == sum(stats[key] for key in
+                                    ("effective", "nonconverged", "wrong_target", "numerical_failure"))
+    if vals.size < 2:
+        raise RuntimeError(f"Need at least two effective independent runs: {stats}")
+    return vals.mean(), vals.std(ddof=1) / np.sqrt(vals.size), stats
 
 
 @figure
@@ -72,18 +123,26 @@ def ch10_isr():
         for k, (name, (g, dg)) in enumerate(NONLIN.items()):
             col, mk, lab = styles[name]
             Vg = _predicted(target, g, dg)
-            means, ses, lost = [], [], 0
+            means, ses = [], []
             for T in Ts:
-                out = [_one_unit_isr(rng, target, other, g, dg, T, 500) for _ in range(3)]
-                vals = np.concatenate([o[0] for o in out])
-                lost += sum(o[1] for o in out)
-                means.append(vals.mean())
-                ses.append(vals.std() / np.sqrt(vals.size))
+                # 100 runs per batch bounds the large arrays at about 16 MB
+                # each when T=10000; only ISR scalars survive between batches.
+                out = [_one_unit_isr(rng, target, other, g, dg, T, 100) for _ in range(15)]
+                mean, se, stats = _summarize_isr(out)
+                assert stats["attempted"] == 1500
+                means.append(mean)
+                ses.append(se)
+                failures = stats["attempted"] - stats["effective"]
+                print(f"  {target:8s} {name:5s} T={T:5d} attempted={stats['attempted']} "
+                      f"converged={stats['converged']} effective={stats['effective']} failures={failures} "
+                      f"nonconverged={stats['nonconverged']} wrong_target={stats['wrong_target']} "
+                      f"numerical={stats['numerical_failure']} max_iter={stats['max_iterations']} "
+                      f"mean={mean:.6f} se={se:.6f}", flush=True)
             x = np.array(Ts) * (1 + 0.06 * (k - 1))
             ax.errorbar(x, means, yerr=2 * np.array(ses), fmt=mk, color=col, ms=4, lw=0.9,
                         capsize=2, label=lab)
             ax.axhline(Vg, color=col, lw=0.9, ls="--")
-            print(f"  {target:8s} {name:5s} V_g={Vg:.3f} " + " ".join(f"{m:.2f}" for m in means) + f"  lost={lost}")
+            print(f"  {target:8s} {name:5s} V_g={Vg:.3f} " + " ".join(f"{m:.2f}" for m in means), flush=True)
         if target == "laplace":
             ax.axhline(1.0, color=GRAY, lw=0.9, ls=":")
         ax.set_xscale("log")

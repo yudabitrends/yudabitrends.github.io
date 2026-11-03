@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from figstyle import figure, save, clean_axes, ACCENT, RED, GREEN, GRAY
+from figstyle import figure, save, clean_axes, whiten, ACCENT, RED, GREEN, GRAY
 
 
 def _rule(name, N=150):
@@ -39,15 +39,14 @@ def _population_ratios(srcs, q0, g, dg, iters):
 
 
 def _whiten(X):
-    X = X - X.mean(axis=1, keepdims=True)
-    d, E = np.linalg.eigh(np.cov(X))
-    V = E @ np.diag(d ** -0.5) @ E.T
-    return V @ X
+    return whiten(X)[0]
 
 
 def _sym_orth(W):
-    d, E = np.linalg.eigh(W @ W.T)
-    return E @ np.diag(d ** -0.5) @ E.T @ W
+    U, s, Vt = np.linalg.svd(W, full_matrices=False)
+    if s[-1] <= np.finfo(float).eps * max(W.shape) * s[0]:
+        raise ValueError("FastICA update lost numerical rank.")
+    return U @ Vt
 
 
 @figure

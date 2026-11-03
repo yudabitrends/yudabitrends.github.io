@@ -1,9 +1,55 @@
 <!-- Chapter 7. Natural gradient, Infomax and stability. Source format: book/AUTHORING.md -->
 
+<aside class="chapter-guide" id="guide-natural-gradient">
+<h3><span lang="en">First pass</span><span lang="zh-CN">第一次读这一章</span></h3>
+<p lang="en"><b>One sentence.</b> The natural-gradient update uses the current outputs to decide how to adjust the current unmixing matrix, while the step size controls how far it moves.</p>
+<p lang="zh-CN"><b>一句话直觉。</b>自然梯度根据当前输出，决定怎样调整当前分离矩阵；步长决定这次调整走多远。</p>
+<p lang="en"><b>By the end, you should be able to:</b></p>
+<p lang="zh-CN"><b>读完后，你应能：</b></p>
+<ul lang="en">
+  <li>compute one two-channel update from a supplied sample-average matrix;</li>
+  <li>distinguish a small step from a small estimating-equation residual;</li>
+  <li>explain why a stable local solution is not a global convergence guarantee.</li>
+</ul>
+<ul lang="zh-CN">
+  <li>从给定的样本平均矩阵算出一次双通道更新；</li>
+  <li>区分“走了一小步”与“估计方程的残差很小”；</li>
+  <li>解释为什么局部稳定的解不代表全局收敛保证。</li>
+</ul>
+<p lang="en"><b>Route.</b> Start with <a href="likelihood.html#sec-ica-likelihood">the likelihood and score</a> and the <a href="start-here.html#guide-notation">matrix notation</a>. Read <a href="#sec-relative-gradient">the update</a>, <a href="#sec-ng-practice">step sizes</a> and <a href="#sec-ng-numerical-safeguards">stopping safeguards</a>. The geometric derivation and <a href="#sec-ng-stability">stability proof</a> can be second-pass reading; do retain their conditions.</p>
+<p lang="zh-CN"><b>路线。</b>先看<a href="likelihood.html#sec-ica-likelihood">似然与得分函数</a>以及<a href="start-here.html#guide-notation">矩阵记号</a>。先读<a href="#sec-relative-gradient">更新规则</a>、<a href="#sec-ng-practice">步长</a>与<a href="#sec-ng-numerical-safeguards">停止保护</a>。几何推导和<a href="#sec-ng-stability">稳定性证明</a>可放到第二遍，但要保留它们的适用条件。</p>
+<p lang="en"><b>One update by hand.</b> Suppose the current $\bW=\bI$. From a batch, the algorithm has estimated $\bM=\hat\E[\bphi(\by)\by^\top]=\bigl(\begin{smallmatrix}1&amp;0.2\\-0.1&amp;1\end{smallmatrix}\bigr)$. Its entry $M_{ij}$ averages the nonlinearity of output $i$ times output $j$; it is not an ordinary covariance matrix.</p>
+<p lang="zh-CN"><b>手算一次更新。</b>设当前 $\bW=\bI$。算法从一批数据估计出 $\bM=\hat\E[\bphi(\by)\by^\top]=\bigl(\begin{smallmatrix}1&amp;0.2\\-0.1&amp;1\end{smallmatrix}\bigr)$。其中 $M_{ij}$ 是“输出 $i$ 的非线性函数值乘输出 $j$”的平均，因此它不是普通协方差矩阵。</p>
+<ol lang="en">
+  <li>Compute the correction $\bH=\bI-\bM=\bigl(\begin{smallmatrix}0&amp;-0.2\\0.1&amp;0\end{smallmatrix}\bigr)$. Zero diagonal entries mean that these scale equations already match their targets.</li>
+  <li>Choose $\mu=0.1$. Then $\bW_{\rm new}=(\bI+\mu\bH)\bW=\bigl(\begin{smallmatrix}1&amp;-0.02\\0.01&amp;1\end{smallmatrix}\bigr)$.</li>
+  <li>For a centered observation $\bx=(2,1)^\top$, the new outputs are $(1.98,1.02)^\top$. The update subtracts a little of channel 2 from output 1 and adds a little of channel 1 to output 2.</li>
+  <li>The determinant is $1.0002$, so this particular candidate is invertible. That calculation alone says nothing about independence or likelihood improvement. Recompute the outputs and residual before another update.</li>
+</ol>
+<ol lang="zh-CN">
+  <li>先算修正量 $\bH=\bI-\bM=\bigl(\begin{smallmatrix}0&amp;-0.2\\0.1&amp;0\end{smallmatrix}\bigr)$。对角元为零，表示这两个尺度方程已达到各自目标。</li>
+  <li>选 $\mu=0.1$，则 $\bW_{\rm new}=(\bI+\mu\bH)\bW=\bigl(\begin{smallmatrix}1&amp;-0.02\\0.01&amp;1\end{smallmatrix}\bigr)$。</li>
+  <li>对已中心化观测 $\bx=(2,1)^\top$，新输出为 $(1.98,1.02)^\top$：从输出 1 中减去一点通道 2，再向输出 2 加入一点通道 1。</li>
+  <li>行列式为 $1.0002$，因此这一次的候选矩阵可逆。但这个计算本身并不说明已经独立或似然已经提高。下一次更新前，要重新计算输出与残差。</li>
+</ol>
+<p lang="en"><b>Quick check 1.</b> If $\mu=0$, has an unchanged matrix proved convergence?</p>
+<p lang="zh-CN"><b>自测 1。</b>若令 $\mu=0$，矩阵不再变化，是否就证明收敛了？</p>
+<details class="solution beginner-answer"><summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+<p lang="en">No. The update is zero by choice, while $\|\bH\|_F=\sqrt{0.2^2+0.1^2}\approx0.224$ remains nonzero. A small increment must be interpreted alongside the residual.</p>
+<p lang="zh-CN">没有。更新为零是步长选择造成的，而 $\|\bH\|_F=\sqrt{0.2^2+0.1^2}\approx0.224$ 仍不为零。必须结合残差来解释小增量。</p>
+</details>
+<p lang="en"><b>Quick check 2.</b> Can this same average matrix be reused indefinitely?</p>
+<p lang="zh-CN"><b>自测 2。</b>能否一直重复使用刚才这个平均矩阵？</p>
+<details class="solution beginner-answer"><summary><span lang="en">Check the answer</span><span lang="zh-CN">查看答案</span></summary>
+<p lang="en">No. It was computed from the old outputs. Changing the unmixing changes the outputs, their nonlinearities and the average. Reusing it no longer implements the stated algorithm.</p>
+<p lang="zh-CN">不能。它由旧输出计算而来。分离矩阵变化后，输出、输出的非线性函数值及其平均都会变化；一直复用它就不再是所述算法。</p>
+</details>
+</aside>
+
 <h2 id="sec-ng-from-contrast"><span lang="en">From a contrast to an update rule</span><span lang="zh-CN">从对比函数到更新规则</span></h2>
 
-<p lang="en"><a class="ref" data-ref="likelihood"></a> reduced ICA to an optimization problem: find the unmixing matrix $\bW$ that maximizes the log-likelihood <a class="ref" data-ref="eq-likelihood"></a>, or equivalently minimizes the mutual information of the outputs. This chapter turns that problem into algorithms that adjust $\bW$ step by step. Three questions run through it. In which direction should $\bW$ move? How does the behaviour of the algorithm depend on the unknown mixing matrix $\bA$? And which solutions are attractors, so that the algorithm actually settles on them?</p>
-<p lang="zh-CN"><a class="ref" data-ref="likelihood"></a>把 ICA 归结为一个优化问题：寻找使对数似然 <a class="ref" data-ref="eq-likelihood"></a> 最大的解混矩阵 $\bW$，或者等价地，使输出的互信息最小。本章把这个问题变成逐步调整 $\bW$ 的算法。贯穿全章的有三个问题：$\bW$ 应当沿什么方向移动？算法的行为如何依赖于未知的混合矩阵 $\bA$？哪些解是吸引子，也就是说，算法实际会停在哪些解上？</p>
+<p lang="en"><a class="ref" data-ref="likelihood"></a> reduced ICA to an optimization problem: find the unmixing matrix $\bW$ that maximizes the log-likelihood <a class="ref" data-ref="eq-likelihood"></a>, or to minimize the mutual information of the outputs. These objectives share separating optima under a correct source model, but a fixed misspecified likelihood also contains marginal mismatch and is not generally equivalent to mutual-information minimization. This chapter turns that problem into algorithms that adjust $\bW$ step by step. Three questions run through it. In which direction should $\bW$ move? How does the behaviour of the algorithm depend on the unknown mixing matrix $\bA$? And which solutions are attractors, so that the algorithm actually settles on them?</p>
+<p lang="zh-CN"><a class="ref" data-ref="likelihood"></a>把 ICA 归结为一个优化问题：寻找使对数似然 <a class="ref" data-ref="eq-likelihood"></a> 最大的解混矩阵 $\bW$，或者使输出的互信息最小。源模型正确时，它们共享分离的最优解；但固定的失配似然还包含边缘失配项，通常不等价于互信息最小化。本章把这个问题变成逐步调整 $\bW$ 的算法。贯穿全章的有三个问题：$\bW$ 应当沿什么方向移动？算法的行为如何依赖于未知的混合矩阵 $\bA$？哪些解是吸引子，也就是说，算法实际会停在哪些解上？</p>
 
 <p lang="en">The answers are, in order: along the <em>relative</em> or <em>natural</em> gradient, which needs no matrix inversion; not at all, a property called <em>equivariance</em>; and the separating solutions attract the algorithm when a simple condition linking the nonlinearity to the source distributions holds, and not when it fails. The same condition explains why the original Infomax algorithm separates typical super-Gaussian sources such as speech but fails on some sub-Gaussian ones, and how the extended version repairs this.</p>
 <p lang="zh-CN">三个答案依次是：沿着<em>相对梯度</em>（即<em>自然梯度</em>）的方向移动，这一方向不需要矩阵求逆；完全不依赖，这一性质称为<em>等变性</em>；当非线性函数与源分布之间满足一个简单的条件时，分离解吸引算法，条件不满足时则不然。同一个条件解释了为什么原始的 Infomax 算法能分离语音这类常见的超高斯源，却在某些亚高斯源上失效，以及扩展 Infomax 如何弥补这一缺陷。</p>
@@ -35,6 +81,11 @@
 <p lang="zh-CN">固定矩阵 $\bA^\top\bA$ 相当于一个由“自然”指定的预条件矩阵。$\bA$ 病态时，更新在某些方向上步子很大，在另一些方向上步子极小，没有一个统一的步长能同时适合所有方向。<a class="ref" data-ref="fig-ng-dynamics"></a>的（a）图显示了这一效应：条件数为 10 时，普通梯度上升在 150 次迭代中几乎原地不动。</p>
 
 <h2 id="sec-relative-gradient"><span lang="en">Relative and natural gradients</span><span lang="zh-CN">相对梯度与自然梯度</span></h2>
+
+<aside class="beginner-bridge">
+<p lang="en"><b>Before the geometry.</b> Read $\Delta\bW=\mu\bH\bW$ as “a small correction in the present output coordinates.” The rightmost $\bW$ converts that correction back to a sensor-to-output map. You can use and check this matrix multiplication before studying the right-invariant metric below.</p>
+<p lang="zh-CN"><b>先理解操作，再看几何。</b>把 $\Delta\bW=\mu\bH\bW$ 读成“在当前输出坐标里作一个小修正”。最右边的 $\bW$ 把修正接回从传感器到输出的映射。可以先会算、会核对这个矩阵乘法，再研究下面的右不变度量。</p>
+</aside>
 
 <p lang="en">Cardoso and Laheld (1996) perturb $\bW$ multiplicatively, $\bW \to (\bI + \bepsilon)\bW$ with a small $n \times n$ matrix $\bepsilon$, so that the outputs change by $\by \to \by + \bepsilon\by$. To first order, $\log|\det((\bI + \bepsilon)\bW)| = \log|\det\bW| + \tr\bepsilon$ and $\log p_i\bigl(y_i + (\bepsilon\by)_i\bigr) = \log p_i(y_i) - \varphi_i(y_i)\sum_j \varepsilon_{ij}y_j$. Hence</p>
 <p lang="zh-CN">Cardoso 与 Laheld（1996）对 $\bW$ 做乘性扰动 $\bW \to (\bI + \bepsilon)\bW$，其中 $\bepsilon$ 是一个小的 $n \times n$ 矩阵，于是输出变为 $\by \to \by + \bepsilon\by$。在一阶近似下，$\log|\det((\bI + \bepsilon)\bW)| = \log|\det\bW| + \tr\bepsilon$，且 $\log p_i\bigl(y_i + (\bepsilon\by)_i\bigr) = \log p_i(y_i) - \varphi_i(y_i)\sum_j \varepsilon_{ij}y_j$。因此</p>
@@ -83,6 +134,11 @@
 <p lang="zh-CN">有两点需要注意。其一，等变性只对无噪声模型成立：若 $\bx = \bA\bs + \bn$，输出为 $\bP\bs + \bW\bn$，噪声项依赖于 $\bW$，从而依赖于 $\bA$（<a class="ref" data-ref="sec-noisy-ica"></a>）。其二，等变性不涉及起点：取 $\bW_0 = \bI$ 时，算法从 $\bP_0 = \bA$ 出发，$\bA$ 病态时这个起点离分离很远。先做白化，起点就变成正交矩阵 $\bP_0 = \tilde\bA$，这是迭代之前先白化数据的一个充分理由。由于性能与 $\bA$ 无关，<a class="ref" data-ref="performance"></a>的统计分析可以不失一般性地假设 $\bA = \bI$。</p>
 
 <h2 id="sec-ng-stability"><span lang="en">Local stability of the separating points</span><span lang="zh-CN">分离点的局部稳定性</span></h2>
+
+<aside class="beginner-bridge">
+<p lang="en"><b>What the proof answers.</b> Imagine nudging an already separating matrix slightly. Stability asks whether nearby updates shrink or enlarge that error. It does not promise that an arbitrary start reaches this neighborhood, and a finite step can fail even when the infinitesimal direction is favorable.</p>
+<p lang="zh-CN"><b>证明回答什么？</b>想象对已经分离的矩阵作一个小扰动：稳定性问的是附近的更新会缩小还是放大这个误差。它不保证任意初值都会到达这个邻域；即使无穷小方向有利，有限步长也可能失败。</p>
+</aside>
 
 <p lang="en">For a small step size, the batch iteration follows, and the online iteration follows on average, the ordinary differential equation $d\bW/dt = (\bI - \E[\bphi(\by)\by^\top])\bW$ obtained by letting $\mu \to 0$. By equivariance, as in <a class="ref" data-ref="eq-equivariance"></a>, in global coordinates it reads</p>
 <p lang="zh-CN">步长很小时，批量迭代跟随、在线迭代平均意义下跟随令 $\mu \to 0$ 得到的常微分方程 $d\bW/dt = (\bI - \E[\bphi(\by)\by^\top])\bW$。由等变性，与 <a class="ref" data-ref="eq-equivariance"></a> 一样，它在全局坐标下写作</p>
@@ -154,7 +210,9 @@
 <p lang="en">The following script implements batch natural-gradient ICA and runs it from $\bW_0 = \bI$ on two uniform and on two Laplace sources, with $\varphi = \tanh$, with $\varphi(y) = y^3$, and with the extended Infomax rule of <a class="ref" data-ref="sec-extended-infomax"></a>. The printed interference is the largest ratio, over the rows of $\bP = \bW\bA$, of the second-largest to the largest entry in absolute value; it is 0 for perfect separation and near 1 for an even mixture.</p>
 <p lang="zh-CN">下面的脚本实现了批量自然梯度 ICA，并从 $\bW_0 = \bI$ 出发，分别在两个均匀源和两个拉普拉斯源上运行，非线性函数依次取 $\varphi = \tanh$、$\varphi(y) = y^3$ 以及<a class="ref" data-ref="sec-extended-infomax"></a>的扩展 Infomax 规则。打印的干扰值是：在 $\bP = \bW\bA$ 的各行中，绝对值第二大的元素与最大元素之比的最大值；完全分离时为 0，均匀混合时接近 1。</p>
 
-<pre class="code"><code>import numpy as np
+<p lang="en">This controlled demonstration uses a fixed budget of 500 full-batch updates and reports residual mixing; returning a matrix is not a convergence certificate. The extended variant keeps its preceding sign when the switching statistic lies within $10^{-6}$ of zero. For deployment, apply the residual, step-size and failure checks discussed later in this chapter.</p>
+<p lang="zh-CN">这个受控演示固定运行 500 次全批量更新，并报告残余混合；返回矩阵并不构成收敛证明。扩展算法在切换统计量与零的距离不超过 $10^{-6}$ 时保留上一次符号。实际使用时，应实施本章后述的残差、步长与失败检查。</p>
+<pre class="code" data-code="python"><code>import numpy as np
 
 def natural_gradient_ica(X, phi, mu=0.1, iters=500):
     """Batch natural-gradient ICA: W &lt;- W + mu (I - E[phi(y) y^T]) W."""
@@ -169,10 +227,12 @@ def extended_infomax(X, mu=0.1, iters=500):
     """phi_i(y) = y + k_i tanh(y), k_i = +1 or -1 set by the switching rule."""
     n, T = X.shape
     W = np.eye(n)
+    k = np.ones(n)  # retain the previous sign when the statistic is near zero
     for _ in range(iters):
         Y = W @ X
-        k = np.sign(np.mean(np.cosh(Y) ** -2, axis=1) * np.mean(Y ** 2, axis=1)
-                    - np.mean(np.tanh(Y) * Y, axis=1))
+        stat = (np.mean(1 - np.tanh(Y) ** 2, axis=1) * np.mean(Y ** 2, axis=1)
+                - np.mean(np.tanh(Y) * Y, axis=1))
+        k = np.where(stat &gt; 1e-6, 1, np.where(stat &lt; -1e-6, -1, k))
         W += mu * (np.eye(n) - (Y + k[:, None] * np.tanh(Y)) @ Y.T / T) @ W
     return W
 
@@ -198,7 +258,7 @@ for sname, S in sources.items():
 <p lang="en">The output is</p>
 <p lang="zh-CN">输出为</p>
 
-<pre class="code"><code>uniform  tanh      interference = 0.987
+<pre class="code" data-code="output"><code>uniform  tanh      interference = 0.987
 uniform  cube      interference = 0.010
 uniform  extended  interference = 0.012
 Laplace  tanh      interference = 0.004
@@ -210,8 +270,8 @@ Laplace  extended  interference = 0.005</code></pre>
 
 <h2 id="sec-infomax"><span lang="en">Infomax</span><span lang="zh-CN">Infomax 算法</span></h2>
 
-<p lang="en">Bell and Sejnowski (1995) arrived at the same family of algorithms from a different principle. Pass the outputs $y_i = \bw_i^\top\bx$ through the logistic function $g(y) = 1/(1 + e^{-y})$ and choose $\bW$ to maximize the joint entropy of $\bu = (g(y_1), \dots, g(y_n))^\top$, the information that the bounded outputs carry about the input. Since $g$ is increasing and $\by = \bW\bx$, the change-of-variables formula and <a class="ref" data-ref="prop-entropy-linear"></a> give</p>
-<p lang="zh-CN">Bell 与 Sejnowski（1995）从另一个原理出发得到了同一族算法。把输出 $y_i = \bw_i^\top\bx$ 通过 logistic 函数 $g(y) = 1/(1 + e^{-y})$，再选取 $\bW$ 使 $\bu = (g(y_1), \dots, g(y_n))^\top$ 的联合熵最大，也就是使有界输出所携带的关于输入的信息最大。由于 $g$ 单调递增且 $\by = \bW\bx$，由变量替换公式和<a class="ref" data-ref="prop-entropy-linear"></a>得</p>
+<p lang="en">Bell and Sejnowski (1995) arrived at the same family of algorithms from a different principle. Pass the outputs $y_i = \bw_i^\top\bx$ through the logistic function $g(y) = 1/(1 + e^{-y})$ and choose $\bW$ to maximize the joint entropy of $\bu = (g(y_1), \dots, g(y_n))^\top$, an output-entropy criterion motivated by information transmission with small output noise. For a deterministic continuous invertible map the input–output mutual information is generally infinite; the finite objective here is the output entropy, as explained in <a class="ref" data-ref="sec-infomax-ml"></a>. Since $g$ is increasing and $\by = \bW\bx$, the change-of-variables formula and <a class="ref" data-ref="prop-entropy-linear"></a> give</p>
+<p lang="zh-CN">Bell 与 Sejnowski（1995）从另一个原理出发得到了同一族算法。把输出 $y_i = \bw_i^\top\bx$ 通过 logistic 函数 $g(y) = 1/(1 + e^{-y})$，再选取 $\bW$ 使 $\bu = (g(y_1), \dots, g(y_n))^\top$ 的联合熵最大，这是由小输出噪声下的信息传输所启发的输出熵准则。对确定性连续可逆映射，输入与输出的互信息通常为无穷大；这里的有限目标是输出熵，详见<a class="ref" data-ref="sec-infomax-ml"></a>。由于 $g$ 单调递增且 $\by = \bW\bx$，由变量替换公式和<a class="ref" data-ref="prop-entropy-linear"></a>得</p>
 
 <div class="eq">$$H(\bu) = H(\bx) + \log|\det\bW| + \sum_{i=1}^n \E\bigl[\log g'(y_i)\bigr].$$</div>
 
@@ -245,8 +305,8 @@ Laplace  extended  interference = 0.005</code></pre>
 
 <div class="eq" id="eq-extended-infomax">$$\bW \leftarrow \bW + \mu\bigl(\bI - \E\bigl[\bK\tanh(\by)\,\by^\top + \by\by^\top\bigr]\bigr)\bW, \qquad \bK = \diag(\eta_1, \dots, \eta_n),\quad \eta_i \in \{-1, +1\},$$</div>
 
-<p lang="en">that is, $\varphi_i(y) = y + \eta_i\tanh(y)$. With $\eta_i = -1$ this is the score of the bimodal, sub-Gaussian density $\tfrac12\Ncal(1, 1) + \tfrac12\Ncal(-1, 1)$; with $\eta_i = +1$ it is the score of the super-Gaussian density proportional to $e^{-y^2/2}/\cosh y$. Lee et al. motivate this branch with the density proportional to $p_G(y)\operatorname{sech}^2 y$, where $p_G$ is the standard Gaussian density; the score of that density is $y + 2\tanh y$, and the rule they use, $y + \tanh y$, is the score of the density above. The sign is chosen by the <em>switching rule</em></p>
-<p lang="zh-CN">也就是 $\varphi_i(y) = y + \eta_i\tanh(y)$。$\eta_i = -1$ 时，它是双峰亚高斯密度 $\tfrac12\Ncal(1, 1) + \tfrac12\Ncal(-1, 1)$ 的得分函数；$\eta_i = +1$ 时，它是与 $e^{-y^2/2}/\cosh y$ 成正比的超高斯密度的得分函数。Lee 等人用正比于 $p_G(y)\operatorname{sech}^2 y$ 的密度（$p_G$ 为标准高斯密度）来说明这一分支，但该密度的得分函数是 $y + 2\tanh y$；他们实际使用的 $y + \tanh y$ 是上述密度的得分函数。符号由<em>切换规则</em>决定：</p>
+<p lang="en">that is, $\varphi_i(y) = y + \eta_i\tanh(y)$. With $\eta_i = -1$ this is the score of the symmetric, sub-Gaussian two-Gaussian mixture density $\tfrac12\Ncal(1, 1) + \tfrac12\Ncal(-1, 1)$; with $\eta_i = +1$ it is the score of the super-Gaussian density proportional to $e^{-y^2/2}/\cosh y$. Lee et al. motivate this branch with the density proportional to $p_G(y)\operatorname{sech}^2 y$, where $p_G$ is the standard Gaussian density; the score of that density is $y + 2\tanh y$, and the rule they use, $y + \tanh y$, is the score of the density above. The sign is chosen by the <em>switching rule</em></p>
+<p lang="zh-CN">也就是 $\varphi_i(y) = y + \eta_i\tanh(y)$。$\eta_i = -1$ 时，它是对称的亚高斯双高斯混合密度 $\tfrac12\Ncal(1, 1) + \tfrac12\Ncal(-1, 1)$ 的得分函数；$\eta_i = +1$ 时，它是与 $e^{-y^2/2}/\cosh y$ 成正比的超高斯密度的得分函数。Lee 等人用正比于 $p_G(y)\operatorname{sech}^2 y$ 的密度（$p_G$ 为标准高斯密度）来说明这一分支，但该密度的得分函数是 $y + 2\tanh y$；他们实际使用的 $y + \tanh y$ 是上述密度的得分函数。符号由<em>切换规则</em>决定：</p>
 
 <div class="eq" id="eq-switching">$$\eta_i = \sign\Bigl(\E\bigl[\operatorname{sech}^2(y_i)\bigr]\,\E\bigl[y_i^2\bigr] - \E\bigl[\tanh(y_i)\,y_i\bigr]\Bigr),$$</div>
 
@@ -273,8 +333,8 @@ Laplace  extended  interference = 0.005</code></pre>
 <p lang="en"><b>Batch iteration.</b> With a constant step size, <a class="ref" data-ref="eq-natural-gradient"></a> is a fixed-point iteration whose linearization at a separating point is $\bepsilon \leftarrow \bepsilon - \mu\,\mathcal{L}(\bepsilon)$, where $\mathcal{L}$ is the linear map of the proof of <a class="ref" data-ref="thm-stability"></a>. Its eigenvalues $\vartheta$ are the numbers $1 + m_i$ and the eigenvalues of the pair matrices in <a class="ref" data-ref="eq-pair-linearization"></a>, all real. The error contracts if and only if $|1 - \mu\vartheta| &lt; 1$ for every $\vartheta$, that is, $0 &lt; \mu &lt; 2/\vartheta_{\max}$ when all $\vartheta &gt; 0$. For two Laplace sources and $\varphi = \tanh$ the eigenvalues are $2.414$, $1.214$ (twice) and $0.414$: any $\mu &lt; 0.83$ converges locally, and with $\mu = 0.5$ the slowest mode shrinks by the factor $1 - 0.5 \times 0.414 \approx 0.79$ per iteration. By equivariance these numbers do not depend on $\bA$.</p>
 <p lang="zh-CN"><b>批量迭代。</b>步长固定时，<a class="ref" data-ref="eq-natural-gradient"></a> 是一个不动点迭代，它在分离点处的线性化为 $\bepsilon \leftarrow \bepsilon - \mu\,\mathcal{L}(\bepsilon)$，其中 $\mathcal{L}$ 是<a class="ref" data-ref="thm-stability"></a>证明中的线性映射。它的特征值 $\vartheta$ 是各个 $1 + m_i$ 以及 <a class="ref" data-ref="eq-pair-linearization"></a> 中各源对矩阵的特征值，全是实数。误差收缩当且仅当对每个 $\vartheta$ 都有 $|1 - \mu\vartheta| &lt; 1$；当所有 $\vartheta &gt; 0$ 时，即 $0 &lt; \mu &lt; 2/\vartheta_{\max}$。对两个拉普拉斯源和 $\varphi = \tanh$，特征值为 $2.414$、$1.214$（二重）和 $0.414$：任何 $\mu &lt; 0.83$ 都局部收敛；取 $\mu = 0.5$ 时，最慢的模态每次迭代缩小为原来的 $1 - 0.5 \times 0.414 \approx 0.79$ 倍。由等变性，这些数都与 $\bA$ 无关。</p>
 
-<p lang="en"><b>Online learning.</b> The online rule updates $\bW$ with one sample, or a small block, at a time. With a constant step size $\bW$ does not converge; it keeps fluctuating around the separating point, with a spread that shrinks as $\mu$ decreases. The mean flow <a class="ref" data-ref="eq-mean-flow"></a> describes the average motion, so the stability conditions of <a class="ref" data-ref="thm-stability"></a> decide which points the online algorithm can hover around. Step sizes that decrease with $\sum_t\mu_t = \infty$ and $\sum_t\mu_t^2 &lt; \infty$, as in stochastic approximation (Robbins &amp; Monro, 1951), make the fluctuations die out. Online learning suits data that arrive as a stream or do not fit in memory, and it can track a mixing matrix that drifts slowly; for a fixed data set, batch or block updates are simpler to tune.</p>
-<p lang="zh-CN"><b>在线学习。</b>在线规则每次只用一个样本（或一个小数据块）更新 $\bW$。步长固定时 $\bW$ 不会收敛，而是在分离点附近持续波动，波动幅度随 $\mu$ 减小而减小。平均流 <a class="ref" data-ref="eq-mean-flow"></a> 描述的是平均运动，所以在线算法能在哪些点附近徘徊，同样由<a class="ref" data-ref="thm-stability"></a>的稳定性条件决定。像随机逼近（Robbins &amp; Monro, 1951）那样取满足 $\sum_t\mu_t = \infty$ 且 $\sum_t\mu_t^2 &lt; \infty$ 的递减步长，可使波动逐渐消失。在线学习适合以数据流形式到达或内存放不下的数据，也能跟踪缓慢漂移的混合矩阵；对于固定的数据集，批量或分块更新更容易调参。</p>
+<p lang="en"><b>Online learning.</b> The online rule updates $\bW$ with one sample, or a small block, at a time. With a constant step size $\bW$ does not converge; it keeps fluctuating around the separating point, with a spread that shrinks as $\mu$ decreases. The mean flow <a class="ref" data-ref="eq-mean-flow"></a> describes the average motion, so the stability conditions of <a class="ref" data-ref="thm-stability"></a> decide which points the online algorithm can hover around. Step sizes that decrease with $\sum_t\mu_t = \infty$ and $\sum_t\mu_t^2 &lt; \infty$, as in stochastic approximation (Robbins &amp; Monro, 1951), control accumulated noise under additional regularity and stability conditions. They do not alone guarantee convergence: bounded iterates, suitable noise moments and a basin of attraction are also needed, and a stable unwanted root can still be reached. Online learning suits data that arrive as a stream or do not fit in memory, and it can track a mixing matrix that drifts slowly; for a fixed data set, batch or block updates are simpler to tune.</p>
+<p lang="zh-CN"><b>在线学习。</b>在线规则每次只用一个样本（或一个小数据块）更新 $\bW$。步长固定时 $\bW$ 不会收敛，而是在分离点附近持续波动，波动幅度随 $\mu$ 减小而减小。平均流 <a class="ref" data-ref="eq-mean-flow"></a> 描述的是平均运动，所以在线算法能在哪些点附近徘徊，同样由<a class="ref" data-ref="thm-stability"></a>的稳定性条件决定。像随机逼近（Robbins &amp; Monro, 1951）那样取满足 $\sum_t\mu_t = \infty$ 且 $\sum_t\mu_t^2 &lt; \infty$ 的递减步长，在附加的正则性与稳定性条件下可控制累积噪声；仅靠这两个级数条件并不能保证收敛，还需要迭代有界、适当的噪声矩条件与吸引域，并且算法仍可能到达稳定但不需要的根。在线学习适合以数据流形式到达或内存放不下的数据，也能跟踪缓慢漂移的混合矩阵；对于固定的数据集，批量或分块更新更容易调参。</p>
 
 <p lang="en"><b>EASI.</b> Cardoso and Laheld (1996) proposed a serial algorithm that whitens and rotates at the same time, so that no separate whitening step is needed:</p>
 <p lang="zh-CN"><b>EASI。</b>Cardoso 与 Laheld（1996）提出了一种同时完成白化与旋转的串行算法，因而不需要单独的白化步骤：</p>
@@ -289,24 +349,51 @@ Laplace  extended  interference = 0.005</code></pre>
 <p lang="en">and unstable if $\lambda_i + \lambda_j &gt; 0$ for some pair (<a class="ref" data-ref="ex-ng-easi"></a>). For $g(y) = y^3$, $\lambda_i = \kappa_i$, so EASI with the cubic nonlinearity separates pairs whose kurtoses sum to a negative number; for $g = \tanh$, $\lambda = -0.148$ for a Laplace source and $+0.126$ for a uniform one. The same quantity $\E[s\,g(s) - g'(s)]$ governs FastICA in the next chapter.</p>
 <p lang="zh-CN">若某一对满足 $\lambda_i + \lambda_j &gt; 0$，则不稳定（<a class="ref" data-ref="ex-ng-easi"></a>）。对 $g(y) = y^3$，$\lambda_i = \kappa_i$，所以采用三次非线性的 EASI 能分离峭度之和为负的源对；对 $g = \tanh$，拉普拉斯源的 $\lambda = -0.148$，均匀源的 $\lambda = +0.126$。同一个量 $\E[s\,g(s) - g'(s)]$ 也支配着下一章的 FastICA。</p>
 
+<h2 id="sec-ng-numerical-safeguards"><span lang="en">Numerical safeguards and stopping rules</span><span lang="zh-CN">数值保护与停止准则</span></h2>
+<p lang="en">An ascent direction does not guarantee an ascent for every finite step. Set $\bH=\bI-\hat\E[\bphi(\by)\by^\top]$, so $\bW_{\rm new}=(\bI+\mu\bH)\bW$. The condition $\mu\|\bH\|_2&lt;1$ is sufficient for invertibility, but not objective improvement. In batch learning with a fixed differentiable source model, backtracking can reduce $\mu$ until the candidate is nonsingular, all values are finite and the sample likelihood increases. Compute $\log|\det\bW|$ with <code>slogdet</code> and $\log\cosh u$ as $|u|+\log(1+e^{-2|u|})-\log2$. Reject a singular or nonfinite candidate.</p>
+<p lang="zh-CN">上升方向不保证任意有限步长都使目标上升。记 $\bH=\bI-\hat\E[\bphi(\by)\by^\top]$，则 $\bW_{\rm new}=(\bI+\mu\bH)\bW$。$\mu\|\bH\|_2&lt;1$ 是可逆性的充分条件，却不保证目标改善。对固定可微源模型的批量学习，可回溯减小 $\mu$，直到候选矩阵非奇异、所有数值有限且样本似然上升。用 <code>slogdet</code> 计算 $\log|\det\bW|$，用 $|u|+\log(1+e^{-2|u|})-\log2$ 计算 $\log\cosh u$。应拒绝奇异或非有限的候选值。</p>
+<p lang="en">A small increment may indicate stationarity or merely a tiny step size. Record the relative increment $\|\Delta\bW\,\bW^{-1}\|_F=\mu\|\bH\|_F$, the residual $\|\bH\|_F$, objective changes and the iteration limit separately. An estimate returned at the limit must be labelled unconverged. In minibatch learning assess a residual on a larger fixed block because individual updates are noisy. Save the training mean: new data must be transformed as $\bW(\bx_{\rm new}-\bar\bx_{\rm train})$.</p>
+<p lang="zh-CN">增量小可能表示已接近驻点，也可能只是步长过小。应分别记录相对增量 $\|\Delta\bW\,\bW^{-1}\|_F=\mu\|\bH\|_F$、残差 $\|\bH\|_F$、目标变化与迭代次数上限。达到上限后的结果应标明未收敛。小批量学习的单次更新含噪，应在较大的固定数据块上评价残差。还应保存训练均值：新数据的变换为 $\bW(\bx_{\rm new}-\bar\bx_{\rm train})$。</p>
+<p lang="en">Extended Infomax changes its nonlinearity when a sign switches, so the fixed-objective monotonicity argument cannot be applied automatically. Estimate switching statistics on adequate blocks, use a tolerance near zero and record switches. A Gaussian or nearly Gaussian output gives a zero or uncertain statistic; the theorem asserts local stability for a self-consistent separating point with nonzero switching statistics, not global convergence of a switching algorithm. The sub-Gaussian mixture above is also not genuinely bimodal: its score $y-\tanh y$ is positive for $y&gt;0$, so the density has a single, flat-topped mode at zero.</p>
+<p lang="zh-CN">扩展 Infomax 在符号切换时改变非线性函数，不能自动套用固定目标的单调性论证。应在足够大的数据块上估计切换统计量，在零附近设置容差并记录切换。高斯或近高斯输出会给出为零或难以确定的统计量；定理保证的是切换统计量非零、符号自洽的分离点附近的局部稳定性，不是整个切换算法的全局收敛。上面的亚高斯混合密度也并非真正双峰：对 $y&gt;0$，其得分 $y-\tanh y$ 为正，因此密度在零处只有一个平顶峰。</p>
+<p lang="en">The right-invariant metric used in the derivation is a chosen geometry on invertible matrices. It does not mean that the full statistical Fisher information is the identity: the source-dependent Fisher blocks appear in <a class="ref" data-ref="eq-fisher-block"></a>. Also, centering and fitting a bias are distinct operations. For $\by=\bW\bx+\mathbf b$, a stationary fitted bias requires $\E[\bphi(\by)]=\bzero$; $\E[\bx]=\bzero$ alone does not imply this for skewed sources and a mismatched symmetric density. The centered, bias-free model used in this chapter is an explicit modeling choice.</p>
+<p lang="zh-CN">推导中的右不变度量是可逆矩阵空间上的一种几何选择，并不表示完整的统计 Fisher 信息等于单位阵；依赖源分布的 Fisher 分块见<a class="ref" data-ref="eq-fisher-block"></a>。此外，中心化与拟合偏置是两种不同操作。对 $\by=\bW\bx+\mathbf b$，偏置的驻点条件是 $\E[\bphi(\by)]=\bzero$；对偏斜源和失配的对称密度，$\E[\bx]=\bzero$ 本身不推出这一条件。本章采用已中心化、无偏置的模型，是明确的建模选择。</p>
+
 <div class="keypoints">
   <p class="kp-title" lang="en">Key points</p>
   <p class="kp-title" lang="zh-CN">本章要点</p>
   <ul lang="en">
     <li>The relative or natural gradient $(\bI - \E[\bphi(\by)\by^\top])\bW$ is the ordinary gradient multiplied on the right by $\bW^\top\bW$. It is the steepest-ascent direction for the metric $\|d\bW\,\bW^{-1}\|_F$ and needs no matrix inversion.</li>
-    <li>Natural-gradient algorithms are equivariant: in terms of the global matrix $\bP = \bW\bA$ they do not depend on $\bA$, so their speed, accuracy and stability are the same for every invertible mixing matrix.</li>
-    <li>Separating points solve the estimating equations whatever the nonlinearity; whether they attract the algorithm depends on $k_i$, $m_i$ and $\sigma_i^2$ through conditions on single sources and pairs. With the true scores they always hold when at most one source is Gaussian.</li>
+    <li>Natural-gradient algorithms are equivariant: in terms of the global matrix $\bP = \bW\bA$ they do not depend on $\bA$, so their exact relative iterations agree under corresponding transformed initializations; finite-precision conditioning and the choice of initialization still matter.</li>
+    <li>When the scalar scale equations are solvable and the expectations exist, separating points solve the estimating equations; whether they attract the algorithm depends on $k_i$, $m_i$ and $\sigma_i^2$ through conditions on single sources and pairs. With the true scores they always hold when at most one source is Gaussian.</li>
     <li>Infomax is maximum likelihood with a logistic source model, $\varphi(y) = \tanh(y/2)$; its separating points are stable for typical super-Gaussian sources (Laplace, logistic) but not, for example, for a pair of uniform sources. Extended Infomax switches each output between a super- and a sub-Gaussian model by a rule that is the stability condition itself.</li>
     <li>Batch iterations converge locally for $0 &lt; \mu &lt; 2/\vartheta_{\max}$, where $\vartheta_{\max}$ is the largest eigenvalue of the linearization; online updates need decreasing step sizes to settle. EASI whitens and separates in one equivariant serial update and is stable when $\lambda_i + \lambda_j &lt; 0$ for all pairs.</li>
   </ul>
   <ul lang="zh-CN">
     <li>相对梯度（自然梯度）$(\bI - \E[\bphi(\by)\by^\top])\bW$ 就是普通梯度右乘 $\bW^\top\bW$。它是度量 $\|d\bW\,\bW^{-1}\|_F$ 下的最速上升方向，不需要矩阵求逆。</li>
-    <li>自然梯度算法是等变的：用全局矩阵 $\bP = \bW\bA$ 表示时它们与 $\bA$ 无关，所以对每个可逆混合矩阵，其速度、精度与稳定性都相同。</li>
-    <li>无论非线性函数取什么，分离点都满足估计方程；它们能否吸引算法，取决于 $k_i$、$m_i$ 和 $\sigma_i^2$，条件只涉及单个源和源对。使用真实得分函数时，只要至多一个源是高斯的，这些条件总成立。</li>
+    <li>自然梯度算法是等变的：用全局矩阵 $\bP = \bW\bA$ 表示时它们与 $\bA$ 无关，在相应变换的初值下，其精确相对迭代一致；有限精度下的条件数与初值选择仍然重要。</li>
+    <li>当标量尺度方程可解且期望存在时，分离点满足估计方程；它们能否吸引算法，取决于 $k_i$、$m_i$ 和 $\sigma_i^2$，条件只涉及单个源和源对。使用真实得分函数时，只要至多一个源是高斯的，这些条件总成立。</li>
     <li>Infomax 是以 logistic 分布为源模型的最大似然，$\varphi(y) = \tanh(y/2)$；它的分离点对常见的超高斯源（拉普拉斯、logistic）是稳定的，但对一对均匀源等情形则不稳定。扩展 Infomax 按一条规则让每个输出在超高斯与亚高斯模型之间切换，而这条规则正是稳定性条件本身。</li>
     <li>批量迭代在 $0 &lt; \mu &lt; 2/\vartheta_{\max}$ 时局部收敛（$\vartheta_{\max}$ 为线性化的最大特征值）；在线更新需要递减步长才能稳定下来。EASI 用一个等变的串行更新同时完成白化与分离，当所有源对满足 $\lambda_i + \lambda_j &lt; 0$ 时稳定。</li>
   </ul>
 </div>
+
+<aside class="chapter-recap">
+<p lang="en"><b>Before the exercises</b></p>
+<p lang="zh-CN"><b>开始习题前</b></p>
+<ul lang="en">
+  <li>Form the nonlinear average, subtract it from identity, then apply the relative update.</li>
+  <li>Monitor the residual as well as the parameter increment.</li>
+  <li>Check source-model choice and step size before trusting a stopping signal.</li>
+</ul>
+<ul lang="zh-CN">
+  <li>先计算非线性平均，再用单位阵减去它，最后作相对更新。</li>
+  <li>同时监测残差与参数增量。</li>
+  <li>相信停止信号前，先检查源模型选择与步长。</li>
+</ul>
+<p lang="en">Start with <a href="#ex-ng-logistic">the logistic-score exercise</a>, then <a href="#ex-ng-euclid">parts (a) and (b) of the gradient exercise</a>. Return to the cubic stability and EASI exercises after the local-stability section.</p>
+<p lang="zh-CN">先做<a href="#ex-ng-logistic">logistic 得分习题</a>，再做<a href="#ex-ng-euclid">梯度习题的（a）（b）</a>；读完局部稳定性一节后，再回到三次非线性稳定性与 EASI 习题。</p>
+</aside>
 
 <h2 id="sec-natural-gradient-exercises"><span lang="en">Exercises</span><span lang="zh-CN">习题</span></h2>
 

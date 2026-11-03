@@ -45,6 +45,7 @@ class ParsedPage:
     html_lang: Optional[str] = None
     meta_name: Dict[str, str] = field(default_factory=dict)
     meta_property: Dict[str, str] = field(default_factory=dict)
+    ids: List[str] = field(default_factory=list)
     canonicals: List[str] = field(default_factory=list)
     links: List[Tuple[str, str]] = field(default_factory=list)
 
@@ -57,6 +58,9 @@ class SiteHTMLParser(HTMLParser):
 
     def handle_starttag(self, tag: str, attrs: List[Tuple[str, Optional[str]]]) -> None:
         attr_map = {key: value or "" for key, value in attrs}
+
+        if attr_map.get("id"):
+            self.page.ids.append(attr_map["id"])
 
         if tag == "html":
             self.page.html_lang = attr_map.get("lang") or attr_map.get("xml:lang")
@@ -246,20 +250,25 @@ def check_metadata(rel_path: str, expected: Dict[str, str], errors: List[str]) -
 
 
 def check_internal_links(errors: List[str]) -> None:
-    for html_path in iter_html_pages():
-        parsed = parse_page(html_path)
+    pages = {path.resolve(): parse_page(path) for path in iter_html_pages()}
+    for html_path, parsed in pages.items():
+        rel_source = html_path.relative_to(DOCS_DIR)
+        if len(parsed.ids) != len(set(parsed.ids)):
+            errors.append(f"{rel_source}: duplicate HTML id")
         for tag, raw_target in parsed.links:
-            parsed_url = urlparse(raw_target)
-            if parsed_url.scheme.lower() in SKIP_SCHEMES and not parsed_url.path:
+            url = urlparse(raw_target)
+            if url.scheme and url.scheme.lower() not in {"http", "https"}:
                 continue
-            if raw_target.startswith("#"):
+            if url.netloc and url.netloc != urlparse(SITE_URL).netloc:
                 continue
-            resolved = resolve_docs_target(html_path, raw_target)
-            if resolved is None:
+            resolved = resolve_docs_target(html_path, raw_target) if url.path else html_path
+            if resolved is None or not resolved.exists():
+                errors.append(f"{rel_source}: {tag} points to missing internal resource {raw_target!r}")
                 continue
-            if not resolved.exists():
-                rel_source = html_path.relative_to(DOCS_DIR)
-                errors.append(f"{rel_source}: {tag} 指向不存在的站内资源 {raw_target!r}")
+            fragment = unquote(url.fragment)
+            target_page = pages.get(resolved.resolve())
+            if fragment and target_page is not None and fragment not in target_page.ids:
+                errors.append(f"{rel_source}: missing fragment {raw_target!r}")
 
 
 def check_disallowed_snippets(errors: List[str]) -> None:
