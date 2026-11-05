@@ -25,7 +25,7 @@
   <meta name="twitter:image:alt" content="Yuda Bi: what indirect observations can reveal about hidden structure">
 
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/site.css?v=20261105a">
+  <link rel="stylesheet" href="assets/site.css?v=20261105b">
   <link rel="stylesheet" href="assets/visitor-stats.css?v=20261103a">
   <script defer src="assets/visitor-stats.js?v=20261103a"></script>
 
@@ -85,36 +85,6 @@
   <span class="book-bar-cta">Read the book &rarr;</span>
 </a>
 
-<section class="visitor-stats" id="visitor-stats" aria-labelledby="visitor-stats-title" aria-busy="true">
-  <div class="visitor-stats-heading">
-    <h2 id="visitor-stats-title">Page views <span lang="zh-CN">访问统计</span></h2>
-    <span class="visitor-stats-status" id="visitor-stats-status" role="status">Loading <span lang="zh-CN">正在读取</span></span>
-  </div>
-  <div class="visitor-stats-grid">
-    <div class="visitor-stats-total">
-      <strong id="visitor-stats-count">&mdash;</strong>
-      <p>Homepage page views<br><span lang="zh-CN">首页访问次数（非独立访客数）</span></p>
-      <p class="visitor-stats-reloads">Page reloads count again.<br><span lang="zh-CN">刷新页面会再次计数。</span></p>
-      <p class="visitor-stats-since" id="visitor-stats-since">From the day counting starts<br><span lang="zh-CN">自统计启用日起累计</span></p>
-    </div>
-    <div class="visitor-stats-regions">
-      <h3>Top regions <span lang="zh-CN">主要访问地区</span></h3>
-      <p class="visitor-stats-empty" id="visitor-stats-empty">Regional totals will appear here.<br><span lang="zh-CN">地区汇总将在此显示。</span></p>
-      <ol class="visitor-region-list" id="visitor-region-list" hidden aria-label="Main regions by homepage page views / 按首页访问次数排列的主要地区"></ol>
-      <details class="visitor-stats-more" id="visitor-stats-more" hidden>
-        <summary>More regions <span lang="zh-CN">更多地区</span></summary>
-        <ol class="visitor-region-list" id="visitor-region-more" start="6" aria-label="Additional regions / 其他地区"></ol>
-      </details>
-      <p class="visitor-stats-other" id="visitor-stats-other" hidden></p>
-    </div>
-  </div>
-  <div class="visitor-stats-bottom">
-    <p>Visits are grouped by approximate IP location; full IP addresses are not displayed.<br><span lang="zh-CN">按访问次数与 IP 推断地区汇总，不展示完整 IP；地区可能受 VPN 或网络出口影响。</span></p>
-    <button class="visitor-stats-refresh" id="visitor-stats-refresh" type="button" hidden>Refresh totals <span lang="zh-CN">刷新统计</span></button>
-  </div>
-  <noscript><p class="visitor-stats-noscript">Enable JavaScript to view the live totals. <span lang="zh-CN">启用 JavaScript 后可查看实时统计。</span></p></noscript>
-</section>
-
 <blockquote class="motto">
   <p>&ldquo;Even in the darkest of times we have the right to expect some illumination.&rdquo;</p>
   <cite>Hannah Arendt, <i>Men in Dark Times</i> (1968)</cite>
@@ -138,7 +108,7 @@
   <li>
     <span class="dir-num">03</span>
     <strong class="dir-title">Inference in brain imaging</strong>
-    <p>What template-based fMRI connectivity analyses <b>can and cannot establish</b>, from diagnostics that are blind by construction to robustness checks that cannot tell topography from coupling.</p>
+    <p>What template-based fMRI connectivity analyses <b>can and cannot establish</b>, from diagnostics that are blind by construction to robustness checks that cannot tell topography from coupling, and <b>which statistical-physics metrics of resting-state signals measure anything beyond lagged covariance</b>.</p>
   </li>
 </ol>
 
@@ -149,7 +119,7 @@
 <nav class="toc-card" aria-label="Papers">
   <p class="toc-group">Latent-variable models</p>
   <ol class="toc">
-    <li><a href="#riesz-energy"><span class="toc-num">1</span><span class="toc-title">Separation Is a Riesz Energy: How Many Environments Does ICA Need?</span><span class="tag tag-new">New</span></a></li>
+    <li><a href="#riesz-energy"><span class="toc-num">1</span><span class="toc-title">Separation Is a Riesz Energy: How Many Environments Does ICA Need?</span><span class="tag tag-new">New &middot; ICML 2027</span></a></li>
     <li><a href="#kurtosis-law"><span class="toc-num">2</span><span class="toc-title">A 1/<var>R</var> Law for Kurtosis Contrast in Balanced Mixtures</span><span class="tag tag-pub">IEEE SPL 2026</span></a></li>
     <li><a href="#zeros"><span class="toc-num">3</span><span class="toc-title">Zeros That Survive Mixing: Hardness and Immunity in Overcomplete ICA</span><span class="tag">Submitted &middot; IEEE SPL</span></a></li>
     <li><a href="#normalization"><span class="toc-num">4</span><span class="toc-title">Normalization Mismatch in ICA and Its Orthogonalized Remedy</span><span class="tag">Submitted &middot; IEEE TSP</span></a></li>
@@ -162,7 +132,7 @@
   </ol>
   <p class="toc-group">Inference in brain imaging</p>
   <ol class="toc" start="8">
-    <li><a href="#physdyn-metrics"><span class="toc-num">8</span><span class="toc-title">Statistical-Physics Metrics of Resting-State fMRI Largely Restate Its Lagged Covariance</span><span class="tag tag-new">New</span></a></li>
+    <li><a href="#physdyn-metrics"><span class="toc-num">8</span><span class="toc-title">Statistical-Physics Metrics of Resting-State fMRI Largely Restate Its Lagged Covariance</span><span class="tag tag-new">New &middot; Nat Commun</span></a></li>
     <li><a href="#template-mismatch"><span class="toc-num">9</span><span class="toc-title">A Study&rsquo;s Own Dual-Regression Maps Cannot Identify Template Mismatch</span><span class="tag">Submitted &middot; ISBI 2027</span></a></li>
     <li><a href="#topography-coupling"><span class="toc-num">10</span><span class="toc-title">Persistence Under Robustness Checks Cannot Tell Topography from Coupling in Connectivity Group Differences</span><span class="tag">Submitted &middot; ISBI 2027</span></a></li>
   </ol>
@@ -225,7 +195,7 @@
   <figure class="figure">
     <div class="fig-scroll">
       <a href="assets/fig/riesz-energy.png" aria-label="Open the figure at full size">
-        <img src="assets/fig/riesz-energy.png" width="2115" height="645" loading="lazy" decoding="async" alt="Four panels: signatures as points in signature space, with inverse-square interactions to one source in blue and the projection of a linear pencil onto a line in red; mean row error of joint diagonalization against dimension for K equal to 2, 3, 4 and 8 at n equal to 400 d, rising for K equal to 2 and flat for K equal to 8; mean Riesz energy per source against dimension for lattice signatures, growing like d squared at K equal to 2, log d at K equal to 3 and saturating from K equal to 4 on; and project versus probe on identical data, where the linear pencil degrades with d while joint diagonalization and the quadratic pencil stay flat.">
+        <img src="assets/fig/riesz-energy.png" width="1410" height="430" loading="lazy" decoding="async" alt="Four panels: signatures as points in signature space, with inverse-square interactions to one source in blue and the projection of a linear pencil onto a line in red; mean row error of joint diagonalization against dimension for K equal to 2, 3, 4 and 8 at n equal to 400 d, rising for K equal to 2 and flat for K equal to 8; mean Riesz energy per source against dimension for lattice signatures, growing like d squared at K equal to 2, log d at K equal to 3 and saturating from K equal to 4 on; and project versus probe on identical data, where the linear pencil degrades with d while joint diagonalization and the quadratic pencil stay flat.">
       </a>
     </div>
     <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
@@ -634,7 +604,7 @@
   <figure class="figure">
     <div class="fig-scroll">
       <a href="assets/fig/physdyn-metrics.png" aria-label="Open the figure at full size">
-        <img src="assets/fig/physdyn-metrics.png" width="2740" height="1092" loading="lazy" decoding="async" alt="An evidence matrix: rows are the families of statistical-physics metrics with the third-order asymmetry as the last row, columns are the read-outs from estimator validity and positive-control sensitivity through group values, reliability, reliable variance, added information, associations, state changes and EEG; cells are coloured by whether the family departed from its surrogates, was equivalent, departed toward zero, was unresolved, insensitive or not evaluable, and only turbulence shows a positive association and the third-order asymmetry departs in every fMRI read-out.">
+        <img src="assets/fig/physdyn-metrics.png" width="1370" height="546" loading="lazy" decoding="async" alt="An evidence matrix: rows are the families of statistical-physics metrics with the third-order asymmetry as the last row, columns are the read-outs from estimator validity and positive-control sensitivity through group values, reliability, reliable variance, added information, associations, state changes and EEG; cells are coloured by whether the family departed from its surrogates, was equivalent, departed toward zero, was unresolved, insensitive or not evaluable, and only turbulence shows a positive association and the third-order asymmetry departs in every fMRI read-out.">
       </a>
     </div>
     <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
@@ -675,7 +645,7 @@
   <p>The evaluation uses resting-state fMRI from the Philadelphia Neurodevelopmental Cohort (8&ndash;21&nbsp;years, 119 volumes, 1,224 participants after quality control). Group ICAs of two disjoint sets of 350 participants, matched to the 53 NeuroMark 1.0 networks, provide the audit template <var>P</var><sub><var>A</var></sub> and the reference <var>P</var><sub><var>B</var></sub> through which changes are injected. Eight external templates are then scored on the other 524 participants over 300 injection settings: NeuroMark 1.0 and three perturbed versions of it (smoothed, thresholded, and displaced), NeuroMark 2.1, and the NeuroMark 3.0 development, aging, and infant templates, the last two as wrong-age controls.</p>
   <p>The own-map check followed the residual, not the cross-talk. With every template reduced to its 53 matched components, it ranged only 0.33&ndash;0.40, and its ranking of the eight templates correlated with their retention at Spearman &minus;0.24; it was highest for NeuroMark 2.1, which retained only 0.49. Entered with all their components, the four newer templates fell to 0.21&ndash;0.24 whatever their retention, and the check then ranked the templates at Spearman 0.81, <strong>by the number of components fitted to 119 volumes rather than by what each template loses</strong>. These analyses were added after the first held-out results.</p>
   <p>On the 20 common networks, identified by both cohort ICAs and counted for every candidate, NeuroMark 1.0 retained 0.73 of an injected change and <var>P</var><sub><var>A</var></sub> 0.84, while NeuroMark 2.1 and the development, aging, and infant templates retained 0.49, 0.62, 0.49, and 0.48. <strong>The newer templates stayed below NeuroMark 1.0 in every variant tested</strong>: entered with all their components, with the reference also entered with all of its components, with the two cohort ICAs swapped, and with network labels from the development maps. NeuroMark 1.0 trailed the cohort ICA only when templates were reduced to matched components (0.87 and 0.87 with all components), and its lead over the development template (0.103, subject-bootstrap 95% interval 0.098 to 0.108) halved with development labels, so part of the adult advantage comes from labeling the networks with adult maps.</p>
-  <p>Spillover went where Proposition&nbsp;1 puts it: for NeuroMark 1.0, edges that share a network with a changed edge held 91% of all spillover targets but made up only 34% of the other edges. Among them, the audit ranked the targets with an average precision of 0.55, against 0.51 for the template&rsquo;s own spatial overlap and 0.30 for flagging every such edge. The paper concludes that a template&rsquo;s fit should not be judged from the study&rsquo;s own DR maps, and that in DR a newer or age-matched template need not keep more of a connectivity change. It is explicit about the limits: retention is measured against a group ICA of the same cohort matched to NeuroMark 1.0, a yardstick that favors templates close to NeuroMark 1.0; the restriction to common networks was adopted after the first held-out results; and only groups that differ in coupling were studied, whereas groups whose maps differ, as across ages, also create spurious differences, the subject of <a href="#topography-coupling">paper 9</a>.</p>
+  <p>Spillover went where Proposition&nbsp;1 puts it: for NeuroMark 1.0, edges that share a network with a changed edge held 91% of all spillover targets but made up only 34% of the other edges. Among them, the audit ranked the targets with an average precision of 0.55, against 0.51 for the template&rsquo;s own spatial overlap and 0.30 for flagging every such edge. The paper concludes that a template&rsquo;s fit should not be judged from the study&rsquo;s own DR maps, and that in DR a newer or age-matched template need not keep more of a connectivity change. It is explicit about the limits: retention is measured against a group ICA of the same cohort matched to NeuroMark 1.0, a yardstick that favors templates close to NeuroMark 1.0; the restriction to common networks was adopted after the first held-out results; and only groups that differ in coupling were studied, whereas groups whose maps differ, as across ages, also create spurious differences, the subject of <a href="#topography-coupling">paper 10</a>.</p>
 
   <details class="table">
     <summary>Table 1 of the paper: outcomes by candidate template</summary>
@@ -805,6 +775,36 @@
   <span class="promo-desc">A bilingual course on ICA in fifteen chapters, from the mixing model and identifiability through contrasts, algorithms and the Cram&eacute;r&ndash;Rao bound to overcomplete and nonlinear ICA and ICA for fMRI, with exercises and solutions.</span>
   <span class="promo-cta">Read the book &rarr;</span>
 </a>
+
+<section class="visitor-stats" id="visitor-stats" aria-labelledby="visitor-stats-title" aria-busy="true">
+  <div class="visitor-stats-heading">
+    <h2 id="visitor-stats-title">Page views <span lang="zh-CN">访问统计</span></h2>
+    <span class="visitor-stats-status" id="visitor-stats-status" role="status">Loading <span lang="zh-CN">正在读取</span></span>
+  </div>
+  <div class="visitor-stats-grid">
+    <div class="visitor-stats-total">
+      <strong id="visitor-stats-count">&mdash;</strong>
+      <p>Homepage page views<br><span lang="zh-CN">首页访问次数（非独立访客数）</span></p>
+      <p class="visitor-stats-reloads">Page reloads count again.<br><span lang="zh-CN">刷新页面会再次计数。</span></p>
+      <p class="visitor-stats-since" id="visitor-stats-since">From the day counting starts<br><span lang="zh-CN">自统计启用日起累计</span></p>
+    </div>
+    <div class="visitor-stats-regions">
+      <h3>Top regions <span lang="zh-CN">主要访问地区</span></h3>
+      <p class="visitor-stats-empty" id="visitor-stats-empty">Regional totals will appear here.<br><span lang="zh-CN">地区汇总将在此显示。</span></p>
+      <ol class="visitor-region-list" id="visitor-region-list" hidden aria-label="Main regions by homepage page views / 按首页访问次数排列的主要地区"></ol>
+      <details class="visitor-stats-more" id="visitor-stats-more" hidden>
+        <summary>More regions <span lang="zh-CN">更多地区</span></summary>
+        <ol class="visitor-region-list" id="visitor-region-more" start="6" aria-label="Additional regions / 其他地区"></ol>
+      </details>
+      <p class="visitor-stats-other" id="visitor-stats-other" hidden></p>
+    </div>
+  </div>
+  <div class="visitor-stats-bottom">
+    <p>Visits are grouped by approximate IP location; full IP addresses are not displayed.<br><span lang="zh-CN">按访问次数与 IP 推断地区汇总，不展示完整 IP；地区可能受 VPN 或网络出口影响。</span></p>
+    <button class="visitor-stats-refresh" id="visitor-stats-refresh" type="button" hidden>Refresh totals <span lang="zh-CN">刷新统计</span></button>
+  </div>
+  <noscript><p class="visitor-stats-noscript">Enable JavaScript to view the live totals. <span lang="zh-CN">启用 JavaScript 后可查看实时统计。</span></p></noscript>
+</section>
 
 </main>
 
