@@ -93,6 +93,14 @@ sub { top: 0.25em; }
   white-space: nowrap;
 }
 .tag-pub { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tag-new {
+  background: var(--emph);
+  border-color: var(--emph);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
 
 /* ---------- Page ---------- */
 
