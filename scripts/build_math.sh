@@ -76,3 +76,6 @@ mk persistence-remedy-narrow '\begin{gathered} \min_{u}\,\sum_{k}\bigl\|\bar{m}_
 # IX. Separation is a Riesz energy
 mk riesz-law 'E_j=\sum_{i\neq j}S_{ij}^{-1},\qquad S_{ij}=\frac{1}{K}\sum_{k=1}^{K}\frac{\bigl(\mathbf{p}_i(k)-\mathbf{p}_j(k)\bigr)^{2}}{\mathbf{p}_i(k)\,\mathbf{p}_j(k)}'
 mk riesz-dimension 'E_j \asymp \begin{cases} d^{2}, & K=2, \cr d\log d, & K=3, \cr d, & K\ge 4, \end{cases}\qquad n \gtrsim E_j'
+
+# X. Statistical-physics metrics of resting-state fMRI
+mk physdyn-epr '\sigma_{ij}(\omega)=\frac{4\,\mathrm{ImCoh}_{ij}(\omega)^{2}}{1-\lvert\mathrm{Coh}_{ij}(\omega)\rvert^{2}}'
