@@ -153,16 +153,17 @@
     <li><a href="#zeros"><span class="toc-num">2</span><span class="toc-title">Zeros That Survive Mixing: Hardness and Immunity in Overcomplete ICA</span><span class="tag">Submitted &middot; IEEE SPL</span></a></li>
     <li><a href="#normalization"><span class="toc-num">3</span><span class="toc-title">Normalization Mismatch in ICA and Its Orthogonalized Remedy</span><span class="tag">Submitted &middot; IEEE TSP</span></a></li>
     <li><a href="#certificates"><span class="toc-num">4</span><span class="toc-title">Sharp Two-Sided Residual Certificates for Comparing ICA Estimates Without the Sources</span><span class="tag">Under review</span></a></li>
+    <li><a href="#riesz-energy"><span class="toc-num">5</span><span class="toc-title">Separation Is a Riesz Energy: How Many Environments Does ICA Need?</span><span class="tag">Preprint &middot; ICML 2027</span></a></li>
   </ol>
   <p class="toc-group">Partially observed dynamics</p>
-  <ol class="toc" start="5">
-    <li><a href="#heat-threshold"><span class="toc-num">5</span><span class="toc-title">Heat Constraints from Exponential Correlations and a Sharp Two-Temperature Threshold</span><span class="tag">Submitted &middot; 2026</span></a></li>
-    <li><a href="#two-probes"><span class="toc-num">6</span><span class="toc-title">Two Probes Recover the Bath Heat That Neither Reveals Alone</span><span class="tag">Submitted &middot; 2026</span></a></li>
+  <ol class="toc" start="6">
+    <li><a href="#heat-threshold"><span class="toc-num">6</span><span class="toc-title">Heat Constraints from Exponential Correlations and a Sharp Two-Temperature Threshold</span><span class="tag">Submitted &middot; 2026</span></a></li>
+    <li><a href="#two-probes"><span class="toc-num">7</span><span class="toc-title">Two Probes Recover the Bath Heat That Neither Reveals Alone</span><span class="tag">Submitted &middot; 2026</span></a></li>
   </ol>
   <p class="toc-group">Inference in brain imaging</p>
-  <ol class="toc" start="7">
-    <li><a href="#template-mismatch"><span class="toc-num">7</span><span class="toc-title">A Study&rsquo;s Own Dual-Regression Maps Cannot Identify Template Mismatch</span><span class="tag">Submitted &middot; ISBI 2027</span></a></li>
-    <li><a href="#topography-coupling"><span class="toc-num">8</span><span class="toc-title">Persistence Under Robustness Checks Cannot Tell Topography from Coupling in Connectivity Group Differences</span><span class="tag">Submitted &middot; ISBI 2027</span></a></li>
+  <ol class="toc" start="8">
+    <li><a href="#template-mismatch"><span class="toc-num">8</span><span class="toc-title">A Study&rsquo;s Own Dual-Regression Maps Cannot Identify Template Mismatch</span><span class="tag">Submitted &middot; ISBI 2027</span></a></li>
+    <li><a href="#topography-coupling"><span class="toc-num">9</span><span class="toc-title">Persistence Under Robustness Checks Cannot Tell Topography from Coupling in Connectivity Group Differences</span><span class="tag">Submitted &middot; ISBI 2027</span></a></li>
   </ol>
 </nav>
 
@@ -415,14 +416,79 @@
   </div>
 </article>
 
+<!-- ============== 5. Separation Is a Riesz Energy ============== -->
+<article class="paper" id="riesz-energy">
+  <header class="paper-head">
+  <h3><span class="num">5</span><span>Separation Is a Riesz Energy: How Many Environments Does ICA Need?</span></h3>
+  <p class="byline"><span class="me">Yuda Bi</span>*, Yubo Guo*, Jiaxiao Cai, Xiaonai Li, Zhuolin Li, Vince D. Calhoun&dagger;</p>
+  <p class="venue-line"><span class="tag">Preprint</span>2026 &middot; submitted to <i>ICML</i> 2027</p>
+  <p class="note">* Equal contribution. &dagger; Corresponding author.</p>
+  </header>
+
+  <div class="paper-body">
+  <div class="display">
+    <p class="display-label">Central result</p>
+    <img src="assets/math/riesz-law.svg" width="341" height="54" alt="E j equals the sum over i not equal to j of the inverse of S i j, where S i j is one over K times the sum over environments of the squared difference of signatures i and j divided by their product">
+    <p class="gloss">Second-order statistics see source <var>j</var> only through its <em>signature</em>, the vector <span class="nowrap"><var>p</var><sub><var>j</var></sub>(1),&hellip;,<var>p</var><sub><var>j</var></sub>(<var>K</var>)</span> of its variances across the environments. Separating it costs the Riesz 2-energy of this point among the signatures: the sum, over the other sources, of inverse pairwise Fisher informations.</p>
+    <img src="assets/math/riesz-dimension.svg" width="257" height="74" alt="E j is of order d squared for K equals 2, d log d for K equals 3, and d for K at least 4, so n must be at least on the order of E j">
+    <p class="gloss">The dimension law for well-spread signatures. Signatures live in <span class="nowrap"><var>K</var>&nbsp;&minus;&nbsp;1</span> dimensions, so what counts is the dimension the configuration spans, not the number of environments.</p>
+  </div>
+
+  <h4>The question</h4>
+  <p>Independent component analysis recovers independent sources from a linear mixture, but i.i.d. samples of Gaussian sources determine the mixing only up to a rotation. Diversity rescues them: if the source variances change across <var>K</var> environments, be they segments of a nonstationary recording, time lags or datasets, the covariances share the mixing and the sources become identifiable from second-order statistics alone. Existing results are qualitative. They say when identification is possible, not how many samples it takes or which environments to collect, and the dependence on the number of components was open. The paper answers those questions with one geometric quantity, the Riesz energy of the signatures.</p>
+
+  <h4>Results</h4>
+  <ul class="results">
+    <li><b>Theorem 1</b> <span class="thm-name">(Separation costs a Riesz energy).</span> For Gaussian sources and every <var>n</var> and <var>d</var>, no estimator in the orthogonal group recovers the <var>j</var>-th mixing direction with worst-case squared-angle risk below <span class="nowrap"><var>c</var>&#8239;<var>E</var><sub><var>j</var></sub>/(<var>n</var>&nbsp;+&nbsp;<var>E</var><sub><var>j</var></sub>)</span>. The energy is a sum of inverse pairwise Fisher informations, so the geometry of the signatures, not the number of environments, sets the difficulty.</li>
+    <li><b>Theorem 2</b> <span class="thm-name">(Attainment by a quadratic pencil).</span> A spectral estimator, the bottom eigenvector of <span class="nowrap">&Sigma;<sub><var>k</var></sub>&#8239;<var>w</var><sub><var>k</var></sub>(&Sigma;<sub><var>k</var></sub>&nbsp;&minus;&nbsp;<var>p</var><sub><var>j</var></sub>(<var>k</var>)<var>I</var>)<sup>2</sup></span>, a matrix that vanishes only along source <var>j</var>, attains <span class="nowrap"><var>E</var><sub><var>j</var></sub>/<var>n</var></span> up to a constant for every mixing, uniformly in <var>d</var>, once <span class="nowrap"><var>n</var>&nbsp;&gtrsim;&nbsp;<var>K</var>(<var>d</var>&nbsp;+&nbsp;log&nbsp;<var>n</var>)/<var>S</var><sub>min</sub></span>, and it may estimate the whitening from the data. A grid of such matrices also finds the signatures, given a lower bound <span class="nowrap"><var>s</var><sub>0</sub>&nbsp;&le;&nbsp;<var>S</var><sub>min</sub></span> (Theorem&nbsp;3). In this regime the energy is the minimax rate (Corollary&nbsp;1).</li>
+    <li><b>Theorem 4</b> <span class="thm-name">(Dimension, not number).</span> Counting how many signatures lie at each distance from <var>p</var><sub><var>j</var></sub> gives <span class="nowrap"><var>E</var><sub><var>j</var></sub>&nbsp;&asymp;&nbsp;<var>d</var><sup>2</sup></span>, <span class="nowrap"><var>d</var>&nbsp;log&nbsp;<var>d</var></span> and <var>d</var> for <var>K</var>&nbsp;=&nbsp;2, 3 and <var>K</var>&nbsp;&ge;&nbsp;4 well-spread environments. Combined with Theorem&nbsp;1, <span class="nowrap"><var>n</var>&nbsp;&gtrsim;&nbsp;<var>d</var><sup>2</sup></span>, <span class="nowrap"><var>d</var>&nbsp;log&nbsp;<var>d</var></span> and <var>d</var> samples are necessary for every configuration (Corollary&nbsp;2), and <span class="nowrap"><var>K</var>&nbsp;&asymp;&nbsp;log&nbsp;<var>d</var></span> well-designed environments make <span class="nowrap"><var>d</var>&nbsp;log&nbsp;<var>d</var></span> samples suffice. <strong>Eight environments whose signatures lie on a line behave like two.</strong></li>
+    <li><b>Theorem 5 and Proposition 2</b> <span class="thm-name">(Projecting versus probing).</span> The eigenvectors of one linear combination <span class="nowrap">&Sigma;<sub><var>k</var></sub>&#8239;<var>&alpha;</var><sub><var>k</var></sub>&Sigma;<sub><var>k</var></sub></span>, as in AMUSE, generalized eigenproblems and random pencils, have a first-order error whose mean over sources is <span class="nowrap">&gtrsim;&nbsp;<var>d</var><sup>2</sup>/<var>n</var></span> for every <var>K</var>: the combination projects the signatures onto a line, where gaps shrink like <span class="nowrap">1/<var>d</var></span>. Probing one signature at a time avoids this, and the first-order error of joint diagonalization is again of Riesz type.</li>
+  </ul>
+
+  <h4>Evidence</h4>
+  <p>At <var>n</var>&nbsp;=&nbsp;400<var>d</var>, from <var>d</var>&nbsp;=&nbsp;8 to 128, the mean row error of joint diagonalization <strong>grows from 0.14 to 0.52 for <var>K</var>&nbsp;=&nbsp;2 and from 0.072 to 0.14 for <var>K</var>&nbsp;=&nbsp;3, but stays between 0.018 and 0.022 for <var>K</var>&nbsp;=&nbsp;8</strong>. For <var>K</var>&nbsp;=&nbsp;4 the error stays within 0.86&ndash;1.09 times the first-order prediction up to <var>d</var>&nbsp;=&nbsp;512. With <var>K</var>&nbsp;=&nbsp;8 environments at <var>n</var>&nbsp;=&nbsp;1600<var>d</var> and signatures confined to a subspace of dimension 1, 2, 3 or 7, <strong>the error follows the dimension</strong>: from <var>d</var>&nbsp;=&nbsp;8 to 256 it grows from 0.055 to 0.68 in dimension 1 and stays near 0.049 and 0.035 in dimensions 3 and 7. Two configurations with the same smallest divergence but energies 3.8 times apart have errors 4.1 times apart.</p>
+  <p>The sample size at which the error reaches 0.1 is <strong>92&ndash;110&#8239;<var>d</var> for <var>K</var>&nbsp;=&nbsp;8 and 188&ndash;205&#8239;<var>d</var> for <var>K</var>&nbsp;=&nbsp;4</strong>, from <var>d</var>&nbsp;=&nbsp;16 to 512, so <var>n</var>/<var>d</var> barely grows with <var>d</var>; a threshold that scaled as the proved bound would instead multiply <var>n</var>/<var>d</var> by 2.7 and 10.1. On fixed <var>K</var>&nbsp;=&nbsp;4 lattices the mean error reaches 0.1 at 360&ndash;490&#8239;<var>d</var> from <var>d</var>&nbsp;=&nbsp;27 to 1000. On identical data (<var>K</var>&nbsp;=&nbsp;8, <var>n</var>&nbsp;=&nbsp;400<var>d</var>) <strong>one linear pencil degrades from 0.47 to 0.84</strong> while joint diagonalization and the quadratic pencil of Theorem&nbsp;2 stay flat; as an initialization the pencil costs nothing.</p>
+  <p>On 813 Human Connectome Project subjects with <var>d</var>&nbsp;=&nbsp;200 cortical components and eight environments (seven tasks and rest), the energy ranks the split-half discrepancies of the components (Spearman 0.89, against 0.72 for the nearest-neighbour gap alone) but does not predict their size: with 400 subjects per half the mean discrepancy is 0.723 against a predicted 0.118, and a floor of 0.59 carries most of the ranking. Restricting to two environments makes the energy 53 times larger. The paper is explicit about the limits: the theorems assume Gaussian sources and equal environment sizes, the grid needs a known lower bound on the smallest divergence, the gap between necessary and sufficient sample sizes is open for fixed <var>K</var>, and practical algorithms are covered at first order only.</p>
+
+  <details class="table">
+    <summary>Table 1 of the paper: the environment law</summary>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th scope="col">Quantity</th><th scope="col"><var>K</var>&nbsp;=&nbsp;2</th><th scope="col"><var>K</var>&nbsp;=&nbsp;3</th><th scope="col"><var>K</var>&nbsp;&ge;&nbsp;4</th><th scope="col"><var>K</var>&nbsp;&asymp;&nbsp;log&nbsp;<var>d</var></th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Energy <var>E</var><sub><var>j</var></sub></th><td><var>d</var><sup>2</sup></td><td><var>d</var>&nbsp;log&nbsp;<var>d</var></td><td><var>d</var></td><td><var>d</var></td></tr>
+          <tr><th scope="row">Necessary samples</th><td><var>d</var><sup>2</sup></td><td><var>d</var>&nbsp;log&nbsp;<var>d</var></td><td><var>d</var></td><td><var>d</var></td></tr>
+          <tr><th scope="row">Proved sufficient</th><td><var>d</var><sup>3</sup></td><td><var>d</var><sup>2</sup></td><td><var>d</var><sup>(<var>K</var>+1)/(<var>K</var>&minus;1)</sup></td><td><var>d</var>&nbsp;log&nbsp;<var>d</var></td></tr>
+          <tr><th scope="row">One linear pencil</th><td colspan="4">&gtrsim;&nbsp;<var>d</var><sup>2</sup>/<var>n</var>, for every <var>K</var></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Orders in <var>d</var> for well-spread signatures; the necessary row holds for every configuration, and the sufficient row is for equal environment sizes with known signatures. Constants depend on <var>K</var>, on a bound on the signatures, and on the spreading constants.</p>
+  </details>
+
+  <figure class="figure">
+    <div class="fig-scroll">
+      <a href="assets/fig/riesz-energy.png" aria-label="Open the figure at full size">
+        <img src="assets/fig/riesz-energy.png" width="2115" height="645" loading="lazy" decoding="async" alt="Four panels: signatures as points in signature space, with inverse-square interactions to one source in blue and the projection of a linear pencil onto a line in red; mean row error of joint diagonalization against dimension for K equal to 2, 3, 4 and 8 at n equal to 400 d, rising for K equal to 2 and flat for K equal to 8; mean Riesz energy per source against dimension for lattice signatures, growing like d squared at K equal to 2, log d at K equal to 3 and saturating from K equal to 4 on; and project versus probe on identical data, where the linear pencil degrades with d while joint diagonalization and the quadratic pencil stay flat.">
+      </a>
+    </div>
+    <p class="swipe-hint">Swipe sideways for all panels, or tap to open the full figure.</p>
+    <figcaption><b>Fig. 1.</b> Separation is a Riesz energy. (a) Each source is a point in the signature space; separating source <var>j</var> costs the inverse-square energy of its interactions (blue), which a quadratic pencil centred at <var>p</var><sub><var>j</var></sub> measures, while a linear pencil projects the signatures onto a line (red), where gaps are <span class="nowrap">&sim;1/<var>d</var></span>. (b) The dimension law, simulated: mean row error of joint diagonalization for random signatures at <var>n</var>&nbsp;=&nbsp;400<var>d</var>; dashed: the first-order prediction. (c) Energy per source for lattice signatures grows like <var>d</var> (<var>K</var>&nbsp;=&nbsp;2) and log&nbsp;<var>d</var> (<var>K</var>&nbsp;=&nbsp;3) and saturates (<var>K</var>&nbsp;&ge;&nbsp;4). (d) Projecting versus probing: on identical data (<var>K</var>&nbsp;=&nbsp;8, <var>n</var>&nbsp;=&nbsp;400<var>d</var>) the eigenvectors of one linear pencil degrade with <var>d</var>; joint diagonalization and the quadratic pencil do not.</figcaption>
+  </figure>
+    <p class="to-top"><a href="#top">Back to top &uarr;</a></p>
+  </div>
+</article>
+
 <h2>Partially observed dynamics</h2>
 
-<!-- ============== 5. Heat constraints from exponential correlations ============== -->
+<!-- ============== 6. Heat constraints from exponential correlations ============== -->
 <article class="paper" id="heat-threshold">
   <header class="paper-head">
-  <h3><span class="num">5</span><span>Heat Constraints from Exponential Correlations and a Sharp Two-Temperature Threshold</span></h3>
+  <h3><span class="num">6</span><span>Heat Constraints from Exponential Correlations and a Sharp Two-Temperature Threshold</span></h3>
   <p class="byline"><span class="me">Yuda Bi</span>, Chenyu Zhang, Vince D. Calhoun</p>
-  <p class="venue-line"><span class="tag">Submitted</span>2026 &middot; companion to <a href="#two-probes">paper 6</a></p>
+  <p class="venue-line"><span class="tag">Submitted</span>2026 &middot; companion to <a href="#two-probes">paper 7</a></p>
   </header>
 
   <div class="paper-body">
@@ -467,12 +533,12 @@
   </div>
 </article>
 
-<!-- ============== 6. Two probes recover the bath heat ============== -->
+<!-- ============== 7. Two probes recover the bath heat ============== -->
 <article class="paper" id="two-probes">
   <header class="paper-head">
-  <h3><span class="num">6</span><span>Two Probes Recover the Bath Heat That Neither Reveals Alone</span></h3>
+  <h3><span class="num">7</span><span>Two Probes Recover the Bath Heat That Neither Reveals Alone</span></h3>
   <p class="byline"><span class="me">Yuda Bi</span>, Vince D. Calhoun</p>
-  <p class="venue-line"><span class="tag">Submitted</span>2026 &middot; companion to <a href="#heat-threshold">paper 5</a></p>
+  <p class="venue-line"><span class="tag">Submitted</span>2026 &middot; companion to <a href="#heat-threshold">paper 6</a></p>
   </header>
 
   <div class="paper-body">
@@ -533,12 +599,12 @@
 
 <h2>Inference in brain imaging</h2>
 
-<!-- ============== 7. A Study's Own Dual-Regression Maps Cannot Identify Template Mismatch ============== -->
+<!-- ============== 8. A Study's Own Dual-Regression Maps Cannot Identify Template Mismatch ============== -->
 <article class="paper" id="template-mismatch">
   <header class="paper-head">
-  <h3><span class="num">7</span><span>A Study&rsquo;s Own Dual-Regression Maps Cannot Identify Template Mismatch</span></h3>
+  <h3><span class="num">8</span><span>A Study&rsquo;s Own Dual-Regression Maps Cannot Identify Template Mismatch</span></h3>
   <p class="byline"><span class="me">Yuda Bi</span>, Zhuolin Li, Jiaxiao Cai, Vince D. Calhoun</p>
-  <p class="venue-line"><span class="tag">Submitted</span><i>IEEE International Symposium on Biomedical Imaging</i> (ISBI), 2027 &middot; companion to <a href="#topography-coupling">paper 8</a></p>
+  <p class="venue-line"><span class="tag">Submitted</span><i>IEEE International Symposium on Biomedical Imaging</i> (ISBI), 2027 &middot; companion to <a href="#topography-coupling">paper 9</a></p>
   </header>
 
   <div class="paper-body">
@@ -564,7 +630,7 @@
   <p>The evaluation uses resting-state fMRI from the Philadelphia Neurodevelopmental Cohort (8&ndash;21&nbsp;years, 119 volumes, 1,224 participants after quality control). Group ICAs of two disjoint sets of 350 participants, matched to the 53 NeuroMark 1.0 networks, provide the audit template <var>P</var><sub><var>A</var></sub> and the reference <var>P</var><sub><var>B</var></sub> through which changes are injected. Eight external templates are then scored on the other 524 participants over 300 injection settings: NeuroMark 1.0 and three perturbed versions of it (smoothed, thresholded, and displaced), NeuroMark 2.1, and the NeuroMark 3.0 development, aging, and infant templates, the last two as wrong-age controls.</p>
   <p>The own-map check followed the residual, not the cross-talk. With every template reduced to its 53 matched components, it ranged only 0.33&ndash;0.40, and its ranking of the eight templates correlated with their retention at Spearman &minus;0.24; it was highest for NeuroMark 2.1, which retained only 0.49. Entered with all their components, the four newer templates fell to 0.21&ndash;0.24 whatever their retention, and the check then ranked the templates at Spearman 0.81, <strong>by the number of components fitted to 119 volumes rather than by what each template loses</strong>. These analyses were added after the first held-out results.</p>
   <p>On the 20 common networks, identified by both cohort ICAs and counted for every candidate, NeuroMark 1.0 retained 0.73 of an injected change and <var>P</var><sub><var>A</var></sub> 0.84, while NeuroMark 2.1 and the development, aging, and infant templates retained 0.49, 0.62, 0.49, and 0.48. <strong>The newer templates stayed below NeuroMark 1.0 in every variant tested</strong>: entered with all their components, with the reference also entered with all of its components, with the two cohort ICAs swapped, and with network labels from the development maps. NeuroMark 1.0 trailed the cohort ICA only when templates were reduced to matched components (0.87 and 0.87 with all components), and its lead over the development template (0.103, subject-bootstrap 95% interval 0.098 to 0.108) halved with development labels, so part of the adult advantage comes from labeling the networks with adult maps.</p>
-  <p>Spillover went where Proposition&nbsp;1 puts it: for NeuroMark 1.0, edges that share a network with a changed edge held 91% of all spillover targets but made up only 34% of the other edges. Among them, the audit ranked the targets with an average precision of 0.55, against 0.51 for the template&rsquo;s own spatial overlap and 0.30 for flagging every such edge. The paper concludes that a template&rsquo;s fit should not be judged from the study&rsquo;s own DR maps, and that in DR a newer or age-matched template need not keep more of a connectivity change. It is explicit about the limits: retention is measured against a group ICA of the same cohort matched to NeuroMark 1.0, a yardstick that favors templates close to NeuroMark 1.0; the restriction to common networks was adopted after the first held-out results; and only groups that differ in coupling were studied, whereas groups whose maps differ, as across ages, also create spurious differences, the subject of <a href="#topography-coupling">paper 8</a>.</p>
+  <p>Spillover went where Proposition&nbsp;1 puts it: for NeuroMark 1.0, edges that share a network with a changed edge held 91% of all spillover targets but made up only 34% of the other edges. Among them, the audit ranked the targets with an average precision of 0.55, against 0.51 for the template&rsquo;s own spatial overlap and 0.30 for flagging every such edge. The paper concludes that a template&rsquo;s fit should not be judged from the study&rsquo;s own DR maps, and that in DR a newer or age-matched template need not keep more of a connectivity change. It is explicit about the limits: retention is measured against a group ICA of the same cohort matched to NeuroMark 1.0, a yardstick that favors templates close to NeuroMark 1.0; the restriction to common networks was adopted after the first held-out results; and only groups that differ in coupling were studied, whereas groups whose maps differ, as across ages, also create spurious differences, the subject of <a href="#topography-coupling">paper 9</a>.</p>
 
   <details class="table">
     <summary>Table 1 of the paper: outcomes by candidate template</summary>
@@ -602,12 +668,12 @@
   </div>
 </article>
 
-<!-- ============== 8. Persistence Under Robustness Checks ============== -->
+<!-- ============== 9. Persistence Under Robustness Checks ============== -->
 <article class="paper" id="topography-coupling">
   <header class="paper-head">
-  <h3><span class="num">8</span><span>Persistence Under Robustness Checks Cannot Tell Topography from Coupling in Connectivity Group Differences</span></h3>
+  <h3><span class="num">9</span><span>Persistence Under Robustness Checks Cannot Tell Topography from Coupling in Connectivity Group Differences</span></h3>
   <p class="byline">Zhuolin Li, Jiaxiao Cai, Vince D. Calhoun, <span class="me">Yuda Bi</span>&dagger;</p>
-  <p class="venue-line"><span class="tag">Submitted</span><i>IEEE International Symposium on Biomedical Imaging</i> (ISBI), 2027 &middot; companion to <a href="#template-mismatch">paper 7</a></p>
+  <p class="venue-line"><span class="tag">Submitted</span><i>IEEE International Symposium on Biomedical Imaging</i> (ISBI), 2027 &middot; companion to <a href="#template-mismatch">paper 8</a></p>
   <p class="note">&dagger; Corresponding author.</p>
   </header>
 
@@ -629,12 +695,12 @@
   <h4>Results</h4>
   <ul class="results">
     <li><b>Shared checks</b> <span class="thm-name">(Sec.&nbsp;2.2).</span> If group-mean FNC depends smoothly on the template and on the group difference, a check that replaces the template for both groups changes the contrast only at second order (first display), so <strong>a small shared check can leave either kind of difference intact</strong>; the argument bounds only the order, and the constants may differ by origin. Template smoothing by 6&nbsp;mm is such a small check (<var>h</var>&nbsp;=&nbsp;0.13), a NeuroMark 2.1 swap (<var>h</var>&nbsp;=&nbsp;0.87) is not, and thresholded DR, which gives each subject its own effective template, is outside the argument. For any check, <strong>persistence raises the odds of a coupling origin by at most 1/<var>P</var>(persist&nbsp;|&nbsp;topographic)</strong>, a bound reached when every coupling edge stays significant.</li>
-    <li><b>Differential alignment</b> <span class="thm-name">(Sec.&nbsp;2.3).</span> If one group&rsquo;s topography is a deformation of the other&rsquo;s, re-extracting that group with the template deformed the same way removes the topographic contrast exactly when the deformation acts as a voxel permutation and the noise is exchangeable, and approximately otherwise. The procedure takes as moving group the one whose mean maps deviate more from the template, fits the displacement in the lowest five cosine functions per axis (375 parameters) by damped Gauss&ndash;Newton, re-extracts, and refits; three such updates are the default. <strong>Updates are needed because stage-2 maps reproduce the template within its span</strong> (the identity of <a href="#template-mismatch">paper 7</a>), so a single fit sees only the out-of-span part of the change. A coupling difference that reaches the maps also biases the fitted field.</li>
+    <li><b>Differential alignment</b> <span class="thm-name">(Sec.&nbsp;2.3).</span> If one group&rsquo;s topography is a deformation of the other&rsquo;s, re-extracting that group with the template deformed the same way removes the topographic contrast exactly when the deformation acts as a voxel permutation and the noise is exchangeable, and approximately otherwise. The procedure takes as moving group the one whose mean maps deviate more from the template, fits the displacement in the lowest five cosine functions per axis (375 parameters) by damped Gauss&ndash;Newton, re-extracts, and refits; three such updates are the default. <strong>Updates are needed because stage-2 maps reproduce the template within its span</strong> (the identity of <a href="#template-mismatch">paper 8</a>), so a single fit sees only the out-of-span part of the change. A coupling difference that reaches the maps also biases the fitted field.</li>
     <li><b>Edge-level reading and screen</b> <span class="thm-name">(Sec.&nbsp;3.1).</span> Each significant edge&rsquo;s surviving contrast is read against how much a re-extraction shrinks FNC itself in a group without a difference: a re-extraction is topography-specific when it shrinks topographic contrasts well below FNC while sparing coupling contrasts, and survival near the FNC shrinkage leaves the origin open. This reading was defined after the discovery counts were known. A screen gates differential alignment: the size of the first fitted field must exceed its null from 1,000 site-stratified label permutations (<var>p</var>&nbsp;&lt; 0.05).</li>
   </ul>
 
   <h4>Evidence</h4>
-  <p>The benchmark draws eight pseudo-group studies from UK Biobank resting-state fMRI (17,584 participants after quality control), each a block of 1,200 participants split into two groups of 600, balanced on site, sex, and age, and into discovery and test halves. Every subject&rsquo;s data receive an individual smooth random warp, and five arms share subjects and data: zero; a matched sham; S-only, in which group&nbsp;1 also receives a smooth group displacement (brain RMS 2.8&nbsp;mm); T-only, in which ten cross-domain edges of group&nbsp;1 change by <span class="nowrap">&Delta;<var>z</var>&nbsp;=&nbsp;&plusmn;0.1</span>, injected through each subject&rsquo;s NeuroMark 1.0 stage-2 maps using the identity of <a href="#template-mismatch">paper 7</a>; and Both. All 1,378 edges are tested on the test half at a false discovery rate of 0.05.</p>
+  <p>The benchmark draws eight pseudo-group studies from UK Biobank resting-state fMRI (17,584 participants after quality control), each a block of 1,200 participants split into two groups of 600, balanced on site, sex, and age, and into discovery and test halves. Every subject&rsquo;s data receive an individual smooth random warp, and five arms share subjects and data: zero; a matched sham; S-only, in which group&nbsp;1 also receives a smooth group displacement (brain RMS 2.8&nbsp;mm); T-only, in which ten cross-domain edges of group&nbsp;1 change by <span class="nowrap">&Delta;<var>z</var>&nbsp;=&nbsp;&plusmn;0.1</span>, injected through each subject&rsquo;s NeuroMark 1.0 stage-2 maps using the identity of <a href="#template-mismatch">paper 8</a>; and Both. All 1,378 edges are tested on the test half at a false discovery rate of 0.05.</p>
   <p>Persistence was weak evidence of coupling. In the S-only arm, standard DR made 258&nbsp;&plusmn;&nbsp;66 discoveries, all topographic, and <strong>template smoothing still made 252&nbsp;&plusmn;&nbsp;68</strong> while keeping the injected coupling edges of the T-only arm. The NeuroMark 2.1 swap made 303&nbsp;&plusmn;&nbsp;88 and found only 1.0 of the ten coupling edges, partly because the injection is defined in NeuroMark 1.0 space; thresholded DR cut the topographic discoveries by 39% and kept every coupling edge. On the significant edges of the Both arm, <strong>persistence raised the odds of a coupling origin only 1.1-, 1.8-, and 1.8-fold</strong> under smoothing, the swap, and thresholded DR, with 88% and 56% of topographic edges persisting under smoothing and thresholded DR.</p>
   <p>Thresholded DR separated the two kinds of edge (AUC 0.90) only through a gain: it shrank FNC itself to 0.78 and topographic contrasts about as much (median survival 0.73), while injected coupling gained (1.21), for reasons the paper could not settle. <strong>Differential alignment removed topographic contrast specifically</strong>: it left FNC nearly unchanged without a displacement (shrinkage 1.00) and kept a median 0.63 of topographic and 1.02 of coupling contrasts (AUC 0.83). In the S-only arm it removed 58&nbsp;&plusmn;&nbsp;5% of the topographic contrast, against 78&nbsp;&plusmn;&nbsp;5% for the true field, and left 80&nbsp;&plusmn;&nbsp;36 discoveries. It has costs. In the T-only arm, updates created off-target discoveries (5.0&nbsp;&plusmn;&nbsp;7.3 after three); gating on the screen removed them all, since no T-only block passed it, but a matched sham passed in 5 of 8 blocks. In the Both arm the fitted field was poorer, removal fell to 44&nbsp;&plusmn;&nbsp;8%, and re-extraction made 70 new off-target discoveries per block (52 for thresholded DR), leaving 169&nbsp;&plusmn;&nbsp;66 against 197&nbsp;&plusmn;&nbsp;46 for thresholded DR, which found more of the injected edges.</p>
   <p>In FBIRN schizophrenia data (151 patients, 160 controls), the first fitted field was within its permutation null (<var>p</var>&nbsp;=&nbsp;0.57, descriptive), and the frozen field, applied ungated to the test half, changed the result little (192 significant edges before, 199 after). Under thresholded DR, the 192 edges kept a median 0.85 of their contrast while FNC in the controls shrank to 0.76; relative to that shrinkage (1.12), they fall between the benchmark&rsquo;s topographic edges (0.94) and its injected coupling (1.55), so <strong>their origin remains open</strong>. The paper&rsquo;s rules follow: persistence under a template swap, smoothing, or thresholding is not sufficient evidence of coupling; survival under a re-extraction that keeps the FNC pattern should be read against how much it shrinks FNC in the study&rsquo;s controls; and the first fitted field should be reported with its permutation null. A field above the null shows that the groups&rsquo; maps differ, not that they are displaced; only then is differential alignment applied, with a fixed budget. It is explicit about the limits: the main displacement is one smooth global field, of the class the estimator fits, and a field confined to the default-mode networks was removed about half as well as by the true field; the update budget and other settings were tuned on four of the eight evaluated blocks; and only DR was studied.</p>

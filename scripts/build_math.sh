@@ -72,3 +72,7 @@ mk own-maps-spillover '\delta z_{kb} \approx \frac{1-\rho_{kl}^{2}}{1-\rho_{kb}^
 mk persistence-law '\Delta(\mathcal{T}^{\prime}) - \Delta(\mathcal{T}) = O(\varepsilon h), \qquad \Delta(\mathcal{T}) = O(\varepsilon)'
 mk persistence-remedy '\min_{u}\,\sum_{k}\bigl\|\bar{m}_{\mathrm{mov},k}(x)-\bar{m}_{\mathrm{fix},k}\bigl(x-u(x)\bigr)\bigr\|^{2}, \qquad \mathcal{T}_{u}(x) = \mathcal{T}\bigl(x-u(x)\bigr)'
 mk persistence-remedy-narrow '\begin{gathered} \min_{u}\,\sum_{k}\bigl\|\bar{m}_{\mathrm{mov},k}(x)-\bar{m}_{\mathrm{fix},k}\bigl(x-u(x)\bigr)\bigr\|^{2} \\[4pt] \mathcal{T}_{u}(x) = \mathcal{T}\bigl(x-u(x)\bigr) \end{gathered}'
+
+# IX. Separation is a Riesz energy
+mk riesz-law 'E_j=\sum_{i\neq j}S_{ij}^{-1},\qquad S_{ij}=\frac{1}{K}\sum_{k=1}^{K}\frac{\bigl(\mathbf{p}_i(k)-\mathbf{p}_j(k)\bigr)^{2}}{\mathbf{p}_i(k)\,\mathbf{p}_j(k)}'
+mk riesz-dimension 'E_j \asymp \begin{cases} d^{2}, & K=2, \cr d\log d, & K=3, \cr d, & K\ge 4, \end{cases}\qquad n \gtrsim E_j'
